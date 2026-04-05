@@ -1,0 +1,12 @@
+host: your.server.edu
+port: 22
+user: your_user
+identity_file: C:/Users/you/.ssh/id_rsa
+remote_project_root: /path/to/project
+remote_results_root: /path/to/project/artifacts/publication
+local_results_root: ""
+remote_cmds:
+  build_dataset: "python -m paper_repro.cli --config configs/revision.yaml build-dataset"
+  train_surrogate: "python -m paper_repro.cli --config configs/revision.yaml train-surrogate"
+  run_optimizers: "python -m paper_repro.cli --config configs/revision.yaml run-optimizers"
+  reevaluate: "python -m paper_repro.cli --config configs/revision.yaml reevaluate-candidates"

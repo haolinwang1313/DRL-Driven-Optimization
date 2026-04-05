@@ -1,0 +1,96 @@
+project:
+  name: paper02_repro_smoke
+  random_seed: 20260310
+  artifact_root: artifacts_smoke
+  benchmark_dataset: Dataset.xlsx
+  manuscript_pdf: manuscript1105_clean.pdf
+  supplementary_pdf: Supplementary Information.pdf
+
+runtime:
+  device: auto
+
+weather:
+  download: false
+  output_dir: artifacts_smoke/weather
+  preferred_station: Dongtai
+  fallback_station: Nanjing
+  stations:
+    Dongtai:
+      label: "Dongtai, Jiangsu"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Dongtai.582510_TMYx.2009-2023.zip"
+    Nanjing:
+      label: "Nanjing, Jiangsu"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Nanjing.582380_TMYx.2009-2023.zip"
+
+simulation:
+  n_samples: 120
+  block_size_m: 240.0
+  grid_size: 3
+  land_unit_size_m: 80.0
+  road_offset_m: 5.0
+  setback_offset_m: 10.0
+  floor_to_floor_height_m: 3.0
+  try_install_sim_stack: false
+  use_physical_stack_if_available: false
+  fallback_noise_scale:
+    EUIt: 0.15
+    EG: 0.02
+    H: 0.015
+
+dnn:
+  n_trials: 4
+  epochs: 50
+  batch_size: 32
+  folds: 3
+  patience: 8
+  hidden_layers_min: 1
+  hidden_layers_max: 3
+  units_min: 16
+  units_max: 64
+  units_step: 16
+  dropout_min: 0.1
+  dropout_max: 0.3
+  learning_rate_min: 0.0005
+  learning_rate_max: 0.01
+  retrain_epochs: 70
+  anchor_architecture:
+    hidden_layers: [64, 32]
+    dropout: 0.2
+    learning_rate: 0.001
+    optimizer: Adam
+    activation: ReLU
+
+optimization:
+  ddpg:
+    actor_hidden: [64, 32]
+    critic_hidden: [64, 32]
+    gamma: 0.999
+    actor_lr: 0.001
+    critic_lr: 0.002
+    tau: 0.001
+    batch_size: 64
+    replay_buffer_size: 50000
+    max_episodes: 20
+    max_steps_per_episode: 20
+    initial_noise_std: 0.5
+    noise_decay: 0.999
+    seeds_per_scenario: 3
+    scenarios:
+      Balanced_Performance: [0.3333333333, 0.3333333333, 0.3333333333]
+      Energy_Saving_Focus: [0.6, 0.2, 0.2]
+      Energy_Generation_Focus: [0.2, 0.6, 0.2]
+  nsga2:
+    pop_size_grid: [48, 64]
+    n_gen_grid: [40, 60]
+    sbx_eta_grid: [10]
+    pm_eta_grid: [20]
+    mutation_prob_grid: [0.0833333333]
+    seed: 20260310
+
+report:
+  figures_dir: artifacts_smoke/figures
+  models_dir: artifacts_smoke/models
+  data_dir: artifacts_smoke/data
+  optimization_dir: artifacts_smoke/optimization
+  bootstrap_dir: artifacts_smoke/bootstrap
+  reports_dir: artifacts_smoke/reports
