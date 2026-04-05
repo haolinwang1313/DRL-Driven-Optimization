@@ -99,7 +99,7 @@ H    & 0.032 & 0.025 & 0.0172 & 0.0150 & 0.992 \\
 
 \subsection{Training dynamics and benchmark protocol}
 
-The revised server-side reruns used for the final accuracy-first comparison were executed under the shared guarded surrogate evaluator to suppress exploitation of extrapolative edge cases. On the strict highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401 (balanced), 320 (saving), and 398 (generation). However, late-stage regression remains common: the mean best-to-final reward gap ratios are about 0.62, 0.71, and 0.71 for the balanced, saving, and generation scenarios, respectively, and the substantial-regression fractions remain high at 95\%, 85\%, and 100\%.
+The revised server-side reruns used for the final accuracy-first comparison were executed under the shared guarded surrogate evaluator to suppress exploitation of extrapolative edge cases. On the strict highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401 (balanced), 320 (saving), and 398 (generation). Compared with the earlier lower-scale rerun, the balanced scenario becomes visibly smoother and less noisy across seeds, but the saving-focused and generation-focused scenarios do not show a uniform reduction in cross-seed variability across reward and objective trajectories. However, late-stage regression remains common: the mean best-to-final reward gap ratios are about 0.62, 0.71, and 0.71 for the balanced, saving, and generation scenarios, respectively, and the substantial-regression fractions remain high at 95\%, 85\%, and 100\%.
 
 For benchmark comparison, the revised implementation removes the previous benchmark-matching shortcut from the publication-mode NSGA-II path. Publication mode compares DDPG and NSGA-II under a shared surrogate environment, matched per-seed evaluation budget, and matched seed count, and applies a post-hoc preference-aligned utility summary consistently across methods. On the strict highest-accuracy 2000-sample surrogate, NSGA-II remains stronger than all three DDPG scenarios. The corresponding budget accounting and objective-space separation are summarized in Table~\ref{tab:supp_budget}.
 
@@ -133,12 +133,12 @@ To complement the linear correlation results in the main text, Fig.~\ref{fig:sup
 
 \begin{figure}[H]
 \centering
-\IfFileExists{nonlinear_response_profiles.png}{%
-\includegraphics[width=\linewidth]{nonlinear_response_profiles.png}%
+\IfFileExists{nonlinear_response_profiles.pdf}{%
+\includegraphics[width=\linewidth]{nonlinear_response_profiles.pdf}%
 }{%
 \fbox{\parbox{0.92\linewidth}{\centering Nonlinear response profile figure not available in the current worktree. The text and tables in this draft already reflect the updated highest-accuracy-surrogate rerun.}}%
 }
-\caption{Surrogate-based nonlinear response profiles for selected UMF-target pairs.}
+\caption{Surrogate-based nonlinear response profiles for selected UMF-target pairs: (a) OSR$\rightarrow$EUIt, (b) FAR$\rightarrow$EG, (c) SVF$\rightarrow$H, and (d) $\theta\rightarrow$H.}
 \label{fig:supp_nonlinear}
 \end{figure}
 

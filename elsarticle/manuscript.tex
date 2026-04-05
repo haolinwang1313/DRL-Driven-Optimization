@@ -447,7 +447,7 @@ As summarized in Tables~\ref{tab:dnn-hyper} and \ref{tab:dnn-cv}, the final DNN 
 
 The learning dynamics of the agents were monitored to assess whether the policy updates approached a stable regime. Figure~\ref{fig:learning} summarizes the mean learning curves and one-standard-deviation envelopes across the available seeds for the three DDPG scenarios. In the revised server-side reruns, each scenario was trained with 20 seeds and each seed was run for 600 episodes under the guarded surrogate evaluator, which provides a more informative view of training behavior than the earlier single-curve presentation.
 
-The multi-seed curves show that cumulative reward increases sharply during training and then transitions into a narrower high-reward regime, indicating a shift from broad exploration to more concentrated surrogate-region search. On the highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401, 320, and 398 for the balanced, saving-focused, and generation-focused scenarios, respectively. At the same time, late-stage regression remains common, with mean best-to-final reward gap ratios around 0.62, 0.71, and 0.71 and substantial-regression fractions of 95\%, 85\%, and 100\% across the three scenarios. These curves should therefore be interpreted as evidence that policy learning can reach high-performing surrogate regions rather than as proof of stable asymptotic convergence or global optimality. The learning-curve evidence is therefore complemented by benchmark comparisons and independent candidate re-evaluation.
+The multi-seed curves show that cumulative reward increases sharply during training and then transitions into a narrower high-reward regime, indicating a shift from broad exploration to more concentrated surrogate-region search. On the highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401, 320, and 398 for the balanced, saving-focused, and generation-focused scenarios, respectively. Relative to the earlier lower-scale rerun, the balanced scenario is visibly smoother and exhibits lower cross-seed fluctuation in reward and output trajectories, whereas the saving-focused and generation-focused scenarios do not become uniformly less variable across all metrics. At the same time, late-stage regression remains common, with mean best-to-final reward gap ratios around 0.62, 0.71, and 0.71 and substantial-regression fractions of 95\%, 85\%, and 100\% across the three scenarios. These curves should therefore be interpreted as evidence that policy learning can reach high-performing surrogate regions rather than as proof of stable asymptotic convergence or global optimality. The learning-curve evidence is therefore complemented by benchmark comparisons and independent candidate re-evaluation.
 
 The three scenarios remain distinguishable but still overlap in aggregate objective space. In the 20-seed reruns on the highest-accuracy surrogate, the energy-saving-focused scenario yields the lowest mean EUIt (67.10~kWh/m$^2$/y), the generation-focused scenario yields the highest mean EG (2.763$\times10^6$~kWh/y), and the balanced scenario retains the highest mean H (7.687~h). These differences are more visible than in the earlier lower-scale comparison, but they should still be interpreted as preference-conditioned shifts within one surrogate landscape rather than as proof of sharply separated optima.
 
@@ -520,6 +520,24 @@ Generation DDPG & 1.011 & 0.220 & 68.46 & 2.763 & 7.612 \\
 \stdfigure{fig9.pdf}
 \caption{Accuracy-first benchmark summary on the strict highest-accuracy 2000-sample surrogate. Panels (a)--(c) compare scenario-wise objective summaries for DDPG, with the NSGA-II mean shown as a dashed reference line. Panel (d) compares preference-aligned utility for DDPG and NSGA-II across the three scenarios.}
 \label{fig:matched-benchmark}
+\end{figure}
+
+Figure~\ref{fig:seed-diagnostics} summarizes the seed-level convergence diagnostics of the strict highest-accuracy rerun. The generation-focused scenario reaches the highest mean best reward, whereas the saving-focused scenario reaches its plateau earliest. However, all three scenarios still show large best-to-final reward gaps and high late-regression fractions, which confirms that the main role of DDPG in the present workflow is region-finding rather than stable monotonic improvement to a final fixed point.
+
+\begin{figure}[H]
+\centering
+\stdfigure{fig10.pdf}
+\caption{Seed-level convergence diagnostics on the strict highest-accuracy 2000-sample surrogate. Panels report the mean best reward, mean final reward, mean plateau episode, and late-regression fraction across 20 seeds per DDPG scenario.}
+\label{fig:seed-diagnostics}
+\end{figure}
+
+Figure~\ref{fig:scale-study} links the optimizer comparison back to the surrogate-selection procedure itself. The regime-winner diagnostics show that surrogate fidelity improves steadily as the dataset expands from 500 to 2000 samples, and that the strict highest-accuracy rule therefore selects the 2000-sample \texttt{tuned\_standard} model rather than the smaller 1500-sample alternative that was previously acceptable under a tolerance-based rule. This figure is included to make the paper's final optimizer benchmark traceable to an explicit surrogate-selection decision rather than to an informal checkpoint preference.
+
+\begin{figure}[H]
+\centering
+\stdfigure{fig11.pdf}
+\caption{Surrogate scale-study diagnostics across the best regime winner at each dataset scale. Panels report mean target nMAE, mean tail nMAE, mean $R^2$, and the selection objective from 500 to 2000 samples, with the 2000-sample winner highlighted as the strict highest-accuracy choice.}
+\label{fig:scale-study}
 \end{figure}
 
 \section{Discussion}
