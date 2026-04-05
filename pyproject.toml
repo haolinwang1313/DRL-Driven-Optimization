@@ -26,6 +26,7 @@ dependencies = [
 bootstrap-sim-stack = "paper_repro.cli:bootstrap_sim_stack_main"
 build-dataset = "paper_repro.cli:build_dataset_main"
 train-surrogate = "paper_repro.cli:train_surrogate_main"
+select-surrogate = "paper_repro.cli:select_surrogate_main"
 run-optimizers = "paper_repro.cli:run_optimizers_main"
 make-paper-figures = "paper_repro.cli:make_paper_figures_main"
 sync-publication-results = "paper_repro.cli:sync_publication_results_main"

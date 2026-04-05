@@ -27,6 +27,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     subparsers.add_parser("build-dataset")
     subparsers.add_parser("train-surrogate")
+    subparsers.add_parser("select-surrogate")
     run_optimizers = subparsers.add_parser("run-optimizers")
     run_optimizers.add_argument("--ddpg-only", action="store_true")
     run_optimizers.add_argument("--nsga2-only", action="store_true")
@@ -55,6 +56,9 @@ def _run(command: str, config_path: str, install_missing: bool = False, **extra)
         frame = dataset_pipeline(config)
         return {"rows": len(frame)}
     if command == "train-surrogate":
+        _, summary = surrogate_pipeline(config)
+        return summary
+    if command == "select-surrogate":
         _, summary = surrogate_pipeline(config)
         return summary
     if command == "run-optimizers":
@@ -113,6 +117,10 @@ def build_dataset_main() -> None:
 
 def train_surrogate_main() -> None:
     print(json.dumps(_run("train-surrogate", "configs/default.yaml"), indent=2, ensure_ascii=False))
+
+
+def select_surrogate_main() -> None:
+    print(json.dumps(_run("select-surrogate", "configs/revision.yaml"), indent=2, ensure_ascii=False))
 
 
 def run_optimizers_main() -> None:

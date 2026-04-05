@@ -17,6 +17,7 @@ from paper_repro.metrics import (
     compute_hv_igd_by_method,
     compute_seeded_convergence_diagnostics,
     load_benchmark_results,
+    summarize_surrogate_predictions,
     summarize_objectives,
     summarize_preference_utilities,
 )
@@ -24,8 +25,15 @@ from paper_repro.optimizers import run_ddpg, run_nsga2, run_random_search
 from paper_repro.publication import sync_publication_results, validate_publication_results
 from paper_repro.reviewer import run_revision_review
 from paper_repro.runtime import resolve_device
-from paper_repro.simulation import build_simulated_dataset, reevaluate_candidates
-from paper_repro.surrogate import load_surrogate, train_surrogate
+from paper_repro.simulation import build_dataset_regimes, build_simulated_dataset, reevaluate_candidates
+from paper_repro.surrogate import load_surrogate, train_surrogate, train_surrogate_selection
+
+
+def _selected_surrogate_metadata(config: Config) -> dict | None:
+    path = Path(config["report"]["models_dir"]) / "selected_surrogate.json"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def bootstrap_pipeline(config: Config, install_missing: bool = False) -> dict:
@@ -37,6 +45,9 @@ def dataset_pipeline(config: Config) -> pd.DataFrame:
 
 
 def surrogate_pipeline(config: Config, dataset: pd.DataFrame | None = None):
+    if config.raw.get("surrogate_selection", {}).get("enabled", False):
+        dataset_regimes = build_dataset_regimes(config)
+        return train_surrogate_selection(config, dataset_regimes)
     if dataset is None:
         dataset = pd.read_csv(Path(config["report"]["data_dir"]) / "simulated_samples.csv")
     return train_surrogate(config, dataset)
@@ -52,6 +63,7 @@ def optimizer_pipeline(
     seed_end: int | None = None,
     output_suffix: str = "",
 ):
+    selected_metadata = _selected_surrogate_metadata(config)
     model_path = Path(config["report"]["models_dir"]) / "surrogate.pt"
     surrogate = load_surrogate(model_path, device=resolve_device(config))
     ddpg_results = pd.DataFrame()
@@ -94,11 +106,26 @@ def optimizer_pipeline(
     benchmark_summary = summarize_objectives(load_benchmark_results(benchmark_path), "scenario") if benchmark_path.exists() else {}
     local_summary = summarize_objectives(combined.assign(group=combined["scenario"].where(combined["method"] != "NSGA-II", "NSGA-II")), "group")
     hv_igd = compute_hv_igd_by_method(combined)
+    ddpg_cfg = config["optimization"]["ddpg"]
+    nsga_cfg = config["optimization"]["nsga2"]
+    benchmark_context = {
+        "surrogate_model_path": str(model_path),
+        "selected_surrogate_metadata": str(Path(config["report"]["models_dir"]) / "selected_surrogate.json") if selected_metadata else "",
+        "selected_dataset_scale": None if selected_metadata is None else selected_metadata["selected_for_optimization"]["dataset_scale"],
+        "selected_candidate": None if selected_metadata is None else selected_metadata["selected_for_optimization"]["candidate"],
+        "ddpg_evaluation_budget": int(ddpg_cfg["max_episodes"]) * int(ddpg_cfg["max_steps_per_episode"]),
+        "nsga2_evaluation_budget": int(nsga_cfg.get("evaluation_budget", 0)),
+        "surrogate_guardrail": config["optimization"].get("surrogate_guardrail", {}),
+        "utility_weights": config["optimization"].get("utility_weights", ddpg_cfg["scenarios"]),
+    }
+    benchmark_context_path = write_json(benchmark_context, Path(config["report"]["optimization_dir"]) / "benchmark_context.json")
     metrics_payload = {
         "local_summary": local_summary,
         "benchmark_summary": benchmark_summary,
         "hv_igd": hv_igd.to_dict(orient="records"),
         "ddpg_logged_scenarios": list(ddpg_logs),
+        "benchmark_context": benchmark_context,
+        "benchmark_context_path": str(benchmark_context_path),
     }
     if "best_score" in nsga_calibration:
         metrics_payload["nsga2_best_score"] = nsga_calibration["best_score"]
@@ -114,6 +141,7 @@ def report_pipeline(config: Config) -> dict:
     optimization_dir = Path(config["report"]["optimization_dir"])
     metrics_path = optimization_dir / "paper_metrics.json"
     metrics_text = metrics_path.read_text(encoding="utf-8") if metrics_path.exists() else "{}"
+    selected_metadata = _selected_surrogate_metadata(config)
     report_text = "\n".join(
         [
             "# Reproduction Report",
@@ -126,6 +154,8 @@ def report_pipeline(config: Config) -> dict:
             "## Outputs",
             f"- Figures directory: `{outputs['figures_dir']}`",
             f"- Metrics JSON: `{metrics_path}`",
+            f"- Selected surrogate: `{'' if selected_metadata is None else selected_metadata['selected_for_optimization']['candidate']}`",
+            f"- Selected dataset scale: `{'' if selected_metadata is None else selected_metadata['selected_for_optimization']['dataset_scale']}`",
             "",
             "## Metrics Snapshot",
             "```json",
@@ -187,24 +217,8 @@ def publication_diagnostics_pipeline(config: Config) -> dict:
     reevaluation_csv = reevaluation_dir / "top_candidate_reevaluation.csv"
     write_csv(reevaluated, reevaluation_csv)
 
-    target_slice_rows = []
-    for target in PERFORMANCE_TARGETS:
-        absolute_error = (cv_predictions[f"pred_{target}"] - cv_predictions[f"true_{target}"]).abs()
-        q_low = cv_predictions[f"true_{target}"].quantile(0.1)
-        q_high = cv_predictions[f"true_{target}"].quantile(0.9)
-        low_mask = cv_predictions[f"true_{target}"] <= q_low
-        high_mask = cv_predictions[f"true_{target}"] >= q_high
-        target_slice_rows.append(
-            {
-                "target": target,
-                "mae_all": float(absolute_error.mean()),
-                "mae_low_tail": float(absolute_error[low_mask].mean()),
-                "mae_high_tail": float(absolute_error[high_mask].mean()),
-                "q10": float(q_low),
-                "q90": float(q_high),
-            }
-        )
-    write_csv(pd.DataFrame(target_slice_rows), diagnostics_dir / "surrogate_extreme_region_errors.csv")
+    cv_summary = summarize_surrogate_predictions(cv_predictions)
+    write_csv(pd.DataFrame(cv_summary["per_target"]), diagnostics_dir / "surrogate_extreme_region_errors.csv")
 
     coverage_summary = {
         "dataset_rows": int(len(dataset)),
@@ -249,6 +263,7 @@ def publication_diagnostics_pipeline(config: Config) -> dict:
         "ddpg_rows": int(len(ddpg_results)),
         "nsga_rows": int(len(nsga_results)),
         "hv_igd": compute_hv_igd_by_method(combined).to_dict(orient="records"),
+        "surrogate_cv_summary": cv_summary["aggregate"],
         "preference_summary": preference_summary,
         "convergence": convergence,
         "convergence_seeded": convergence_seeded,
