@@ -240,7 +240,7 @@ def publication_diagnostics_pipeline(config: Config) -> dict:
         base_point = dataset[MORPHOLOGY_FEATURES].median().to_numpy(dtype=float)
         nonlinear_pairs = [("OSR", "EUIt"), ("FAR", "EG"), ("SVF", "H"), ("theta", "H")]
         fig, axes = plt.subplots(2, 2, figsize=(10, 8))
-        for axis, (feature, target) in zip(axes.flatten(), nonlinear_pairs, strict=True):
+        for panel_tag, axis, (feature, target) in zip(["(a)", "(b)", "(c)", "(d)"], axes.flatten(), nonlinear_pairs, strict=True):
             values = np.linspace(dataset[feature].quantile(0.05), dataset[feature].quantile(0.95), 100)
             responses = []
             feature_idx = MORPHOLOGY_FEATURES.index(feature)
@@ -251,7 +251,7 @@ def publication_diagnostics_pipeline(config: Config) -> dict:
             axis.plot(values, responses, color="#1D4ED8", linewidth=1.6)
             axis.set_xlabel(feature)
             axis.set_ylabel(target)
-            axis.set_title(f"Partial response: {feature} -> {target}")
+            axis.set_title(f"{panel_tag} {feature} -> {target}", loc="left")
         fig.tight_layout()
         fig.savefig(nonlinear_path, dpi=220, bbox_inches="tight")
         plt.close(fig)
