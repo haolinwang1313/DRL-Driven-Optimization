@@ -1,0 +1,156 @@
+{
+  "reviewer_2": {
+    "1_external_validation": {
+      "status": "partially_resolved",
+      "closure": "Independent candidate re-evaluation pipeline added; true external empirical validation still unavailable.",
+      "evidence": [
+        "paper_repro/simulation.py",
+        "paper_repro/pipeline.py",
+        "elsarticle/supplement.tex"
+      ]
+    },
+    "2_fairness_vs_nsga2": {
+      "status": "partially_resolved",
+      "closure": "Publication-mode NSGA-II no longer benchmark-fits in fair mode; manuscript claims moderated. Full equal-budget rerun remains server-dependent.",
+      "evidence": [
+        "paper_repro/optimizers.py",
+        "paper_repro/metrics.py",
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "3_dataset_size": {
+      "status": "resolved",
+      "closure": "Dataset size is stated explicitly and publication diagnostics now emit dataset coverage summaries.",
+      "evidence": [
+        "elsarticle/manuscript.tex",
+        "paper_repro/pipeline.py",
+        "artifacts/publication/diagnostics/dataset_coverage_summary.json"
+      ]
+    },
+    "5_nonlinear_valleys": {
+      "status": "resolved",
+      "closure": "Nonlinear response diagnostics added and referenced in the supplement.",
+      "evidence": [
+        "paper_repro/pipeline.py",
+        "elsarticle/supplement.tex",
+        "artifacts/publication/diagnostics/nonlinear_response_profiles.png"
+      ]
+    },
+    "6_convergence": {
+      "status": "partially_resolved",
+      "closure": "Convergence diagnostics added; current imported logs remain short and the manuscript now avoids strong convergence claims.",
+      "evidence": [
+        "paper_repro/metrics.py",
+        "paper_repro/pipeline.py",
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "8_graphical_abstract_resolution": {
+      "status": "resolved",
+      "closure": "High-resolution graphical abstract asset exported from the revised method overview figure.",
+      "evidence": [
+        "elsarticle/graphical_abstract.png"
+      ]
+    },
+    "9_af_osr_definition_drift": {
+      "status": "resolved",
+      "closure": "AF and OSR definitions synchronized in the manuscript and supplement.",
+      "evidence": [
+        "elsarticle/manuscript.tex",
+        "elsarticle/supplement.tex"
+      ]
+    },
+    "10_r2_formatting": {
+      "status": "resolved",
+      "closure": "R^2 formatting normalized in main paper and supplement source.",
+      "evidence": [
+        "elsarticle/manuscript.tex",
+        "elsarticle/supplement.tex"
+      ]
+    },
+    "11_missing_table_caption": {
+      "status": "resolved",
+      "closure": "Supplementary CV table recreated with an explicit caption.",
+      "evidence": [
+        "elsarticle/supplement.tex"
+      ]
+    },
+    "12_missing_units_legends_captions": {
+      "status": "partially_resolved",
+      "closure": "Figure-generation code and manuscript captions updated for units and explanations; manual inspection of final exported figures still required.",
+      "evidence": [
+        "paper_repro/figures.py",
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "13_abbreviation_list": {
+      "status": "resolved",
+      "closure": "Abbreviations list added to the main manuscript.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "14_spacing_and_reference_glitches": {
+      "status": "resolved",
+      "closure": "Main manuscript source rewritten in LaTeX to eliminate PDF-import spacing artifacts.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    }
+  },
+  "reviewer_4": {
+    "abstract_claim_strength": {
+      "status": "resolved",
+      "closure": "Abstract claims moderated and tied to surrogate-based evidence.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "broader_baseline_positioning": {
+      "status": "partially_resolved",
+      "closure": "Text now positions DDPG as a simple policy-learning baseline rather than a universal optimum; broader algorithms discussed as future work.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "surrogate_reliability": {
+      "status": "resolved",
+      "closure": "Extreme-region error diagnostics and top-candidate re-evaluation artifacts added.",
+      "evidence": [
+        "paper_repro/pipeline.py",
+        "elsarticle/supplement.tex"
+      ]
+    },
+    "static_black_box_rl_justification": {
+      "status": "resolved",
+      "closure": "Methodological framing clarified in the manuscript.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "reward_bounds_and_1e6": {
+      "status": "resolved",
+      "closure": "Reward normalization origin and numerical scaling rationale clarified in the manuscript.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    },
+    "benchmarking_transparency": {
+      "status": "partially_resolved",
+      "closure": "Publication-mode benchmark path implemented and server-side revision DDPG reruns have been launched; final equal-budget evidence is still being computed.",
+      "evidence": [
+        "paper_repro/optimizers.py",
+        "paper_repro/publication.py",
+        "configs/revision.yaml",
+        "tools/run_ddpg_revision_batch.sh"
+      ]
+    },
+    "discussion_limitations": {
+      "status": "resolved",
+      "closure": "Discussion updated to reflect surrogate, benchmark, and validation limitations more clearly.",
+      "evidence": [
+        "elsarticle/manuscript.tex"
+      ]
+    }
+  }
+}

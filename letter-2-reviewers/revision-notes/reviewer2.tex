@@ -1,0 +1,154 @@
+%
+% !TeX root = ../letter.tex
+% !TeX spellcheck = en_GB
+%
+
+\begin{ReviewerComment}
+This paper studies a DRL-DNN framework for block-scale co-optimization of urban morphology and energy performance, using a surrogate model and DDPG agents to search for improved design strategies. The topic is interesting, relevant, and worth investigating. The overall structure of the manuscript is clear, and the figures help communicate the workflow and results. However, several important issues should be addressed before the paper can be considered for publication.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We sincerely thank the Reviewer for the careful and constructive comments. We appreciate in particular the emphasis on methodological positioning, benchmark fairness, and the limits of the surrogate-driven setting. These points were central to the reworking of the manuscript. In the revised version, the paper no longer claims that DDPG outperforms NSGA-II. Instead, it reports a matched-checkpoint comparison, an explicit negative result, a checkpoint-sensitivity analysis, and a partial early-stopping remediation study. We address each point below.
+\end{Answer}
+
+\begin{ReviewerComment}
+The paper is generally well organized, but I recommend using a simpler and more standard numbering system for sections and subsections. This would make the manuscript easier to follow.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We thank the Reviewer for this suggestion. The revised manuscript now adopts a simpler and more standard section/subsection structure. In addition, the former supplementary material has been consolidated into the appendix so that the overall organization is easier to follow.
+\end{Answer}
+
+\begin{ReviewerComment}
+The English is not fully consistent and is difficult to follow in several places, starting from the abstract. Some sentences are overly complex and do not read well. A thorough language revision is needed to improve clarity, consistency, and readability throughout the manuscript.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The manuscript has undergone a full language revision in the current round. This includes the abstract, introduction, discussion, appendix, figure captions, and the benchmark-interpretation paragraphs, which were all rewritten to make the final logic and claims more direct and consistent.
+\end{Answer}
+\begin{RevisionExcerpt}
+From the revised Abstract: ``Results on a matched remote surrogate checkpoint show that DDPG remains modestly stronger than same-budget random search, but weaker than fair-budget NSGA-II \ldots The framework is better interpreted as a preference-conditioned region-finding and design-support tool than as a replacement for Pareto-based evolutionary search.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+The abstract is concise and generally clear. However, some claims are too strong relative to the level of validation provided in the paper, e.g., phrases such as "substantially outperformed." The wording should be moderated and tied more directly to the reported results. Since the study relies on a surrogate-based environment rather than direct simulation during optimization, this limitation should also be reflected, at least briefly, in the abstract.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree and revised the abstract accordingly. The current abstract no longer uses ``substantially outperformed''-style superiority wording. Instead, it states the matched-checkpoint result directly: DDPG is modestly stronger than random search but weaker than fair-budget NSGA-II. It also explicitly states that the study remains surrogate-bound and that the re-evaluation still relies on the fallback analytic simulator.
+\end{Answer}
+\begin{RevisionExcerpt}
+The revised Abstract now states: ``On a matched remote surrogate checkpoint, DDPG remains modestly stronger than same-budget random search, but weaker than fair-budget NSGA-II in both objective summaries and Pareto-quality metrics \ldots independent re-evaluation shows larger EUIt and EG drift for the selected DDPG candidate than for the selected NSGA-II solutions.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+The introduction has a clear storyline, but the main methodological argument needs to be better justified. The key issue is not simply whether DQN is unsuitable, but whether DDPG is the most appropriate continuous-control method for this problem compared with alternatives (e.g., TD3, SAC, PPO with continuous actions, CMA-ES, MOEA/D, or Bayesian optimization). What I can see from the current version is that the paper argues mainly for DRL pros vs traditional optimization cons, but this comparison is not framed broadly enough. The discussion of DRL versus NSGA-II should be strengthened. The current framing emphasizes the limitations of NSGA-II and the promise of DRL, but it does not sufficiently discuss the broader set of state-of-the-art baselines for continuous multi-objective optimization. A more balanced positioning would improve the technical credibility of the paper.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The revised Introduction now positions DDPG as a policy-learning baseline rather than as the presumptively best continuous optimizer for this task. We explicitly mention stronger alternatives such as TD3, SAC, PPO with continuous actions, CMA-ES, MOEA/D, and Bayesian optimization, and we now state that the purpose of the paper is to examine policy learning under a shared surrogate environment rather than to demonstrate a universal DRL advantage. This broader framing was also strengthened experimentally by adding the matched random-search ablation and the matched fair-budget NSGA-II comparison.
+\end{Answer}
+\begin{RevisionExcerpt}
+From the revised Literature Review: ``We do not claim that DDPG is universally optimal relative to alternatives such as TD3, SAC, PPO with continuous actions, CMA-ES, MOEA/D, or Bayesian optimization. Rather, the goal of this study is to examine whether a preference-conditioned policy-learning formulation can yield useful design strategies under a shared surrogate environment.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+I suggest revising the section title "Relevant work" to a more standard title such as "Background" or "Literature review." In addition, the statement "this study introduces DRL" should be rephrased as 'adopted' or 'applied'.
+\end{ReviewerComment}
+%
+\begin{Answer}
+This has been implemented. The section is now titled ``Background and Literature Review,'' and the corresponding wording was revised from introducing DRL as if it were novel in itself to adopting/applying DRL in the present methodological context.
+\end{Answer}
+\begin{RevisionExcerpt}
+Current section title: ``Literature Review and Research Gap''\\
+Current wording in the method positioning paragraph: ``this study focuses on the Deep Deterministic Policy Gradient (DDPG) algorithm'' and ``the goal of this study is to examine \ldots''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+I appreciate the authors' effort to articulate the novelty. However, in the current version, the novelty statement is somewhat repetitive and slightly overstated. In my view, the most credible contribution is not DRL alone, but the use of a policy-learning framework for urban morphology optimization under different reward priorities. The novelty points could be merged and stated more compactly.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The contribution list has been rewritten in a more compact and restrained way. The revised manuscript now emphasizes the policy-learning formulation under different reward priorities, the matched-checkpoint benchmarking, and the resulting methodological caution about surrogate-assisted optimizer comparisons. This is a more accurate representation of what the revised study contributes.
+\end{Answer}
+\begin{RevisionExcerpt}
+The revised contribution list now focuses on four compact points: the DRL-DNN framework, preference-conditioned search tendencies, the matched comparison against NSGA-II, and the interpretive analysis of how key UMFs influence EUIt, EG, and H.
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+I acknowledge that the procedure used to generate the generic urban morphologies is technically sound, and the supplementary material is helpful. However, the resulting database appears limited relative to the size of the design space. The study uses 12 Urban Morphology Factors (UMFs), which defines a 12-dimensional design space, but the surrogate seems to be trained on only 500 cases, inferred from the 5-fold cross-validation description on page 9: "4 folds (400 samples) were used for training, and the held-out 1-fold (100 samples) was used for testing." If this interpretation is correct, the manuscript should state this explicitly in Section 2.A. At present, the actual number of generated urban morphologies is not presented clearly enough. This is important because a limited dataset in a 12-dimensional space may restrict the surrogate's reliability, especially near optima.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The revised manuscript now states explicitly that the surrogate is trained on 500 generated morphologies in a 12-dimensional design space. This statement appears in the methodology section and is reiterated in the limitations discussion. We also consolidated the relevant validation material into Appendix~A so that readers can directly inspect the cross-validation and fidelity diagnostics that accompany this limited-data setting.
+\end{Answer}
+\begin{RevisionExcerpt}
+From the revised methodology: ``In the present dataset, 500 generated morphologies are used for surrogate training and validation; this sample size is sufficient for an initial regression study but remains limited relative to the full 12-dimensional continuous design space.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+The DNN framework is described clearly at a general level, but the key concern is not the architecture itself. The main issue is whether the surrogate is sufficiently reliable for optimization. A dataset of about 500 samples is limited for a 12-variable problem, particularly when the DRL agent is expected to explore extreme regions of the design space. The paper would be much stronger if the final best solutions identified by DRL and NSGA-II were re-evaluated using the original simulation workflow, rather than relying only on surrogate predictions.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. While a full physical-stack validation remains unavailable in the current revision, we strengthened this part in two ways. First, Appendix~A now reports a more complete surrogate-validation package, including cross-validation statistics, an additional surrogate-fidelity audit, and tail-region diagnostics. Second, Appendix~B now reports independent re-evaluation of the matched-checkpoint selected DDPG and NSGA-II candidates using a deterministic follow-up simulation call. We make explicit that this still uses the fallback analytic simulator and therefore does not replace physical validation, but it does provide a stronger check than optimization-time surrogate scores alone.
+\end{Answer}
+\begin{RevisionExcerpt}
+From Appendix~B: ``Under the current matched-checkpoint utility selection, one DDPG candidate and two NSGA-II candidates are retained after deduplication \ldots The updated comparison shows that the selected DDPG candidate undergoes much larger EUIt drift and larger EG discrepancy than the two selected NSGA-II candidates \ldots''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+The DRL framework is interesting, but the formulation should be justified more carefully. The problem being solved is essentially a static black-box optimization problem, while the RL formulation implies a sequential decision process. Since the next state is deterministically generated by the surrogate from the selected action, the sequential structure appears weak. The paper should explain more clearly why DDPG is preferable to direct continuous optimization methods in this setting. In addition, the reward formulation is based on a weighted distance to a utopian point, which effectively turns the problem into a scalarized single-objective optimization, rather than direct Pareto learning.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The revised manuscript now treats this issue directly rather than defensively. In the Discussion, we explicitly argue that the underlying task is a static surrogate-based optimization problem and that this mismatch is one reason why DDPG underperforms fair-budget NSGA-II on the matched checkpoint. The paper therefore no longer presents DDPG as preferable to direct continuous optimization methods in general. We also state explicitly in the method section that the reward is a scalarized weighted-distance objective around a utopian point, not a direct Pareto-learning objective.
+\end{Answer}
+\begin{RevisionExcerpt}
+From the revised Discussion: ``The underlying task is a static surrogate-based optimization problem, whereas DDPG introduces actor-critic bootstrapping, replay dynamics, and persistent exploration noise that are more naturally suited to sequential control \ldots fair-budget NSGA-II remains stronger because its population-level diversity and elitist retention are better aligned with static multi-objective search.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+The reward depends on min and max values over the feasible dmain. The authors should explain how these bounds are defined, and whether they come from the sampled dataset or from known design limits. If they are derived from the sampled dataset, then the reward formulation may depend strongly on sample coverage.
+\end{ReviewerComment}
+%
+\begin{Answer}
+This point is now clarified in the reward subsection. The revised text states explicitly that the normalization bounds are derived from the sampled design domain represented in the surrogate-training dataset. We also note there that this makes the reward scale dependent on dataset coverage and should therefore be interpreted as a practical normalization choice rather than as a uniquely defined theoretical bound.
+\end{Answer}
+\begin{RevisionExcerpt}
+The revised reward subsection now states: ``the normalization bounds are derived from the sampled design domain represented in the surrogate-training dataset. This choice makes the reward scale dependent on dataset coverage \ldots''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+For Eq 6, the statement that the reward was "designed with an upper limit of $10^6$ to ensure convergence" sounds ad hoc and requires clarification. A brief practical explanation would be enough.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree and revised the wording. The current manuscript now states that the factor $10^6$ is only a numerical offset used to keep rewards positive and stabilize optimization logs. We also clarify that this offset does not change the ranking induced by the weighted distance itself.
+\end{Answer}
+\begin{RevisionExcerpt}
+The revised text reads: ``The factor $10^6$ is used only as a numerical offset to keep rewards positive and to stabilize optimization logs; it does not alter the ranking induced by the weighted distance.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+Since one of the main conclusions is that DRL outperforms NSGA-II, the benchmarking protocol needs to be more transparent. Authors should clearly report whether the two methods used the same evaluation budget, stopping criteria, and surrogate environment, and whether the comparison is based on multiple independent runs (and also computational efficiency ).
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The benchmark protocol is now substantially more transparent. The revised paper reports a matched remote-checkpoint comparison across DDPG, random search, and fair-budget NSGA-II under the same surrogate checkpoint and the same 24,000-evaluation budget. DDPG and random search are each evaluated across 20 seeds per scenario, and NSGA-II is evaluated with a fair-budget 20-seed setup. Most importantly, the revised manuscript no longer concludes that DRL outperforms NSGA-II. The matched-checkpoint result now clearly reports NSGA-II $>$ DDPG $>$ random search.
+\end{Answer}
+\begin{RevisionExcerpt}
+From the revised benchmark subsection: ``On this matched result set, NSGA-II attains the strongest Pareto-quality metrics \ldots while the three DDPG scenarios are clearly weaker \ldots A same-budget matched random-search ablation is weaker than the DDPG scenarios, but it also remains clearly weaker than NSGA-II.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+The paper clearly acknowledges major limitations. However, some of the above methodological limitations, especially those related to surrogate reliability and benchmarking fairness, should also be reflected more clearly in the discussion.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The Discussion section has been rewritten substantially. It now states explicitly that (i) DDPG is weaker than fair-budget NSGA-II on the matched checkpoint, (ii) benchmark rankings are surrogate-checkpoint-dependent, (iii) DDPG remains unstable, (iv) early stopping helps only partially, and (v) physical validation remains future work. We believe the revised Discussion now reflects these methodological limitations much more transparently than the earlier version.
+\end{Answer}
+\begin{RevisionExcerpt}
+The revised limitations section now states: ``the completed matched-checkpoint comparison shows that DDPG is weaker than fair-budget NSGA-II \ldots benchmark behavior is still surrogate-checkpoint-dependent \ldots the matched DDPG reruns still exhibit frequent late-stage reward regression \ldots full physical validation remains future work.''
+\end{RevisionExcerpt}
+

@@ -1,0 +1,96 @@
+project:
+  name: paper02_repro
+  random_seed: 20260310
+  artifact_root: artifacts
+  benchmark_dataset: Dataset.xlsx
+  manuscript_pdf: manuscript1105_clean.pdf
+  supplementary_pdf: Supplementary Information.pdf
+
+runtime:
+  device: auto
+
+weather:
+  download: true
+  output_dir: artifacts/weather
+  preferred_station: Dongtai
+  fallback_station: Nanjing
+  stations:
+    Dongtai:
+      label: "Dongtai, Jiangsu"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Dongtai.582510_TMYx.2009-2023.zip"
+    Nanjing:
+      label: "Nanjing, Jiangsu"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Nanjing.582380_TMYx.2009-2023.zip"
+
+simulation:
+  n_samples: 500
+  block_size_m: 240.0
+  grid_size: 3
+  land_unit_size_m: 80.0
+  road_offset_m: 5.0
+  setback_offset_m: 10.0
+  floor_to_floor_height_m: 3.0
+  try_install_sim_stack: false
+  use_physical_stack_if_available: true
+  fallback_noise_scale:
+    EUIt: 0.22
+    EG: 0.03
+    H: 0.02
+
+dnn:
+  n_trials: 50
+  epochs: 160
+  batch_size: 32
+  folds: 5
+  patience: 20
+  hidden_layers_min: 1
+  hidden_layers_max: 4
+  units_min: 16
+  units_max: 128
+  units_step: 16
+  dropout_min: 0.1
+  dropout_max: 0.5
+  learning_rate_min: 0.0001
+  learning_rate_max: 0.01
+  retrain_epochs: 220
+  anchor_architecture:
+    hidden_layers: [64, 32]
+    dropout: 0.2
+    learning_rate: 0.001
+    optimizer: Adam
+    activation: ReLU
+
+optimization:
+  ddpg:
+    actor_hidden: [64, 32]
+    critic_hidden: [64, 32]
+    gamma: 0.999
+    actor_lr: 0.001
+    critic_lr: 0.002
+    tau: 0.001
+    batch_size: 128
+    replay_buffer_size: 1000000
+    max_episodes: 200
+    max_steps_per_episode: 40
+    initial_noise_std: 1.0
+    noise_decay: 0.9998
+    seeds_per_scenario: 50
+    scenarios:
+      Balanced_Performance: [0.3333333333, 0.3333333333, 0.3333333333]
+      Energy_Saving_Focus: [0.6, 0.2, 0.2]
+      Energy_Generation_Focus: [0.2, 0.6, 0.2]
+  nsga2:
+    pop_size_grid: [96, 112, 128]
+    n_gen_grid: [80, 100, 120]
+    sbx_eta_grid: [10, 20]
+    pm_eta_grid: [20, 30]
+    mutation_prob_grid: [0.0833333333, 0.2]
+    seed: 20260310
+
+report:
+  figures_dir: artifacts/figures
+  models_dir: artifacts/models
+  data_dir: artifacts/data
+  optimization_dir: artifacts/optimization
+  bootstrap_dir: artifacts/bootstrap
+  reports_dir: artifacts/reports

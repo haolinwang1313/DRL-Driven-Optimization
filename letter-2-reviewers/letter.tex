@@ -1,0 +1,94 @@
+% Uncomment the following line to have comments hihglighted
+\documentclass[9pt,final]{extarticle}
+% Uncomment the following line to disable comments and highlights
+% \documentclass[9pt,final]{extarticle}
+
+\input{addon/pkgloading-for-letter-to-reviewers}
+\input{addon/commands-for-letter-to-reviewers}
+%
+% Bibliography management
+\usepackage[square,comma,numbers,sort,sectionbib,nonamebreak]{natbib}
+
+% Defines the path for the main output file (so as to cross-reference sections,
+% figures, and tables there, by prepending "paper:" to the original label).
+\externaldocument[paper:]{../elsarticle/manuscript}
+
+\def\PaperTitle{Policy Learning with Surrogate Approximators for Block-Scale Urban Morphology Design: A Comparative Benchmarking Study}
+\def\PaperId{{Applied Energy submission}}
+\def\PaperRevision{Revised manuscript}
+\def\SpecialIssueId{{N/A}}
+\def\Journal{{Applied Energy}}
+
+\def\AuthorsInLetter{Haolin Wang, Zhi Wu, Wei Gu, Pengxiang Liu, Qirun Sun, Wei Wang}
+\def\AuthorsInSignature{Zhi Wu, on behalf of the authors}
+
+
+%opening
+\title{\textbf{\PaperTitle} \\ {\Large Response to the Reviewers}}
+%
+%
+\author[1]{Haolin~Wang}
+%
+\author[1]{Zhi~Wu%
+  \thanks{Corresponding author \\
+    {\Letter}~{School of Electrical Engineering, Southeast University, Nanjing 210096, China} \\
+    {\Email}~\texttt{\href{mailto:zwu@seu.edu.cn}{zwu@seu.edu.cn}}%
+  }%
+}%
+%
+\author[1]{Wei~Gu}
+%
+\author[2]{Pengxiang~Liu}
+\author[3]{Qirun~Sun}
+\author[4]{Wei~Wang}
+%
+\affil[1]{Southeast University, Nanjing, China}
+\affil[2]{City University of Hong Kong, Hong Kong SAR, China}
+\affil[3]{Hohai University, Nanjing, China}
+\affil[4]{Southeast University, Nanjing, China}
+
+%
+\date{}
+\begin{document}
+
+\maketitle
+
+\input{intro}
+\vfill
+\input{manuscriptinfo}
+\vfill
+\pagebreak
+
+%\input{revision-notes/guesteditor}
+
+%\SkipSpaceForReviewerComments
+
+\ReviewerSection
+\input{revision-notes/reviewer1}
+
+\SkipSpaceForReviewerComments
+
+\ReviewerSection
+\input{revision-notes/reviewer2}
+
+\SkipSpaceForReviewerComments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\bibliographystyle{unsrtnat}
+\bibliography{bibliography/bib}
+%
+%
+% Remove it when you are done
+\ifoptiondraft{
+	\pagebreak
+	\section*{How to use the commands of this response letter template}
+	\input{revision-notes/revisionnotes-example}
+	\pagebreak
+}{}
+%
+
+\end{document}
+

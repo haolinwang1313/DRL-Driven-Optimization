@@ -1,0 +1,12 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+*.egg-info/
+
+artifacts/
+artifacts_smoke/
+server.local.yaml
+configs/revision.local.yaml
+
+tmp_page*.png
+tmp_table*.png

@@ -1,0 +1,205 @@
+﻿%
+% !TeX root = ../letter.tex
+% !TeX spellcheck = en_GB
+%
+
+\begin{ReviewerComment}
+The manuscript presents an ambitious framework that integrates surrogate modeling and deep reinforcement learning for urban morphology and energy optimization. However, several critical issues currently limit the robustness and interpretability of the reported findings. Substantial changes are required before the manuscript can be considered for publication.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We sincerely thank the Reviewer for the careful reading and for the constructive and technically demanding comments. We agree that the original manuscript was too ambitious in the way it framed the DRL results. In the revised manuscript, we therefore reworked both the experimental protocol and the narrative. In particular, the current paper no longer claims that DDPG outperforms NSGA-II. Instead, it presents a matched-checkpoint comparison, reports the negative result that fair-budget NSGA-II remains stronger than DDPG on the matched remote surrogate checkpoint, and discusses the resulting methodological implications and limitations explicitly. We respond to each comment point by point below.
+\end{Answer}
+
+\begin{ReviewerComment}
+1. The study relies exclusively on simulated outputs to generate the dataset for surrogate modeling and DRL optimization, without any empirical or independent external validation to assess the realism of the simulation results.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree with this concern. We could not add a full physical-stack or empirical validation workflow in the current revision, so we chose not to overstate the practical realism of the surrogate-generated results. Instead, we revised the paper in three ways.
+
+First, we explicitly state in the Abstract, Discussion, and Conclusions that both optimization and independent re-evaluation remain surrogate-bound and still rely on the fallback analytic simulator. This limitation is now part of the core interpretation of the paper rather than a minor caveat.
+
+Second, we strengthened the independent verification within the currently available pipeline. Appendix~B now reports an independent re-evaluation of the matched-checkpoint selected DDPG and NSGA-II candidates using a deterministic follow-up simulation call, so that the paper no longer relies solely on optimization-time surrogate outputs.
+
+Third, we reframed the paper's contribution accordingly. The manuscript is no longer presented as a validated real-world co-optimization study. It is now framed as a methodological benchmarking study under surrogate approximators, with explicit discussion of the consequences of this limitation for the interpretation of all comparative results.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised Abstract text:}\\
+``The framework should therefore be interpreted as a methodological case study in surrogate-conditioned region-finding and comparative fragility rather than as evidence of robust preference-articulated Pareto exploration or benchmark superiority. Because optimization and independent re-evaluation still rely on a fallback analytic simulator, because the matched-candidate DDPG re-evaluation shows much larger EUIt drift and larger EG discrepancy than the selected NSGA-II counterparts, and because benchmark outcomes are surrogate-checkpoint-dependent, the reported findings should be interpreted with substantial caution.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+2. The claimed superiority of the DRL framework over NSGA-II may be methodologically biased, as the utopian-point-based reward explicitly guides the search toward a predefined ideal region, whereas NSGA-II follows a standard Pareto-based formulation emphasizing diversity.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree, and this point became one of the main motivations for the revised benchmark design. We addressed the concern in both the method description and the experimental comparison.
+
+At the methodological level, we now describe the reward explicitly as a scalarized weighted-distance objective around a utopian point, not as a direct Pareto-learning mechanism. In the reward subsection of the manuscript, the current text now makes clear that the weighted-distance reward is a preference-encoding device and that the corresponding conclusions should be interpreted as scalarized search behaviour rather than as an intrinsic Pareto superiority claim.
+
+At the experimental level, we no longer claim that DRL is superior to NSGA-II. After completing a matched remote-checkpoint comparison with equal budgets across DDPG, random search, and fair-budget NSGA-II, the main result is now the opposite of the earlier optimistic story: fair-budget NSGA-II is stronger than DDPG, whereas DDPG remains only modestly stronger than same-budget random search. This change directly removes the unsupported superiority claim that the Reviewer correctly challenged.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised benchmark text:}\\
+``After establishing the internal behaviour of the DRL agents, we compare them to the NSGA-II benchmark on a matched remote surrogate checkpoint. Table~\ref{tab:perf} summarises this apples-to-apples comparison. On this matched result set, NSGA-II attains the strongest Pareto-quality metrics (HV~=~1.331, IGD~=~0.086), while the three DDPG scenarios are clearly weaker (HV~=~0.470--0.742, IGD~=~0.501--0.618). A same-budget matched random-search ablation is weaker than the DDPG scenarios, but it also remains clearly weaker than NSGA-II.'' 
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+3. The surrogate model is trained on only 500 samples in a 12-dimensional continuous design space, which may be sufficient for regression but is likely insufficient to robustly support surrogate-guided reinforcement learning optimization, particularly in extreme or sparsely sampled regions.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The revision does not try to argue that 500 samples are fully sufficient for strong optimization claims. Instead, we now make this limitation explicit and document its consequences.
+
+In the main manuscript, Section~2 now states clearly that the surrogate is trained on 500 generated morphologies in a 12-dimensional design space, and the Discussion reiterates that this scale is limited for optimization in sparse or extreme regions. In Appendix~A, we also consolidated the surrogate-validation material, including the five-fold cross-validation summary, an additional surrogate-fidelity audit, and error diagnostics in extreme regions of the target distributions.
+
+Most importantly, the revised results now show that standard fit quality alone is not enough: two surrogate checkpoints with similar in-sample fit statistics can still produce different optimizer rankings. We therefore treat the 500-sample issue not as a solved concern, but as part of the paper's main methodological message: under limited data, optimization conclusions can be fragile and checkpoint-dependent even when conventional surrogate-validation metrics appear acceptable.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised methodology text:}\\
+``This parametric generation process is controlled by twelve selected UMFs \ldots In the present dataset, 500 generated morphologies are used for surrogate training and validation; this sample size is sufficient for an initial regression study but remains limited relative to the full 12-dimensional continuous design space.''\\[0.5em]
+\noindent\textbf{Revised limitations text:}\\
+``Second, the surrogate is trained on 500 simulated cases in a 12-dimensional design space, so the conclusions apply primarily to the interpolated surrogate region rather than to unconstrained extrapolation.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+4. The literature review remains largely descriptive and lacks critical synthesis from an energy systems perspective, framing the research gap primarily as an algorithmic improvement rather than addressing unresolved challenges in energy system design and decarbonization.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree and revised the introduction accordingly. The updated Introduction now links the study more directly to low-carbon urban energy design and to the practical difficulty of running large comparative sweeps with expensive simulation workflows. We also added an explicit explanation of why a surrogate-bound methodological study remains relevant for \emph{Applied Energy}: in energy-system design practice, surrogate-assisted optimization is often used as a screening layer before full physics validation, so understanding benchmark fragility under surrogate approximators is itself an energy-systems methodological question. This revised framing shifts the paper away from a narrow algorithm-improvement narrative and toward a more domain-relevant methodological contribution.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised Introduction text:}\\
+``This context also highlights the methodological importance of surrogate-based design studies. In practice, large comparative sweeps over urban-energy design strategies are often bottlenecked by expensive simulation workflows, so surrogate-assisted optimization is increasingly used as a screening layer before full physical validation. Under these conditions, optimizer reliability becomes part of the energy-design problem itself: if a learning-based method is unstable, checkpoint-sensitive, or difficult to benchmark fairly, its practical value for urban energy design is limited.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+5. On Page 17 (Line 55), the manuscript claims that the objective space contains complex, nonlinear valleys of high performance. However, the analysis presented on Pages 16-17 considers only linear relationships (Pearson Correlation). The absence of nonlinear interaction analysis is not adequately explained.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree that this wording was too strong. We removed the unsupported ``nonlinear valleys'' claim from the main text. In the revised manuscript, the correlation analysis is used only as a first-order interpretive tool, and the nonlinear response information has been moved into Appendix~B as supporting diagnostic material. The revised text now refers to surrogate-based nonlinear response structure rather than to unverified valley geometry in objective space.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised Appendix text:}\\
+``To complement the linear correlation results in the main text, Fig.~\ref{fig:supp_nonlinear} reports representative surrogate-based nonlinear response profiles for OSR$\rightarrow$EUIt, FAR$\rightarrow$EG, SVF$\rightarrow$H, and $\theta\rightarrow$H.''\\[0.5em]
+\noindent The stronger ``nonlinear valleys'' claim has been removed from the main manuscript and replaced by this narrower appendix-supported statement.
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+6. Given the 12-dimensional continuous action space, the training duration (200 episodes $\\times$ 40 steps) appears relatively short. Stronger evidence or justification is required to demonstrate that the DRL agents have adequately converged.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree. The revised manuscript no longer relies on the earlier short-horizon presentation. Instead, the current paper reports multi-seed 600-episode guarded reruns as the main source of training-dynamics evidence. We also completed a matched-checkpoint early-stopping variant at 350 episodes.
+
+The key point is that the revised interpretation is conservative. We do not claim asymptotic convergence. Rather, the updated text states that DDPG can reach high-performing surrogate regions but often fails to preserve them, as shown by frequent late-stage regression. The early-stopping experiments further show that some of this instability is attributable to overtraining after entering a strong region, but the remediation remains partial and does not recover NSGA-II-level performance.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised main-text discussion:}\\
+``The frequent late-stage regression in DDPG indicates that the method can discover strong regions but often fails to preserve them once found. A completed 350-episode early-stopping variant reduces the late-regression fraction from 0.80 to 0.70 in the balanced scenario and from 0.90 to 0.55 in the saving-focused scenario, but the generation-focused scenario worsens slightly from 0.80 to 0.85. Yet these changes still do not translate into a clear objective-quality improvement over the full-length matched runs, which suggests that the shortcoming is structural rather than merely a consequence of overtraining.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+7. The manuscript title does not sufficiently convey the methodological advantage of the proposed approach over conventional NSGA-II-based optimization, despite this comparison being central to the paper's claimed contribution.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We addressed this by changing the title in a more accurate and more conservative direction. The revised title is now:
+
+\begin{quote}
+\emph{Policy Learning with Surrogate Approximators for Block-Scale Urban Morphology Design: A Comparative Benchmarking Study}
+\end{quote}
+
+We intentionally moved away from a title implying methodological superiority, because the revised matched-checkpoint results do not support such a claim. The new title better reflects the actual contribution of the paper.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised title:}\\
+``Policy Learning with Surrogate Approximators for Block-Scale Urban Morphology Design: A Comparative Benchmarking Study''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+8. The graphical abstract is of insufficient resolution and does not meet the journal's publication standards.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We thank the Reviewer for pointing this out. The graphical abstract asset was replaced in the revised submission materials with a publication-quality version consistent with the final manuscript framing.
+\end{Answer}
+
+\begin{ReviewerComment}
+9. The definitions of AF and OSR on Page 6 (Lines 45-46) are inconsistent with those in Supplementary Material S-1, which may cause confusion.
+\end{ReviewerComment}
+%
+\begin{Answer}
+This inconsistency has been corrected. The definitions of AF and OSR are now aligned between the main text and Appendix~A, where the previous supplementary material has been consolidated. Appendix~A explicitly states the final consistent definitions used throughout the paper.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised Appendix definitions:}\\
+``To avoid notation drift between the main text and the appendix, the following definitions are used consistently: \textbf{AF} (average floors) is defined as the total gross floor area divided by the total building footprint area. \textbf{OSR} (open space ratio) is defined as the non-built-up area of the block divided by the total gross floor area.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+10. Several formatting problems are present, including inconsistent or incorrect presentation of "$R^2$" on Page 6 and in Supplementary Material S-2.
+\end{ReviewerComment}
+%
+\begin{Answer}
+This has been corrected. The notation for $R^2$ has been standardized in the main text and throughout Appendix~A, including the cross-validation and surrogate-fidelity tables.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised table headings in Appendix~A:}\\
+``Objective \& Mean $R^2$ \& Mean MAE \& Std.\ $R^2$ \& Std.\ MAE''\\
+``Target \& RMSE \& MAE \& nRMSE \& MAPE (\%) \& $R^2$''\\
+These headings are now used consistently across the surrogate-validation tables.
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+11. A table in Supplementary Material S-2 (apparently corresponding to Table V) lacks a table title or caption.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We thank the Reviewer for this observation. In the revised appendix, all retained tables have explicit captions/titles. This includes the surrogate-validation and independent re-evaluation tables that correspond to the former supplementary material.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Examples of revised captions:}\\
+``Five-fold cross-validation summary for the DNN surrogate model.''\\
+``Error diagnostics in extreme regions of the target distributions.''\\
+``Independent re-evaluation of matched-checkpoint selected candidates. Surrogate and deterministic re-evaluation values are reported for the current preference-aligned selections.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+12. Multiple figures and tables lack proper axis labels, units, or legends. In particular, Fig. 7 lacks y-axis explanations and units; Fig. 8, Fig. 11, Fig. 12, and Table VI lack units; Fig. 9 contains partially obscured indicators and missing units; Fig. 13 lacks axis labels and units in some subplots. The relationship between the upper and lower parts of Fig. 2 is unclear and should be clarified in the caption, and Fig. 3 requires clear explanations of colors and line types.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We have substantially revised the figure set and the relevant captions. Units, axis labels, legends, and explanations were checked systematically and corrected. In the current final version, the matched-checkpoint benchmark figure, the early-stopping figure, and the checkpoint-sensitivity figure were all rebuilt as publication-quality PDF figures with explicit units and revised legend placement. We also clarified the workflow relation in the caption of Fig.~2. More generally, the current figure set is now aligned with the final matched-checkpoint narrative rather than the earlier imported-archive story.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Representative revised captions:}\\
+``Matched remote-checkpoint benchmark summary. Panels (a)--(c) compare scenario-wise objective summaries for DDPG and random search, with the NSGA-II mean shown as a dashed reference line. Panel (d) compares scalarized reward for DDPG and random search across the three scenarios.''\\[0.4em]
+``Effect of the 350-episode early-stopping variant relative to the full matched DDPG runs. Panels (a)--(c) compare scenario-wise objective summaries, while panel (d) compares best-final gap ratios and late-regression fractions.''\\[0.4em]
+``Checkpoint-sensitivity diagnostic comparing the local publication surrogate checkpoint and the remote matched-checkpoint surrogate. Panel (a) compares in-sample MAE across the three targets, panel (b) compares random-sample bound-violation rates, and panel (c) compares the fraction of random samples that simultaneously exceed all observed target bounds.''
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+13. The manuscript does not include a list of abbreviations, which would improve readability given the extensive use of acronyms.
+\end{ReviewerComment}
+%
+\begin{Answer}
+We agree and have added an ``Abbreviations and Symbols'' section near the beginning of the manuscript, collecting the main acronyms and symbols used in the paper.
+\end{Answer}
+\begin{RevisionExcerpt}
+\noindent\textbf{Revised heading and examples:}\\
+The manuscript now includes the section heading ``Abbreviations and Symbols'' and explicitly lists items such as UM, EP, UMF, EPI, DRL, DNN, DDPG, MOO, HV, and IGD, together with the main symbols used in the paper.
+\end{RevisionExcerpt}
+
+\begin{ReviewerComment}
+14. There are also several formatting issues on Page 6, such as "environments17" and "grid18", which should be corrected.
+\end{ReviewerComment}
+%
+\begin{Answer}
+These merged-word and spacing artifacts have been corrected during the full source-level revision of the manuscript. The current version no longer relies on the problematic imported text fragments that produced these glitches.
+\end{Answer}
+
+

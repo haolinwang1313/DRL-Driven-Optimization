@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paper02-repro"
+version = "0.1.0"
+description = "Reproduction pipeline for DRL-DNN urban morphology paper."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.1",
+  "scipy>=1.13",
+  "scikit-learn>=1.2",
+  "matplotlib>=3.8",
+  "seaborn>=0.12",
+  "torch>=2.3",
+  "PyYAML>=6.0",
+  "openpyxl>=3.0",
+  "optuna>=4.7",
+  "pymoo>=0.6.1.6",
+]
+
+[project.scripts]
+bootstrap-sim-stack = "paper_repro.cli:bootstrap_sim_stack_main"
+build-dataset = "paper_repro.cli:build_dataset_main"
+train-surrogate = "paper_repro.cli:train_surrogate_main"
+run-optimizers = "paper_repro.cli:run_optimizers_main"
+make-paper-figures = "paper_repro.cli:make_paper_figures_main"
+sync-publication-results = "paper_repro.cli:sync_publication_results_main"
+publication-diagnostics = "paper_repro.cli:publication_diagnostics_main"
+publication-review = "paper_repro.cli:publication_review_main"
+full-reproduce = "paper_repro.cli:full_reproduce_main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["paper_repro*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
