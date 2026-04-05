@@ -7,6 +7,7 @@ import pandas as pd
 from pymoo.indicators.hv import HV
 from pymoo.indicators.igd import IGD
 from pymoo.util.nds.non_dominated_sorting import NonDominatedSorting
+from sklearn.metrics import mean_absolute_error, r2_score
 
 from paper_repro.constants import MORPHOLOGY_FEATURES, PERFORMANCE_TARGETS
 from paper_repro.contracts import write_json
@@ -36,6 +37,56 @@ def summarize_objectives(frame: pd.DataFrame, group_column: str) -> dict[str, di
             record[f"{target}_std"] = float(group[target].std(ddof=0))
         summary[str(group_name)] = record
     return summary
+
+
+def summarize_surrogate_predictions(
+    cv_predictions: pd.DataFrame,
+    *,
+    low_quantile: float = 0.1,
+    high_quantile: float = 0.9,
+) -> dict[str, object]:
+    per_target_rows: list[dict[str, float | str]] = []
+    quantile_payload = {"low": float(low_quantile), "high": float(high_quantile)}
+    for target in PERFORMANCE_TARGETS:
+        truth = cv_predictions[f"true_{target}"].to_numpy(dtype=float)
+        pred = cv_predictions[f"pred_{target}"].to_numpy(dtype=float)
+        abs_error = np.abs(pred - truth)
+        target_range = max(float(np.max(truth) - np.min(truth)), 1e-8)
+        q_low = float(np.quantile(truth, low_quantile))
+        q_high = float(np.quantile(truth, high_quantile))
+        low_mask = truth <= q_low
+        high_mask = truth >= q_high
+        low_mae = float(abs_error[low_mask].mean()) if np.any(low_mask) else float(abs_error.mean())
+        high_mae = float(abs_error[high_mask].mean()) if np.any(high_mask) else float(abs_error.mean())
+        per_target_rows.append(
+            {
+                "target": target,
+                "mae": float(mean_absolute_error(truth, pred)),
+                "rmse": float(np.sqrt(np.mean((pred - truth) ** 2))),
+                "r2": float(r2_score(truth, pred)),
+                "nmae": float(mean_absolute_error(truth, pred) / target_range),
+                "q_low": q_low,
+                "q_high": q_high,
+                "low_tail_mae": low_mae,
+                "high_tail_mae": high_mae,
+                "tail_mae": float(np.mean([low_mae, high_mae])),
+                "tail_nmae": float(np.mean([low_mae, high_mae]) / target_range),
+            }
+        )
+    summary_frame = pd.DataFrame(per_target_rows)
+    aggregate = {
+        "mean_target_mae": float(summary_frame["mae"].mean()),
+        "mean_target_nmae": float(summary_frame["nmae"].mean()),
+        "mean_tail_mae": float(summary_frame["tail_mae"].mean()),
+        "mean_tail_nmae": float(summary_frame["tail_nmae"].mean()),
+        "mean_r2": float(summary_frame["r2"].mean()),
+        "worst_target_nmae": float(summary_frame["nmae"].max()),
+    }
+    return {
+        "quantiles": quantile_payload,
+        "per_target": summary_frame.to_dict(orient="records"),
+        "aggregate": aggregate,
+    }
 
 
 def _minimization_array(frame: pd.DataFrame) -> np.ndarray:

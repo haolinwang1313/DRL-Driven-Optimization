@@ -24,6 +24,8 @@ weather:
 
 simulation:
   n_samples: 500
+  scale_study:
+    scales: [500]
   block_size_m: 240.0
   grid_size: 3
   land_unit_size_m: 80.0
@@ -59,6 +61,17 @@ dnn:
     learning_rate: 0.001
     optimizer: Adam
     activation: ReLU
+
+surrogate_selection:
+  enabled: false
+  original_scale: 500
+  scale_tolerance_pct: 0.05
+  low_quantile: 0.1
+  high_quantile: 0.9
+  tail_weight: 0.25
+  candidate_presets:
+    - anchor_minmax
+    - tuned_minmax
 
 optimization:
   ddpg:
