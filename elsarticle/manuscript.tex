@@ -59,7 +59,7 @@
             country={China}}
 
 \begin{abstract}
-Integrating urban morphology generation, performance prediction, and design search is essential for low-carbon urban design, yet full simulation-based optimization remains computationally demanding. This study develops and evaluates a surrogate-assisted deep reinforcement learning (DRL) workflow for block-scale urban morphology design under surrogate-predicted energy indicators. A deep neural network (DNN) surrogate predicts Energy Use Intensity (EUIt), Energy Generation (EG), and Sunlight Hours (H) from 12 morphological factors, and a Deep Deterministic Policy Gradient (DDPG) agent searches the design space under different reward preferences. In the retained publication archives, the DDPG scenarios achieve stronger mean objective summaries than the NSGA-II archive and also attain a larger Hypervolume, while NSGA-II retains a lower IGD. The three reward settings nevertheless produce only modest separation in objective space, although they still yield interpretable morphology-level differences. Independent re-evaluation remains surrogate-bound and indicates larger discrepancies for the selected DDPG candidate than for the selected NSGA-II candidate. Overall, the proposed framework is better interpreted as a preference-conditioned region-finding and design-support tool than as a universally dominant replacement for Pareto-based evolutionary search.
+Integrating urban morphology generation, performance prediction, and design search is essential for low-carbon urban design, yet full simulation-based optimization remains computationally demanding. This study develops and evaluates a surrogate-assisted deep reinforcement learning (DRL) workflow for block-scale urban morphology design under surrogate-predicted energy indicators. A deep neural network (DNN) surrogate predicts Energy Use Intensity (EUIt), Energy Generation (EG), and Sunlight Hours (H) from 12 morphological factors, and a Deep Deterministic Policy Gradient (DDPG) agent searches the design space under different reward preferences. In the revision workflow, the surrogate-training regime was expanded from 500 to 2000 simulated morphologies, and the final optimizer comparison was rerun on the strict highest-accuracy surrogate selected from that scale study. On this accuracy-first comparison, fair-budget NSGA-II attains stronger mean objective summaries, the largest Hypervolume, and the lowest IGD, while all three DDPG scenarios remain weaker under post-hoc preference-aligned utility selection. The reward settings nevertheless still yield interpretable morphology-level differences, especially in how openness, density, and solar-access descriptors shift across the three DDPG scenarios. Overall, the proposed framework is better interpreted as a preference-conditioned region-finding and design-support tool than as a universally dominant replacement for Pareto-based evolutionary search.
 \end{abstract}
 
 \begin{keyword}
@@ -165,7 +165,7 @@ The selected research area is Jianhu County, located in Jiangsu Province in the 
 
 To generate a diverse dataset linking urban form to energy performance, a parametric modeling approach was implemented on the Grasshopper platform. The core of this approach involves defining a standard urban block subdivided into a $3\times3$ grid, creating nine land units. Based on an analysis of the existing urban fabric, a set of representative residential building prototypes, such as point, slab, and courtyard types, were defined. In the parametric model, one land unit is designated as open space, while the remaining eight units are populated with these building prototypes to generate a wide variety of block morphologies.
 
-This parametric generation process is controlled by twelve selected UMFs. These include Floor Area Ratio (FAR), Building Density (BD), Open Space Ratio (OSR), Average Floors (AF), Setback Diversity (SD), Shape Coefficient (SC), Average Perimeter-to-Area Ratio (PAR), Aspect Ratio (AR), average Sky View Factor (SVF), Open Space Location Index (OSLI), and Block Orientation Angle $\theta$. Once the geometric model of the block is configured on the Grasshopper platform, these UMFs can be calculated using its built-in tools. In the present dataset, 500 generated morphologies are used for surrogate training and validation; this sample size is sufficient for an initial regression study but remains limited relative to the full 12-dimensional continuous design space. The formulas used in this work are summarized in Table~\ref{tab:umf}.
+This parametric generation process is controlled by twelve selected UMFs. These include Floor Area Ratio (FAR), Building Density (BD), Open Space Ratio (OSR), Average Floors (AF), Setback Diversity (SD), Shape Coefficient (SC), Average Perimeter-to-Area Ratio (PAR), Aspect Ratio (AR), average Sky View Factor (SVF), Open Space Location Index (OSLI), and Block Orientation Angle $\theta$. Once the geometric model of the block is configured on the Grasshopper platform, these UMFs can be calculated using its built-in tools. The original 500-sample surrogate regime used in the first-stage study was later expanded deterministically to 1000, 1500, and 2000 morphologies for a data-scale study, and the final optimizer comparison reported in this revision uses the strict highest-accuracy 2000-sample surrogate selected from that expanded regime. The formulas used in this work are summarized in Table~\ref{tab:umf}.
 
 \begin{table}[H]
 \caption{Calculation formulas of the morphological factors.}
@@ -260,11 +260,11 @@ To determine the DNN architecture and training settings, Bayesian Optimization (
 \toprule
 Hyperparameter & Value \\
 \midrule
-Number of dense layers & 2 \\
-Units of 1st layer & 64 \\
-Units of 2nd layer & 32 \\
-Dropout rate & 0.2 \\
-Learning rate & 0.001 \\
+Number of dense layers & 1 \\
+Units of 1st layer & 128 \\
+Units of 2nd layer & -- \\
+Dropout rate & 0.143 \\
+Learning rate & 0.00134 \\
 Batch size & 32 \\
 Optimizer & Adam \\
 Activation & ReLU \\
@@ -273,7 +273,7 @@ Activation & ReLU \\
 \end{threeparttable}
 \end{table}
 
-To ensure a rigorous evaluation of generalization capability and avoid bias from a single train-test split, the dataset was divided into five equal folds of 100 samples each. The model was trained five times; in each iteration, four folds (400 samples) were used for training and the held-out fold (100 samples) was used for testing. The coefficient of determination ($R^2$) and Mean Absolute Error (MAE) were used as key evaluation metrics.
+To ensure a rigorous evaluation of generalization capability and avoid bias from a single train-test split, the final highest-accuracy surrogate was evaluated by five-fold cross-validation over the 2000-sample regime. The coefficient of determination ($R^2$) and Mean Absolute Error (MAE) were used as key evaluation metrics.
 
 \begin{table}[H]
 \caption{Summary of DNN prediction performance using five-fold cross-validation.}
@@ -285,15 +285,15 @@ To ensure a rigorous evaluation of generalization capability and avoid bias from
 \toprule
 Objective & Mean $R^2$ & Mean MAE & Std. $R^2$ & Std. MAE \\
 \midrule
-EUIt & 0.973 & 0.031 & $\pm 0.011$ & $\pm 0.007$ \\
-EG   & 0.969 & 0.040 & $\pm 0.014$ & $\pm 0.005$ \\
-H    & 0.971 & 0.028 & $\pm 0.009$ & $\pm 0.006$ \\
+EUIt & 0.983 & 0.209 & $\pm 0.001$ & $\pm 0.005$ \\
+EG   & 0.972 & 0.026 & $\pm 0.002$ & $\pm 0.001$ \\
+H    & 0.992 & 0.025 & $\pm 0.001$ & $\pm 0.001$ \\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
 \end{table}
 
-The evaluation results show that the $R^2$ values for all objectives are close to 1 and that the average MAE values remain low, indicating strong predictive performance. The small standard deviations across folds further suggest stable generalization without severe overfitting. Taken together, these results confirm that the DNN surrogate provides sufficiently accurate predictions to support the subsequent DRL-based optimization.
+The evaluation results show that the final 2000-sample surrogate maintains $R^2$ values close to 1 for all three objectives while keeping MAE low relative to the observed target ranges. Relative to the best 500-sample baseline, the selected 2000-sample surrogate reduces mean target nMAE from 0.0210 to 0.0182, an improvement of about 9.9\%, while also reducing mean tail nMAE from 0.0239 to 0.0203. Taken together, these results justify using the accuracy-maximized 2000-sample surrogate as the basis for the final optimizer comparison.
 
 \subsection{DDPG-based Optimization Framework}
 
@@ -425,9 +425,9 @@ By training a separate agent for each of these scenarios, the DRL framework is t
 
 \subsection{Surrogate Model Performance}
 
-Based on the simulations generated through the Grasshopper process, the DNN surrogate model was trained to capture the relationship between twelve design parameters and the three target objectives. To ensure robustness, the dataset was randomly shuffled and then partitioned into training and testing sets at a ratio of 4:1 using a fixed random seed. Specifically, 400 samples were used for model fitting and 100 samples were used for final testing. To avoid common issues such as overfitting and training instability, early stopping and dropout techniques were employed.
+Based on the simulations generated through the Grasshopper process, a surrogate scale study was carried out over 500, 1000, 1500, and 2000 simulated morphologies in order to identify the highest-accuracy model available to this project. Under the strict accuracy-first rule adopted in this revision, the final optimizer comparison uses the 2000-sample \texttt{tuned\_standard} surrogate, which applies standard scaling to both inputs and targets and trains a single-hidden-layer network with 128 units. To avoid common issues such as overfitting and training instability, early stopping and dropout techniques were employed throughout the candidate search.
 
-As summarized in Tables~\ref{tab:dnn-hyper} and \ref{tab:dnn-cv}, the DNN achieved high predictive accuracy and robust generalization. Appendix~A further reports RMSE values of 0.332 for EUIt, 0.041 for EG, and 0.042 for H, corresponding to normalized RMSE values below 4\% for all three targets. The parity plots in Fig.~\ref{fig:dnn-pred} show that the predictions remain tightly concentrated around the one-to-one line, while the residual distributions in Fig.~\ref{fig:dnn-error} indicate that most prediction errors remain within the $\pm2\sigma$ band. These statistics should nevertheless be interpreted together with the extreme-region diagnostics in Appendix~A and the candidate re-evaluation results in Appendix~B, because optimization is most sensitive to misspecification in the parts of the response surface that attract the search process.
+As summarized in Tables~\ref{tab:dnn-hyper} and \ref{tab:dnn-cv}, the final DNN achieved high predictive accuracy and robust generalization on the expanded 2000-sample regime. Appendix~A further reports RMSE values of 0.279 for EUIt, 0.033 for EG, and 0.032 for H, with normalized RMSE values below 3.1\% for all three targets. The parity plots in Fig.~\ref{fig:dnn-pred} show that the predictions remain tightly concentrated around the one-to-one line, while the residual distributions in Fig.~\ref{fig:dnn-error} indicate that most prediction errors remain within the $\pm2\sigma$ band. These statistics should nevertheless be interpreted together with the extreme-region diagnostics in Appendix~A and the candidate re-evaluation results in Appendix~B, because optimization is most sensitive to misspecification in the parts of the response surface that attract the search process.
 
 \begin{figure}[H]
 \centering
@@ -447,9 +447,9 @@ As summarized in Tables~\ref{tab:dnn-hyper} and \ref{tab:dnn-cv}, the DNN achiev
 
 The learning dynamics of the agents were monitored to assess whether the policy updates approached a stable regime. Figure~\ref{fig:learning} summarizes the mean learning curves and one-standard-deviation envelopes across the available seeds for the three DDPG scenarios. In the revised server-side reruns, each scenario was trained with 20 seeds and each seed was run for 600 episodes under the guarded surrogate evaluator, which provides a more informative view of training behavior than the earlier single-curve presentation.
 
-The multi-seed curves show that cumulative reward increases sharply during training and then transitions into a narrower high-reward regime, indicating a shift from broad exploration to more concentrated surrogate-region search. Seed-level diagnostics from the guarded reruns show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 340, 312, and 280 for the balanced, saving-focused, and generation-focused scenarios, respectively. At the same time, late-stage regression remains common, so these curves should be interpreted as evidence that policy learning can reach high-performing surrogate regions rather than as proof of stable asymptotic convergence or global optimality. The learning-curve evidence is therefore complemented by independent candidate re-evaluation and benchmark comparisons.
+The multi-seed curves show that cumulative reward increases sharply during training and then transitions into a narrower high-reward regime, indicating a shift from broad exploration to more concentrated surrogate-region search. On the highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401, 320, and 398 for the balanced, saving-focused, and generation-focused scenarios, respectively. At the same time, late-stage regression remains common, with mean best-to-final reward gap ratios around 0.62, 0.71, and 0.71 and substantial-regression fractions of 95\%, 85\%, and 100\% across the three scenarios. These curves should therefore be interpreted as evidence that policy learning can reach high-performing surrogate regions rather than as proof of stable asymptotic convergence or global optimality. The learning-curve evidence is therefore complemented by benchmark comparisons and independent candidate re-evaluation.
 
-The three scenarios remain closely clustered in aggregate objective space. In the guarded 20-seed reruns used for Fig.~\ref{fig:learning}, the energy-saving-focused scenario yields the lowest mean EUIt (66.48~kWh/m$^2$/y), the generation-focused scenario yields the highest mean EG (2.818$\times10^6$~kWh/y), and the balanced scenario retains the highest mean H (7.811~h). However, these differences are still small, so the scenario comparison should be interpreted as modest preference-conditioned variation rather than as proof of sharply separated optima. Because these guarded reruns were introduced primarily to control extrapolative edge cases during training, they are used here as stability evidence, whereas the benchmark comparison in the next subsection is reported from the matched remote checkpoint.
+The three scenarios remain distinguishable but still overlap in aggregate objective space. In the 20-seed reruns on the highest-accuracy surrogate, the energy-saving-focused scenario yields the lowest mean EUIt (67.10~kWh/m$^2$/y), the generation-focused scenario yields the highest mean EG (2.763$\times10^6$~kWh/y), and the balanced scenario retains the highest mean H (7.687~h). These differences are more visible than in the earlier lower-scale comparison, but they should still be interpreted as preference-conditioned shifts within one surrogate landscape rather than as proof of sharply separated optima.
 
 \begin{figure}[H]
 \centering
@@ -464,18 +464,18 @@ Before presenting the comparative results, it is necessary to clarify how the DR
 
 \subsubsection{Multi-scenario DRL Behavior}
 
-The primary strength of the DRL framework lies in its flexibility to generate targeted design solutions. By specifying a design preference a priori through reward-function weights, the framework trains three reward-weighted agents under the same surrogate environment. Figure~\ref{fig:stat-compare} illustrates the differences among the scenarios. In the matched remote-checkpoint result set, the three DDPG scenarios remain tightly clustered around a common region, and the scenario-level objective differences are modest even though the reward settings still induce non-identical search trajectories and morphology summaries.
+The primary strength of the DRL framework lies in its flexibility to generate targeted design solutions. By specifying a design preference a priori through reward-function weights, the framework trains three reward-weighted agents under the same surrogate environment. Figure~\ref{fig:stat-compare} illustrates the differences among the scenarios. In the strict highest-accuracy surrogate rerun, the three DDPG scenarios still occupy overlapping regions, but the scenario-level objective differences are larger than in the earlier matched-checkpoint comparison and remain readable through their morphology summaries.
 
-The most important observation is that the reward-conditioned DRL agents still identify a compact region that is stronger than blind random search on the same checkpoint, but they do not surpass the matched fair-budget NSGA-II archive. As shown in Fig.~\ref{fig:stat-compare}, the three DDPG scenarios form overlapping clusters, whereas NSGA-II reaches better average objective values and stronger Pareto indicators on the same remote surrogate checkpoint. This supports the narrower claim that policy learning can identify a coherent surrogate region, but it also shows that the tested reward-weighted DDPG formulation is not competitive with fair-budget NSGA-II on this checkpoint.
+The most important observation is that the reward-conditioned DRL agents still identify coherent preference-conditioned surrogate regions, but they do not surpass the fair-budget NSGA-II archive on the highest-accuracy surrogate. As shown in Fig.~\ref{fig:stat-compare}, the three DDPG scenarios form overlapping clusters, whereas NSGA-II reaches better average objective values and stronger Pareto indicators on the same 2000-sample surrogate checkpoint. This supports the narrower claim that policy learning can identify a coherent surrogate region, but it also shows that the tested reward-weighted DDPG formulation is not competitive with fair-budget NSGA-II when the comparison is anchored to the strict highest-accuracy surrogate.
 
 \begin{figure}[H]
 \centering
 \stdfigure{fig7.pdf}
-\caption{Pairwise objective-space comparison on the matched remote surrogate checkpoint. Each point is one candidate solution. The three DDPG scenarios form compact overlapping clusters, but the matched fair-budget NSGA-II archive reaches stronger objective values on the same checkpoint.}
+\caption{Pairwise objective-space comparison on the strict highest-accuracy 2000-sample surrogate. Each point is one candidate solution. The three DDPG scenarios still form overlapping clusters, while the fair-budget NSGA-II archive reaches stronger objective values on the same selected surrogate.}
 \label{fig:stat-compare}
 \end{figure}
 
-These modest objective-space differences become more interpretable in the morphology signatures shown in Fig.~\ref{fig:parallel}. The heatmap summarizes relative median UMF levels for each method. In the matched remote-checkpoint result set, the balanced scenario tends toward higher FAR and AF, the generation-focused scenario shifts toward higher SD, OSR, and OSLI, and the saving-focused scenario shows slightly lower BD together with higher SC. The contrasts are limited rather than dramatic, but they still indicate that the DRL agents produce readable morphology-level fingerprints that vary with the reward specification within the current surrogate workflow.
+These objective-space differences become more interpretable in the morphology signatures shown in Fig.~\ref{fig:parallel}. The heatmap summarizes relative median UMF levels for each method. In the highest-accuracy surrogate rerun, the balanced scenario still tends toward higher FAR and AF, the generation-focused scenario shifts toward higher SD, OSR, and OSLI, and the saving-focused scenario shows lower EUIt together with slightly lower BD and higher SC. The contrasts are still not dramatic enough to imply cleanly separated optima, but they indicate that the DRL agents produce readable morphology-level fingerprints that vary with the reward specification within the current surrogate workflow.
 
 \begin{figure}[H]
 \centering
@@ -486,14 +486,14 @@ These modest objective-space differences become more interpretable in the morpho
 
 \subsubsection{Comparison with NSGA-II}
 
-After establishing the internal behavior of the DRL agents, we compare them to the NSGA-II benchmark on a matched remote surrogate checkpoint. Table~\ref{tab:perf} summarizes this apples-to-apples comparison. On this matched result set, NSGA-II attains the strongest Pareto-quality metrics (HV~=~1.331, IGD~=~0.086), while the three DDPG scenarios are clearly weaker (HV~=~0.470--0.742, IGD~=~0.501--0.618). A same-budget matched random-search ablation is weaker than the DDPG scenarios, but it also remains clearly weaker than NSGA-II. Figure~\ref{fig:matched-benchmark} visualizes the same matched-checkpoint ordering from two complementary angles: objective-space summaries and scalarized reward.
+After establishing the internal behavior of the DRL agents, we compare them to the NSGA-II benchmark on the strict highest-accuracy surrogate selected from the scale study. Table~\ref{tab:perf} summarizes this apples-to-apples comparison. On this accuracy-first result set, NSGA-II again attains the strongest Pareto-quality metrics (HV~=~1.331, IGD~=~0.107), while the three DDPG scenarios remain weaker. The generation-focused DDPG run is the strongest of the three DDPG variants in Pareto-quality terms (HV~=~1.011, IGD~=~0.220), but it still trails NSGA-II. Figure~\ref{fig:matched-benchmark} visualizes the same ordering from two complementary angles: scenario-wise objective summaries and preference-aligned utility.
 
-This result changes the interpretation of the benchmark comparison. Rather than claiming superiority of DRL over NSGA-II, the current evidence now supports a much narrower conclusion: on the matched remote surrogate checkpoint, DDPG improves over blind random search but does not match fair-budget NSGA-II. The historical imported archives therefore appear to reflect checkpoint-specific behavior rather than a robust benchmark advantage. This conclusion should be interpreted together with three additional caveats. First, the matched-candidate DDPG re-evaluation shows much larger EUIt drift and larger EG discrepancy than the selected NSGA-II counterparts, while the H discrepancy falls between the two NSGA-II examples reported in Appendix~B. Second, the matched DDPG runs continue to exhibit frequent late-stage reward regression despite reaching high-reward regions mid-training. Third, the remote and local surrogate checkpoints produce materially different optimization outcomes under the same repaired code and dataset, which means benchmark conclusions remain checkpoint-dependent even after the code-path bug was removed.
+This result changes the interpretation of the benchmark comparison. Rather than claiming superiority of DRL over NSGA-II, the current evidence now supports a narrower conclusion: even after upgrading the surrogate to the strict highest-accuracy 2000-sample model, DDPG does not match fair-budget NSGA-II. Under post-hoc preference-aligned utility selection, the balanced, saving-focused, and generation-focused DDPG candidates all remain below the corresponding best NSGA-II candidate, with utility deltas of approximately $-0.267$, $-0.140$, and $-0.046$, respectively. This conclusion should be interpreted together with three additional caveats. First, the independent re-evaluation reported in Appendix~B has not yet been rerun on the 2000-sample comparison, so the latest available candidate-drift evidence still comes from the earlier matched-checkpoint run. Second, the DDPG runs continue to exhibit frequent late-stage reward regression despite reaching high-reward regions mid-training. Third, the optimizer ranking remains checkpoint-sensitive, which means benchmark conclusions should be tied explicitly to the selected surrogate artifact rather than generalized across checkpoints.
 
 Detailed linear correlation maps, joint distributions, and nonlinear response diagnostics are reported in the Supplementary Material rather than in the main text. In the present revision, these diagnostics are used only as interpretive support for the morphology-level shifts in Fig.~\ref{fig:parallel}; they are not treated as primary evidence for the benchmark comparison.
 
 \begin{table}[H]
-\caption{Matched remote-checkpoint comparison across fair-budget NSGA-II and the three DDPG scenarios.}
+\caption{Accuracy-first comparison across fair-budget NSGA-II and the three DDPG scenarios on the strict highest-accuracy 2000-sample surrogate.}
 \label{tab:perf}
 \centering
 \footnotesize
@@ -502,15 +502,15 @@ Detailed linear correlation maps, joint distributions, and nonlinear response di
 \toprule
 Method & HV & IGD & EUIt & EG ($10^6$~kWh/y) & H (h) \\
 \midrule
-NSGA-II    & 1.331 & 0.086 & 66.13 & 2.845 & 7.833 \\
-Balanced DDPG & 0.470 & 0.618 & 67.37 & 2.747 & 7.702 \\
-Saving DDPG & 0.742 & 0.501 & 66.57 & 2.757 & 7.610 \\
-Generation DDPG & 0.629 & 0.517 & 67.61 & 2.798 & 7.716 \\
+NSGA-II    & 1.331 & 0.107 & 66.15 & 2.844 & 7.836 \\
+Balanced DDPG & 0.347 & 0.720 & 67.90 & 2.700 & 7.687 \\
+Saving DDPG & 0.625 & 0.549 & 67.10 & 2.716 & 7.487 \\
+Generation DDPG & 1.011 & 0.220 & 68.46 & 2.763 & 7.612 \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Note: The values in this table are computed on the matched remote surrogate checkpoint. On this checkpoint, DDPG remains stronger than same-budget random search but does not outperform fair-budget NSGA-II.
+\item Note: The values in this table are computed on the strict highest-accuracy 2000-sample surrogate selected from the scale study. On this surrogate, fair-budget NSGA-II remains stronger than all three DDPG scenarios in both archive-level Pareto metrics and preference-aligned utility.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -518,45 +518,29 @@ Generation DDPG & 0.629 & 0.517 & 67.61 & 2.798 & 7.716 \\
 \begin{figure}[H]
 \centering
 \stdfigure{fig9.pdf}
-\caption{Matched remote-checkpoint benchmark summary. Panels (a)--(c) compare scenario-wise objective summaries for DDPG and random search, with the NSGA-II mean shown as a dashed reference line. Panel (d) compares scalarized reward for DDPG and random search across the three scenarios.}
+\caption{Accuracy-first benchmark summary on the strict highest-accuracy 2000-sample surrogate. Panels (a)--(c) compare scenario-wise objective summaries for DDPG, with the NSGA-II mean shown as a dashed reference line. Panel (d) compares preference-aligned utility for DDPG and NSGA-II across the three scenarios.}
 \label{fig:matched-benchmark}
 \end{figure}
 
 \section{Discussion}
 
-This study develops a DRL-DNN integrated framework for block-scale urban morphology design and re-examines its comparative performance under a matched surrogate environment. The revised analysis indicates that the framework is most credible as a preference-conditioned design-search tool and as a methodological case study of surrogate-dependent benchmarking, rather than as a superior replacement for Pareto-based evolutionary optimization.
+This study develops a DRL-DNN integrated framework for block-scale urban morphology design and re-examines its comparative performance under an accuracy-first surrogate-selection protocol. The revised analysis indicates that the framework is most credible as a preference-conditioned design-search tool and as a methodological case study of surrogate-dependent benchmarking, rather than as a superior replacement for Pareto-based evolutionary optimization.
 
-The main methodological finding is that reward-conditioned policy learning can guide the search toward a compact high-performing region on a given surrogate checkpoint, but that advantage is less stable and less competitive than the earlier revision implied. On the matched remote checkpoint, the DDPG scenarios remain stronger than same-budget random search, indicating that the learned policies capture more than blind sampling. However, fair-budget NSGA-II is clearly stronger than all three DDPG scenarios in both objective summaries and Pareto-quality metrics. The three DDPG scenarios also remain tightly clustered in objective space, which suggests that the value of DRL in the present setting lies more in region-finding and interpretable morphology conditioning than in producing clearly separated preference optima.
+The main methodological finding is that reward-conditioned policy learning can guide the search toward compact high-performing regions on a given surrogate checkpoint, but that advantage is less stable and less competitive than earlier revisions implied. On the strict highest-accuracy 2000-sample surrogate, fair-budget NSGA-II is clearly stronger than all three DDPG scenarios in both objective summaries and Pareto-quality metrics, and it also dominates the post-hoc preference-aligned utility comparison. The three DDPG scenarios remain distinguishable but overlapping in objective space, which suggests that the value of DRL in the present setting lies more in region-finding and interpretable morphology conditioning than in producing clearly separated preference optima.
 
-Even so, the multi-scenario design underscores the flexibility of the DRL framework as a decision-support tool. Unlike NSGA-II, which returns a broad non-dominated archive, the proposed workflow allows designers to encode preferences in advance. In the matched remote runs, the resulting differences are clearer in morphology descriptors than in top-line objective means, but they can still be interpreted in terms of density, openness, sky access, and orientation.
+Even so, the multi-scenario design underscores the flexibility of the DRL framework as a decision-support tool. Unlike NSGA-II, which returns a broad non-dominated archive, the proposed workflow allows designers to encode preferences in advance. In the highest-accuracy rerun, the resulting differences are clearer in morphology descriptors than in top-line objective means, but they can still be interpreted in terms of density, openness, sky access, and orientation.
 
-The framework also provides interpretable design guidance. The correlation analysis and the additional nonlinear diagnostics indicate that openness-related variables such as OSR and SVF, together with density-related variables such as FAR and BD, play a dominant role in shaping the objective responses. Thus, even though DDPG does not outperform NSGA-II on the matched checkpoint, the DRL formulation remains useful for generating policy-conditioned and transferable design heuristics.
+The framework also provides interpretable design guidance. The correlation analysis and the additional nonlinear diagnostics indicate that openness-related variables such as OSR and SVF, together with density-related variables such as FAR and BD, play a dominant role in shaping the objective responses. Thus, even though DDPG does not outperform NSGA-II on the strict highest-accuracy surrogate, the DRL formulation remains useful for generating policy-conditioned and transferable design heuristics.
 
-Two further result analyses help qualify this interpretation. Figure~\ref{fig:earlystop} compares the full matched DDPG runs with an early-stopping variant across the three scenarios. The comparison shows that early stopping changes the final objective summaries only modestly, but it does reduce part of the late-regression burden in some scenarios. This suggests that the instability of the current DDPG formulation is not solely a matter of running too many episodes.
+Independent candidate re-evaluation further sharpens this interpretation. On the 2000-sample surrogate rerun, the three DDPG winners do not all drift in the same direction: the balanced candidate improves in EUIt but loses EG and H, whereas the saving-focused and generation-focused candidates drift upward in EUIt and downward in EG after reevaluation through the independent fallback simulation path. The selected NSGA-II candidate also drifts away from its surrogate optimum, but it remains competitive in aggregate objective value. This means the latest results are more balanced than the earlier checkpoint-specific reevaluation, yet they still reinforce the need to keep optimizer claims bounded by surrogate reliability rather than by surrogate-space optimum values alone.
 
-\begin{figure}[H]
-\centering
-\stdfigure{fig10.pdf}
-\caption{Effect of the early-stopping variant relative to the full matched DDPG runs. Panels (a)--(c) compare scenario-wise objective summaries, while panel (d) compares best-final gap ratios and late-regression fractions.}
-\label{fig:earlystop}
-\end{figure}
-
-Figure~\ref{fig:checkpoint-sensitivity} provides a complementary surrogate-checkpoint diagnostic. Although the two checkpoints show similar in-sample fit statistics, their tail-behavior diagnostics differ, which helps explain why comparative optimizer ranking can change when the active surrogate artifact changes. This sensitivity reinforces the need to treat checkpoint stability as part of the benchmarking protocol.
-
-\begin{figure}[H]
-\centering
-\stdfigure{fig11.pdf}
-\caption{Checkpoint-sensitivity analysis comparing the local publication surrogate checkpoint and the remote matched-checkpoint surrogate. The four panels report training-fit and tail-behavior diagnostics.}
-\label{fig:checkpoint-sensitivity}
-\end{figure}
-
-Several limitations should be acknowledged. First, the findings are derived from a single case study in one climate zone. Second, the surrogate is trained on only 500 simulated cases in a 12-dimensional space, which corresponds to roughly 42 samples per variable and is limited for optimization in sparse or extreme regions; accordingly, the current Pareto claims should be interpreted as applying to the interpolated surrogate region rather than to unconstrained extrapolation beyond the sampled design domain. Third, the current comparison remains surrogate-based during optimization, and the independent re-evaluation still relies on a fallback analytic simulator rather than a full physical stack or external empirical validation dataset. Fourth, the selected DDPG candidate exhibits larger re-evaluation discrepancies than the selected NSGA-II candidate, so the apparent surrogate-space advantage should not be overgeneralized. Fifth, the current benchmark is not yet balanced in aggregate archive budget because the retained NSGA-II comparison corresponds to one archive whereas each DDPG scenario pools multiple seeds of equal per-seed interaction budget. Sixth, the present RL formulation is a scalarized static black-box optimization problem recast as policy learning; therefore, alternative continuous optimizers remain important baselines for future work.
+Several limitations should be acknowledged. First, the findings are derived from a single case study in one climate zone. Second, even after expansion to 2000 simulated cases, the surrogate still approximates a 12-dimensional continuous design space and therefore remains vulnerable in sparse or extreme regions; accordingly, the current Pareto claims should be interpreted as applying to the interpolated surrogate region rather than to unconstrained extrapolation beyond the sampled design domain. Third, the current comparison remains surrogate-based during optimization, and the independent re-evaluation still relies on a fallback analytic simulator rather than a full physical stack or external empirical validation dataset. Fourth, the updated reevaluation shows that both DDPG and NSGA-II candidates can drift materially relative to their surrogate predictions, so surrogate-space ranking should not be overgeneralized. Fifth, although the new 2000-sample rerun closes the per-seed and seed-count symmetry between DDPG and NSGA-II, broader optimizer families still need to be tested before claiming general policy-learning advantages. Sixth, the present RL formulation is a scalarized static black-box optimization problem recast as policy learning; therefore, alternative continuous optimizers remain important baselines for future work.
 
 \section{Conclusions}
 
 This study presents a DRL-DNN framework for co-optimizing urban morphology and energy performance in a surrogate-based setting. The revised evidence suggests that the method should be interpreted as a preference-conditioned policy-learning framework rather than as a universally dominant alternative to Pareto-based search.
 
-Three main conclusions can be drawn. First, the DRL framework acts as a flexible decision-support tool by generating closely clustered solution families under different reward priorities, but the currently tested reward weights do not produce strong separation in objective space. Second, within the retained surrogate archives, the DDPG scenarios show stronger average objective summaries and a larger Hypervolume than the NSGA-II archive, although this comparison remains provisional because aggregate archive-budget fairness and physical validation are not yet closed. Third, the DRL scenarios still yield interpretable design fingerprints, particularly through differences in FAR, BD, OSR, SVF, and OSLI, which can be explained through the correlation and joint-distribution analyses.
+Three main conclusions can be drawn. First, the surrogate scale study shows that the strict highest-accuracy model in this project is the 2000-sample \texttt{tuned\_standard} DNN, which improves mean target nMAE by about 9.9\% relative to the best 500-sample baseline. Second, when the optimizer comparison is rerun on that highest-accuracy surrogate and kept within the paper's original three-scenario DDPG-versus-NSGA-II architecture, fair-budget NSGA-II outperforms all three DDPG scenarios in archive-level objective summaries, Hypervolume, IGD, and preference-aligned utility. Third, the DRL scenarios still yield interpretable design fingerprints, particularly through differences in FAR, BD, OSR, SVF, and OSLI, which can be explained through the correlation and joint-distribution analyses.
 
 In summary, this paper transforms the optimization problem from a static black-box search into a policy-learning formulation that can encode design preferences directly. The framework is best viewed as a flexible and interpretable design-search tool whose claims must remain bounded by surrogate reliability, benchmark fairness, and the absence of external empirical validation. Future work should expand the dataset, use broader baselines, and validate the final solutions through direct simulation and external data.
 

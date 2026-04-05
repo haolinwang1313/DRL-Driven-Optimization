@@ -36,7 +36,7 @@ C-2 & Courtyard  & 1500 & 4--12  & 0.94--2.81 \\
 
 \subsection{Surrogate validation}
 
-The surrogate is trained on a dataset of 500 simulated morphologies. Five-fold cross-validation is used, with 400 samples for training and 100 for testing in each fold. Table~\ref{tab:supp_cv} reports the aggregate validation results corresponding to the revised surrogate assessment in the main text.
+The original surrogate workflow began from a 500-sample baseline, but the final optimizer comparison in this revision uses the strict highest-accuracy surrogate obtained from the expanded 2000-sample regime. Five-fold cross-validation is used to assess that final selected model. Table~\ref{tab:supp_cv} reports the corresponding aggregate validation results.
 
 \begin{table}[H]
 \centering
@@ -47,9 +47,9 @@ The surrogate is trained on a dataset of 500 simulated morphologies. Five-fold c
 \toprule
 Objective & Mean $R^2$ & Mean MAE & Std. $R^2$ & Std. MAE \\
 \midrule
-EUIt & 0.973 & 0.031 & $\pm 0.011$ & $\pm 0.007$ \\
-EG   & 0.969 & 0.040 & $\pm 0.014$ & $\pm 0.005$ \\
-H    & 0.971 & 0.028 & $\pm 0.009$ & $\pm 0.006$ \\
+EUIt & 0.983 & 0.209 & $\pm 0.001$ & $\pm 0.005$ \\
+EG   & 0.972 & 0.026 & $\pm 0.002$ & $\pm 0.001$ \\
+H    & 0.992 & 0.025 & $\pm 0.001$ & $\pm 0.001$ \\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
@@ -66,9 +66,9 @@ To evaluate reliability in optimization-relevant regions, additional error slice
 \toprule
 Target & MAE$_\mathrm{all}$ & MAE$_{q10}$ & MAE$_{q90}$ & $q_{0.10}$ & $q_{0.90}$ \\
 \midrule
-EUIt & 0.541 & 1.045 & 0.879 & 67.94 & 73.59 \\
-EG   & 0.061 & 0.095 & 0.075 & 2.113 & 2.655 \\
-H    & 0.075 & 0.099 & 0.077 & 6.482 & 7.513 \\
+EUIt & 0.209 & 0.283 & 0.194 & 67.83 & 73.32 \\
+EG   & 0.026 & 0.027 & 0.030 & 2.132 & 2.655 \\
+H    & 0.025 & 0.026 & 0.029 & 6.514 & 7.429 \\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
@@ -76,21 +76,21 @@ H    & 0.075 & 0.099 & 0.077 & 6.482 & 7.513 \\
 
 \begin{table}[H]
 \centering
-\caption{Additional surrogate-fidelity audit on the cross-validation predictions.}
+\caption{Additional surrogate-fidelity audit on the cross-validation predictions of the selected 2000-sample surrogate.}
 \label{tab:supp_fidelity}
 \begin{threeparttable}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
-Target & RMSE & MAE & nRMSE & MAPE (\%) & $R^2$ \\
+Target & RMSE & MAE & nRMSE & Tail nMAE & $R^2$ \\
 \midrule
-EUIt & 0.332 & 0.254 & 0.0275 & 0.362 & 0.978 \\
-EG   & 0.041 & 0.032 & 0.0385 & 1.328 & 0.962 \\
-H    & 0.042 & 0.033 & 0.0234 & 0.469 & 0.987 \\
+EUIt & 0.279 & 0.209 & 0.0227 & 0.0194 & 0.983 \\
+EG   & 0.033 & 0.026 & 0.0305 & 0.0265 & 0.972 \\
+H    & 0.032 & 0.025 & 0.0172 & 0.0150 & 0.992 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Note: nRMSE is normalized by the observed range of each target over the cross-validation predictions.
+\item Note: nRMSE is normalized by the observed range of each target over the cross-validation predictions. Tail nMAE is the mean of the lower-tail and upper-tail nMAE diagnostics used for surrogate selection.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -99,13 +99,13 @@ H    & 0.042 & 0.033 & 0.0234 & 0.469 & 0.987 \\
 
 \subsection{Training dynamics and benchmark protocol}
 
-The imported DDPG logs provide 600 episodes for each of the 20 seeds in each scenario, which makes the multi-seed learning dynamics clearer than in the earlier single-curve presentation. The revised server-side reruns used for Fig.~\ref{fig:learning} were executed under a guarded surrogate evaluator to suppress exploitation of extrapolative edge cases. Seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 340 (balanced), 312 (saving), and 280 (generation). Matched-checkpoint reruns on the remote surrogate show a similar pattern, with plateau episodes around 361, 325, and 343 for the balanced, saving, and generation scenarios, respectively. However, late-stage regression remains common in both settings: the mean best-to-final reward gap ratios remain roughly 0.55--0.60 on the matched checkpoint, and 80\%--90\% of seeds still satisfy a simple substantial-regression rule.
+The revised server-side reruns used for the final accuracy-first comparison were executed under the shared guarded surrogate evaluator to suppress exploitation of extrapolative edge cases. On the strict highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401 (balanced), 320 (saving), and 398 (generation). However, late-stage regression remains common: the mean best-to-final reward gap ratios are about 0.62, 0.71, and 0.71 for the balanced, saving, and generation scenarios, respectively, and the substantial-regression fractions remain high at 95\%, 85\%, and 100\%.
 
-For benchmark comparison, the revised implementation removes the previous benchmark-matching shortcut from the publication-mode NSGA-II path. Publication mode compares DDPG, random search, and NSGA-II under a shared surrogate environment and matched evaluation budget, and applies a post-hoc preference-aligned utility summary consistently across methods. On the matched remote checkpoint, DDPG remains modestly stronger than random search but weaker than fair-budget NSGA-II. The corresponding budget accounting and objective-space separation are summarized in Table~\ref{tab:supp_budget}.
+For benchmark comparison, the revised implementation removes the previous benchmark-matching shortcut from the publication-mode NSGA-II path. Publication mode compares DDPG and NSGA-II under a shared surrogate environment, matched per-seed evaluation budget, and matched seed count, and applies a post-hoc preference-aligned utility summary consistently across methods. On the strict highest-accuracy 2000-sample surrogate, NSGA-II remains stronger than all three DDPG scenarios. The corresponding budget accounting and objective-space separation are summarized in Table~\ref{tab:supp_budget}.
 
 \begin{table}[H]
 \centering
-\caption{Budget accounting and objective-space separation in the imported revision results.}
+\caption{Budget accounting and objective-space separation in the highest-accuracy 2000-sample rerun.}
 \label{tab:supp_budget}
 \begin{threeparttable}
 \footnotesize
@@ -115,16 +115,16 @@ Item & Value 1 & Value 2 & Interpretation \\
 \midrule
 DDPG per-seed budget & 600 episodes & 40 steps/episode & 24{,}000 surrogate interactions \\
 DDPG seeds per scenario & 20 & -- & pooled into one scenario archive \\
-NSGA-II imported budget & 24{,}000 evaluations & 1 seed & single imported archive \\
-Distance: balanced vs generation & 0.0180 & -- & normalized objective-space distance \\
-Distance: balanced vs saving & 0.0145 & -- & normalized objective-space distance \\
-Distance: generation vs saving & 0.0128 & -- & normalized objective-space distance \\
-NSGA-II archive spread & 0.2970 & 0.1255 & mean and std of distance to normalized archive center \\
+NSGA-II seeds in rerun & 20 & -- & pooled into one comparison archive \\
+Distance: balanced vs generation & 0.5417 & -- & normalized objective-space distance of scenario means \\
+Distance: balanced vs saving & 0.6809 & -- & normalized objective-space distance of scenario means \\
+Distance: generation vs saving & 0.7619 & -- & normalized objective-space distance of scenario means \\
+NSGA-II archive spread & 0.1642 & 0.1968 & mean and std of distance to normalized archive center \\
 \bottomrule
 \end{tabularx}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Note: The comparison is therefore closer to a matched per-seed budget than to a matched aggregate archive budget. The small pairwise distances among DDPG scenario means confirm that preference separation remains modest in objective space.
+\item Note: The 2000-sample highest-accuracy rerun matches both the per-seed interaction budget and the number of seeds between DDPG and NSGA-II. The DDPG scenarios are more separated than in the earlier matched-checkpoint run, but NSGA-II still dominates the preference-aligned utility comparison.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -133,18 +133,22 @@ To complement the linear correlation results in the main text, Fig.~\ref{fig:sup
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth]{nonlinear_response_profiles.png}
+\IfFileExists{nonlinear_response_profiles.png}{%
+\includegraphics[width=\linewidth]{nonlinear_response_profiles.png}%
+}{%
+\fbox{\parbox{0.92\linewidth}{\centering Nonlinear response profile figure not available in the current worktree. The text and tables in this draft already reflect the updated highest-accuracy-surrogate rerun.}}%
+}
 \caption{Surrogate-based nonlinear response profiles for selected UMF-target pairs.}
 \label{fig:supp_nonlinear}
 \end{figure}
 
 \subsection{Independent re-evaluation of selected candidates}
 
-To reduce over-reliance on surrogate predictions, the revised workflow re-evaluates preference-aligned candidate solutions using an independent simulation call. In the current local environment, this re-evaluation still uses the fallback analytic simulator, but the code path is structured so that a full physical-stack simulation can replace it when server-side results become available. Under the current matched-checkpoint utility selection, one DDPG candidate and two NSGA-II candidates are retained after deduplication, so Table~\ref{tab:supp_reeval} reports three unique candidates. The updated comparison shows that the selected DDPG candidate undergoes much larger EUIt drift and larger EG discrepancy than the two selected NSGA-II candidates, while its H discrepancy lies between the two NSGA-II examples.
+To reduce over-reliance on surrogate predictions, the workflow re-evaluates preference-aligned candidate solutions using an independent simulation call. In the current local environment, this re-evaluation still uses the fallback analytic simulator, but the code path is structured so that a full physical-stack simulation can replace it when server-side results become available. Table~\ref{tab:supp_reeval} reports the latest available reevaluation results for the strict highest-accuracy 2000-sample comparison. The updated evidence shows heterogeneous drift: the balanced DDPG winner improves in EUIt but loses EG and H, the saving-focused and generation-focused DDPG winners drift upward in EUIt and downward in EG, and the selected NSGA-II candidate also moves away from its surrogate prediction. This narrows the earlier asymmetry between DDPG and NSGA-II, but it still indicates that surrogate-space ranking should not be treated as a direct substitute for independent validation.
 
 \begin{table}[H]
 \centering
-\caption{Independent re-evaluation of matched-checkpoint selected candidates. Surrogate and deterministic re-evaluation values are reported for the current preference-aligned selections.}
+\caption{Independent re-evaluation of selected candidates from the highest-accuracy 2000-sample surrogate rerun. Surrogate and deterministic re-evaluation values are reported for the current preference-aligned selections.}
 \label{tab:supp_reeval}
 \begin{threeparttable}
 \scriptsize
@@ -152,9 +156,10 @@ To reduce over-reliance on surrogate predictions, the revised workflow re-evalua
 \toprule
 Method & Scenario & EUIt$_\mathrm{sur}$ & EUIt$_\mathrm{re}$ & EG$_\mathrm{sur}$ & EG$_\mathrm{re}$ & H$_\mathrm{sur}$ & H$_\mathrm{re}$ \\
 \midrule
-DDPG & Generation & 66.344 & 68.342 & 2.846 & 2.724 & 7.833 & 7.646 \\
-NSGA-II & NSGA-II (seed 20260310) & 66.000 & 66.000 & 2.850 & 2.828 & 7.850 & 7.676 \\
-NSGA-II & NSGA-II (seed 20260328) & 66.000 & 66.000 & 2.850 & 2.738 & 7.850 & 7.622 \\
+DDPG & Balanced & 67.168 & 66.000 & 2.751 & 2.689 & 7.697 & 7.374 \\
+NSGA-II & NSGA-II (seed 20260310) & 66.000 & 67.730 & 2.850 & 2.712 & 7.850 & 7.510 \\
+DDPG & Saving & 66.698 & 67.473 & 2.844 & 2.769 & 7.671 & 7.611 \\
+DDPG & Generation & 66.356 & 67.836 & 2.841 & 2.735 & 7.807 & 7.530 \\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
