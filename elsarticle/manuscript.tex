@@ -13,11 +13,14 @@
 \usepackage[section]{placeins}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{tikz}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
 \graphicspath{{fig/}{../artifacts/publication/figures/}{../artifacts/publication/diagnostics/}}
 \sloppy
 \newcommand{\stdfigure}[1]{\includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{#1}}
+\definecolor{figelevenblue}{RGB}{175,183,195}
+\definecolor{figelevenorange}{RGB}{195,174,175}
 
 \journal{Applied Energy}
 
@@ -535,7 +538,36 @@ Figure~\ref{fig:scale-study} links the optimizer comparison back to the surrogat
 
 \begin{figure}[H]
 \centering
-\stdfigure{fig11.pdf}
+\begin{tikzpicture}
+\node[anchor=south west, inner sep=0] (figelevenimg) {\includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{fig11.pdf}};
+\begin{scope}[x={(figelevenimg.south east)}, y={(figelevenimg.north west)}]
+\fill[white] (0.0855,0.9392) rectangle (0.1481,0.9889);
+\fill[white] (0.1987,0.9264) rectangle (0.2614,0.9761);
+\fill[white] (0.3120,0.9179) rectangle (0.3746,0.9676);
+\fill[white] (0.4252,0.9108) rectangle (0.4878,0.9605);
+\fill[white] (0.5794,0.9246) rectangle (0.6420,0.9743);
+\fill[white] (0.6926,0.9070) rectangle (0.7553,0.9567);
+\fill[white] (0.8059,0.9021) rectangle (0.8685,0.9518);
+\fill[white] (0.9191,0.8922) rectangle (0.9817,0.9419);
+\fill[white] (0.5794,0.4220) rectangle (0.6420,0.4717);
+\fill[white] (0.6926,0.4082) rectangle (0.7553,0.4579);
+\fill[white] (0.8059,0.4005) rectangle (0.8685,0.4502);
+\fill[white] (0.9191,0.3927) rectangle (0.9817,0.4424);
+
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.1168,0.8484) {0.0210};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.2301,0.8346) {0.0198};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.3433,0.8276) {0.0189};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenorange] at (0.4565,0.8189) {0.0182};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.6107,0.8484) {0.0239};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.7239,0.8328) {0.0219};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.8372,0.8276) {0.0214};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenorange] at (0.9504,0.8172) {0.0203};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.6107,0.3589) {0.0270};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.7239,0.3467) {0.0253};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenblue] at (0.8372,0.3398) {0.0243};
+\node[font=\fontsize{8.5}{9}\selectfont, text=figelevenorange] at (0.9504,0.3311) {0.0233};
+\end{scope}
+\end{tikzpicture}
 \caption{Surrogate scale-study diagnostics across the best regime winner at each dataset scale. Panels report mean target nMAE, mean tail nMAE, mean $R^2$, and the selection objective from 500 to 2000 samples, with the 2000-sample winner highlighted as the strict highest-accuracy choice.}
 \label{fig:scale-study}
 \end{figure}
