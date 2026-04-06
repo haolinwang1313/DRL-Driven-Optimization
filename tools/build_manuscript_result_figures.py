@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import argparse
 import json
+import subprocess
 from pathlib import Path
 
 import matplotlib as mpl
-import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.ticker import AutoMinorLocator
@@ -13,13 +14,15 @@ import pandas as pd
 
 from paper_repro.config import Config
 from paper_repro.constants import MORPHOLOGY_FEATURES, PERFORMANCE_TARGETS
-from paper_repro.metrics import normalized_benefit_frame, compute_seeded_convergence_diagnostics
-from paper_repro.simulation import reevaluate_candidates
+from paper_repro.metrics import normalized_benefit_frame
 from paper_repro.surrogate import load_surrogate
 
 
+CURRENT_COMPARE_RUN = "20260405_highest_precision_2000_compare"
+CURRENT_SELECTION_RUN = "20260405_surrogate_rebenchmark"
+STATIC_FIG_COMMIT = "87b1e66eb217251587be94e95e73898ed4740859"
+
 CM_TO_IN = 1 / 2.54
-SINGLE_COL_IN = 8.5 * CM_TO_IN
 DOUBLE_COL_IN = 17.5 * CM_TO_IN
 
 PALETTE = {
@@ -28,8 +31,6 @@ PALETTE = {
     "Energy_Saving_Focus": "#009E73",
     "Energy_Generation_Focus": "#D55E00",
 }
-
-DIVERGING_CMAP = "RdBu_r"
 
 MARKERS = {
     "NSGA-II": "o",
@@ -87,16 +88,6 @@ def set_journal_style() -> None:
     )
 
 
-def blend_with_white(color: str, amount: float) -> tuple[float, float, float]:
-    rgb = np.array(mcolors.to_rgb(color), dtype=float)
-    return tuple((1.0 - amount) * rgb + amount * np.ones(3))
-
-
-def blend_with_black(color: str, amount: float) -> tuple[float, float, float]:
-    rgb = np.array(mcolors.to_rgb(color), dtype=float)
-    return tuple((1.0 - amount) * rgb)
-
-
 def style_axis(ax: plt.Axes) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -120,21 +111,29 @@ def panel_label(ax: plt.Axes, label: str) -> None:
     )
 
 
-def annotate_bar_values(ax: plt.Axes, x: np.ndarray, vals: list[float], fmt: str = "{:.2f}") -> None:
-    y_max = max(vals) if vals else 1.0
-    offset = max(y_max * 0.025, 0.01)
-    for xpos, val in zip(x, vals, strict=True):
-        ax.text(xpos, val + offset, fmt.format(val), ha="center", va="bottom", fontsize=8.5)
-
-
 def _save(fig: plt.Figure, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, format="pdf", bbox_inches="tight")
     plt.close(fig)
 
 
-def _run_root(root: Path, run_id: str) -> Path:
-    return root / "artifacts" / "server_runs" / run_id
+def _restore_pdf_from_git(repo_root: Path, commit: str, repo_relative_path: str, destination: Path) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("wb") as handle:
+        subprocess.run(
+            ["git", "show", f"{commit}:{repo_relative_path}"],
+            cwd=repo_root,
+            check=True,
+            stdout=handle,
+        )
+
+
+def _compile_manuscript(repo_root: Path) -> None:
+    subprocess.run(
+        ["latexmk", "-pdf", "-interaction=nonstopmode", "manuscript.tex"],
+        cwd=repo_root / "elsarticle",
+        check=True,
+    )
 
 
 def build_fig4(cv: pd.DataFrame, out_path: Path) -> None:
@@ -181,7 +180,7 @@ def build_fig5(cv: pd.DataFrame, out_path: Path) -> None:
     _save(fig, out_path)
 
 
-def build_fig6(ddpg_logs_all: dict, out_path: Path) -> None:
+def build_fig6(ddpg_logs_all: dict[str, dict[str, list[dict[str, float]]]], out_path: Path) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 10.2 * CM_TO_IN), sharex=True)
     mapping = [
         ("cumulative_reward", "Cumulative reward"),
@@ -189,8 +188,9 @@ def build_fig6(ddpg_logs_all: dict, out_path: Path) -> None:
         ("EG", TARGET_LABELS["EG"]),
         ("H", TARGET_LABELS["H"]),
     ]
+    scenarios = ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]
     for ax, (metric, ylabel), tag in zip(axes.flatten(), mapping, ["a", "b", "c", "d"], strict=True):
-        for scenario in ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]:
+        for scenario in scenarios:
             seed_map = ddpg_logs_all[scenario]
             frames = []
             for seed, rows in sorted(seed_map.items(), key=lambda item: int(item[0])):
@@ -208,7 +208,7 @@ def build_fig6(ddpg_logs_all: dict, out_path: Path) -> None:
             ax.set_xlabel("Episode")
     handles = [
         Line2D([0], [0], color=PALETTE[s], lw=1.4, marker=MARKERS[s], markersize=4.5, label=s.replace("_", " "))
-        for s in ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]
+        for s in scenarios
     ]
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.02), ncol=3, frameon=False, handletextpad=0.5, columnspacing=1.2)
     fig.tight_layout(pad=0.5, w_pad=0.8, h_pad=0.8, rect=(0, 0, 1, 0.93))
@@ -248,16 +248,12 @@ def build_fig7(combined: pd.DataFrame, out_path: Path) -> None:
         panel_label(ax, tag)
         ax.set_xlabel(x_col)
         ax.set_ylabel(y_col)
-    handles = []
-    for method in order:
-        if method == "NSGA-II":
-            handles.append(
-                Line2D([0], [0], marker=MARKERS[method], linestyle="", markerfacecolor="none", markeredgecolor=PALETTE[method], markeredgewidth=0.8, markersize=6, label="NSGA-II")
-            )
-        else:
-            handles.append(
-                Line2D([0], [0], marker=MARKERS[method], linestyle="", markerfacecolor=PALETTE[method], markeredgecolor="white", markeredgewidth=0.25, markersize=6, label=method.replace("_", " "))
-            )
+    handles = [
+        Line2D([0], [0], marker="o", linestyle="", markerfacecolor="none", markeredgecolor=PALETTE["NSGA-II"], markeredgewidth=0.8, markersize=6, label="NSGA-II"),
+        Line2D([0], [0], marker="o", linestyle="", markerfacecolor=PALETTE["Balanced_Performance"], markeredgecolor="white", markeredgewidth=0.25, markersize=6, label="Balanced Performance"),
+        Line2D([0], [0], marker="^", linestyle="", markerfacecolor=PALETTE["Energy_Saving_Focus"], markeredgecolor="white", markeredgewidth=0.25, markersize=6, label="Energy Saving Focus"),
+        Line2D([0], [0], marker="s", linestyle="", markerfacecolor=PALETTE["Energy_Generation_Focus"], markeredgecolor="white", markeredgewidth=0.25, markersize=6, label="Energy Generation Focus"),
+    ]
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.03), ncol=4, frameon=False, handletextpad=0.5, columnspacing=1.0)
     fig.tight_layout(pad=0.5, w_pad=0.8, rect=(0, 0, 1, 0.90))
     _save(fig, out_path)
@@ -274,7 +270,7 @@ def build_fig8(combined: pd.DataFrame, out_path: Path) -> None:
         denom = max(float(col.max() - col.min()), 1e-8)
         scaled[feature] = 2.0 * ((col - col.min()) / denom) - 1.0
     fig, ax = plt.subplots(figsize=(DOUBLE_COL_IN, 4.8 * CM_TO_IN))
-    im = ax.imshow(scaled.to_numpy(), cmap=DIVERGING_CMAP, vmin=-1.0, vmax=1.0, aspect="auto", interpolation="nearest")
+    im = ax.imshow(scaled.to_numpy(), cmap="RdBu_r", vmin=-1.0, vmax=1.0, aspect="auto", interpolation="nearest")
     ax.set_xticks(np.arange(len(MORPHOLOGY_FEATURES)))
     ax.set_xticklabels([FEATURE_LABELS.get(f, f) for f in MORPHOLOGY_FEATURES], rotation=35, ha="right", fontsize=7)
     ax.set_yticks(np.arange(len(order)))
@@ -289,7 +285,7 @@ def build_fig8(combined: pd.DataFrame, out_path: Path) -> None:
     _save(fig, out_path)
 
 
-def build_fig9(ddpg: pd.DataFrame, nsga: pd.DataFrame, combined: pd.DataFrame, utility_weights: dict, out_path: Path) -> None:
+def build_fig9(ddpg: pd.DataFrame, nsga: pd.DataFrame, combined: pd.DataFrame, utility_weights: dict[str, list[float]], out_path: Path) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 10.4 * CM_TO_IN), sharex=True)
     scenarios = ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]
     scenario_labels = ["Balanced", "Saving", "Generation"]
@@ -350,57 +346,6 @@ def build_fig9(ddpg: pd.DataFrame, nsga: pd.DataFrame, combined: pd.DataFrame, u
     _save(fig, out_path)
 
 
-def build_fig10(ddpg_logs_all: dict, out_path: Path) -> None:
-    _, summary = compute_seeded_convergence_diagnostics(ddpg_logs_all)
-    scenarios = ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]
-    labels = ["Balanced", "Saving", "Generation"]
-    x = np.arange(len(scenarios))
-    fig, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 10.0 * CM_TO_IN))
-    metrics = [
-        ("reward_best_mean", "Best reward mean"),
-        ("reward_final_mean", "Final reward mean"),
-        ("plateau_episode_mean", "Plateau episode mean"),
-        ("late_regression_seed_fraction", "Late regression fraction"),
-    ]
-    for ax, (metric, ylabel), tag in zip(axes.flatten(), metrics, ["a", "b", "c", "d"], strict=True):
-        vals = [summary[s][metric] for s in scenarios]
-        ax.bar(x, vals, color=[PALETTE[s] for s in scenarios], width=0.62)
-        annotate_bar_values(ax, x, vals, "{:.2f}")
-        style_axis(ax)
-        panel_label(ax, tag)
-        ax.set_ylabel(ylabel)
-        ax.set_xticks(x)
-        ax.set_xticklabels(labels)
-    fig.tight_layout(pad=0.5, w_pad=0.8, h_pad=0.8)
-    _save(fig, out_path)
-
-
-def build_fig11(regime_winners: pd.DataFrame, out_path: Path) -> None:
-    regime = regime_winners.sort_values("dataset_scale")
-    scales = regime["dataset_scale"].tolist()
-    x = np.arange(len(scales))
-    fig, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 10.0 * CM_TO_IN))
-    metrics = [
-        ("mean_target_nmae", "Mean target nMAE"),
-        ("mean_tail_nmae", "Mean tail nMAE"),
-        ("mean_r2", "Mean $R^2$"),
-        ("selection_objective", "Selection objective"),
-    ]
-    for ax, (metric, ylabel), tag in zip(axes.flatten(), metrics, ["a", "b", "c", "d"], strict=True):
-        vals = regime[metric].to_numpy(dtype=float)
-        colors = ["#4C78A8", "#4C78A8", "#4C78A8", "#D55E00"]
-        ax.bar(x, vals, color=colors, width=0.62)
-        annotate_bar_values(ax, x, list(vals), "{:.4f}" if max(vals) < 0.2 else "{:.3f}")
-        style_axis(ax)
-        panel_label(ax, tag)
-        ax.set_ylabel(ylabel)
-        ax.set_xticks(x)
-        ax.set_xticklabels([str(s) for s in scales])
-        ax.set_xlabel("Dataset scale")
-    fig.tight_layout(pad=0.5, w_pad=0.8, h_pad=0.8)
-    _save(fig, out_path)
-
-
 def build_nonlinear_response(bundle, dataset: pd.DataFrame, out_pdf: Path) -> None:
     base_point = dataset[MORPHOLOGY_FEATURES].median().to_numpy(dtype=float)
     pairs = [("OSR", "EUIt"), ("FAR", "EG"), ("SVF", "H"), ("theta", "H")]
@@ -422,51 +367,30 @@ def build_nonlinear_response(bundle, dataset: pd.DataFrame, out_pdf: Path) -> No
     _save(fig, out_pdf)
 
 
-def build_reevaluation(config: Config, combined: pd.DataFrame, out_csv: Path) -> None:
-    normalized = normalized_benefit_frame(combined.copy())
-    scenarios = ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]
-    rows = []
-    for scenario in scenarios:
-        weights = config["optimization"]["utility_weights"][scenario]
-        subset = normalized.copy()
-        subset["utility"] = (
-            weights[0] * subset["EUIt_score"]
-            + weights[1] * subset["EG_score"]
-            + weights[2] * subset["H_score"]
-        )
-        ddpg_best = subset[(subset["method"] == "DDPG") & (subset["scenario"] == scenario)].sort_values("utility", ascending=False).iloc[0]
-        nsga_best = subset[subset["method"] == "NSGA-II"].sort_values("utility", ascending=False).iloc[0]
-        rows.append(ddpg_best[["method", "scenario", "seed", *MORPHOLOGY_FEATURES, "EUIt", "EG", "H"]].to_dict())
-        rows.append(nsga_best[["method", "scenario", "seed", *MORPHOLOGY_FEATURES, "EUIt", "EG", "H"]].to_dict())
-    selected = pd.DataFrame(rows).drop_duplicates(subset=["method", "scenario", "seed"]).reset_index(drop=True)
-    reevaluated = reevaluate_candidates(config, selected[MORPHOLOGY_FEATURES].reset_index(drop=True), deterministic=True)
-    reevaluated["method"] = selected["method"].to_numpy()
-    reevaluated["scenario"] = selected["scenario"].to_numpy()
-    reevaluated["seed"] = selected["seed"].to_numpy()
-    for target in PERFORMANCE_TARGETS:
-        reevaluated[f"surrogate_{target}"] = selected[target].to_numpy()
-    out_csv.parent.mkdir(parents=True, exist_ok=True)
-    reevaluated.to_csv(out_csv, index=False)
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Rebuild the current manuscript figure set.")
+    parser.add_argument("--repo-root", type=Path, default=Path.cwd(), help="Repository root containing elsarticle/ and artifacts/server_runs/.")
+    parser.add_argument("--static-fig-commit", default=STATIC_FIG_COMMIT, help="Commit that provides the kept fig10/fig11 PDFs.")
+    parser.add_argument("--compile-manuscript", action="store_true", help="Run latexmk after rebuilding the figure PDFs.")
+    return parser.parse_args()
 
 
 def main() -> None:
-    set_journal_style()
-    root = Path.cwd()
-    run_id = "20260405_highest_precision_2000_compare"
-    run_root = _run_root(root, run_id)
+    args = parse_args()
+    root = args.repo_root.resolve()
+    compare_root = root / "artifacts" / "server_runs" / CURRENT_COMPARE_RUN
+    selection_root = root / "artifacts" / "server_runs" / CURRENT_SELECTION_RUN
     fig_dir = root / "elsarticle" / "fig"
-    report_dir = run_root / "reports"
-    report_dir.mkdir(parents=True, exist_ok=True)
 
-    cv = pd.read_csv(run_root / "models" / "cv_predictions.csv")
-    ddpg = pd.read_csv(run_root / "optimization" / "ddpg_results.csv")
-    nsga = pd.read_csv(run_root / "optimization" / "nsga2_results.csv")
-    combined = pd.read_csv(run_root / "optimization" / "optimization_results.csv")
-    logs_all = json.loads((run_root / "optimization" / "ddpg_logs_all.json").read_text(encoding="utf-8"))
-    regime_winners = pd.read_csv(root / "artifacts" / "server_runs" / "20260405_surrogate_rebenchmark" / "models" / "surrogate_regime_winners.csv")
-    config = Config.from_yaml(root / "configs" / f"revision.server_{run_id}.yaml")
-    bundle = load_surrogate(run_root / "models" / "surrogate.pt")
-    dataset = pd.read_csv(run_root / "data" / "simulated_samples.csv")
+    set_journal_style()
+    cv = pd.read_csv(compare_root / "models" / "cv_predictions.csv")
+    ddpg = pd.read_csv(compare_root / "optimization" / "ddpg_results.csv")
+    nsga = pd.read_csv(compare_root / "optimization" / "nsga2_results.csv")
+    combined = pd.read_csv(compare_root / "optimization" / "optimization_results.csv")
+    logs_all = json.loads((compare_root / "optimization" / "ddpg_logs_all.json").read_text(encoding="utf-8"))
+    config = Config.from_yaml(root / "configs" / "revision.yaml")
+    bundle = load_surrogate(compare_root / "models" / "surrogate.pt")
+    dataset = pd.read_csv(compare_root / "data" / "simulated_samples.csv")
 
     build_fig4(cv, fig_dir / "fig4.pdf")
     build_fig5(cv, fig_dir / "fig5.pdf")
@@ -474,11 +398,29 @@ def main() -> None:
     build_fig7(combined, fig_dir / "fig7.pdf")
     build_fig8(combined, fig_dir / "fig8.pdf")
     build_fig9(ddpg, nsga, combined, config["optimization"]["utility_weights"], fig_dir / "fig9.pdf")
-    build_fig10(logs_all, fig_dir / "fig10.pdf")
-    build_fig11(regime_winners, fig_dir / "fig11.pdf")
     build_nonlinear_response(bundle, dataset, fig_dir / "nonlinear_response_profiles.pdf")
-    build_reevaluation(config, combined, report_dir / "top_candidate_reevaluation_2000.csv")
-    print(json.dumps({"status": "ok", "figure_dir": str(fig_dir), "report_dir": str(report_dir)}, ensure_ascii=False, indent=2))
+
+    # fig10/fig11 are intentionally pinned to the approved manuscript version.
+    _restore_pdf_from_git(root, args.static_fig_commit, "elsarticle/fig/fig10.pdf", fig_dir / "fig10.pdf")
+    _restore_pdf_from_git(root, args.static_fig_commit, "elsarticle/fig/fig11.pdf", fig_dir / "fig11.pdf")
+
+    if args.compile_manuscript:
+        _compile_manuscript(root)
+
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "compare_run": str(compare_root),
+                "selection_run": str(selection_root),
+                "figure_dir": str(fig_dir),
+                "static_fig_commit": args.static_fig_commit,
+                "compiled": args.compile_manuscript,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

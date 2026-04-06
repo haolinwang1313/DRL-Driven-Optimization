@@ -16,7 +16,7 @@ To avoid notation drift between the main text and the appendix, the following de
 \centering
 \caption{Representative building prototypes used in the parametric dataset.}
 \begin{threeparttable}
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
 \toprule
 ID & Type & Footprint Area (m$^2$) & Floors & FAR Range \\
 \midrule
@@ -30,7 +30,7 @@ S-3 & Slab       & 1000 & 13--30 & 2.03--4.69 \\
 C-1 & Courtyard  & 2000 & 1--3   & 0.31--0.94 \\
 C-2 & Courtyard  & 1500 & 4--12  & 0.94--2.81 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{threeparttable}
 \end{table}
 
@@ -43,7 +43,7 @@ The original surrogate workflow began from a 500-sample baseline, but the final 
 \caption{Five-fold cross-validation summary for the DNN surrogate model.}
 \label{tab:supp_cv}
 \begin{threeparttable}
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
 \toprule
 Objective & Mean $R^2$ & Mean MAE & Std. $R^2$ & Std. MAE \\
 \midrule
@@ -51,7 +51,7 @@ EUIt & 0.983 & 0.209 & $\pm 0.001$ & $\pm 0.005$ \\
 EG   & 0.972 & 0.026 & $\pm 0.002$ & $\pm 0.001$ \\
 H    & 0.992 & 0.025 & $\pm 0.001$ & $\pm 0.001$ \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{threeparttable}
 \end{table}
 
@@ -62,7 +62,7 @@ To evaluate reliability in optimization-relevant regions, additional error slice
 \caption{Error diagnostics in extreme regions of the target distributions.}
 \label{tab:supp_extreme}
 \begin{threeparttable}
-\begin{tabular}{@{}lccccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
 \toprule
 Target & MAE$_\mathrm{all}$ & MAE$_{q10}$ & MAE$_{q90}$ & $q_{0.10}$ & $q_{0.90}$ \\
 \midrule
@@ -70,7 +70,7 @@ EUIt & 0.209 & 0.283 & 0.194 & 67.83 & 73.32 \\
 EG   & 0.026 & 0.027 & 0.030 & 2.132 & 2.655 \\
 H    & 0.025 & 0.026 & 0.029 & 6.514 & 7.429 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{threeparttable}
 \end{table}
 
@@ -79,7 +79,7 @@ H    & 0.025 & 0.026 & 0.029 & 6.514 & 7.429 \\
 \caption{Additional surrogate-fidelity audit on the cross-validation predictions of the selected 2000-sample surrogate.}
 \label{tab:supp_fidelity}
 \begin{threeparttable}
-\begin{tabular}{@{}lccccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
 \toprule
 Target & RMSE & MAE & nRMSE & Tail nMAE & $R^2$ \\
 \midrule
@@ -87,7 +87,7 @@ EUIt & 0.279 & 0.209 & 0.0227 & 0.0194 & 0.983 \\
 EG   & 0.033 & 0.026 & 0.0305 & 0.0265 & 0.972 \\
 H    & 0.032 & 0.025 & 0.0172 & 0.0150 & 0.992 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \begin{tablenotes}[flushleft]
 \footnotesize
 \item Note: nRMSE is normalized by the observed range of each target over the cross-validation predictions. Tail nMAE is the mean of the lower-tail and upper-tail nMAE diagnostics used for surrogate selection.
@@ -133,7 +133,7 @@ To complement the linear correlation results in the main text, Fig.~\ref{fig:sup
 
 \begin{figure}[H]
 \centering
-\IfFileExists{nonlinear_response_profiles.pdf}{%
+\IfFileExists{fig/nonlinear_response_profiles.pdf}{%
 \includegraphics[width=\linewidth]{nonlinear_response_profiles.pdf}%
 }{%
 \fbox{\parbox{0.92\linewidth}{\centering Nonlinear response profile figure not available in the current worktree. The text and tables in this draft already reflect the updated highest-accuracy-surrogate rerun.}}%
