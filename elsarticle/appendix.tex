@@ -36,7 +36,7 @@ C-2 & Courtyard  & 1500 & 4--12  & 0.94--2.81 \\
 
 \subsection{Surrogate validation}
 
-The original surrogate workflow began from a 500-sample baseline, but the final optimizer comparison in this revision uses the strict highest-accuracy surrogate obtained from the expanded 2000-sample regime. Five-fold cross-validation is used to assess that final selected model. Table~\ref{tab:supp_cv} reports the corresponding aggregate validation results.
+The original surrogate workflow began from a 500-sample baseline, but the final optimizer comparison in this revision uses the strict highest-accuracy surrogate obtained from the expanded 2000-sample regime. In the synced artifact bundle, that regime is generated under the documented \texttt{fallback\_analytic} simulation mode rather than by a direct full-stack EnergyPlus/Radiance rerun. Five-fold cross-validation is used to assess that final selected model. Table~\ref{tab:supp_cv} reports the corresponding aggregate validation results.
 
 \begin{table}[H]
 \centering
@@ -151,8 +151,8 @@ To reduce over-reliance on surrogate predictions, the workflow re-evaluates pref
 \caption{Independent re-evaluation of selected candidates from the highest-accuracy 2000-sample surrogate rerun. Surrogate and deterministic re-evaluation values are reported for the current preference-aligned selections.}
 \label{tab:supp_reeval}
 \begin{threeparttable}
-\scriptsize
-\begin{tabular}{@{}lccccccc@{}}
+\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccccc@{}}
 \toprule
 Method & Scenario & EUIt$_\mathrm{sur}$ & EUIt$_\mathrm{re}$ & EG$_\mathrm{sur}$ & EG$_\mathrm{re}$ & H$_\mathrm{sur}$ & H$_\mathrm{re}$ \\
 \midrule
@@ -161,6 +161,6 @@ NSGA-II & NSGA-II (seed 20260310) & 66.000 & 67.730 & 2.850 & 2.712 & 7.850 & 7.
 DDPG & Saving & 66.698 & 67.473 & 2.844 & 2.769 & 7.671 & 7.611 \\
 DDPG & Generation & 66.356 & 67.836 & 2.841 & 2.735 & 7.807 & 7.530 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{threeparttable}
 \end{table}
