@@ -99,6 +99,11 @@ optimization:
     pm_eta_grid: [20, 30]
     mutation_prob_grid: [0.0833333333, 0.2]
     seed: 20260310
+  cmaes:
+    evaluation_budget: 24000
+    seeds_per_scenario: 10
+    sigma0: 0.2
+    popsize: 16
 
 report:
   figures_dir: artifacts/figures

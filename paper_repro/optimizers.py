@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+import cma
 import numpy as np
 import pandas as pd
 import torch
@@ -374,6 +375,97 @@ def run_random_search(
     suffix = f"_{output_suffix}" if output_suffix else ""
     write_csv(frame, Path(dirs["optimization_dir"]) / f"random_search_results{suffix}.csv")
     write_json(summary, Path(dirs["optimization_dir"]) / f"random_search_summary{suffix}.json")
+    return frame, summary
+
+
+def run_cmaes(
+    config: Config,
+    surrogate: SurrogateBundle,
+    scenarios: list[str] | None = None,
+    seed_start: int = 0,
+    seed_end: int | None = None,
+    output_suffix: str = "",
+) -> tuple[pd.DataFrame, dict]:
+    dirs = config.ensure_artifact_dirs()
+    ddpg_cfg = config["optimization"]["ddpg"]
+    cma_cfg = config["optimization"].get("cmaes", {})
+    env = OptimizationEnvironment(surrogate=surrogate, guardrail_cfg=config["optimization"].get("surrogate_guardrail"))
+    evaluation_budget = int(cma_cfg.get("evaluation_budget", ddpg_cfg["max_episodes"] * ddpg_cfg["max_steps_per_episode"]))
+    seeds_per_scenario = int(cma_cfg.get("seeds_per_scenario", min(10, ddpg_cfg["seeds_per_scenario"])))
+    sigma0 = float(cma_cfg.get("sigma0", 0.2))
+    popsize = int(cma_cfg.get("popsize", 16))
+    selected_scenarios = scenarios or list(ddpg_cfg["scenarios"])
+    if seed_end is None:
+        seed_end = seeds_per_scenario
+
+    results = []
+    summary: dict[str, dict[str, float]] = {}
+    for scenario_name, weights in ddpg_cfg["scenarios"].items():
+        if scenario_name not in selected_scenarios:
+            continue
+        best_rewards = []
+        for seed in range(seed_start, min(seed_end, seeds_per_scenario)):
+            run_seed = config["project"]["random_seed"] + 20000 + seed * 17 + len(results)
+            _set_seed(run_seed)
+            rng = np.random.default_rng(run_seed)
+            x0 = rng.uniform(0.0, 1.0, len(MORPHOLOGY_FEATURES)).tolist()
+            optimizer = cma.CMAEvolutionStrategy(
+                x0,
+                sigma0,
+                {
+                    "bounds": [0.0, 1.0],
+                    "seed": run_seed,
+                    "popsize": popsize,
+                    "verbose": -9,
+                },
+            )
+
+            best_reward = float("-inf")
+            best_action = None
+            best_outputs = None
+            evaluations = 0
+            while evaluations < evaluation_budget and not optimizer.stop():
+                current_batch = min(popsize, evaluation_budget - evaluations)
+                candidates = np.asarray(optimizer.ask(number=current_batch), dtype=np.float32)
+                actual_actions, outputs = env.evaluate_batch(candidates)
+                rewards = env.reward_batch(outputs, weights)
+                losses = (-rewards).tolist()
+                optimizer.tell(candidates.tolist(), losses)
+                best_index = int(np.argmax(rewards))
+                if float(rewards[best_index]) > best_reward:
+                    best_reward = float(rewards[best_index])
+                    best_action = actual_actions[best_index].copy()
+                    best_outputs = outputs[best_index].copy()
+                evaluations += current_batch
+
+            assert best_action is not None and best_outputs is not None
+            best_rewards.append(best_reward)
+            results.append(
+                {
+                    "method": "CMA-ES",
+                    "scenario": scenario_name,
+                    "seed": seed,
+                    **{feature: float(value) for feature, value in zip(MORPHOLOGY_FEATURES, best_action, strict=True)},
+                    "EUIt": float(best_outputs[0]),
+                    "EG": float(best_outputs[1]),
+                    "H": float(best_outputs[2]),
+                    "reward": best_reward,
+                }
+            )
+        if best_rewards:
+            summary[scenario_name] = {
+                "count": float(len(best_rewards)),
+                "reward_mean": float(np.mean(best_rewards)),
+                "reward_std": float(np.std(best_rewards)),
+                "evaluation_budget": float(evaluation_budget),
+                "popsize": float(popsize),
+                "sigma0": float(sigma0),
+            }
+
+    frame = pd.DataFrame(results)[OPTIMIZATION_RESULT_COLUMNS]
+    suffix = f"_{output_suffix}" if output_suffix else ""
+    write_csv(frame, Path(dirs["optimization_dir"]) / f"cmaes_results{suffix}.csv")
+    write_json(summary, Path(dirs["optimization_dir"]) / f"cmaes_summary{suffix}.json")
     return frame, summary
 
 
