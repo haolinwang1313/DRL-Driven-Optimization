@@ -129,6 +129,82 @@ NSGA-II archive spread & 0.1642 & 0.1968 & mean and std of distance to normalize
 \end{threeparttable}
 \end{table}
 
+To probe whether this fragility is visible even before comparing optimizer archives, an additional checkpoint-sensitivity audit was run on two available 2000-sample surrogate checkpoints: the imported publication checkpoint and a locally retrained checkpoint synced from the same revision branch. Table~\ref{tab:supp_checkpoint} shows that the two checkpoints have very similar training-fit statistics, yet they do not behave identically when evaluated on random samples drawn from the observed feature ranges. In particular, the locally retrained checkpoint produces a larger fraction of EUIt predictions below the observed minimum (0.0080 versus 0.0008) and a larger fraction of H predictions above the observed maximum (0.0040 versus 0.0012). The fraction of random samples that simultaneously exceed the observed target bounds also changes from 0.0004 to 0.0006. These differences are small in absolute terms, but they support the narrower diagnostic claim that similar in-sample fit does not guarantee identical extrapolative behavior.
+
+\begin{table}[H]
+\centering
+\caption{Checkpoint-sensitivity audit for two 2000-sample surrogate checkpoints.}
+\label{tab:supp_checkpoint}
+\begin{threeparttable}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}lccX@{}}
+\toprule
+Metric & Imported checkpoint & Local retrained checkpoint & Interpretation \\
+\midrule
+EUIt training MAE & 0.2038 & 0.1885 & similar training fit \\
+EG training MAE & 0.0248 & 0.0245 & similar training fit \\
+H training MAE & 0.0252 & 0.0261 & similar training fit \\
+EUIt below observed min fraction & 0.0008 & 0.0080 & local checkpoint shows higher low-side extrapolation risk \\
+EUIt above observed max fraction & 0.0646 & 0.0674 & both checkpoints extrapolate above the observed upper bound \\
+H above observed max fraction & 0.0012 & 0.0040 & local checkpoint shows higher high-side extrapolation risk \\
+Triple better-than-bounds fraction & 0.0004 & 0.0006 & both checkpoints admit rare optimizer-exploitable regions \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item Note: The audit compares the imported publication checkpoint and one synced local retrained checkpoint on the 2000-sample dataset using 5000 random feature samples drawn from the observed feature ranges.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Table~\ref{tab:supp_checkpoint_rank} complements that audit at the benchmark level. It compares the imported publication artifact with two later checkpoint selections that were retained during the revision process. The imported publication artifact still favors DDPG in Hypervolume, whereas the strict-highest-accuracy 2000-sample checkpoint and the surrogate-rebenchmark checkpoint both favor NSGA-II in both Hypervolume and IGD. The purpose of this table is not to promote one checkpoint as universally correct, but to show that optimizer ordering itself changes materially with surrogate selection.
+
+\begin{table}[H]
+\centering
+\caption{Benchmark-ordering fragility across three available checkpoint contexts.}
+\label{tab:supp_checkpoint_rank}
+\begin{threeparttable}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}lccccX@{}}
+\toprule
+Checkpoint context & Best DDPG HV & NSGA-II HV & Best DDPG IGD & NSGA-II IGD & Ordering takeaway \\
+\midrule
+Imported publication artifact & 1.2696 & 0.6528 & 0.5043 & 0.1419 & HV favors DDPG, but IGD already favors NSGA-II \\
+Strict-highest-accuracy 2000 checkpoint & 1.0107 & 1.3310 & 0.2205 & 0.1068 & NSGA-II favors in both HV and IGD \\
+Surrogate-rebenchmark checkpoint & 0.9337 & 1.3310 & 0.2874 & 0.1036 & NSGA-II favors in both HV and IGD \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item Note: ``Best DDPG'' denotes the strongest of the three DDPG scenarios within each checkpoint context. The first row comes from the imported publication artifact, while the other two rows come from the synced strict-highest-accuracy and surrogate-rebenchmark checkpoint bundles.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Finally, to test whether this surrogate fragility is specific to DDPG or can also affect a stronger continuous optimizer, a same-budget CMA-ES follow-up was run locally on the three checkpoint contexts summarized above. Table~\ref{tab:supp_cmaes} reports the result. Across all three contexts, all three scalarization scenarios, and all ten seeds per scenario, CMA-ES converges to the same clipped corner solution $(66.0,\ 2.85,\ 7.85)$ with reward 1.0. A trajectory probe further shows that this is not an immediate one-step failure: in a representative balanced-scenario run, the first perfect-reward hit occurs only after about 2992--3168 evaluations across the three checkpoint contexts, after a gradual rise from initial rewards around 0.35--0.44. By contrast, the same-budget random-search archive available for the imported publication artifact remains materially below this corner, with mean rewards around 0.87 rather than 1.0. Deterministic analytic re-evaluation of representative CMA-ES corner candidates also shows heterogeneous drift across checkpoints: the imported publication and strict-highest-accuracy checkpoints retain EUIt~=~66.0 but lose between about 0.06 and 0.21 on EG/H, whereas the surrogate-rebenchmark checkpoint degrades more strongly to EUIt~=~68.66, EG~=~2.56, and H~=~7.45. This result does not establish CMA-ES as a better optimizer in the present surrogate workflow; rather, it indicates that once the surrogate exposes a reward-saturating corner, a strong continuous optimizer can exploit the same artifact deterministically, while independent analytic re-evaluation still reveals checkpoint-dependent overstatement at the corner. The methodological implication is that the central risk is broader than DDPG instability alone.
+
+\begin{table}[H]
+\centering
+\caption{Same-budget CMA-ES follow-up across three checkpoint contexts.}
+\label{tab:supp_cmaes}
+\begin{threeparttable}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}lccccX@{}}
+\toprule
+Checkpoint context & EUIt & EG ($10^6$~kWh/y) & H (h) & Reward & Observation \\
+\midrule
+Imported publication artifact & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
+Strict-highest-accuracy 2000 checkpoint & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
+Surrogate-rebenchmark checkpoint & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item Note: Each row summarizes a same-budget CMA-ES run with 24{,}000 surrogate evaluations, 10 seeds per scenario, and three reward-scalarization scenarios. The reported objective tuple is the scenario-level optimum reached in every run.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
 To complement the linear correlation results in the main text, Fig.~\ref{fig:supp_nonlinear} reports representative surrogate-based nonlinear response profiles for OSR$\rightarrow$EUIt, FAR$\rightarrow$EG, SVF$\rightarrow$H, and $\theta\rightarrow$H.
 
 \begin{figure}[H]

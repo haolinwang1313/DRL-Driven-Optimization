@@ -21,8 +21,9 @@ from paper_repro.metrics import (
     summarize_objectives,
     summarize_preference_utilities,
 )
-from paper_repro.optimizers import run_ddpg, run_nsga2, run_random_search
+from paper_repro.optimizers import run_cmaes, run_ddpg, run_nsga2, run_random_search
 from paper_repro.publication import sync_publication_results, validate_publication_results
+from paper_repro.physical_stack import physical_stack_candidate_probe
 from paper_repro.reviewer import run_revision_review
 from paper_repro.runtime import resolve_device
 from paper_repro.simulation import build_dataset_regimes, build_simulated_dataset, reevaluate_candidates
@@ -57,6 +58,7 @@ def optimizer_pipeline(
     config: Config,
     ddpg_only: bool = False,
     nsga2_only: bool = False,
+    cmaes_only: bool = False,
     random_only: bool = False,
     scenarios: list[str] | None = None,
     seed_start: int = 0,
@@ -70,6 +72,8 @@ def optimizer_pipeline(
     ddpg_logs = {}
     nsga_results = pd.DataFrame()
     nsga_calibration = {}
+    cmaes_results = pd.DataFrame()
+    cmaes_summary = {}
     random_results = pd.DataFrame()
     random_summary = {}
     if random_only:
@@ -82,6 +86,16 @@ def optimizer_pipeline(
             output_suffix=output_suffix,
         )
         return random_results, {"random_search": random_summary}
+    if cmaes_only:
+        cmaes_results, cmaes_summary = run_cmaes(
+            config,
+            surrogate,
+            scenarios=scenarios,
+            seed_start=seed_start,
+            seed_end=seed_end,
+            output_suffix=output_suffix,
+        )
+        return cmaes_results, {"cmaes": cmaes_summary}
     if not nsga2_only:
         ddpg_results, ddpg_logs = run_ddpg(
             config,
@@ -280,6 +294,42 @@ def publication_diagnostics_pipeline(config: Config) -> dict:
 def publication_review_pipeline(config: Config) -> dict:
     validate_publication_results(config)
     return run_revision_review(config)
+
+
+def physical_stack_candidate_pipeline(
+    config: Config,
+    input_csv: str | None = None,
+    limit: int = 5,
+    server_cfg_path: str | None = None,
+    output_suffix: str = "",
+    async_mode: bool = False,
+    wait_seconds: int = 0,
+    job_id: str | None = None,
+) -> dict:
+    candidate_path = None
+    frame = pd.DataFrame()
+    if job_id is None:
+        candidate_path = Path(input_csv) if input_csv else Path(config["publication"]["reevaluation_dir"]) / "top_candidate_reevaluation.csv"
+        if not candidate_path.exists():
+            imported = Path(config["publication"]["imported_results_root"]) / "reevaluation" / "top_candidate_reevaluation.csv"
+            candidate_path = imported
+        frame = pd.read_csv(candidate_path)
+    probe_frame, summary = physical_stack_candidate_probe(
+        config,
+        frame,
+        limit=limit,
+        server_cfg_path=server_cfg_path,
+        output_suffix=output_suffix,
+        async_mode=async_mode,
+        wait_seconds=wait_seconds,
+        job_id=job_id,
+    )
+    payload = {
+        "candidate_source": "" if candidate_path is None else str(candidate_path),
+        "rows": int(len(probe_frame)),
+        **summary,
+    }
+    return payload
 
 
 def full_reproduce(config: Config, install_missing: bool = False) -> dict:

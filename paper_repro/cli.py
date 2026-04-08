@@ -10,6 +10,7 @@ from paper_repro.pipeline import (
     full_reproduce,
     optimizer_pipeline,
     publication_diagnostics_pipeline,
+    physical_stack_candidate_pipeline,
     publication_review_pipeline,
     publication_sync_pipeline,
     report_pipeline,
@@ -31,6 +32,7 @@ def _build_parser() -> argparse.ArgumentParser:
     run_optimizers = subparsers.add_parser("run-optimizers")
     run_optimizers.add_argument("--ddpg-only", action="store_true")
     run_optimizers.add_argument("--nsga2-only", action="store_true")
+    run_optimizers.add_argument("--cmaes-only", action="store_true")
     run_optimizers.add_argument("--random-only", action="store_true")
     run_optimizers.add_argument("--scenario", action="append")
     run_optimizers.add_argument("--seed-start", type=int, default=0)
@@ -41,6 +43,14 @@ def _build_parser() -> argparse.ArgumentParser:
     sync_publication.add_argument("--server-config")
     subparsers.add_parser("publication-diagnostics")
     subparsers.add_parser("reevaluate-candidates")
+    physical_probe = subparsers.add_parser("physical-reevaluate-candidates")
+    physical_probe.add_argument("--input-csv")
+    physical_probe.add_argument("--limit", type=int, default=5)
+    physical_probe.add_argument("--server-config")
+    physical_probe.add_argument("--output-suffix", default="")
+    physical_probe.add_argument("--async", dest="async_mode", action="store_true")
+    physical_probe.add_argument("--wait-seconds", type=int, default=0)
+    physical_probe.add_argument("--job-id")
     subparsers.add_parser("publication-review")
 
     full = subparsers.add_parser("full-reproduce")
@@ -66,6 +76,7 @@ def _run(command: str, config_path: str, install_missing: bool = False, **extra)
             config,
             ddpg_only=extra.get("ddpg_only", False),
             nsga2_only=extra.get("nsga2_only", False),
+            cmaes_only=extra.get("cmaes_only", False),
             random_only=extra.get("random_only", False),
             scenarios=extra.get("scenario"),
             seed_start=extra.get("seed_start", 0),
@@ -81,6 +92,17 @@ def _run(command: str, config_path: str, install_missing: bool = False, **extra)
         return publication_diagnostics_pipeline(config)
     if command == "reevaluate-candidates":
         return publication_diagnostics_pipeline(config)
+    if command == "physical-reevaluate-candidates":
+        return physical_stack_candidate_pipeline(
+            config,
+            input_csv=extra.get("input_csv"),
+            limit=extra.get("limit", 5),
+            server_cfg_path=extra.get("server_config"),
+            output_suffix=extra.get("output_suffix", ""),
+            async_mode=extra.get("async_mode", False),
+            wait_seconds=extra.get("wait_seconds", 0),
+            job_id=extra.get("job_id"),
+        )
     if command == "publication-review":
         return publication_review_pipeline(config)
     if command == "full-reproduce":
@@ -97,12 +119,18 @@ def main() -> None:
         install_missing=getattr(args, "install_missing", False),
         ddpg_only=getattr(args, "ddpg_only", False),
         nsga2_only=getattr(args, "nsga2_only", False),
+        cmaes_only=getattr(args, "cmaes_only", False),
         random_only=getattr(args, "random_only", False),
         scenario=getattr(args, "scenario", None),
         seed_start=getattr(args, "seed_start", 0),
         seed_end=getattr(args, "seed_end", None),
         output_suffix=getattr(args, "output_suffix", ""),
         server_config=getattr(args, "server_config", None),
+        input_csv=getattr(args, "input_csv", None),
+        limit=getattr(args, "limit", 5),
+        async_mode=getattr(args, "async_mode", False),
+        wait_seconds=getattr(args, "wait_seconds", 0),
+        job_id=getattr(args, "job_id", None),
     )
     print(json.dumps(payload, indent=2, ensure_ascii=False))
 

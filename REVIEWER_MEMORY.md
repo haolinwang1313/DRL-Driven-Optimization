@@ -42,3 +42,23 @@ Hard-mode reviewer memory will be appended here after each completed round.
 - Final reviewer verdict reached `Ready`.
 - Remaining issues are now presentation-level caveats rather than fundamental scientific blockers.
 - The paper is acceptable as a methodological contribution as long as the explicit caveats remain visible.
+
+## Round 6 - Score: 6.5/10
+
+- The paper has become more honest, but the reviewer now rejects "cautionary study" as a sufficient endpoint unless it becomes diagnostic rather than descriptive.
+- New first-order blocker: quantified cross-surrogate / checkpoint sensitivity analysis is now the minimum acceptable substitute for missing mechanistic explanation.
+- Stronger baseline pressure increased again: reviewer now explicitly prefers `CMA-ES`, with literature-based positioning as only a weak fallback.
+- Main-text compute accounting is now a concrete required fix: wall-clock, surrogate training cost, query count, and memory footprint.
+- Early stopping should be demoted unless complete across scenarios.
+- Recurring pattern flagged again: adding caveats instead of adding analysis.
+
+## Round 7 - Score: 8.0/10
+
+- The paper has crossed from "descriptive cautionary tale" into a more substantive diagnostic study.
+- Cross-checkpoint fragility evidence is now strong enough to count as a real methodological contribution.
+- `CMA-ES` was not only added but investigated: trajectory probing shows progressive ascent to the corner rather than an immediate one-step bug, and random search does not reach the same corner under the same budget.
+- Local CPU-only hardware audit now exists, but the reviewer still wants the paper to frame it explicitly as a representative local reference rather than a full production benchmark.
+- Remaining blockers are narrower:
+  - no non-`fallback_analytic` publication closure yet;
+  - SAC is still discussed but not run, so either scope it out clearly or execute a minimal run;
+  - add actionable transferability guidance for how practitioners should diagnose risky surrogates.

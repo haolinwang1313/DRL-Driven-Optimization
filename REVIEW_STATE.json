@@ -1,10 +1,15 @@
 {
-  "round": 4,
-  "thread_id": "b573e5b2cd294f4293475edf025bf797",
+  "round": 1,
+  "thread_id": "9d418f0c033b4a048504bace1171ea71",
   "status": "completed",
   "difficulty": "hard",
-  "last_score": 7.5,
-  "last_verdict": "ready",
-  "pending_experiments": [],
-  "timestamp": "2026-04-04T11:35:00+08:00"
+  "last_score": 8.0,
+  "last_verdict": "almost",
+  "pending_experiments": [
+    "physical_stack_or_non_fallback_publication_results",
+    "align_physical_probe_metrics_with_euit_eg_h",
+    "collect_async_probe_result_and_expand_small_batch",
+    "optional_minimal_sac_run"
+  ],
+  "timestamp": "2026-04-08T13:35:00+08:00"
 }
