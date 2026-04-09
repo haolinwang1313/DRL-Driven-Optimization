@@ -22,8 +22,8 @@ Current progress: a two-checkpoint fit/extrapolation audit has now been complete
 
 2. External validity is still too weak for `Applied Energy`.
 Single-case, single-selected-surrogate, fallback-analytic evidence is still viewed as near publication-blocking unless paired with stronger surrogate diagnostics or sensitivity analysis.
-Current progress: stronger surrogate diagnostics are now in place, representative `CMA-ES` corner candidates have also been checked through deterministic analytic reevaluation, and remote proof-of-life now exists for both `EnergyPlus` and `Radiance`. Even so, the synced remote artifacts still report `simulation_mode = fallback_analytic`, so physical-stack closure is still unavailable at the pipeline level.
-Additional progress: the project can now map representative candidates to nearest known block geometries and run a remote `physical_stack_probe`, returning physical `EUIt` plus Radiance sensor outputs for small-batch candidate checks.
+Current progress: stronger surrogate diagnostics are now in place, representative `CMA-ES` corner candidates have also been checked through deterministic analytic reevaluation, and remote proof-of-life now exists for both `EnergyPlus` and `Radiance`. The manuscript and appendix now include bounded small-batch physical evidence: representative candidates yield physical `EUIt` values near `74` against surrogate values near `66--69`, and the revised windowsill-style direct-sun-hours path now yields physical `H` values of `7.525` and `6.075` against surrogate values of `7.850` and `7.569`. Even so, the synced remote artifacts still report `simulation_mode = fallback_analytic`, so full physical-stack publication closure is still unavailable at the pipeline level.
+Additional progress: the project can now map representative candidates to nearest known block geometries and run a remote `physical_stack_probe`, returning the strongest current physical evidence for `EUIt`, a weaker but stable rooftop-PV proxy for `EG`, and a newly improved small-batch direct-sun-hours check for `H`.
 
 3. The optimizer benchmark set remains incomplete.
 Random search plus NSGA-II is not considered enough. Reviewer explicitly prefers `CMA-ES`; a weaker fallback is literature-based positioning against recent Applied Energy optimizer results.
@@ -64,13 +64,13 @@ Status: completed in partial form. Query-count accounting is now in the main tex
 Status: completed.
 
 7. Align the new `physical_stack` probe outputs with the paper's `EUIt`, `EG`, and `H` definitions.
-Status: in progress. The project now has a 4-method small-batch physical probe table, but the current outputs are still a residential-agnostic `EUIt`, zero `EG` generation, and a point-in-time `H` proxy.
+Status: substantially advanced. `EUIt` has been tightened across representative candidates into a partially aligned physical range (`74.379` for the current `DDPG` representative, `74.057` for the current `NSGA-II` representative, `73.967` for the current `CMA-ES` representative, and `73.318` for the current `RandomSearch` representative), so `EUIt` is no longer the weakest link. `H` has now also been materially improved by replacing the point-illuminance proxy with a windowsill-style Jan~20 direct-sun-hours calculation: the two representative candidates now yield physical `H` values of `7.525` and `6.075` against surrogate values near `7.5--7.9`. This is still only a small-batch partial closure, but it is no longer merely a compressed structural proxy.
 
 9. Make the aligned physical probe path asynchronous/resumable.
 Status: now high priority. The aligned single-candidate probe works, but larger synchronous runs still time out before the remote result file is returned.
 
 10. Stabilize async physical probe completion semantics.
-Status: in progress. Async submission and later polling now work, but long-running completion still needs one more hardening pass before larger aligned probes can rely on it.
+Status: substantially advanced. Async submission, polling, stale-job retirement, stage-aware `status.json`, and stage-level remote log emission now all work. Multiple hardened async probes have now been harvested successfully, so the remaining issue has shifted away from completion semantics and toward metric validity.
 
 Update: remote worker launch and `submitted -> running` status transitions are now both confirmed. The remaining async gap is result harvesting and practical multi-candidate expansion.
 
@@ -81,10 +81,9 @@ Additional update: the latest async worker has been confirmed to spawn a real `h
 Status: completed. A fresh async job now launches the remote Python worker directly; the remaining async gap is result/status harvesting for long jobs.
 
 12. Harvest the first completed async physical result before expanding batch size.
-Status: active. The current lead job is still `running` and compute-bound; the immediate next step is result collection, not additional submission.
+Status: completed and repeated. The first hardened async result (`513150aac010`) established that harvesting works; the second compressed-geometry result (`73c66e9d11e5`) established that the probe can also be iteratively improved and re-harvested. The next loop should pivot from harvesting mechanics to residual residential-assumption alignment.
 
-Update: repeated polling still shows the lead job in a healthy `running` state with a live `honeybee-energy -> EnergyPlus` child chain. The next loop should remain focused on harvesting rather than expansion.
+13. Integrate the strongest current physical evidence into the manuscript.
+Status: completed in bounded form. The appendix now includes a small-batch physical probe table for two representative candidates, and the main discussion/limitations now describe the evidence asymmetrically: strongest closure for `EUIt`, weaker closure for `EG`, and a newly improved but still bounded direct-sun-hours closure for `H`.
 
-Fresh lead-job update: replacement job `6e80a1552e92` is also still in a healthy `running` state with a live `honeybee-energy -> EnergyPlus` child chain. The next loop should continue harvesting this job rather than expand batch size.
-
-Additional update: stale-job detection is now implemented. The old lead job `621a1455274b` was retired as stale, and a fresh replacement job `6e80a1552e92` is now the clean lead job to harvest.
+Update: the earlier replacement job `6e80a1552e92` was also retired as stale after the new hardening pass. The fresh hardened job `513150aac010` completed and wrote both a local result JSON and a merged reevaluation CSV.

@@ -240,3 +240,28 @@ DDPG & Generation & 66.356 & 67.836 & 2.841 & 2.735 & 7.807 & 7.530 \\
 \end{tabular*}
 \end{threeparttable}
 \end{table}
+
+To complement the deterministic fallback reevaluation, a small-batch physical-stack probe was also carried out on two representative candidates using the repo-side physical-stack path. The current best-aligned version of that path combines a compressed thermal model for EUIt, a simplified rooftop-PV proxy for EG, and a January~20 windowsill-style direct-sun-hours check for H. Table~\ref{tab:supp_physprobe} summarizes the result. The main value of this table is not to claim full physical closure, but to show that the physical probe has now moved beyond proof-of-life and into a partially aligned diagnostic regime. In particular, the two representative candidates yield physical EUIt values of 74.379 and 74.057~kWh/m$^2$/y, which are clearly above but still close to the corresponding surrogate values of 66.000 and 69.443. The EG proxy also remains directionally close to the surrogate values, and the revised H check is now in the same overall range as the surrogate-scale sunlight-hours values, although it remains less stable across candidates than EUIt. The methodological implication is therefore still asymmetric: the present physical probe provides the strongest check for EUIt, a weaker but stable structural check for EG, and a newly improved but still candidate-sensitive direct-sun-hours check for H.
+
+\begin{table}[H]
+\centering
+\caption{Small-batch physical-stack probe for two representative candidates under the current best-aligned settings.}
+\label{tab:supp_physprobe}
+\begin{threeparttable}
+\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccccc@{}}
+\toprule
+Method & Scenario & EUIt$_\mathrm{sur}$ & EUIt$_\mathrm{phys}$ & EG$_\mathrm{sur}$ & EG$_\mathrm{phys}$ & H$_\mathrm{sur}$ & H$_\mathrm{phys}$ \\
+\midrule
+DDPG & Balanced & 66.000 & 74.379 & 2.850 & 1.760 & 7.850 & 7.525 \\
+NSGA-II & NSGA-II & 69.443 & 74.057 & 2.613 & 2.479 & 7.569 & 6.075 \\
+\bottomrule
+\end{tabular*}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item Note: `phys` denotes the current project-level \texttt{physical\_stack\_probe}, not a final publication-grade reconstruction of all three paper metrics. EUIt is the strongest-aligned physical quantity under the current settings. EG is derived from a simplified rooftop-PV proxy. H is now derived from a windowsill-style January~20 direct-sun-hours calculation, which is much closer to the manuscript definition than the earlier point-illuminance proxy but should still be interpreted as a small-batch partial closure rather than as a full publication-pipeline replacement.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The same best-aligned physical settings were then extended to a four-method small-batch probe spanning the representative DDPG, NSGA-II, CMA-ES, and RandomSearch candidates that had previously been used for debugging the physical stack. Here, RandomSearch is included not as a co-equal optimizer benchmark with the same analytical depth as DDPG or NSGA-II, but as an uninformed physical reference for how much spread remains after projection through the current probe. Under this broader check, all four methods remained executable through the same project-level path and the resulting physical EUIt values collapsed into a relatively narrow band of about 73.3--74.4~kWh/m$^2$/y. The corresponding windowsill-style direct-sun-hours values also narrowed to about 6.0--7.5~h. This broader probe does not replace the surrogate benchmark reported in the main text, but it strengthens the narrower methodological interpretation: once the comparison is projected through the current physical probe, the method-level spread becomes smaller than the surrogate-space spread. The current evidence does not yet determine whether this shrinkage is caused mainly by a genuinely flat physical design region, by the nearest-block restriction of the probe, or by the surrogate's tendency to exaggerate method-level differences. It is therefore safest to interpret the result as evidence that optimizer ranking remains conditional on surrogate choice and validation mode, not as proof that all methods are physically equivalent.

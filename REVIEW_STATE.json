@@ -7,9 +7,8 @@
   "last_verdict": "almost",
   "pending_experiments": [
     "physical_stack_or_non_fallback_publication_results",
-    "align_physical_probe_metrics_with_euit_eg_h",
-    "collect_async_probe_result_and_expand_small_batch",
+    "decide_whether_current_four_method_small_batch_physical_closure_is_sufficient_or_expand_further",
     "optional_minimal_sac_run"
   ],
-  "timestamp": "2026-04-08T13:35:00+08:00"
+  "timestamp": "2026-04-09T15:28:53+08:00"
 }

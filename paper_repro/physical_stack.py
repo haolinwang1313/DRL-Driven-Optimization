@@ -68,11 +68,13 @@ def _remote_python_payload(request_remote_path: str, result_remote_path: str, st
 import json
 import os
 import subprocess
+import time
 from pathlib import Path
 from statistics import mean
 
 from honeybee.room import Room
 from honeybee.model import Model
+from honeybee.boundarycondition import boundary_conditions
 from honeybee_energy.lib.programtypes import office_program
 from honeybee_energy.hvac.idealair import IdealAirSystem
 from honeybee_energy.load.people import People
@@ -81,7 +83,12 @@ from honeybee_energy.load.equipment import ElectricEquipment
 from honeybee_energy.load.infiltration import Infiltration
 from honeybee_energy.load.setpoint import Setpoint
 from honeybee_energy.load.ventilation import Ventilation
-from honeybee_energy.schedule.ruleset import ScheduleRuleset
+from honeybee_energy.material.opaque import EnergyMaterialNoMass
+from honeybee_energy.construction.opaque import OpaqueConstruction
+from honeybee_energy.material.glazing import EnergyWindowMaterialSimpleGlazSys
+from honeybee_energy.construction.window import WindowConstruction
+from honeybee_energy.schedule.ruleset import ScheduleRuleset, ScheduleDay, ScheduleRule
+from ladybug.dt import Date
 from ladybug.epw import EPW
 from ladybug_geometry.geometry3d.pointvector import Point3D
 
@@ -90,16 +97,91 @@ RESULT_PATH = Path({result_remote_path!r})
 STATUS_PATH = Path({status_remote_path!r})
 PROJECT_ROOT = REQUEST_PATH.parents[2]
 PAYLOAD = json.loads(REQUEST_PATH.read_text(encoding='utf-8'))
-STATUS_PATH.write_text(json.dumps({{'status': 'running', 'remote_request': str(REQUEST_PATH)}}, ensure_ascii=False), encoding='utf-8')
 PROTOTYPES = {json.dumps(prototype_payload, ensure_ascii=False)}
 BLOCK_COORD = {{
     0: (0, 0), 1: (1, 0), 2: (2, 0),
     3: (0, 1), 4: (1, 1), 5: (2, 1),
     6: (0, 2), 7: (1, 2), 8: (2, 2),
 }}
+TIMEOUTS = {{
+    'cleanup': int(PAYLOAD.get('timeouts', {{}}).get('cleanup', 60)),
+    'energy_simulate': int(PAYLOAD.get('timeouts', {{}}).get('energy_simulate', 1800)),
+    'energy_result': int(PAYLOAD.get('timeouts', {{}}).get('energy_result', 180)),
+    'radiance_translate': int(PAYLOAD.get('timeouts', {{}}).get('radiance_translate', 180)),
+    'radiance_sunpath': int(PAYLOAD.get('timeouts', {{}}).get('radiance_sunpath', 120)),
+    'radiance_sky': int(PAYLOAD.get('timeouts', {{}}).get('radiance_sky', 120)),
+    'radiance_octree': int(PAYLOAD.get('timeouts', {{}}).get('radiance_octree', 180)),
+    'radiance_point_in_time': int(PAYLOAD.get('timeouts', {{}}).get('radiance_point_in_time', 180)),
+    'radiance_scontrib': int(PAYLOAD.get('timeouts', {{}}).get('radiance_scontrib', 180)),
+}}
+WALL_CONSTRUCTION = OpaqueConstruction(
+    'paper_wall_u_0_8',
+    [EnergyMaterialNoMass('paper_wall_layer', 1.0 / 0.8)],
+)
+ROOF_CONSTRUCTION = OpaqueConstruction(
+    'paper_roof_u_0_5',
+    [EnergyMaterialNoMass('paper_roof_layer', 1.0 / 0.5)],
+)
+FLOOR_CONSTRUCTION = OpaqueConstruction(
+    'paper_floor_u_1_5',
+    [EnergyMaterialNoMass('paper_floor_layer', 1.0 / 1.5)],
+)
+WINDOW_CONSTRUCTION = WindowConstruction(
+    'paper_window_u_2_7_shgc_0_78',
+    [EnergyWindowMaterialSimpleGlazSys('paper_window_glz', 2.7, 0.78, 0.6)],
+)
 
-def make_model(block_record):
-    rooms = []
+def log_event(message):
+    print(message, flush=True)
+
+def update_status(**extra):
+    payload = {{
+        'status': 'running',
+        'remote_request': str(REQUEST_PATH),
+        'timestamp': time.time(),
+    }}
+    payload.update(extra)
+    STATUS_PATH.write_text(json.dumps(payload, ensure_ascii=False), encoding='utf-8')
+
+def run_cmd(cmd, *, env, stage, timeout, current_case_index=None, total_cases=None, completed_cases=None, matched_sample_id=None):
+    update_status(
+        current_case_index=current_case_index,
+        total_cases=total_cases,
+        completed_cases=completed_cases,
+        matched_sample_id=matched_sample_id,
+        stage=stage,
+        timeout_seconds=timeout,
+    )
+    log_event(f"[{{stage}}] " + " ".join(str(part) for part in cmd))
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=timeout)
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(f"{{stage}}_timeout_after_{{timeout}}s") from exc
+
+def run_cmd_to_file(cmd, *, env, stage, timeout, output_path, current_case_index=None, total_cases=None, completed_cases=None, matched_sample_id=None):
+    update_status(
+        current_case_index=current_case_index,
+        total_cases=total_cases,
+        completed_cases=completed_cases,
+        matched_sample_id=matched_sample_id,
+        stage=stage,
+        timeout_seconds=timeout,
+    )
+    log_event(f"[{{stage}}] " + " ".join(str(part) for part in cmd))
+    try:
+        with Path(output_path).open('wb') as out_handle:
+            proc = subprocess.run(cmd, stdout=out_handle, stderr=subprocess.PIPE, env=env, timeout=timeout)
+        if proc.returncode != 0:
+            raise RuntimeError(proc.stderr.decode('utf-8', errors='replace'))
+        return proc
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(f"{{stage}}_timeout_after_{{timeout}}s") from exc
+
+update_status(stage='boot')
+
+def make_models(block_record):
+    energy_rooms = []
+    radiance_rooms = []
     land_unit = float(block_record.get('land_unit_size_m', 80.0))
     theta = float(block_record.get('theta_deg', 0.0)) % 360.0
     floor_height = float(block_record.get('floor_height_m', 3.0))
@@ -109,9 +191,131 @@ def make_model(block_record):
     lighting_w_per_area = 5.0
     equipment_w_per_area = 1.9
     ventilation_m3s_per_person = 30.0 / 3600.0
+    occupancy_schedule_fraction = 0.35
+    lighting_schedule_fraction = 0.25
+    equipment_schedule_fraction = 0.30
+    infiltration_schedule_fraction = 0.50
     heating_c = 18.0
     cooling_c = 26.0
+    heating_off_c = 12.0
+    cooling_off_c = 30.0
+    max_south_points_per_face = 5
     roof_area_total = 0.0
+
+    def apply_window_ratios(room, *, collect_south_points=False, simple_windows=False):
+        south_points = []
+        for face in room.faces:
+            if str(face.boundary_condition) != 'Outdoors' or str(face.type) != 'Wall':
+                continue
+            face.properties.energy.construction = WALL_CONSTRUCTION
+            nx = getattr(face.normal, 'x', 0.0)
+            ny = getattr(face.normal, 'y', 0.0)
+            ratio = window_ratio_ns if abs(ny) >= abs(nx) else window_ratio_ew
+            if ratio > 0 and not face.apertures:
+                if simple_windows:
+                    face.apertures_by_ratio(ratio, rect_split=False)
+                else:
+                    face.apertures_by_ratio_rectangle(ratio, 1.5, 0.8, 0.1)
+            for aperture in face.apertures:
+                aperture.properties.energy.construction = WINDOW_CONSTRUCTION
+            if collect_south_points and abs(ny) >= abs(nx) and ny < 0:
+                lower_left = face.geometry.lower_left_corner
+                lower_right = face.geometry.lower_right_corner
+                sill_height = min(lower_left.z, lower_right.z) + 0.8
+                point_count = max_south_points_per_face
+                if point_count == 1:
+                    fractions = [0.5]
+                else:
+                    fractions = [i / (point_count - 1) for i in range(point_count)]
+                for frac in fractions:
+                    x = lower_left.x + frac * (lower_right.x - lower_left.x) - face.normal.x * 0.1
+                    y = lower_left.y + frac * (lower_right.y - lower_left.y) - face.normal.y * 0.1
+                    z = sill_height
+                    south_points.append((Point3D(x, y, z), face.normal))
+        return south_points
+
+    def configure_energy_room(room, *, tag_suffix, multiplier=1, top_bc=None, bottom_bc=None):
+        heating_default = ScheduleDay(f\"heat_default_{{tag_suffix}}\", [heating_off_c])
+        heating_on = ScheduleDay(f\"heat_on_{{tag_suffix}}\", [heating_c])
+        cooling_default = ScheduleDay(f\"cool_default_{{tag_suffix}}\", [cooling_off_c])
+        cooling_on = ScheduleDay(f\"cool_on_{{tag_suffix}}\", [cooling_c])
+        heating_schedule = ScheduleRuleset(
+            f\"heat_{{tag_suffix}}\",
+            heating_default,
+            schedule_rules=[
+                ScheduleRule(
+                    heating_on,
+                    apply_sunday=True,
+                    apply_monday=True,
+                    apply_tuesday=True,
+                    apply_wednesday=True,
+                    apply_thursday=True,
+                    apply_friday=True,
+                    apply_saturday=True,
+                    start_date=Date(12, 1),
+                    end_date=Date(2, 28),
+                )
+            ],
+        )
+        cooling_schedule = ScheduleRuleset(
+            f\"cool_{{tag_suffix}}\",
+            cooling_default,
+            schedule_rules=[
+                ScheduleRule(
+                    cooling_on,
+                    apply_sunday=True,
+                    apply_monday=True,
+                    apply_tuesday=True,
+                    apply_wednesday=True,
+                    apply_thursday=True,
+                    apply_friday=True,
+                    apply_saturday=True,
+                    start_date=Date(6, 15),
+                    end_date=Date(8, 31),
+                )
+            ],
+        )
+        room.story = tag_suffix
+        room.multiplier = multiplier
+        if bottom_bc is not None:
+            room.faces[0].boundary_condition = bottom_bc
+        if top_bc is not None:
+            room.faces[-1].boundary_condition = top_bc
+        room.faces[0].properties.energy.construction = FLOOR_CONSTRUCTION
+        room.faces[-1].properties.energy.construction = ROOF_CONSTRUCTION
+        room.properties.energy.program_type = office_program
+        room.properties.energy.reset_loads_to_program()
+        room.properties.energy.hvac = IdealAirSystem(f\"ideal_{{tag_suffix}}\")
+        room.properties.energy.people = People(
+            f\"people_{{tag_suffix}}\",
+            people_per_area,
+            occupancy_schedule=ScheduleRuleset.from_constant_value(f\"occ_sched_{{tag_suffix}}\", occupancy_schedule_fraction),
+        )
+        room.properties.energy.lighting = Lighting(
+            f\"lights_{{tag_suffix}}\",
+            lighting_w_per_area,
+            schedule=ScheduleRuleset.from_constant_value(f\"light_sched_{{tag_suffix}}\", lighting_schedule_fraction),
+        )
+        room.properties.energy.electric_equipment = ElectricEquipment(
+            f\"equip_{{tag_suffix}}\",
+            equipment_w_per_area,
+            schedule=ScheduleRuleset.from_constant_value(f\"equip_sched_{{tag_suffix}}\", equipment_schedule_fraction),
+        )
+        exterior_area = sum(face.area for face in room.faces if str(face.boundary_condition) == 'Outdoors')
+        infiltration_per_area = (1.0 * room.volume / 3600.0) / max(exterior_area, 1e-6)
+        room.properties.energy.infiltration = Infiltration(
+            f\"infil_{{tag_suffix}}\",
+            infiltration_per_area,
+            schedule=ScheduleRuleset.from_constant_value(f\"infil_sched_{{tag_suffix}}\", infiltration_schedule_fraction),
+        )
+        room.properties.energy.ventilation = Ventilation(f\"vent_{{tag_suffix}}\", flow_per_person=ventilation_m3s_per_person)
+        room.properties.energy.setpoint = Setpoint(
+            f\"setpoint_{{tag_suffix}}\",
+            heating_schedule,
+            cooling_schedule,
+        )
+        apply_window_ratios(room, collect_south_points=False, simple_windows=True)
+
     for assignment in block_record['assignments']:
         proto = PROTOTYPES[assignment['prototype_name']]
         cell_x, cell_y = BLOCK_COORD[int(assignment['block_index'])]
@@ -120,47 +324,93 @@ def make_model(block_record):
         height = float(assignment['floors']) * floor_height
         origin_x = cell_x * land_unit + (land_unit - width) / 2.0
         origin_y = cell_y * land_unit + (land_unit - depth) / 2.0
-        room = Room.from_box(
-            f\"room_{{assignment['block_index']}}\",
+        floors = int(assignment['floors'])
+        tag_base = f\"b{{assignment['block_index']}}\"
+        if floors <= 1:
+            energy_room = Room.from_box(
+                f\"energy_room_{{assignment['block_index']}}_single\",
+                width=width,
+                depth=depth,
+                height=floor_height,
+                orientation_angle=theta,
+                origin=Point3D(origin_x, origin_y, 0.0),
+            )
+            configure_energy_room(energy_room, tag_suffix=f\"{{tag_base}}_single\", multiplier=1)
+            energy_rooms.append(energy_room)
+        else:
+            ground_room = Room.from_box(
+                f\"energy_room_{{assignment['block_index']}}_ground\",
+                width=width,
+                depth=depth,
+                height=floor_height,
+                orientation_angle=theta,
+                origin=Point3D(origin_x, origin_y, 0.0),
+            )
+            configure_energy_room(
+                ground_room,
+                tag_suffix=f\"{{tag_base}}_ground\",
+                multiplier=1,
+                top_bc=boundary_conditions.adiabatic,
+            )
+            energy_rooms.append(ground_room)
+
+            if floors > 2:
+                middle_room = Room.from_box(
+                    f\"energy_room_{{assignment['block_index']}}_middle\",
+                    width=width,
+                    depth=depth,
+                    height=floor_height,
+                    orientation_angle=theta,
+                    origin=Point3D(origin_x, origin_y, floor_height),
+                )
+                configure_energy_room(
+                    middle_room,
+                    tag_suffix=f\"{{tag_base}}_middle\",
+                    multiplier=floors - 2,
+                    top_bc=boundary_conditions.adiabatic,
+                    bottom_bc=boundary_conditions.adiabatic,
+                )
+                energy_rooms.append(middle_room)
+
+            top_room = Room.from_box(
+                f\"energy_room_{{assignment['block_index']}}_top\",
+                width=width,
+                depth=depth,
+                height=floor_height,
+                orientation_angle=theta,
+                origin=Point3D(origin_x, origin_y, max(floors - 1, 0) * floor_height),
+            )
+            configure_energy_room(
+                top_room,
+                tag_suffix=f\"{{tag_base}}_top\",
+                multiplier=1,
+                bottom_bc=boundary_conditions.adiabatic,
+            )
+            energy_rooms.append(top_room)
+
+        radiance_room = Room.from_box(
+            f\"radiance_room_{{assignment['block_index']}}\",
             width=width,
             depth=depth,
             height=height,
             orientation_angle=theta,
             origin=Point3D(origin_x, origin_y, 0.0),
         )
-        room.properties.energy.program_type = office_program
-        room.properties.energy.reset_loads_to_program()
-        room.properties.energy.hvac = IdealAirSystem(f\"ideal_{{assignment['block_index']}}\")
-        room.properties.energy.people = People(f\"people_{{assignment['block_index']}}\", people_per_area)
-        room.properties.energy.lighting = Lighting(f\"lights_{{assignment['block_index']}}\", lighting_w_per_area)
-        room.properties.energy.electric_equipment = ElectricEquipment(f\"equip_{{assignment['block_index']}}\", equipment_w_per_area)
-        exterior_area = sum(face.area for face in room.faces if str(face.boundary_condition) == 'Outdoors')
-        infiltration_per_area = (1.0 * room.volume / 3600.0) / max(exterior_area, 1e-6)
-        room.properties.energy.infiltration = Infiltration(f\"infil_{{assignment['block_index']}}\", infiltration_per_area)
-        room.properties.energy.ventilation = Ventilation(f\"vent_{{assignment['block_index']}}\", flow_per_person=ventilation_m3s_per_person)
-        room.properties.energy.setpoint = Setpoint(
-            f\"setpoint_{{assignment['block_index']}}\",
-            ScheduleRuleset.from_constant_value(f\"heat_{{assignment['block_index']}}\", heating_c),
-            ScheduleRuleset.from_constant_value(f\"cool_{{assignment['block_index']}}\", cooling_c),
-        )
-        south_aperture_points = []
+        radiance_rooms.append(radiance_room)
+
+    energy_model = Model(f\"energy_candidate_{{block_record['sample_id']}}\", energy_rooms)
+    radiance_model = Model(f\"radiance_candidate_{{block_record['sample_id']}}\", radiance_rooms)
+    south_aperture_points = []
+    for room in radiance_model.rooms:
+        south_aperture_points.extend(apply_window_ratios(room, collect_south_points=True, simple_windows=False))
         for face in room.faces:
             if str(face.boundary_condition) != 'Outdoors' or str(face.type) != 'Wall':
                 if str(face.boundary_condition) == 'Outdoors' and str(face.type) == 'RoofCeiling':
                     roof_area_total += face.area
-                continue
-            nx = getattr(face.normal, 'x', 0.0)
-            ny = getattr(face.normal, 'y', 0.0)
-            ratio = window_ratio_ns if abs(ny) >= abs(nx) else window_ratio_ew
-            if ratio > 0:
-                face.apertures_by_ratio_rectangle(ratio, 1.5, 0.8, 0.1)
-            if abs(ny) >= abs(nx) and ny < 0:
-                for aperture in face.apertures:
-                    south_aperture_points.append((aperture.geometry.center, face.normal))
-        rooms.append(room)
-    return Model(f\"candidate_{{block_record['sample_id']}}\", rooms), south_aperture_points, roof_area_total
+            continue
+    return energy_model, radiance_model, south_aperture_points, roof_area_total
 
-def run_case(case):
+def run_case(case, *, current_case_index, total_cases, completed_cases):
     sample_id = case['matched_sample_id']
     block_record = case['block_record']
     case_dir = PROJECT_ROOT / 'artifacts' / 'physical_stack_candidates' / f'sample_{{sample_id}}'
@@ -169,22 +419,41 @@ def run_case(case):
     rad_env = os.environ.copy()
     rad_env['PATH'] = PAYLOAD['radiance_env']['PATH'].replace('$' + '{{PATH}}', base_env.get('PATH', ''))
     rad_env['RAYPATH'] = PAYLOAD['radiance_env']['RAYPATH']
+    update_status(
+        current_case_index=current_case_index,
+        total_cases=total_cases,
+        completed_cases=completed_cases,
+        matched_sample_id=sample_id,
+        stage='prepare_case',
+    )
     if case_dir.exists():
-        subprocess.run(['rm', '-rf', str(case_dir)], check=False)
+        subprocess.run(['rm', '-rf', str(case_dir)], check=False, timeout=TIMEOUTS['cleanup'])
     case_dir.mkdir(parents=True, exist_ok=True)
-    model, south_aperture_points, roof_area_total = make_model(block_record)
-    hbjson_base = case_dir / 'model'
-    model.to_hbjson(name=str(hbjson_base), folder='.')
-    hbjson_path = case_dir / 'model.hbjson'
+    energy_model, radiance_model, south_aperture_points, roof_area_total = make_models(block_record)
+    energy_hbjson_base = case_dir / 'energy_model'
+    radiance_hbjson_base = case_dir / 'radiance_model'
+    energy_model.to_hbjson(name=str(energy_hbjson_base), folder='.')
+    radiance_model.to_hbjson(name=str(radiance_hbjson_base), folder='.')
+    energy_hbjson_path = case_dir / 'energy_model.hbjson'
+    radiance_hbjson_path = case_dir / 'radiance_model.hbjson'
 
     energy_cmd = [
         'honeybee-energy', 'simulate', 'model',
-        str(hbjson_path),
+        str(energy_hbjson_path),
         str(PROJECT_ROOT / PAYLOAD['epw_relpath']),
         '-f', str(case_dir / 'sim_out'),
         '-log', str(case_dir / 'sim_log.json'),
     ]
-    energy = subprocess.run(energy_cmd, capture_output=True, text=True, env=base_env)
+    energy = run_cmd(
+        energy_cmd,
+        env=base_env,
+        stage='energyplus_simulate',
+        timeout=TIMEOUTS['energy_simulate'],
+        current_case_index=current_case_index,
+        total_cases=total_cases,
+        completed_cases=completed_cases,
+        matched_sample_id=sample_id,
+    )
     eui = None
     generation = None
     pv_generation_million_kwh = None
@@ -193,14 +462,32 @@ def run_case(case):
             'honeybee-energy', 'result', 'energy-use-intensity',
             str(case_dir / 'sim_out' / 'run' / 'eplusout.sql'),
         ]
-        eui_out = subprocess.run(eui_cmd, capture_output=True, text=True, env=base_env)
+        eui_out = run_cmd(
+            eui_cmd,
+            env=base_env,
+            stage='energyplus_parse_eui',
+            timeout=TIMEOUTS['energy_result'],
+            current_case_index=current_case_index,
+            total_cases=total_cases,
+            completed_cases=completed_cases,
+            matched_sample_id=sample_id,
+        )
         if eui_out.returncode == 0:
             eui = json.loads(eui_out.stdout).get('eui')
         gen_cmd = [
             'honeybee-energy', 'result', 'generation-summary',
             str(case_dir / 'sim_out' / 'run' / 'eplusout.sql'),
         ]
-        gen_out = subprocess.run(gen_cmd, capture_output=True, text=True, env=base_env)
+        gen_out = run_cmd(
+            gen_cmd,
+            env=base_env,
+            stage='energyplus_parse_generation',
+            timeout=TIMEOUTS['energy_result'],
+            current_case_index=current_case_index,
+            total_cases=total_cases,
+            completed_cases=completed_cases,
+            matched_sample_id=sample_id,
+        )
         if gen_out.returncode == 0:
             generation = json.loads(gen_out.stdout)
     epw = EPW(str(PROJECT_ROOT / PAYLOAD['epw_relpath']))
@@ -213,83 +500,193 @@ def run_case(case):
     )
 
     rad_dir = case_dir / 'rad'
-    rad_translate = subprocess.run(
-        ['honeybee-radiance', 'translate', 'model-to-rad-folder', str(hbjson_path), '--folder', str(rad_dir), '-cg', '--log-file', str(case_dir / 'rad_folder_log.json')],
-        capture_output=True,
-        text=True,
+    rad_translate = run_cmd(
+        ['honeybee-radiance', 'translate', 'model-to-rad-folder', str(radiance_hbjson_path), '--folder', str(rad_dir), '-cg', '--log-file', str(case_dir / 'rad_folder_log.json')],
         env=base_env,
+        stage='radiance_translate',
+        timeout=TIMEOUTS['radiance_translate'],
+        current_case_index=current_case_index,
+        total_cases=total_cases,
+        completed_cases=completed_cases,
+        matched_sample_id=sample_id,
     )
     radiance_mean = None
     sunlight_hours = None
     if rad_translate.returncode == 0:
-        sampled_hours = [9, 12, 15]
-        hour_indices = [(19 * 24) + (hour - 1) for hour in sampled_hours]
-        hourly_means = []
-        hit_count = 0
         sensor_path = case_dir / 'south_window.pts'
         if south_aperture_points:
             with sensor_path.open('w', encoding='utf-8') as sensor_file:
                 for center, normal in south_aperture_points:
                     sensor_file.write(f"{{center.x}} {{center.y}} {{center.z}} {{-normal.x}} {{-normal.y}} {{-normal.z}}\\n")
-        for idx, epw_index in enumerate(hour_indices):
-            if not south_aperture_points:
-                break
-            sky_dir = case_dir / f'sky_{{idx}}'
-            sky_dir.mkdir(parents=True, exist_ok=True)
-            sim_hour = sampled_hours[idx]
-            sky_cmd = [
-                'honeybee-radiance', 'sky', 'climate-based', '20', 'Jan', f\"{{sim_hour}}:00\",
-                '-lat', str(PAYLOAD['radiance_sky']['latitude']),
-                '-lon', str(PAYLOAD['radiance_sky']['longitude']),
-                '-dni', str(epw.direct_normal_radiation.values[epw_index]),
-                '-dhi', str(epw.diffuse_horizontal_radiation.values[epw_index]),
-                '--folder', str(sky_dir),
-                '--name', 'test_sky',
-            ]
-            sky = subprocess.run(sky_cmd, capture_output=True, text=True, env=base_env)
-            if sky.returncode != 0:
-                continue
-            octree_cmd = [
-                'honeybee-radiance', 'octree', 'from-folder-static',
-                str(rad_dir),
-                '--add-before', str(sky_dir / 'test_sky'),
-                '-o', str(case_dir / 'test.oct'),
-            ]
-            octree = subprocess.run(octree_cmd, capture_output=True, text=True, env=rad_env)
-            if octree.returncode != 0:
-                continue
-            pt_out = case_dir / f'pt_{{idx}}.res'
-            point_in_time = subprocess.run(
-                [
-                    'honeybee-radiance', 'raytrace', 'point-in-time',
-                    str(case_dir / 'test.oct'),
-                    str(sensor_path),
-                    '-m', 'illuminance',
-                    '-o', str(pt_out),
-                ],
-                capture_output=True,
-                text=True,
-                env=rad_env,
-            )
-            if point_in_time.returncode != 0 or not pt_out.exists():
-                continue
-            values = []
-            for raw_line in pt_out.read_text(encoding='utf-8', errors='replace').splitlines():
-                raw_line = raw_line.strip()
-                if not raw_line:
-                    continue
-                try:
-                    values.append(float(raw_line.split()[0]))
-                except Exception:
-                    continue
-            if values:
-                current_mean = mean(values)
-                hourly_means.append(current_mean)
-                if current_mean >= 1000.0:
-                    hit_count += 1
-        if hourly_means:
-            radiance_mean = mean(hourly_means)
-            sunlight_hours = float(hit_count) * (9.0 / max(len(sampled_hours), 1))
+        if south_aperture_points:
+            try:
+                sun_dir = case_dir / 'sunpath'
+                sun_dir.mkdir(parents=True, exist_ok=True)
+                sun_cmd = [
+                    'honeybee-radiance', 'sunpath', 'epw',
+                    str(PROJECT_ROOT / PAYLOAD['epw_relpath']),
+                    '--start-date', 'JAN-20',
+                    '--start-time', '08:00',
+                    '--end-date', 'JAN-20',
+                    '--end-time', '16:00',
+                    '--folder', str(sun_dir),
+                    '--name', 'jan20sun',
+                    '--reverse-vectors',
+                ]
+                run_cmd(
+                    sun_cmd,
+                    env=base_env,
+                    stage='radiance_sunpath',
+                    timeout=TIMEOUTS['radiance_sunpath'],
+                    current_case_index=current_case_index,
+                    total_cases=total_cases,
+                    completed_cases=completed_cases,
+                    matched_sample_id=sample_id,
+                )
+                octree_path = case_dir / 'jan20sun.oct'
+                run_cmd_to_file(
+                    [
+                        'oconv',
+                        '-f',
+                        str(rad_dir / 'model' / 'scene' / 'envelope.mat'),
+                        str(rad_dir / 'model' / 'scene' / 'envelope.rad'),
+                        str(rad_dir / 'model' / 'aperture' / 'aperture.mat'),
+                        str(rad_dir / 'model' / 'aperture' / 'aperture.rad'),
+                        str(sun_dir / 'jan20sun.rad'),
+                    ],
+                    env=rad_env,
+                    stage='radiance_octree_direct_sun',
+                    timeout=TIMEOUTS['radiance_octree'],
+                    output_path=octree_path,
+                    current_case_index=current_case_index,
+                    total_cases=total_cases,
+                    completed_cases=completed_cases,
+                    matched_sample_id=sample_id,
+                )
+                mtx_path = case_dir / 'jan20sun.mtx'
+                run_cmd(
+                    [
+                        'honeybee-radiance', 'dc', 'scontrib',
+                        str(octree_path),
+                        str(sensor_path),
+                        str(sun_dir / 'jan20sun.mod'),
+                        '--value',
+                        '--output', str(mtx_path),
+                    ],
+                    env=rad_env,
+                    stage='radiance_scontrib',
+                    timeout=TIMEOUTS['radiance_scontrib'],
+                    current_case_index=current_case_index,
+                    total_cases=total_cases,
+                    completed_cases=completed_cases,
+                    matched_sample_id=sample_id,
+                )
+                lines = mtx_path.read_text(encoding='utf-8', errors='replace').splitlines()
+                data_start = 0
+                for line_index, line in enumerate(lines):
+                    if line and (line[0].isdigit() or line[0] == '-' or line[0] == '.'):
+                        data_start = line_index
+                        break
+                hourly_counts = []
+                scalar_means = []
+                for line in lines[data_start:]:
+                    values = [float(x) for x in line.split()]
+                    if not values:
+                        continue
+                    triplets = [values[idx] for idx in range(0, len(values), 3)]
+                    scalar_means.append(mean(triplets))
+                    hourly_counts.append(sum(1 for value in triplets if value > 0.0))
+                if scalar_means:
+                    radiance_mean = mean(scalar_means)
+                    sunlight_hours = float(mean(hourly_counts))
+            except Exception:
+                sampled_hours = list(range(8, 17))
+                hour_indices = [(19 * 24) + (hour - 1) for hour in sampled_hours]
+                hourly_means = []
+                point_hour_totals = None
+                for idx, epw_index in enumerate(hour_indices):
+                    sky_dir = case_dir / f'sky_{{idx}}'
+                    sky_dir.mkdir(parents=True, exist_ok=True)
+                    sim_hour = sampled_hours[idx]
+                    sky_cmd = [
+                        'honeybee-radiance', 'sky', 'climate-based', '20', 'Jan', f\"{{sim_hour}}:00\",
+                        '-lat', str(PAYLOAD['radiance_sky']['latitude']),
+                        '-lon', str(PAYLOAD['radiance_sky']['longitude']),
+                        '-dni', str(epw.direct_normal_radiation.values[epw_index]),
+                        '-dhi', str(epw.diffuse_horizontal_radiation.values[epw_index]),
+                        '--folder', str(sky_dir),
+                        '--name', 'test_sky',
+                    ]
+                    sky = run_cmd(
+                        sky_cmd,
+                        env=base_env,
+                        stage=f'radiance_sky_{{idx}}',
+                        timeout=TIMEOUTS['radiance_sky'],
+                        current_case_index=current_case_index,
+                        total_cases=total_cases,
+                        completed_cases=completed_cases,
+                        matched_sample_id=sample_id,
+                    )
+                    if sky.returncode != 0:
+                        continue
+                    octree_cmd = [
+                        'honeybee-radiance', 'octree', 'from-folder-static',
+                        str(rad_dir),
+                        '--add-before', str(sky_dir / 'test_sky'),
+                        '-o', str(case_dir / 'test.oct'),
+                    ]
+                    octree = run_cmd(
+                        octree_cmd,
+                        env=rad_env,
+                        stage=f'radiance_octree_{{idx}}',
+                        timeout=TIMEOUTS['radiance_octree'],
+                        current_case_index=current_case_index,
+                        total_cases=total_cases,
+                        completed_cases=completed_cases,
+                        matched_sample_id=sample_id,
+                    )
+                    if octree.returncode != 0:
+                        continue
+                    pt_out = case_dir / f'pt_{{idx}}.res'
+                    point_in_time = run_cmd(
+                        [
+                            'honeybee-radiance', 'raytrace', 'point-in-time',
+                            str(case_dir / 'test.oct'),
+                            str(sensor_path),
+                            '-m', 'illuminance',
+                            '-o', str(pt_out),
+                        ],
+                        env=rad_env,
+                        stage=f'radiance_point_in_time_{{idx}}',
+                        timeout=TIMEOUTS['radiance_point_in_time'],
+                        current_case_index=current_case_index,
+                        total_cases=total_cases,
+                        completed_cases=completed_cases,
+                        matched_sample_id=sample_id,
+                    )
+                    if point_in_time.returncode != 0 or not pt_out.exists():
+                        continue
+                    values = []
+                    for raw_line in pt_out.read_text(encoding='utf-8', errors='replace').splitlines():
+                        raw_line = raw_line.strip()
+                        if not raw_line:
+                            continue
+                        try:
+                            values.append(float(raw_line.split()[0]))
+                        except Exception:
+                            continue
+                    if values:
+                        current_mean = mean(values)
+                        hourly_means.append(current_mean)
+                        if point_hour_totals is None:
+                            point_hour_totals = [0.0] * len(values)
+                        for value_index, value in enumerate(values):
+                            if value >= 1000.0:
+                                point_hour_totals[value_index] += 1.0
+                if hourly_means:
+                    radiance_mean = mean(hourly_means)
+                    if point_hour_totals:
+                        sunlight_hours = float(mean(point_hour_totals))
 
     return {{
         'candidate_index': case['candidate_index'],
@@ -314,37 +711,30 @@ try:
     total_cases = len(PAYLOAD['cases'])
     RESULT_PATH.parent.mkdir(parents=True, exist_ok=True)
     for index, case in enumerate(PAYLOAD['cases'], start=1):
-        STATUS_PATH.write_text(
-            json.dumps(
-                {{
-                    'status': 'running',
-                    'remote_request': str(REQUEST_PATH),
-                    'current_case_index': index,
-                    'total_cases': total_cases,
-                    'completed_cases': len(results),
-                }},
-                ensure_ascii=False,
-            ),
-            encoding='utf-8',
+        update_status(
+            current_case_index=index,
+            total_cases=total_cases,
+            completed_cases=len(results),
+            matched_sample_id=case['matched_sample_id'],
+            stage='dispatch_case',
         )
-        result = run_case(case)
+        result = run_case(
+            case,
+            current_case_index=index,
+            total_cases=total_cases,
+            completed_cases=len(results),
+        )
         results.append(result)
         RESULT_PATH.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding='utf-8')
-        STATUS_PATH.write_text(
-            json.dumps(
-                {{
-                    'status': 'running',
-                    'remote_request': str(REQUEST_PATH),
-                    'current_case_index': index,
-                    'total_cases': total_cases,
-                    'completed_cases': len(results),
-                    'result_path': str(RESULT_PATH),
-                }},
-                ensure_ascii=False,
-            ),
-            encoding='utf-8',
+        update_status(
+            current_case_index=index,
+            total_cases=total_cases,
+            completed_cases=len(results),
+            matched_sample_id=case['matched_sample_id'],
+            stage='case_completed',
+            result_path=str(RESULT_PATH),
         )
-    STATUS_PATH.write_text(json.dumps({{'status': 'completed', 'count': len(results), 'result_path': str(RESULT_PATH)}}, ensure_ascii=False), encoding='utf-8')
+    STATUS_PATH.write_text(json.dumps({{'status': 'completed', 'count': len(results), 'result_path': str(RESULT_PATH), 'timestamp': time.time()}}, ensure_ascii=False), encoding='utf-8')
     print(json.dumps({{'count': len(results), 'result_path': str(RESULT_PATH)}}, ensure_ascii=False))
 except Exception as exc:
     STATUS_PATH.write_text(json.dumps({{'status': 'failed', 'error': f'{{type(exc).__name__}}: {{exc}}'}}, ensure_ascii=False), encoding='utf-8')
