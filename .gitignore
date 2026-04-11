@@ -11,3 +11,9 @@ configs/revision.local.yaml
 tmp_page*.png
 tmp_table*.png
 .trellis/
+.agents/
+.codex/
+AGENTS.md.local-backup
+slides/
+tests/
+initial_paper/
