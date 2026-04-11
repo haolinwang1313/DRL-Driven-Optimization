@@ -36,7 +36,7 @@ C-2 & Courtyard  & 1500 & 4--12  & 0.94--2.81 \\
 
 \subsection{Surrogate validation}
 
-The original surrogate workflow began from a 500-sample baseline, but the final optimizer comparison in this revision uses the strict highest-accuracy surrogate obtained from the expanded 2000-sample regime. In the synced artifact bundle, that regime is generated under the documented \texttt{fallback\_analytic} simulation mode rather than by a direct full-stack EnergyPlus/Radiance rerun. Five-fold cross-validation is used to assess that final selected model. Table~\ref{tab:supp_cv} reports the corresponding aggregate validation results.
+The surrogate workflow began from a 500-sample baseline, whereas the final optimizer comparison reported in this paper uses the strict highest-accuracy surrogate obtained from the expanded 2000-sample regime. In the available artifact bundle, that regime is generated through an analytic response-generation workflow rather than by a direct full-stack EnergyPlus/Radiance rerun. Five-fold cross-validation is used to assess the selected model. Table~\ref{tab:supp_cv} reports the corresponding aggregate validation results.
 
 \begin{table}[H]
 \centering
@@ -55,7 +55,7 @@ H    & 0.992 & 0.025 & $\pm 0.001$ & $\pm 0.001$ \\
 \end{threeparttable}
 \end{table}
 
-To evaluate reliability in optimization-relevant regions, additional error slices were computed over the lower and upper tails of each target distribution. The corresponding mean absolute errors are listed in Table~\ref{tab:supp_extreme}. Table~\ref{tab:supp_fidelity} reports complementary surrogate-fidelity statistics from the cross-validation predictions.
+To assess reliability in optimization-relevant regions, additional error slices were computed over the lower and upper tails of each target distribution. The corresponding mean absolute errors are listed in Table~\ref{tab:supp_extreme}. Table~\ref{tab:supp_fidelity} reports complementary surrogate-fidelity statistics from the cross-validation predictions.
 
 \begin{table}[H]
 \centering
@@ -99,9 +99,9 @@ H    & 0.032 & 0.025 & 0.0172 & 0.0150 & 0.992 \\
 
 \subsection{Training dynamics and benchmark protocol}
 
-The revised server-side reruns used for the final accuracy-first comparison were executed under the shared guarded surrogate evaluator to suppress exploitation of extrapolative edge cases. On the strict highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401 (balanced), 320 (saving), and 398 (generation). Compared with the earlier lower-scale rerun, the balanced scenario becomes visibly smoother and less noisy across seeds, but the saving-focused and generation-focused scenarios do not show a uniform reduction in cross-seed variability across reward and objective trajectories. However, late-stage regression remains common: the mean best-to-final reward gap ratios are about 0.62, 0.71, and 0.71 for the balanced, saving, and generation scenarios, respectively, and the substantial-regression fractions remain high at 95\%, 85\%, and 100\%.
+The multi-seed reruns used for the final accuracy-first comparison were executed under a shared guarded surrogate evaluator to reduce exploitation of extrapolative edge cases. On the strict highest-accuracy 2000-sample surrogate, seed-level diagnostics show that the 20-episode rolling reward typically reaches 95\% of its best observed value around episodes 401 (balanced), 320 (saving), and 398 (generation). Across the three scenarios, the balanced setting is visibly smoother and less noisy across seeds, but the saving-focused and generation-focused settings do not show a uniform reduction in cross-seed variability across reward and objective trajectories. Even so, late-stage regression remains common: the mean best-to-final reward gap ratios are about 0.62, 0.71, and 0.71 for the balanced, saving, and generation scenarios, respectively, and the substantial-regression fractions remain high at 95\%, 85\%, and 100\%.
 
-For benchmark comparison, the revised implementation removes the previous benchmark-matching shortcut from the publication-mode NSGA-II path. Publication mode compares DDPG and NSGA-II under a shared surrogate environment, matched per-seed evaluation budget, and matched seed count, and applies a post-hoc preference-aligned utility summary consistently across methods. On the strict highest-accuracy 2000-sample surrogate, NSGA-II remains stronger than all three DDPG scenarios. The corresponding budget accounting and objective-space separation are summarized in Table~\ref{tab:supp_budget}.
+For benchmark comparison, DDPG and NSGA-II are evaluated under a shared surrogate environment, matched per-seed evaluation budget, and matched seed count, with the same post-hoc preference-aligned utility summary applied consistently across methods. On the strict highest-accuracy 2000-sample surrogate, NSGA-II remains stronger than all three DDPG scenarios. Table~\ref{tab:supp_budget} summarizes the corresponding budget accounting and objective-space separation.
 
 \begin{table}[H]
 \centering
@@ -129,7 +129,7 @@ NSGA-II archive spread & 0.1642 & 0.1968 & mean and std of distance to normalize
 \end{threeparttable}
 \end{table}
 
-To probe whether this fragility is visible even before comparing optimizer archives, an additional checkpoint-sensitivity audit was run on two available 2000-sample surrogate checkpoints: the imported publication checkpoint and a locally retrained checkpoint synced from the same revision branch. Table~\ref{tab:supp_checkpoint} shows that the two checkpoints have very similar training-fit statistics, yet they do not behave identically when evaluated on random samples drawn from the observed feature ranges. In particular, the locally retrained checkpoint produces a larger fraction of EUIt predictions below the observed minimum (0.0080 versus 0.0008) and a larger fraction of H predictions above the observed maximum (0.0040 versus 0.0012). The fraction of random samples that simultaneously exceed the observed target bounds also changes from 0.0004 to 0.0006. These differences are small in absolute terms, but they support the narrower diagnostic claim that similar in-sample fit does not guarantee identical extrapolative behavior.
+To test whether this fragility is already visible before optimizer archives are compared directly, an additional checkpoint-sensitivity audit was run on two available 2000-sample surrogate checkpoints: an earlier archived checkpoint and a locally retrained checkpoint from the same 2000-sample study regime. Table~\ref{tab:supp_checkpoint} shows that the two checkpoints have very similar training-fit statistics, yet they do not behave identically when evaluated on random samples drawn from the observed feature ranges. In particular, the locally retrained checkpoint produces a larger fraction of EUIt predictions below the observed minimum (0.0080 versus 0.0008) and a larger fraction of H predictions above the observed maximum (0.0040 versus 0.0012). The fraction of random samples that simultaneously exceed the observed target bounds also changes from 0.0004 to 0.0006. These differences are small in absolute terms, but they support a narrower diagnostic point: similar in-sample fit does not guarantee identical extrapolative behavior.
 
 \begin{table}[H]
 \centering
@@ -139,7 +139,7 @@ To probe whether this fragility is visible even before comparing optimizer archi
 \footnotesize
 \begin{tabularx}{\linewidth}{@{}lccX@{}}
 \toprule
-Metric & Imported checkpoint & Local retrained checkpoint & Interpretation \\
+Metric & Earlier archived checkpoint & Local retrained checkpoint & Interpretation \\
 \midrule
 EUIt training MAE & 0.2038 & 0.1885 & similar training fit \\
 EG training MAE & 0.0248 & 0.0245 & similar training fit \\
@@ -152,12 +152,12 @@ Triple better-than-bounds fraction & 0.0004 & 0.0006 & both checkpoints admit ra
 \end{tabularx}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Note: The audit compares the imported publication checkpoint and one synced local retrained checkpoint on the 2000-sample dataset using 5000 random feature samples drawn from the observed feature ranges.
+\item Note: The audit compares one earlier archived checkpoint and one synced local retrained checkpoint on the 2000-sample dataset using 5000 random feature samples drawn from the observed feature ranges.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
 
-Table~\ref{tab:supp_checkpoint_rank} complements that audit at the benchmark level. It compares the imported publication artifact with two later checkpoint selections that were retained during the revision process. The imported publication artifact still favors DDPG in Hypervolume, whereas the strict-highest-accuracy 2000-sample checkpoint and the surrogate-rebenchmark checkpoint both favor NSGA-II in both Hypervolume and IGD. The purpose of this table is not to promote one checkpoint as universally correct, but to show that optimizer ordering itself changes materially with surrogate selection.
+Table~\ref{tab:supp_checkpoint_rank} complements that audit at the benchmark level. It compares an earlier archived benchmark bundle with two later checkpoint selections retained from the same study workflow. The earlier archived bundle still favors DDPG in Hypervolume, whereas the strict-highest-accuracy 2000-sample checkpoint and the surrogate-rebenchmark checkpoint both favor NSGA-II in both Hypervolume and IGD. The purpose of this table is not to promote one checkpoint as universally correct, but to show that optimizer ordering itself changes materially with surrogate selection.
 
 \begin{table}[H]
 \centering
@@ -169,19 +169,19 @@ Table~\ref{tab:supp_checkpoint_rank} complements that audit at the benchmark lev
 \toprule
 Checkpoint context & Best DDPG HV & NSGA-II HV & Best DDPG IGD & NSGA-II IGD & Ordering takeaway \\
 \midrule
-Imported publication artifact & 1.2696 & 0.6528 & 0.5043 & 0.1419 & HV favors DDPG, but IGD already favors NSGA-II \\
+Earlier archived benchmark & 1.2696 & 0.6528 & 0.5043 & 0.1419 & HV favors DDPG, but IGD already favors NSGA-II \\
 Strict-highest-accuracy 2000 checkpoint & 1.0107 & 1.3310 & 0.2205 & 0.1068 & NSGA-II favors in both HV and IGD \\
 Surrogate-rebenchmark checkpoint & 0.9337 & 1.3310 & 0.2874 & 0.1036 & NSGA-II favors in both HV and IGD \\
 \bottomrule
 \end{tabularx}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Note: ``Best DDPG'' denotes the strongest of the three DDPG scenarios within each checkpoint context. The first row comes from the imported publication artifact, while the other two rows come from the synced strict-highest-accuracy and surrogate-rebenchmark checkpoint bundles.
+\item Note: ``Best DDPG'' denotes the strongest of the three DDPG scenarios within each checkpoint context. The first row comes from an earlier archived benchmark bundle, while the other two rows come from the strict-highest-accuracy and surrogate-rebenchmark checkpoint bundles.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
 
-Finally, to test whether this surrogate fragility is specific to DDPG or can also affect a stronger continuous optimizer, a same-budget CMA-ES follow-up was run locally on the three checkpoint contexts summarized above. Table~\ref{tab:supp_cmaes} reports the result. Across all three contexts, all three scalarization scenarios, and all ten seeds per scenario, CMA-ES converges to the same clipped corner solution $(66.0,\ 2.85,\ 7.85)$ with reward 1.0. A trajectory probe further shows that this is not an immediate one-step failure: in a representative balanced-scenario run, the first perfect-reward hit occurs only after about 2992--3168 evaluations across the three checkpoint contexts, after a gradual rise from initial rewards around 0.35--0.44. By contrast, the same-budget random-search archive available for the imported publication artifact remains materially below this corner, with mean rewards around 0.87 rather than 1.0. Deterministic analytic re-evaluation of representative CMA-ES corner candidates also shows heterogeneous drift across checkpoints: the imported publication and strict-highest-accuracy checkpoints retain EUIt~=~66.0 but lose between about 0.06 and 0.21 on EG/H, whereas the surrogate-rebenchmark checkpoint degrades more strongly to EUIt~=~68.66, EG~=~2.56, and H~=~7.45. This result does not establish CMA-ES as a better optimizer in the present surrogate workflow; rather, it indicates that once the surrogate exposes a reward-saturating corner, a strong continuous optimizer can exploit the same artifact deterministically, while independent analytic re-evaluation still reveals checkpoint-dependent overstatement at the corner. The methodological implication is that the central risk is broader than DDPG instability alone.
+Finally, to test whether this surrogate fragility is specific to DDPG or can also affect a stronger continuous optimizer, a same-budget CMA-ES follow-up was run locally on the three checkpoint contexts summarized above. Table~\ref{tab:supp_cmaes} reports the result. Across all three contexts, all three scalarization scenarios, and all ten seeds per scenario, CMA-ES converges to the same clipped corner solution $(66.0,\ 2.85,\ 7.85)$ with reward 1.0. A trajectory probe further shows that this is not an immediate one-step failure: in a representative balanced-scenario run, the first perfect-reward hit occurs only after about 2992--3168 evaluations across the three checkpoint contexts, after a gradual rise from initial rewards around 0.35--0.44. By contrast, the same-budget random-search archive available for the earlier archived benchmark remains materially below this corner, with mean rewards around 0.87 rather than 1.0. Deterministic analytic re-evaluation of representative CMA-ES corner candidates also shows heterogeneous drift across checkpoints: the earlier archived benchmark and the strict-highest-accuracy checkpoint retain EUIt~=~66.0 but lose between about 0.06 and 0.21 on EG/H, whereas the surrogate-rebenchmark checkpoint degrades more strongly to EUIt~=~68.66, EG~=~2.56, and H~=~7.45. This result does not establish CMA-ES as a better optimizer in the present surrogate workflow. Instead, it indicates that once the surrogate exposes a reward-saturating corner, a strong continuous optimizer can exploit the same artifact deterministically, while independent analytic re-evaluation still reveals checkpoint-dependent overstatement at the corner. The methodological implication is that the central risk is broader than DDPG instability alone.
 
 \begin{table}[H]
 \centering
@@ -193,7 +193,7 @@ Finally, to test whether this surrogate fragility is specific to DDPG or can als
 \toprule
 Checkpoint context & EUIt & EG ($10^6$~kWh/y) & H (h) & Reward & Observation \\
 \midrule
-Imported publication artifact & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
+Earlier archived benchmark & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
 Strict-highest-accuracy 2000 checkpoint & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
 Surrogate-rebenchmark checkpoint & 66.0 & 2.85 & 7.85 & 1.0 & identical optimum across all three scenarios and all 10 seeds per scenario \\
 \bottomrule
@@ -220,7 +220,7 @@ To complement the linear correlation results in the main text, Fig.~\ref{fig:sup
 
 \subsection{Independent re-evaluation of selected candidates}
 
-To reduce over-reliance on surrogate predictions, the workflow re-evaluates preference-aligned candidate solutions using an independent simulation call. In the current local environment, this re-evaluation still uses the fallback analytic simulator, but the code path is structured so that a full physical-stack simulation can replace it when server-side results become available. Table~\ref{tab:supp_reeval} reports the latest available reevaluation results for the strict highest-accuracy 2000-sample comparison. The updated evidence shows heterogeneous drift: the balanced DDPG winner improves in EUIt but loses EG and H, the saving-focused and generation-focused DDPG winners drift upward in EUIt and downward in EG, and the selected NSGA-II candidate also moves away from its surrogate prediction. This narrows the earlier asymmetry between DDPG and NSGA-II, but it still indicates that surrogate-space ranking should not be treated as a direct substitute for independent validation.
+To reduce over-reliance on surrogate predictions, the workflow re-evaluates preference-aligned candidate solutions using an independent analytic simulation call that follows the same response definitions used to generate the surrogate-training data. In principle, this step can be replaced by a full physical-stack simulation when that infrastructure is available. Table~\ref{tab:supp_reeval} reports the reevaluation results for the strict highest-accuracy 2000-sample comparison. The evidence shows heterogeneous drift: the balanced DDPG winner improves in EUIt but loses EG and H, the saving-focused and generation-focused DDPG winners drift upward in EUIt and downward in EG, and the selected NSGA-II candidate also moves away from its surrogate prediction. Taken together, these shifts narrow the asymmetry between DDPG and NSGA-II, but they still indicate that surrogate-space ranking should not be treated as a direct substitute for independent validation.
 
 \begin{table}[H]
 \centering
@@ -241,7 +241,7 @@ DDPG & Generation & 66.356 & 67.836 & 2.841 & 2.735 & 7.807 & 7.530 \\
 \end{threeparttable}
 \end{table}
 
-To complement the deterministic fallback reevaluation, a small-batch physical-stack probe was also carried out on two representative candidates using the repo-side physical-stack path. The current best-aligned version of that path combines a compressed thermal model for EUIt, a simplified rooftop-PV proxy for EG, and a January~20 windowsill-style direct-sun-hours check for H. Table~\ref{tab:supp_physprobe} summarizes the result. The main value of this table is not to claim full physical closure, but to show that the physical probe has now moved beyond proof-of-life and into a partially aligned diagnostic regime. In particular, the two representative candidates yield physical EUIt values of 74.379 and 74.057~kWh/m$^2$/y, which are clearly above but still close to the corresponding surrogate values of 66.000 and 69.443. The EG proxy also remains directionally close to the surrogate values, and the revised H check is now in the same overall range as the surrogate-scale sunlight-hours values, although it remains less stable across candidates than EUIt. The methodological implication is therefore still asymmetric: the present physical probe provides the strongest check for EUIt, a weaker but stable structural check for EG, and a newly improved but still candidate-sensitive direct-sun-hours check for H.
+To complement the deterministic analytic reevaluation, a small-batch physical-stack probe was also carried out on two representative candidates using the repo-side physical workflow. The current best-aligned version of that workflow combines a compressed thermal model for EUIt, a simplified rooftop-PV proxy for EG, and a January~20 windowsill-style direct-sun-hours check for H. Table~\ref{tab:supp_physprobe} summarizes the result. The purpose of this table is not to claim full physical closure, but to show that the physical probe has moved beyond proof-of-life and into a partially aligned diagnostic regime. In particular, the two representative candidates yield physical EUIt values of 74.379 and 74.057~kWh/m$^2$/y, which are clearly above but still close to the corresponding surrogate values of 66.000 and 69.443. The EG proxy also remains directionally close to the surrogate values, and the revised H check is now in the same overall range as the surrogate-scale sunlight-hours values, although it remains less stable across candidates than EUIt. Accordingly, the physical evidence remains asymmetric: it provides the strongest check for EUIt, a weaker but stable structural check for EG, and a newly improved but still candidate-sensitive direct-sun-hours check for H.
 
 \begin{table}[H]
 \centering
@@ -259,12 +259,12 @@ NSGA-II & NSGA-II & 69.443 & 74.057 & 2.613 & 2.479 & 7.569 & 6.075 \\
 \end{tabular*}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Note: `phys` denotes the current project-level \texttt{physical\_stack\_probe}, not a final publication-grade reconstruction of all three paper metrics. EUIt is the strongest-aligned physical quantity under the current settings. EG is derived from a simplified rooftop-PV proxy. H is now derived from a windowsill-style January~20 direct-sun-hours calculation, which is much closer to the manuscript definition than the earlier point-illuminance proxy but should still be interpreted as a small-batch partial closure rather than as a full publication-pipeline replacement.
+\item Note: `phys` denotes the current project-level physical probe, not a final publication-grade reconstruction of all three paper metrics. EUIt is the strongest-aligned physical quantity under the current settings. EG is derived from a simplified rooftop-PV proxy. H is derived from a windowsill-style January~20 direct-sun-hours calculation, which is much closer to the manuscript definition than the earlier point-illuminance proxy but should still be interpreted as a small-batch partial closure rather than as a full publication-pipeline replacement.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
 
-The same best-aligned physical settings were then extended to a four-method small-batch probe spanning the representative DDPG, NSGA-II, CMA-ES, and RandomSearch candidates that had previously been used for debugging the physical stack. For DDPG, CMA-ES, and RandomSearch, the representative points come from the balanced scalarization setting, whereas NSGA-II is represented by the selected benchmark candidate used elsewhere in the revision package. Here, RandomSearch is included not as a co-equal optimizer benchmark with the same analytical depth as DDPG or NSGA-II, but as an uninformed physical reference for how much spread remains after projection through the current probe. Under this broader check, all four methods remained executable through the same project-level path and the resulting physical EUIt values collapsed into a relatively narrow band of about 73.3--74.4~kWh/m$^2$/y. The corresponding windowsill-style direct-sun-hours values also narrowed to about 6.0--7.5~h. Figure~\ref{fig:supp_physprobe_methods} visualizes the same point by directly pairing surrogate and physical-probe values for the four representative candidates. This broader probe does not replace the surrogate benchmark reported in the main text, but it strengthens the narrower methodological interpretation: once the comparison is projected through the current physical probe, the method-level spread becomes smaller than the surrogate-space spread. The current evidence does not yet determine whether this shrinkage is caused mainly by a genuinely flat physical design region, by the nearest-block restriction of the probe, or by the surrogate's tendency to exaggerate method-level differences. It is therefore safest to interpret the result as evidence that optimizer ranking remains conditional on surrogate choice and validation mode, not as proof that all methods are physically equivalent.
+The same best-aligned physical settings were then extended to a four-method small-batch probe spanning the representative DDPG, NSGA-II, CMA-ES, and RandomSearch candidates that had previously been used to stress-test the physical workflow. For DDPG, CMA-ES, and RandomSearch, the representative points come from the balanced scalarization setting, whereas NSGA-II is represented by the selected benchmark candidate used elsewhere in the study. Here, RandomSearch is included not as a co-equal optimizer benchmark with the same analytical depth as DDPG or NSGA-II, but as an uninformed physical reference for how much spread remains after projection through the current probe. Under this broader check, all four methods remained executable through the same project-level path and the resulting physical EUIt values collapsed into a relatively narrow band of about 73.3--74.4~kWh/m$^2$/y. The corresponding windowsill-style direct-sun-hours values also narrowed to about 6.0--7.5~h. Figure~\ref{fig:supp_physprobe_methods} visualizes the same point by directly pairing surrogate and physical-probe values for the four representative candidates. This broader probe does not replace the surrogate benchmark reported in the main text, but it strengthens the narrower methodological interpretation: once the comparison is projected through the current physical probe, the method-level spread becomes smaller than the surrogate-space spread. The current evidence does not yet determine whether this shrinkage is caused mainly by a genuinely flat physical design region, by the nearest-block restriction of the probe, or by the surrogate's tendency to exaggerate method-level differences. The safest interpretation is therefore not that all methods are physically equivalent, but that optimizer ranking remains conditional on surrogate choice and validation mode.
 
 \begin{figure}[H]
 \centering
