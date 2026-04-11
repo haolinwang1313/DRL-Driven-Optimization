@@ -10,3 +10,4 @@ configs/revision.local.yaml
 
 tmp_page*.png
 tmp_table*.png
+.trellis/
