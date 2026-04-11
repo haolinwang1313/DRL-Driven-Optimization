@@ -78,23 +78,29 @@ Multi-objective optimization \sep Urban morphology \sep Energy performance \sep 
 \begin{minipage}[t]{0.48\linewidth}
 \textbf{Abbreviations}
 
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.24\linewidth}X@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.26\linewidth}X@{}}
 UM & Urban morphology \\
-EP & Energy performance \\
 UMF & Urban morphological factor \\
 EPI & Energy performance indicator \\
+MOO & Multi-objective optimization \\
 DRL & Deep reinforcement learning \\
 DNN & Deep neural network \\
 DDPG & Deep Deterministic Policy Gradient \\
-MOO & Multi-objective optimization \\
+NSGA-II & Non-dominated Sorting Genetic Algorithm II \\
+CMA-ES & Covariance Matrix Adaptation Evolution Strategy \\
+SAC & Soft Actor-Critic \\
+MDP & Markov Decision Process \\
+BO & Bayesian Optimization \\
+PV & Photovoltaic \\
 HV & Hypervolume \\
 IGD & Inverted Generational Distance \\
+nMAE & Normalized mean absolute error \\
 \end{tabularx}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.48\linewidth}
 \textbf{Main symbols}
 
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.28\linewidth}X@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}X@{}}
 EUIt & Energy use intensity (kWh/m$^2$/y) \\
 EG & Energy generation ($10^6$ kWh/y) \\
 H & Sunlight hours (h) \\
@@ -106,8 +112,14 @@ AF & Average floors \\
 AR$_{e-w}$ & East-west aspect ratio \\
 AR$_{n-s}$ & North-south aspect ratio \\
 OSLI & Open Space Location Index \\
+$\mathbf{a}$ & Action vector of 12 morphology variables \\
+$\mathbf{s}$ & State vector of surrogate-predicted performance indicators \\
+$y_1,y_2,y_3$ & Predicted EUIt, EG, and H responses \\
 $\theta$ & Block orientation angle (deg) \\
 $w_1,w_2,w_3$ & Reward weights for EUIt, EG, and H \\
+$d_{\mathrm{weighted}}$ & Weighted distance to the utopian point $[0,1,1]$ \\
+$R$ & Scalar reward used for policy learning \\
+$\eta$ & Learning rate in surrogate training \\
 $\gamma$, $\tau$ & DDPG discount and soft-update factors \\
 \end{tabularx}
 \end{minipage}
@@ -131,7 +143,7 @@ Reviews of simulation-based optimization have established the methodological fou
 
 At the application level, existing urban-form optimization studies have demonstrated important capabilities, but each leaves part of the present problem unresolved. Ascione et al. \cite{ref11} optimize envelope design, Li et al. \cite{ref12} target photovoltaic-oriented inverse urban design, and Liu et al. \cite{ref13} optimize urban block forms for daylight, energy use, and photovoltaic potential. Recent large-scale morphology-energy studies have also shown that GIS-informed deep learning can reveal how urban spatial structure shapes building energy demand across broad urban areas and under extreme climate events \cite{ref41,ref42,ref43}. These studies strengthen the empirical case that morphology matters, but they still do not resolve whether optimizer conclusions remain stable, fairly benchmarked, and transferable across surrogate choices. Similarly, recent studies using NSGA-II or related evolutionary schemes in energy-oriented urban design \cite{ref16,ref17,ref22,ref23,ref24,ref25} provide stronger objective trade-offs, shading designs, or envelope-shape combinations, yet they do not establish whether designers can obtain a reusable policy for navigating the same design space, nor do they isolate how much of the reported advantage depends on the selected surrogate or benchmark protocol.
 
-The reinforcement-learning literature does not close this gap either. General DRL surveys \cite{ref26} and continuous-control benchmarks in robotics, games, language, and autonomous driving \cite{ref27,ref28,ref29,ref30} confirm that policy learning is effective in high-dimensional decision problems, while DQN \cite{ref31} and DDPG \cite{ref32} define the algorithmic basis for discrete and continuous control. However, these studies are not concerned with urban morphology design, surrogate-dependent benchmark fairness, or morphology-level interpretability. In the energy domain, DRL has been increasingly adopted for building HVAC control \cite{ref33,ref34} and power-system operation \cite{ref35,ref36}, but these applications address operational control rather than static morphology generation. Recent \emph{Applied Energy} studies already benchmark stronger actor-critic baselines such as SAC, TD3, PPO, and TRPO in continuous-control energy settings and report that SAC is often among the strongest or most data-efficient candidates \cite{ref37,ref38,ref39}. \emph{Applied Energy} has also begun to report CMA-ES-based optimization in neighboring energy-system applications \cite{ref40}. Accordingly, the present paper should be interpreted as an intentionally narrow DDPG-versus-NSGA-II study within one surrogate-conditioned urban-design workflow, not as a claim that the compared pair exhausts the relevant optimizer space. In particular, SAC and other entropy-regularized actor-critic variants are discussed here only as relevant external baselines from the literature; they are not executed in the current work and therefore should not be folded into the paper's causal claims about deterministic policy-gradient behavior. Against that backdrop, the literature still lacks a clear answer to a more specific scientific question: under a shared surrogate environment for block-scale urban morphology, how fragile are optimizer rankings to surrogate selection, and what can a bounded DDPG-versus-NSGA-II comparison still reveal about morphology-level search bias?
+The reinforcement-learning literature does not close this gap either. General DRL surveys \cite{ref26} and continuous-control benchmarks in robotics, games, language, and autonomous driving \cite{ref27,ref28,ref29,ref30} confirm that policy learning is effective in high-dimensional decision problems, while DQN \cite{ref31} and DDPG \cite{ref32} define the algorithmic basis for discrete and continuous control. However, these studies are not concerned with urban morphology design, surrogate-dependent benchmark fairness, or morphology-level interpretability. In the energy domain, DRL has been increasingly adopted for building HVAC control \cite{ref33,ref34} and power-system operation \cite{ref35,ref36}, but these applications address operational control rather than static morphology generation. Recent continuous-control energy studies already benchmark stronger actor-critic baselines such as SAC, TD3, PPO, and TRPO and report that SAC is often among the strongest or most data-efficient candidates \cite{ref37,ref38,ref39}. Related energy-system optimization studies have also begun to report CMA-ES-based optimization in neighboring applications \cite{ref40}. Accordingly, the present paper should be interpreted as an intentionally narrow DDPG-versus-NSGA-II study within one surrogate-conditioned urban-design workflow, not as a claim that the compared pair exhausts the relevant optimizer space. In particular, SAC and other entropy-regularized actor-critic variants are discussed here only as relevant external baselines from the literature; they are not executed in the current work and therefore should not be folded into the paper's causal claims about deterministic policy-gradient behavior. Against that backdrop, the literature still lacks a clear answer to a more specific scientific question: under a shared surrogate environment for block-scale urban morphology, how fragile are optimizer rankings to surrogate selection, and what can a bounded DDPG-versus-NSGA-II comparison still reveal about morphology-level search bias?
 
 This unresolved question defines the knowledge gap addressed in this paper. The gap is not the absence of optimization, surrogate modelling, or DRL in isolation; those elements already exist in the literature. Rather, the missing contribution is a benchmarked study that places a continuous-control DRL agent and NSGA-II in the same surrogate environment, evaluates them under matched budgets, and interprets the outcome through optimizer-ranking fragility, morphology-level fingerprints, and the dependence of benchmark conclusions on surrogate selection.
 
