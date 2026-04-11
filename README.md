@@ -1,34 +1,81 @@
-# Paper02 Reproduction
+# Surrogate-Conditioned Benchmark Fragility in Block-Scale Urban Energy Design
 
-This repository reconstructs the workflow described in:
+This repository contains the code and manuscript package for our block-scale urban morphology optimization study based on surrogate modeling, DDPG, and NSGA-II.
 
-- `manuscript1105_clean.pdf`
-- `Supplementary Information.pdf`
+The current version is maintained for an article under peer review. The repository is therefore kept intentionally concise and does not yet serve as a full public release of all workflows and artifacts.
 
-The implementation is configuration-driven and provides CLI entry points for:
+## Overview
 
-- `bootstrap-sim-stack`
-- `build-dataset`
-- `train-surrogate`
-- `select-surrogate`
-- `run-optimizers`
-- `make-paper-figures`
-- `full-reproduce`
+The study focuses on optimizing urban morphology factors to improve three block-scale energy indicators:
 
-The code attempts to bootstrap a Ladybug Tools style simulation stack, but it also
-supports a documented fallback simulator so the full pipeline remains executable on
-machines without Rhino/Grasshopper, EnergyPlus, or Radiance.
+- `EUIt`: Energy Use Intensity
+- `EG`: Energy Generation
+- `H`: Sunlight Hours
 
-For the current manuscript figure set used in `elsarticle/`, rebuild with:
+The current workflow combines:
 
-- `uv run python tools/build_manuscript_result_figures.py --compile-manuscript`
+- parametric morphology generation
+- surrogate-based performance prediction
+- optimizer comparison between DDPG and fair-budget NSGA-II
+- benchmark-diagnostic analysis under different surrogate checkpoints
 
-This script is pinned to the current strict-highest-accuracy result bundle
-`artifacts/server_runs/20260405_highest_precision_2000_compare`, while keeping
-`fig10.pdf` and `fig11.pdf` on the approved committed version.
+## Repository Structure
 
-For revision-mode benchmarking, the expected sequence is:
+The main directories are:
 
-1. `python -m paper_repro.cli --config configs/revision.yaml build-dataset`
-2. `python -m paper_repro.cli --config configs/revision.yaml select-surrogate`
-3. `python -m paper_repro.cli --config configs/revision.yaml run-optimizers`
+- `paper_repro/`: core pipeline, surrogate modeling, optimization, diagnostics, and reviewer utilities
+- `configs/`: runtime and revision configurations
+- `tools/`: helper scripts for reruns, figure generation, and result processing
+- `elsarticle/`: current manuscript source and figure files
+
+## Environment
+
+Recommended environment:
+
+- Python `3.10+`
+- local virtual environment managed with `uv` or standard `venv`
+
+Core Python dependencies include:
+
+- `torch`
+- `optuna`
+- `pymoo`
+- `scikit-learn`
+- `pandas`
+- `numpy`
+- `matplotlib`
+- `PyYAML`
+
+## Minimal Workflow
+
+Run all commands from the repository root.
+
+### 1. Build the revision dataset
+
+```bash
+python -m paper_repro.cli --config configs/revision.yaml build-dataset
+```
+
+### 2. Select the surrogate
+
+```bash
+python -m paper_repro.cli --config configs/revision.yaml select-surrogate
+```
+
+### 3. Run the optimizers
+
+```bash
+python -m paper_repro.cli --config configs/revision.yaml run-optimizers
+```
+
+### 4. Rebuild the manuscript figures
+
+```bash
+uv run python tools/build_manuscript_result_figures.py --compile-manuscript
+```
+
+## Notes
+
+- The repository supports a documented fallback analytic simulator when a full physical stack is unavailable.
+- The manuscript currently reflects the revision workflow centered on `configs/revision.yaml`.
+- The figure and manuscript package in `elsarticle/` represents the current submission version.
