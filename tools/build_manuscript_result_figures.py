@@ -21,6 +21,12 @@ from paper_repro.surrogate import load_surrogate
 CURRENT_COMPARE_RUN = "20260405_highest_precision_2000_compare"
 CURRENT_SELECTION_RUN = "20260405_surrogate_rebenchmark"
 STATIC_FIG_COMMIT = "87b1e66eb217251587be94e95e73898ed4740859"
+DDPG_LOG_SHARD_GROUPS = {
+    "rev": ["balrev", "savrev", "genrev"],
+    "match": ["match_bal", "match_es", "match_eg"],
+    "guard": ["guard_bp", "guard_es", "guard_eg"],
+    "stop": ["stop_bal", "stop_es", "stop_eg"],
+}
 
 CM_TO_IN = 1 / 2.54
 DOUBLE_COL_IN = 17.5 * CM_TO_IN
@@ -133,6 +139,78 @@ def _compile_manuscript(repo_root: Path) -> None:
         ["latexmk", "-pdf", "-interaction=nonstopmode", "manuscript.tex"],
         cwd=repo_root / "elsarticle",
         check=True,
+    )
+
+
+def _load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _resolve_result_roots(repo_root: Path) -> tuple[Path, Path]:
+    compare_root = repo_root / "artifacts" / "server_runs" / CURRENT_COMPARE_RUN
+    selection_root = repo_root / "artifacts" / "server_runs" / CURRENT_SELECTION_RUN
+    if compare_root.exists():
+        return compare_root, selection_root
+
+    publication_root = repo_root / "artifacts" / "publication"
+    if publication_root.exists():
+        return publication_root, publication_root
+
+    raise FileNotFoundError(
+        "Neither artifacts/server_runs/<current_run> nor artifacts/publication exists; cannot rebuild manuscript figures."
+    )
+
+
+def _merge_ddpg_logs_all_from_shards(optimization_dir: Path, prefixes: list[str]) -> tuple[pd.DataFrame, dict[str, dict[str, list[dict]]]]:
+    result_frames: list[pd.DataFrame] = []
+    merged_logs_all: dict[str, dict[str, list[dict]]] = {}
+
+    for prefix in prefixes:
+        result_frames.extend(pd.read_csv(path) for path in sorted(optimization_dir.glob(f"ddpg_results_{prefix}_*.csv")))
+        for json_path in sorted(optimization_dir.glob(f"ddpg_logs_all_{prefix}_*.json")):
+            payload = _load_json(json_path)
+            for scenario, seed_map in payload.items():
+                scenario_bucket = merged_logs_all.setdefault(scenario, {})
+                for seed, rows in seed_map.items():
+                    scenario_bucket[str(seed)] = rows
+
+    if not result_frames:
+        raise FileNotFoundError(f"No DDPG shard results found for prefixes: {prefixes}")
+
+    merged_frame = pd.concat(result_frames, ignore_index=True).sort_values(["scenario", "seed"]).reset_index(drop=True)
+    return merged_frame, merged_logs_all
+
+
+def _load_ddpg_logs_all(compare_root: Path) -> dict[str, dict[str, list[dict]]]:
+    optimization_dir = compare_root / "optimization"
+    logs_all_path = optimization_dir / "ddpg_logs_all.json"
+    if logs_all_path.exists():
+        return _load_json(logs_all_path)
+
+    base_results = pd.read_csv(optimization_dir / "ddpg_results.csv").sort_values(["scenario", "seed"]).reset_index(drop=True)
+    base_columns = list(base_results.columns)
+
+    for prefixes in DDPG_LOG_SHARD_GROUPS.values():
+        try:
+            merged_frame, merged_logs_all = _merge_ddpg_logs_all_from_shards(optimization_dir, prefixes)
+        except FileNotFoundError:
+            continue
+        if list(merged_frame.columns) != base_columns or len(merged_frame) != len(base_results):
+            continue
+        try:
+            pd.testing.assert_frame_equal(
+                base_results[base_columns],
+                merged_frame[base_columns],
+                check_exact=False,
+                atol=1e-8,
+                rtol=1e-8,
+            )
+            return merged_logs_all
+        except AssertionError:
+            continue
+
+    raise FileNotFoundError(
+        f"Could not infer ddpg_logs_all.json from shard outputs under {optimization_dir}."
     )
 
 
@@ -378,8 +456,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     root = args.repo_root.resolve()
-    compare_root = root / "artifacts" / "server_runs" / CURRENT_COMPARE_RUN
-    selection_root = root / "artifacts" / "server_runs" / CURRENT_SELECTION_RUN
+    compare_root, selection_root = _resolve_result_roots(root)
     fig_dir = root / "elsarticle" / "fig"
 
     set_journal_style()
@@ -387,7 +464,7 @@ def main() -> None:
     ddpg = pd.read_csv(compare_root / "optimization" / "ddpg_results.csv")
     nsga = pd.read_csv(compare_root / "optimization" / "nsga2_results.csv")
     combined = pd.read_csv(compare_root / "optimization" / "optimization_results.csv")
-    logs_all = json.loads((compare_root / "optimization" / "ddpg_logs_all.json").read_text(encoding="utf-8"))
+    logs_all = _load_ddpg_logs_all(compare_root)
     config = Config.from_yaml(root / "configs" / "revision.yaml")
     bundle = load_surrogate(compare_root / "models" / "surrogate.pt")
     dataset = pd.read_csv(compare_root / "data" / "simulated_samples.csv")

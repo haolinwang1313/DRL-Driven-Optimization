@@ -87,3 +87,34 @@ Status: completed and repeated. The first hardened async result (`513150aac010`)
 Status: completed in bounded form. The appendix now includes a small-batch physical probe table for two representative candidates, and the main discussion/limitations now describe the evidence asymmetrically: strongest closure for `EUIt`, weaker closure for `EG`, and a newly improved but still bounded direct-sun-hours closure for `H`.
 
 Update: the earlier replacement job `6e80a1552e92` was also retired as stale after the new hardening pass. The fresh hardened job `513150aac010` completed and wrote both a local result JSON and a merged reevaluation CSV.
+
+## 2026-04-11 Result-to-Claim Gate
+
+- intended_claim: the paper supports a bounded `surrogate-conditioned benchmark fragility` claim, not a universal optimizer-superiority claim; on the selected 2000-sample surrogate, fair-budget NSGA-II is stronger than the tested DDPG setup, while checkpoint sensitivity, reevaluation drift, CMA-ES corner exploitation, and small-batch physical probing together show that optimizer ranking remains conditional on surrogate choice and validation mode.
+- claim_supported: `yes`
+- confidence: `medium`
+- what_results_support:
+  - the selected 2000-sample surrogate is the strongest candidate within the current scale study;
+  - on that selected surrogate, fair-budget NSGA-II remains stronger than all three DDPG scenarios in archive-level metrics and preference-aligned utility;
+  - the checkpoint-sensitivity audit shows that benchmark ordering changes across accessible surrogate contexts;
+  - the CMA-ES follow-up shows that surrogate-corner exploitability is broader than DDPG instability alone;
+  - the current physical probe now supports a bounded second-layer check, strongest for `EUIt`, weaker but still directional for `EG`, and materially improved for `H`.
+- what_results_dont_support:
+  - the current evidence still does not support a full physical-stack publication closure;
+  - the paper should not generalize from DDPG to all actor-critic methods because `SAC` and related entropy-regularized baselines remain untested;
+  - the current small-batch physical probe should not be overread as proof that all methods are physically equivalent.
+- missing_evidence:
+  - broader checkpoint coverage beyond the currently accessible contexts;
+  - full publication-pipeline physical reruns rather than nearest-block small-batch probing;
+  - broader actor-critic baseline coverage only if the paper scope is widened again.
+- suggested_claim_revision:
+  - keep the manuscript centered on the current bounded methodological claim;
+  - keep all `EUIt strongest / EG weaker proxy / H bounded partial closure` language explicit;
+  - avoid any wording that drifts back toward `DDPG superiority` or toward `full physical validation`.
+- next_experiments_needed:
+  - none are strictly required for the current narrowed resubmission claim;
+  - optional strengthening only: broader checkpoint audit, fuller physical closure, or an explicit `SAC` run if the paper scope is deliberately widened.
+- local_consistency_check:
+  - one internal mismatch was found during this gate: the newly added 4-method appendix figure initially used `NSGA-II` physical `H = 6.025` from a different merged JSON, while the manuscript table/log narrative used `6.075`.
+  - the figure-generation script was corrected so the appendix figure now uses the same `DDPG/NSGA-II` physical values as the manuscript text and `asynccheck29/30` tables.
+  - `elsarticle/manuscript.pdf` was recompiled successfully after the fix, now with `26` pages and no undefined references/citations in the final `manuscript.log`.

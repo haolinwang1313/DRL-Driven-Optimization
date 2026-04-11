@@ -124,3 +124,51 @@ The main paper now uses these merged multi-seed guarded reruns for the learning-
 1. Run additional NSGA-II seeds or a pooled-budget NSGA-II comparison to close the archive-budget fairness gap.
 2. Add physical-stack or empirical validation for at least a small representative candidate set.
 3. Add a learning-curve or coverage diagnostic for surrogate adequacy if no new physical validation can be obtained.
+
+## 2026-04-11 Local Writing Improvement Loop
+
+### Round Summary
+
+This loop was run as a local writing-only improvement pass after the latest result-to-claim consistency gate. No new experiments were launched. The goal was to tighten claim boundaries, improve the self-containedness of the revised benchmark-fragility story, and make the newly added four-method appendix figure read as a bounded validation aid rather than as a silent benchmark expansion.
+
+### Round 1: Structural Claim Tightening
+
+Main edits:
+
+1. Revised the abstract so the checkpoint-sensitivity audit, `CMA-ES` follow-up, and representative physical probe are described explicitly as bounded supporting evidence rather than as a broader optimizer leaderboard.
+2. Tightened the contribution list in `elsarticle/manuscript.tex` so the paper now claims:
+   - benchmark-fragility interpretation rather than optimizer superiority;
+   - checkpoint-sensitivity and `CMA-ES` as bounding evidence;
+   - bounded physical probing as validation-mode support, not full closure.
+3. Added a new limitation in the Discussion clarifying that the four-method physical probe is still a representative-candidate comparison, not a fully symmetric benchmark.
+4. Clarified in `elsarticle/appendix.tex` that the four-method physical figure mixes balanced-scenario representatives (`DDPG`, `CMA-ES`, `RandomSearch`) with the selected `NSGA-II` benchmark representative by design.
+
+Output:
+
+- `elsarticle/manuscript_round1.pdf`
+
+### Round 2: Final Framing Cleanup
+
+Main edits:
+
+1. Replaced the remaining `decision-support bias` wording in the Introduction with the narrower `preference-conditioned search bias` framing.
+2. Strengthened the final concluding paragraph so it now states more explicitly that the checkpoint audit, `CMA-ES` follow-up, and representative physical probe do not overturn the main `NSGA-II > tested DDPG` result; instead, they explain why that result must be interpreted conditionally.
+
+Output:
+
+- `elsarticle/manuscript_round2.pdf`
+- `elsarticle/manuscript.pdf` (current final)
+
+### Compile / Format Status
+
+- Final PDF: `elsarticle/manuscript.pdf`
+- Page count: `27`
+- Undefined references: `0`
+- Undefined citations: `0`
+- Remaining LaTeX warnings: only `Underfull \\hbox` warnings in appendix table text; no blocking compile errors
+
+### Files Preserved
+
+- `elsarticle/manuscript_round0_original.pdf`
+- `elsarticle/manuscript_round1.pdf`
+- `elsarticle/manuscript_round2.pdf`
