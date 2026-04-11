@@ -3,6 +3,9 @@ __pycache__/
 *.pyc
 *.egg-info/
 
+.*
+!.gitignore
+
 artifacts/
 artifacts_smoke/
 server.local.yaml
@@ -10,10 +13,9 @@ configs/revision.local.yaml
 
 tmp_page*.png
 tmp_table*.png
-.trellis/
-.agents/
-.codex/
 AGENTS.md.local-backup
 slides/
 tests/
 initial_paper/
+elsarticle/
+letter-2-reviewers/
