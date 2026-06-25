@@ -30,6 +30,33 @@ def _set_seed(seed: int) -> None:
     torch.manual_seed(seed)
 
 
+def _topk_archive_frame(
+    *,
+    method: str,
+    scenario: str,
+    seed: int,
+    actual_actions: np.ndarray,
+    outputs: np.ndarray,
+    rewards: np.ndarray,
+) -> pd.DataFrame:
+    frame = pd.DataFrame(actual_actions, columns=MORPHOLOGY_FEATURES)
+    frame["method"] = method
+    frame["scenario"] = scenario
+    frame["seed"] = seed
+    frame["EUIt"] = outputs[:, 0]
+    frame["EG"] = outputs[:, 1]
+    frame["H"] = outputs[:, 2]
+    frame["reward"] = rewards
+    return frame[OPTIMIZATION_RESULT_COLUMNS]
+
+
+def _merge_topk_archive(current: pd.DataFrame | None, batch: pd.DataFrame, keep: int) -> pd.DataFrame:
+    if current is None or current.empty:
+        return batch.nlargest(keep, columns="reward").reset_index(drop=True)
+    merged = pd.concat([current, batch], ignore_index=True)
+    return merged.nlargest(keep, columns="reward").reset_index(drop=True)
+
+
 class ReplayBuffer:
     def __init__(self, capacity: int) -> None:
         self.buffer: deque[tuple[np.ndarray, np.ndarray, float, np.ndarray, float]] = deque(maxlen=capacity)
@@ -320,12 +347,14 @@ def run_random_search(
     evaluation_budget = int(rs_cfg.get("evaluation_budget", ddpg_cfg["max_episodes"] * ddpg_cfg["max_steps_per_episode"]))
     batch_size = int(rs_cfg.get("batch_size", 2048))
     seeds_per_scenario = int(rs_cfg.get("seeds_per_scenario", ddpg_cfg["seeds_per_scenario"]))
+    archive_keep = max(int(rs_cfg.get("archive_keep", 1)), 1)
     selected_scenarios = scenarios or list(ddpg_cfg["scenarios"])
     if seed_end is None:
         seed_end = seeds_per_scenario
 
     results = []
     summary: dict[str, dict[str, float]] = {}
+    archive_frames: list[pd.DataFrame] = []
     for scenario_name, weights in ddpg_cfg["scenarios"].items():
         if scenario_name not in selected_scenarios:
             continue
@@ -337,11 +366,24 @@ def run_random_search(
             best_action = None
             best_outputs = None
             remaining = evaluation_budget
+            run_archive: pd.DataFrame | None = None
             while remaining > 0:
                 current_batch = min(batch_size, remaining)
                 normalized_actions = np.random.rand(current_batch, len(MORPHOLOGY_FEATURES)).astype(np.float32)
                 actual_actions, outputs = env.evaluate_batch(normalized_actions)
                 rewards = env.reward_batch(outputs, weights)
+                run_archive = _merge_topk_archive(
+                    run_archive,
+                    _topk_archive_frame(
+                        method="RandomSearch",
+                        scenario=scenario_name,
+                        seed=seed,
+                        actual_actions=actual_actions,
+                        outputs=outputs,
+                        rewards=rewards,
+                    ),
+                    archive_keep,
+                )
                 best_index = int(np.argmax(rewards))
                 if float(rewards[best_index]) > best_reward:
                     best_reward = float(rewards[best_index])
@@ -351,6 +393,10 @@ def run_random_search(
 
             assert best_action is not None and best_outputs is not None
             best_rewards.append(best_reward)
+            if run_archive is not None and not run_archive.empty:
+                run_archive = run_archive.sort_values("reward", ascending=False).reset_index(drop=True)
+                run_archive["archive_rank"] = np.arange(1, len(run_archive) + 1, dtype=int)
+                archive_frames.append(run_archive)
             results.append(
                 {
                     "method": "RandomSearch",
@@ -369,11 +415,15 @@ def run_random_search(
                 "reward_mean": float(np.mean(best_rewards)),
                 "reward_std": float(np.std(best_rewards)),
                 "evaluation_budget": float(evaluation_budget),
+                "archive_keep": float(archive_keep),
             }
 
     frame = pd.DataFrame(results)[OPTIMIZATION_RESULT_COLUMNS]
     suffix = f"_{output_suffix}" if output_suffix else ""
     write_csv(frame, Path(dirs["optimization_dir"]) / f"random_search_results{suffix}.csv")
+    if archive_frames:
+        archive_frame = pd.concat(archive_frames, ignore_index=True)
+        write_csv(archive_frame, Path(dirs["optimization_dir"]) / f"random_search_archive{suffix}.csv")
     write_json(summary, Path(dirs["optimization_dir"]) / f"random_search_summary{suffix}.json")
     return frame, summary
 
@@ -394,12 +444,14 @@ def run_cmaes(
     seeds_per_scenario = int(cma_cfg.get("seeds_per_scenario", min(10, ddpg_cfg["seeds_per_scenario"])))
     sigma0 = float(cma_cfg.get("sigma0", 0.2))
     popsize = int(cma_cfg.get("popsize", 16))
+    archive_keep = max(int(cma_cfg.get("archive_keep", 1)), 1)
     selected_scenarios = scenarios or list(ddpg_cfg["scenarios"])
     if seed_end is None:
         seed_end = seeds_per_scenario
 
     results = []
     summary: dict[str, dict[str, float]] = {}
+    archive_frames: list[pd.DataFrame] = []
     for scenario_name, weights in ddpg_cfg["scenarios"].items():
         if scenario_name not in selected_scenarios:
             continue
@@ -424,11 +476,24 @@ def run_cmaes(
             best_action = None
             best_outputs = None
             evaluations = 0
+            run_archive: pd.DataFrame | None = None
             while evaluations < evaluation_budget and not optimizer.stop():
                 current_batch = min(popsize, evaluation_budget - evaluations)
                 candidates = np.asarray(optimizer.ask(number=current_batch), dtype=np.float32)
                 actual_actions, outputs = env.evaluate_batch(candidates)
                 rewards = env.reward_batch(outputs, weights)
+                run_archive = _merge_topk_archive(
+                    run_archive,
+                    _topk_archive_frame(
+                        method="CMA-ES",
+                        scenario=scenario_name,
+                        seed=seed,
+                        actual_actions=actual_actions,
+                        outputs=outputs,
+                        rewards=rewards,
+                    ),
+                    archive_keep,
+                )
                 losses = (-rewards).tolist()
                 optimizer.tell(candidates.tolist(), losses)
                 best_index = int(np.argmax(rewards))
@@ -440,6 +505,10 @@ def run_cmaes(
 
             assert best_action is not None and best_outputs is not None
             best_rewards.append(best_reward)
+            if run_archive is not None and not run_archive.empty:
+                run_archive = run_archive.sort_values("reward", ascending=False).reset_index(drop=True)
+                run_archive["archive_rank"] = np.arange(1, len(run_archive) + 1, dtype=int)
+                archive_frames.append(run_archive)
             results.append(
                 {
                     "method": "CMA-ES",
@@ -460,11 +529,15 @@ def run_cmaes(
                 "evaluation_budget": float(evaluation_budget),
                 "popsize": float(popsize),
                 "sigma0": float(sigma0),
+                "archive_keep": float(archive_keep),
             }
 
     frame = pd.DataFrame(results)[OPTIMIZATION_RESULT_COLUMNS]
     suffix = f"_{output_suffix}" if output_suffix else ""
     write_csv(frame, Path(dirs["optimization_dir"]) / f"cmaes_results{suffix}.csv")
+    if archive_frames:
+        archive_frame = pd.concat(archive_frames, ignore_index=True)
+        write_csv(archive_frame, Path(dirs["optimization_dir"]) / f"cmaes_archive{suffix}.csv")
     write_json(summary, Path(dirs["optimization_dir"]) / f"cmaes_summary{suffix}.json")
     return frame, summary
 

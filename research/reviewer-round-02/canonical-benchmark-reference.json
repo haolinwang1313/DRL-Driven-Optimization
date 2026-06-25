@@ -1,0 +1,168 @@
+{
+  "protocol_name": "benchmark-reference-v2",
+  "implementation_version": "reviewer-round2-canonical-result-lock-v1",
+  "objective_orientation": {
+    "EUIt": "minimize",
+    "EG": "maximize",
+    "H": "maximize"
+  },
+  "canonical_candidate_universe": "Union of per-group retained archives from DDPG, NSGA-II, CMA-ES, RandomSearch, and deterministic FeasiblePoolRandom.",
+  "source_files": {
+    "ddpg_results": {
+      "path": "artifacts\\server_runs\\20260405_highest_precision_2000_compare\\optimization\\ddpg_results.csv",
+      "sha256": "93ceef4839e69b313c176acfecb417d4cd9a6115cdf2c82e3e12305bab3930c6"
+    },
+    "nsga2_results": {
+      "path": "artifacts\\server_runs\\20260405_highest_precision_2000_compare\\optimization\\nsga2_results.csv",
+      "sha256": "b83015b321f3392781a50755e3889fb82f960853c4b201ee7b68591a54de0143"
+    },
+    "cmaes_results_round2": {
+      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\optimization\\cmaes_results_round2.csv",
+      "sha256": "1b3c0092cb9f1043b2ddd08cde16bba7119c353e9319011235965e0d05f50d6d"
+    },
+    "cmaes_archive_round2": {
+      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\optimization\\cmaes_archive_round2.csv",
+      "sha256": "7c3053cd3cc316e704bd4519aae00fdd7e14ee19e03590f42893e7642ae57860"
+    },
+    "random_search_results_round2": {
+      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\optimization\\random_search_results_round2.csv",
+      "sha256": "d106b551952effc766dd5aff31318dcd4add0ff40646d23a19d1ee2ce9604365"
+    },
+    "random_search_archive_round2": {
+      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\optimization\\random_search_archive_round2.csv",
+      "sha256": "eed7b21374786af14cd37c4edd63c3d04812fbe26065669c3b23c870688c92e2"
+    },
+    "canonical_dataset": {
+      "path": "artifacts\\server_runs\\20260405_highest_precision_2000_compare\\data\\simulated_samples.csv",
+      "sha256": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc"
+    }
+  },
+  "representation_groups": [
+    {
+      "group": "CMA-ES::Balanced_Performance",
+      "method": "CMA-ES",
+      "scenario": "Balanced_Performance",
+      "rows": 2000,
+      "unique_candidates": 2000,
+      "unique_objective_tuples": 1
+    },
+    {
+      "group": "CMA-ES::Energy_Generation_Focus",
+      "method": "CMA-ES",
+      "scenario": "Energy_Generation_Focus",
+      "rows": 2000,
+      "unique_candidates": 2000,
+      "unique_objective_tuples": 1
+    },
+    {
+      "group": "CMA-ES::Energy_Saving_Focus",
+      "method": "CMA-ES",
+      "scenario": "Energy_Saving_Focus",
+      "rows": 2000,
+      "unique_candidates": 2000,
+      "unique_objective_tuples": 1
+    },
+    {
+      "group": "DDPG::Balanced_Performance",
+      "method": "DDPG",
+      "scenario": "Balanced_Performance",
+      "rows": 20,
+      "unique_candidates": 20,
+      "unique_objective_tuples": 20
+    },
+    {
+      "group": "DDPG::Energy_Generation_Focus",
+      "method": "DDPG",
+      "scenario": "Energy_Generation_Focus",
+      "rows": 20,
+      "unique_candidates": 20,
+      "unique_objective_tuples": 20
+    },
+    {
+      "group": "DDPG::Energy_Saving_Focus",
+      "method": "DDPG",
+      "scenario": "Energy_Saving_Focus",
+      "rows": 20,
+      "unique_candidates": 20,
+      "unique_objective_tuples": 20
+    },
+    {
+      "group": "FeasiblePoolRandom::Balanced_Performance",
+      "method": "FeasiblePoolRandom",
+      "scenario": "Balanced_Performance",
+      "rows": 20,
+      "unique_candidates": 1,
+      "unique_objective_tuples": 1
+    },
+    {
+      "group": "FeasiblePoolRandom::Energy_Generation_Focus",
+      "method": "FeasiblePoolRandom",
+      "scenario": "Energy_Generation_Focus",
+      "rows": 20,
+      "unique_candidates": 1,
+      "unique_objective_tuples": 1
+    },
+    {
+      "group": "FeasiblePoolRandom::Energy_Saving_Focus",
+      "method": "FeasiblePoolRandom",
+      "scenario": "Energy_Saving_Focus",
+      "rows": 20,
+      "unique_candidates": 1,
+      "unique_objective_tuples": 1
+    },
+    {
+      "group": "NSGA-II",
+      "method": "NSGA-II",
+      "scenario": "NSGA-II",
+      "rows": 2000,
+      "unique_candidates": 1998,
+      "unique_objective_tuples": 1743
+    },
+    {
+      "group": "RandomSearch::Balanced_Performance",
+      "method": "RandomSearch",
+      "scenario": "Balanced_Performance",
+      "rows": 2000,
+      "unique_candidates": 2000,
+      "unique_objective_tuples": 2000
+    },
+    {
+      "group": "RandomSearch::Energy_Generation_Focus",
+      "method": "RandomSearch",
+      "scenario": "Energy_Generation_Focus",
+      "rows": 2000,
+      "unique_candidates": 2000,
+      "unique_objective_tuples": 2000
+    },
+    {
+      "group": "RandomSearch::Energy_Saving_Focus",
+      "method": "RandomSearch",
+      "scenario": "Energy_Saving_Focus",
+      "rows": 2000,
+      "unique_candidates": 2000,
+      "unique_objective_tuples": 2000
+    }
+  ],
+  "duplicate_policy": "Duplicates remain in metric evaluation; lineage hashes round tuples to 12 decimals for stable identity.",
+  "non_dominated_policy": "Compute the non-dominated front inside each group in minimization space [EUIt, -EG, -H], then union those fronts to derive the fixed ideal, nadir, and reference front.",
+  "ideal_vector": [
+    66.0,
+    -2.85,
+    -7.85
+  ],
+  "nadir_vector": [
+    71.22852,
+    -2.5724041,
+    -7.108723
+  ],
+  "reference_point": [
+    1.1,
+    1.1,
+    1.1
+  ],
+  "normalized_reference_front_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+  "reference_front_rows": 6213,
+  "tuple_rounding_precision": 12,
+  "random_seed": 20260625,
+  "protocol_version": "reviewer-round2-canonical-result-lock-v1"
+}

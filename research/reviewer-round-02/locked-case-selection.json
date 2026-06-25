@@ -1,0 +1,703 @@
+{
+  "protocol_version": "reviewer-round2-experimental-closure-v1",
+  "master_seed": 20260625,
+  "cases": [
+    {
+      "sample_id": 704,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.875,
+        "SD": 46.5,
+        "AF": 9.0,
+        "AR_ew": 0.7322787902722523,
+        "AR_ns": 2.4581701170451358,
+        "SVF": 0.6132153770406377,
+        "BD": 0.2083333333333333,
+        "OSR": 0.4222222222222222,
+        "SC": 0.6541987716955336,
+        "PAR": 0.1295616019019177,
+        "theta": -7.797007941623832,
+        "OSLI": 4.0
+      },
+      "analytic_targets": {
+        "EUIt": 69.54157958788505,
+        "EG": 2.5194956419840997,
+        "H": 7.199220408380192
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 27,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 0.6770833333333334,
+        "SD": 9.75,
+        "AF": 2.6,
+        "AR_ew": 0.6349685469175201,
+        "AR_ns": 1.033829015995613,
+        "SVF": 0.6417897641501413,
+        "BD": 0.2604166666666667,
+        "OSR": 1.0923076923076922,
+        "SC": 1.129722906114948,
+        "PAR": 0.1133826148548675,
+        "theta": -41.33264484354388,
+        "OSLI": 2.0
+      },
+      "analytic_targets": {
+        "EUIt": 72.06467347316162,
+        "EG": 2.058950193391172,
+        "H": 7.037304518747197
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1499,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 3.333333333333333,
+        "SD": 16.5,
+        "AF": 22.58823529411765,
+        "AR_ew": 1.527665298521712,
+        "AR_ns": 2.508029043279506,
+        "SVF": 0.6520791707723957,
+        "BD": 0.1475694444444444,
+        "OSR": 0.2557291666666667,
+        "SC": 0.5031928750321852,
+        "PAR": 0.1417011372851939,
+        "theta": 13.271963026634277,
+        "OSLI": 5.0
+      },
+      "analytic_targets": {
+        "EUIt": 66.0,
+        "EG": 2.25868436656132,
+        "H": 6.844643797563489
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 603,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 0.9288194444444444,
+        "SD": 14.625,
+        "AF": 3.689655172413793,
+        "AR_ew": 0.5099085512438224,
+        "AR_ns": 1.916088746368556,
+        "SVF": 0.686883719206616,
+        "BD": 0.2517361111111111,
+        "OSR": 0.805607476635514,
+        "SC": 0.9085830530557564,
+        "PAR": 0.1248164598411443,
+        "theta": 26.14185088077896,
+        "OSLI": 8.0
+      },
+      "analytic_targets": {
+        "EUIt": 72.33183959684335,
+        "EG": 2.394446416649633,
+        "H": 7.469187194393195
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1009,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 2.552083333333333,
+        "SD": 31.875,
+        "AF": 13.363636363636363,
+        "AR_ew": 1.1596971148094388,
+        "AR_ns": 7.204122706894503,
+        "SVF": 0.4170444293540645,
+        "BD": 0.1909722222222222,
+        "OSR": 0.3170068027210884,
+        "SC": 0.5805170068027211,
+        "PAR": 0.1282727272727272,
+        "theta": 18.952658990550056,
+        "OSLI": 4.0
+      },
+      "analytic_targets": {
+        "EUIt": 77.15828478993507,
+        "EG": 1.7612768169896589,
+        "H": 6.006569520434968
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 70,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.0416666666666667,
+        "SD": 67.125,
+        "AF": 4.137931034482759,
+        "AR_ew": 0.7774995049747986,
+        "AR_ns": 0.8125625428289626,
+        "SVF": 0.6153211291989606,
+        "BD": 0.2517361111111111,
+        "OSR": 0.7183333333333334,
+        "SC": 0.8579811778979359,
+        "PAR": 0.1195875019808191,
+        "theta": 43.36454596423606,
+        "OSLI": 1.0
+      },
+      "analytic_targets": {
+        "EUIt": 73.13952059550165,
+        "EG": 2.1409900705828697,
+        "H": 6.799874013893476
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1984,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.09375,
+        "SD": 21.375,
+        "AF": 4.666666666666667,
+        "AR_ew": 0.3928000742024997,
+        "AR_ns": 4.637689962640518,
+        "SVF": 0.4534678985262792,
+        "BD": 0.234375,
+        "OSR": 0.7,
+        "SC": 0.7861827936998378,
+        "PAR": 0.1172799671036195,
+        "theta": -13.304147026356958,
+        "OSLI": 0.0
+      },
+      "analytic_targets": {
+        "EUIt": 76.40083771545149,
+        "EG": 1.8690468845667156,
+        "H": 6.568469249730343
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1824,
+      "selection_stratum": "maximin_space_filling",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 0.9895833333333334,
+        "SD": 65.25,
+        "AF": 3.8,
+        "AR_ew": 0.7387246646857177,
+        "AR_ns": 1.3348364333367655,
+        "SVF": 0.6255992227457673,
+        "BD": 0.2604166666666667,
+        "OSR": 0.7473684210526316,
+        "SC": 0.8854272749260766,
+        "PAR": 0.1131039407865152,
+        "theta": -39.0306295133155,
+        "OSLI": 6.0
+      },
+      "analytic_targets": {
+        "EUIt": 74.01182880772072,
+        "EG": 2.219546604812583,
+        "H": 7.144476172960282
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 149,
+      "selection_stratum": "low_EUIt",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 2.907986111111111,
+        "SD": 28.125,
+        "AF": 18.61111111111111,
+        "AR_ew": 1.4392086631662044,
+        "AR_ns": 1.999355614007262,
+        "SVF": 0.6005824289130614,
+        "BD": 0.15625,
+        "OSR": 0.2901492537313432,
+        "SC": 0.5263818448729632,
+        "PAR": 0.1446577037609218,
+        "theta": -16.313529905185945,
+        "OSLI": 1.0
+      },
+      "analytic_targets": {
+        "EUIt": 66.0,
+        "EG": 2.092736775867307,
+        "H": 6.606624681351279
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 506,
+      "selection_stratum": "low_EUIt",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.40625,
+        "SD": 45.375,
+        "AF": 6.48,
+        "AR_ew": 0.523539418718132,
+        "AR_ns": 1.0502707162055929,
+        "SVF": 0.7424989834919399,
+        "BD": 0.2170138888888889,
+        "OSR": 0.5567901234567901,
+        "SC": 0.6950123456790124,
+        "PAR": 0.10456,
+        "theta": 5.740786560211795,
+        "OSLI": 8.0
+      },
+      "analytic_targets": {
+        "EUIt": 66.88101481014009,
+        "EG": 2.85,
+        "H": 7.85
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 237,
+      "selection_stratum": "high_EG",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.7100694444444444,
+        "SD": 58.875,
+        "AF": 8.208333333333334,
+        "AR_ew": 0.6224858327541423,
+        "AR_ns": 1.506863504779472,
+        "SVF": 0.7256593598319887,
+        "BD": 0.2083333333333333,
+        "OSR": 0.4629441624365482,
+        "SC": 0.6969006803834136,
+        "PAR": 0.1324482500643704,
+        "theta": -0.5865029486788131,
+        "OSLI": 8.0
+      },
+      "analytic_targets": {
+        "EUIt": 66.99101535549546,
+        "EG": 2.85,
+        "H": 7.85
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 897,
+      "selection_stratum": "high_EG",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.0677083333333333,
+        "SD": 12.0,
+        "AF": 4.730769230769231,
+        "AR_ew": 0.3144804560487902,
+        "AR_ns": 1.5848294957844131,
+        "SVF": 0.7240970463711163,
+        "BD": 0.2256944444444444,
+        "OSR": 0.7252032520325203,
+        "SC": 0.7645475989494827,
+        "PAR": 0.1179445812229895,
+        "theta": -2.7184023417929524,
+        "OSLI": 8.0
+      },
+      "analytic_targets": {
+        "EUIt": 68.57846945430116,
+        "EG": 2.709441551347163,
+        "H": 7.85
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 442,
+      "selection_stratum": "high_H",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.0590277777777777,
+        "SD": 19.125,
+        "AF": 4.206896551724138,
+        "AR_ew": 0.4220969085040089,
+        "AR_ns": 1.1398279588454066,
+        "SVF": 0.7214466164171345,
+        "BD": 0.2517361111111111,
+        "OSR": 0.7065573770491803,
+        "SC": 0.9103503282487436,
+        "PAR": 0.1323405594875982,
+        "theta": 4.17208601802426,
+        "OSLI": 8.0
+      },
+      "analytic_targets": {
+        "EUIt": 69.3861584149749,
+        "EG": 2.608668854491549,
+        "H": 7.85
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 359,
+      "selection_stratum": "high_H",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 2.3350694444444446,
+        "SD": 13.125,
+        "AF": 14.944444444444445,
+        "AR_ew": 0.8529560903565874,
+        "AR_ns": 1.6525033509196732,
+        "SVF": 0.7079066223489495,
+        "BD": 0.15625,
+        "OSR": 0.3613382899628253,
+        "SC": 0.5547344981986948,
+        "PAR": 0.1393844074360164,
+        "theta": -0.9154585599156704,
+        "OSLI": 7.0
+      },
+      "analytic_targets": {
+        "EUIt": 66.0,
+        "EG": 2.5511687760665462,
+        "H": 7.553954400970144
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 883,
+      "selection_stratum": "interior_random",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.5711805555555556,
+        "SD": 47.25,
+        "AF": 6.961538461538462,
+        "AR_ew": 0.5142116271943538,
+        "AR_ns": 2.617492069543438,
+        "SVF": 0.5698012965749327,
+        "BD": 0.2256944444444444,
+        "OSR": 0.492817679558011,
+        "SC": 0.6686606630687785,
+        "PAR": 0.1239030171402317,
+        "theta": 2.260183381570897,
+        "OSLI": 1.0
+      },
+      "analytic_targets": {
+        "EUIt": 70.58053938075265,
+        "EG": 2.426535373013266,
+        "H": 7.102879981210026
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1771,
+      "selection_stratum": "interior_random",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.5625,
+        "SD": 48.0,
+        "AF": 6.923076923076923,
+        "AR_ew": 0.7728014335265756,
+        "AR_ns": 2.50851012490552,
+        "SVF": 0.6338169821071605,
+        "BD": 0.2256944444444444,
+        "OSR": 0.4955555555555556,
+        "SC": 0.7007280408809252,
+        "PAR": 0.1382537180477493,
+        "theta": -17.80003223654368,
+        "OSLI": 5.0
+      },
+      "analytic_targets": {
+        "EUIt": 70.93974492999267,
+        "EG": 2.522246926699361,
+        "H": 7.1698297586372455
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 585,
+      "selection_stratum": "interior_random",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.8489583333333333,
+        "SD": 43.875,
+        "AF": 9.26086956521739,
+        "AR_ew": 1.049837065107052,
+        "AR_ns": 3.199886999477449,
+        "SVF": 0.5762263151943976,
+        "BD": 0.1996527777777778,
+        "OSR": 0.4328638497652582,
+        "SC": 0.6739519814672594,
+        "PAR": 0.1466816232779646,
+        "theta": -23.74999213045775,
+        "OSLI": 6.0
+      },
+      "analytic_targets": {
+        "EUIt": 71.82832827169698,
+        "EG": 2.441351306397453,
+        "H": 6.914304765145819
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1052,
+      "selection_stratum": "interior_random",
+      "optimizer_source": NaN,
+      "scenario": NaN,
+      "original_candidate_row": 0,
+      "projection_distance": null,
+      "descriptor_values": {
+        "FAR": 1.5711805555555556,
+        "SD": 48.375,
+        "AF": 7.869565217391305,
+        "AR_ew": 0.6664994356748346,
+        "AR_ns": 2.8118910206709145,
+        "SVF": 0.6070796595239478,
+        "BD": 0.1996527777777778,
+        "OSR": 0.5093922651933702,
+        "SC": 0.6768120626862288,
+        "PAR": 0.1345860193759141,
+        "theta": 12.606224274009255,
+        "OSLI": 2.0
+      },
+      "analytic_targets": {
+        "EUIt": 70.05465310892698,
+        "EG": 2.4175664330226603,
+        "H": 7.022679531920423
+      },
+      "selection_algorithm": NaN,
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1981,
+      "selection_stratum": "optimizer_linked",
+      "optimizer_source": "DDPG",
+      "scenario": "Balanced_Performance",
+      "original_candidate_row": 1,
+      "projection_distance": 0.3172990053071316,
+      "descriptor_values": {
+        "FAR": 1.814774513244629,
+        "SD": 33.111175537109375,
+        "AF": 11.36875343322754,
+        "AR_ew": 0.870836615562439,
+        "AR_ns": 0.6653698086738586,
+        "SVF": 0.7319082021713257,
+        "BD": 0.2185366749763488,
+        "OSR": 0.3420711755752563,
+        "SC": 0.7007375359535217,
+        "PAR": 0.1244417205452919,
+        "theta": 30.14729690551757,
+        "OSLI": 7.694661617279053
+      },
+      "analytic_targets": {
+        "EUIt": 67.16808319091797,
+        "EG": 2.751469135284424,
+        "H": 7.696928024291992
+      },
+      "selection_algorithm": "legacy_utility_then_unique_projection",
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1105,
+      "selection_stratum": "optimizer_linked",
+      "optimizer_source": "DDPG",
+      "scenario": "Energy_Saving_Focus",
+      "original_candidate_row": 1,
+      "projection_distance": 0.2161550846944431,
+      "descriptor_values": {
+        "FAR": 1.9390981197357176,
+        "SD": 27.94848823547364,
+        "AF": 9.280197143554688,
+        "AR_ew": 0.8012195229530334,
+        "AR_ns": 1.8020532131195068,
+        "SVF": 0.7136440277099609,
+        "BD": 0.196533516049385,
+        "OSR": 0.3892406225204468,
+        "SC": 0.6334967613220215,
+        "PAR": 0.1562963277101516,
+        "theta": 7.124988555908203,
+        "OSLI": 8.0
+      },
+      "analytic_targets": {
+        "EUIt": 66.69766235351562,
+        "EG": 2.844285249710083,
+        "H": 7.670559406280518
+      },
+      "selection_algorithm": "legacy_utility_then_unique_projection",
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1661,
+      "selection_stratum": "optimizer_linked",
+      "optimizer_source": "DDPG",
+      "scenario": "Energy_Generation_Focus",
+      "original_candidate_row": 1,
+      "projection_distance": 0.19605533043247197,
+      "descriptor_values": {
+        "FAR": 1.739969253540039,
+        "SD": 42.64676284790039,
+        "AF": 7.332583427429199,
+        "AR_ew": 0.5820603370666504,
+        "AR_ns": 0.691951334476471,
+        "SVF": 0.6358267068862915,
+        "BD": 0.2136295139789581,
+        "OSR": 0.4398476481437683,
+        "SC": 0.6315858960151672,
+        "PAR": 0.1263152062892913,
+        "theta": -13.656211853027344,
+        "OSLI": 6.134179592132568
+      },
+      "analytic_targets": {
+        "EUIt": 66.35647583007812,
+        "EG": 2.840564489364624,
+        "H": 7.807404518127441
+      },
+      "selection_algorithm": "legacy_utility_then_unique_projection",
+      "seed": 20260625
+    },
+    {
+      "sample_id": 1700,
+      "selection_stratum": "optimizer_linked",
+      "optimizer_source": "NSGA-II",
+      "scenario": "Balanced_Performance",
+      "original_candidate_row": 1,
+      "projection_distance": 0.18272575793474632,
+      "descriptor_values": {
+        "FAR": 1.713229933519384,
+        "SD": 49.52226805899404,
+        "AF": 8.71966378959222,
+        "AR_ew": 0.4137147014893463,
+        "AR_ns": 2.2682318605877967,
+        "SVF": 0.638141875727606,
+        "BD": 0.1820670631918906,
+        "OSR": 0.4574187446251915,
+        "SC": 0.5837851826453725,
+        "PAR": 0.1225828755400109,
+        "theta": -5.464474261426375,
+        "OSLI": 6.18005142258364
+      },
+      "analytic_targets": {
+        "EUIt": 66.0,
+        "EG": 2.8499999046325684,
+        "H": 7.849998950958252
+      },
+      "selection_algorithm": "legacy_utility_then_unique_projection",
+      "seed": 20260625
+    },
+    {
+      "sample_id": 784,
+      "selection_stratum": "optimizer_linked",
+      "optimizer_source": "NSGA-II",
+      "scenario": "Energy_Saving_Focus",
+      "original_candidate_row": 101,
+      "projection_distance": 0.2065987195861607,
+      "descriptor_values": {
+        "FAR": 1.708136891822008,
+        "SD": 35.49112553742579,
+        "AF": 9.990382509683716,
+        "AR_ew": 0.5708641646207733,
+        "AR_ns": 1.4469941618119535,
+        "SVF": 0.650617778773542,
+        "BD": 0.2029382238508409,
+        "OSR": 0.4126936810143864,
+        "SC": 0.6629942226828518,
+        "PAR": 0.134245494672814,
+        "theta": 10.476381674336096,
+        "OSLI": 7.231125490206172
+      },
+      "analytic_targets": {
+        "EUIt": 66.00020599365234,
+        "EG": 2.849998712539673,
+        "H": 7.84998893737793
+      },
+      "selection_algorithm": "legacy_utility_then_unique_projection",
+      "seed": 20260625
+    },
+    {
+      "sample_id": 134,
+      "selection_stratum": "optimizer_linked",
+      "optimizer_source": "NSGA-II",
+      "scenario": "Energy_Generation_Focus",
+      "original_candidate_row": 103,
+      "projection_distance": 0.19042175994837254,
+      "descriptor_values": {
+        "FAR": 1.5214034277984914,
+        "SD": 29.48905244485941,
+        "AF": 4.649661050638361,
+        "AR_ew": 0.4280026479288527,
+        "AR_ns": 1.0382559941968763,
+        "SVF": 0.6405606285006868,
+        "BD": 0.2107786380577338,
+        "OSR": 0.4699610406373883,
+        "SC": 0.7068757492043822,
+        "PAR": 0.1268266525317024,
+        "theta": -4.405466350664455,
+        "OSLI": 2.9670335460339325
+      },
+      "analytic_targets": {
+        "EUIt": 66.00053405761719,
+        "EG": 2.849999189376831,
+        "H": 7.849956512451172
+      },
+      "selection_algorithm": "legacy_utility_then_unique_projection",
+      "seed": 20260625
+    }
+  ],
+  "protocol_sha": "63d31b20f7ce4390dad41b12fe7ed6a6bd54c58b296be5048639b4203990ce9e"
+}

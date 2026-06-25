@@ -1,0 +1,48 @@
+{
+  "run_id": "20260625_round2_closure",
+  "canonical_reference": {
+    "path": "research\\reviewer-round-02\\canonical-benchmark-reference.json",
+    "exists": true,
+    "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc"
+  },
+  "canonical_outputs": {
+    "canonical_benchmark_metrics": {
+      "path": "research\\reviewer-round-02\\canonical_benchmark_metrics.csv",
+      "exists": true
+    },
+    "equal_size_repetitions_v2": {
+      "path": "research\\reviewer-round-02\\benchmark_equal_size_repetitions_v2.csv",
+      "exists": true
+    },
+    "equal_size_summary_v2": {
+      "path": "research\\reviewer-round-02\\benchmark_equal_size_summary_v2.csv",
+      "exists": true
+    },
+    "metric_lineage_audit_json": {
+      "path": "research\\reviewer-round-02\\metric-lineage-audit.json",
+      "exists": true
+    },
+    "optimizer_output_contract": {
+      "path": "research\\reviewer-round-02\\optimizer-output-contract.csv",
+      "exists": true
+    },
+    "hv_ceiling_interpretation": {
+      "path": "research\\reviewer-round-02\\hv-ceiling-interpretation.md",
+      "exists": true
+    },
+    "canonical_result_registry": {
+      "path": "research\\reviewer-round-02\\canonical-result-registry.json",
+      "exists": true
+    },
+    "canonical_result_lock": {
+      "path": "research\\reviewer-round-02\\canonical-result-lock.md",
+      "exists": true
+    }
+  },
+  "physical_evidence_levels": {
+    "execution_closure": "complete",
+    "metric_agreement": "weak",
+    "ranking_transfer": "unsupported",
+    "optimizer_superiority_under_physical_evaluation": "unsupported"
+  }
+}

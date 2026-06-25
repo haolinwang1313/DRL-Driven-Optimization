@@ -1,0 +1,193 @@
+{
+  "records": [
+    {
+      "source_file": "research/reviewer-round-02/optimizer-projection-summary.csv",
+      "source_metric": "projected_HV/projected_IGD",
+      "representation_family": "projected_feasible_morphology_archive",
+      "status": "valid_but_local_reference",
+      "reference_hash": "",
+      "replacement_file": "research/reviewer-round-02/canonical_benchmark_metrics.csv",
+      "root_cause": "run_feasibility_audit rebuilt a projected-only reference front before computing HV/IGD."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-metric-definition-audit.csv",
+      "source_metric": "projected_feasible_block_archive",
+      "representation_family": "projected_feasible_morphology_archive",
+      "status": "valid_fixed_reference",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/canonical_benchmark_metrics.csv",
+      "root_cause": "run_benchmark_fairness evaluated projected archives against the fixed benchmark reference."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "actual_size column",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "metadata_error",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "The summary stored source archive size in a column that reads like sampled row count."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Balanced_Performance requested_size=40",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Balanced_Performance requested_size=60",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Balanced_Performance requested_size=100",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Balanced_Performance requested_size=40",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Balanced_Performance requested_size=60",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Balanced_Performance requested_size=100",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Energy_Saving_Focus requested_size=40",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Energy_Saving_Focus requested_size=60",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Energy_Saving_Focus requested_size=100",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Energy_Saving_Focus requested_size=40",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Energy_Saving_Focus requested_size=60",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Energy_Saving_Focus requested_size=100",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Energy_Generation_Focus requested_size=40",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Energy_Generation_Focus requested_size=60",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "DDPG::Energy_Generation_Focus requested_size=100",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Energy_Generation_Focus requested_size=40",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Energy_Generation_Focus requested_size=60",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    },
+    {
+      "source_file": "research/reviewer-round-02/benchmark-equal-size-summary.csv",
+      "source_metric": "FeasiblePoolRandom::Energy_Generation_Focus requested_size=100",
+      "representation_family": "descriptor_equal_size_archive",
+      "status": "obsolete",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+      "replacement_file": "research/reviewer-round-02/benchmark_equal_size_summary_v2.csv",
+      "root_cause": "Older tables reported oversized equal-size requests as if they were valid metric rows."
+    }
+  ]
+}
