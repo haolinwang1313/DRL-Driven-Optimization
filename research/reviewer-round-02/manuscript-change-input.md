@@ -44,10 +44,16 @@ R = 1 - sqrt(sum((w * (z - u))^2)) / sqrt(sum(w^2))
 - FeasiblePoolRandom::Energy_Generation_Focus: HV = 1.307244, IGD = 0.023963, rows = 20, non-dominated rows = 20.
 - NSGA-II: HV = 1.330999, IGD = 0.004947, rows = 2000, non-dominated rows = 100.
 
+## HV saturation
+- Theoretical maximum HV under the fixed reference point is 1.331000.
+- Saturation must be interpreted with the clipped/unique/projected metric audit.
+
 ## Climate sensitivity status
-- Current status: `blocked` (baseline physical validation results not yet collected).
+- Current status: `completed` (station-level climate summary available).
+- Weather manifest: `artifacts\reviewer_round_02\20260625_round2_closure\climate\climate_weather_manifest.json`.
 
 ## Terminology
 - Use `morphology descriptors` or `surrogate input descriptors` for the 12 inputs.
 - Distinguish training reward from post-hoc utility.
 - Keep claims bounded to surrogate reliability, archive fairness, and the current physical-validation status.
+- Do not describe CMA-ES as providing a richer Pareto archive when HV saturation is caused by clipped corner occupancy.
