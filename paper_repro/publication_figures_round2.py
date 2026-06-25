@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import colorsys
 import json
 import math
 import re
@@ -15,6 +16,7 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm, to_rgb
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
@@ -43,6 +45,34 @@ OKABE_ITO = {
     "yellow": "#F0E442",
     "black": "#000000",
     "gray": "#6B7280",
+}
+SCENARIO_ORDER = ["Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus"]
+SCENARIO_LABELS = {
+    "Balanced_Performance": "Balanced",
+    "Energy_Saving_Focus": "Saving",
+    "Energy_Generation_Focus": "Generation",
+    "NSGA-II": "NSGA-II",
+}
+SCENARIO_SUFFIXES = {
+    "Balanced_Performance": "B",
+    "Energy_Saving_Focus": "S",
+    "Energy_Generation_Focus": "G",
+}
+MUTED_COLORS = {
+    "blue": "#6D879C",
+    "teal": "#5F8274",
+    "rust": "#A86F52",
+    "ochre": "#9A6B48",
+    "slate": "#4F5C66",
+    "dark": "#39434B",
+    "mid_gray": "#6B7280",
+    "light_gray": "#CDD3D8",
+    "off_white": "#F5F2EB",
+}
+CLIMATE_PALETTE = {
+    "Beijing": "#66788A",
+    "Guangzhou": "#5F8274",
+    "Harbin": "#A86F52",
 }
 TARGET_LABELS = {
     "EUIt": "EUIt (kWh/m²/y)",
@@ -96,6 +126,7 @@ class FigureSpec:
     panel_descriptions: tuple[str, ...]
     claim_boundary: str
     builder: Callable[[dict[str, pd.DataFrame], dict[str, Any]], tuple[plt.Figure, dict[str, Any]]]
+    revision_note: str = ""
 
 
 def _repo_root(repo_root: str | Path | None) -> Path:
@@ -165,6 +196,65 @@ def _style_axis(ax: plt.Axes) -> None:
 
 def _panel_label(ax: plt.Axes, label: str) -> None:
     ax.text(0.02, 0.98, label, transform=ax.transAxes, ha="left", va="top", fontweight="bold", fontsize=9)
+
+
+def _scenario_label(scenario: str) -> str:
+    return SCENARIO_LABELS.get(scenario, scenario.replace("_", " "))
+
+
+def _scenario_suffix(scenario: str) -> str:
+    return SCENARIO_SUFFIXES.get(scenario, scenario)
+
+
+def _group_label(group: str, *, short: bool = False) -> str:
+    if group == "NSGA-II":
+        return "NSGA-II"
+    method, scenario = group.split("::", maxsplit=1)
+    if short:
+        method_label = {"DDPG": "DDPG", "CMA-ES": "CMA", "RandomSearch": "RS", "FeasiblePoolRandom": "FPR"}.get(method, method)
+        return f"{method_label}-{_scenario_suffix(scenario)}"
+    return f"{method} {_scenario_label(scenario)}"
+
+
+def _mean_interval(values: np.ndarray) -> tuple[float, float, float]:
+    arr = np.asarray(values, dtype=float)
+    mean = float(np.mean(arr))
+    q05 = float(np.quantile(arr, 0.05))
+    q95 = float(np.quantile(arr, 0.95))
+    return mean, max(mean - q05, 0.0), max(q95 - mean, 0.0)
+
+
+def _hex_saturation(color: str) -> float:
+    red, green, blue = to_rgb(color)
+    _, lightness, saturation = colorsys.rgb_to_hls(red, green, blue)
+    return float(saturation)
+
+
+def _sparsest_corner_anchor(x: np.ndarray, y: np.ndarray) -> tuple[float, float, str, str]:
+    x_mid = float(np.median(x))
+    y_mid = float(np.median(y))
+    options = {
+        "lower_left": (int(np.sum((x <= x_mid) & (y <= y_mid))), (0.04, 0.06, "left", "bottom")),
+        "lower_right": (int(np.sum((x > x_mid) & (y <= y_mid))), (0.96, 0.06, "right", "bottom")),
+        "upper_left": (int(np.sum((x <= x_mid) & (y > y_mid))), (0.04, 0.96, "left", "top")),
+        "upper_right": (int(np.sum((x > x_mid) & (y > y_mid))), (0.96, 0.96, "right", "top")),
+    }
+    return min(options.values(), key=lambda item: item[0])[1]
+
+
+def _default_revision_note(figure_id: str, category: str) -> str:
+    if figure_id in {"M4", "M5", "M6", "M7", "S6", "S7"}:
+        return {
+            "M4": "Simplified the main benchmark figure to fixed-domain utility plus matched-size HV/IGD for DDPG and NSGA-II only.",
+            "M5": "Reduced the projection figure to representation compression plus projection-distance diagnostics for the main-text comparison.",
+            "M6": "Kept the same 18 direct cases while tightening axis wording, typography, marker size, and statistics placement.",
+            "M7": "Kept the same climate data while switching to the muted climate palette and a zero-centered low-saturation heatmap.",
+            "S6": "Moved ceiling and duplicate-collapse diagnostics into a readable two-panel Supplementary Information layout with short labels.",
+            "S7": "Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.",
+        }[figure_id]
+    if category == "appendix":
+        return "Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split."
+    return "Carried forward from the canonical round-2 candidate set without a layout change in this task."
 
 
 def _ensure_equal_limits(ax: plt.Axes, x: np.ndarray, y: np.ndarray) -> tuple[float, float]:
@@ -2234,3 +2324,1025 @@ def build_round2_revision_figures(
         "visio_docs": visio_docs,
         "plan_docs": plan_docs,
     }
+
+
+def _build_main_m4(frames: dict[str, pd.DataFrame], manifest: dict[str, Any]) -> tuple[plt.Figure, dict[str, Any]]:
+    utility = frames["benchmark_utility.csv"].copy()
+    eq20 = frames["benchmark_equal_size_20.csv"].copy()
+    reference_hash = _package_entry(manifest, "benchmark_equal_size_20.csv")["reference_hash"]
+    figure = plt.figure(figsize=(DOUBLE_COL_IN, 9.0 * CM_TO_IN))
+    grid = figure.add_gridspec(2, 2, height_ratios=[1.08, 1.0], hspace=0.38, wspace=0.28)
+    ax = figure.add_subplot(grid[0, :])
+    x = np.arange(len(SCENARIO_ORDER))
+    ddpg_mean: list[float] = []
+    ddpg_low: list[float] = []
+    ddpg_high: list[float] = []
+    nsga_mean: list[float] = []
+    nsga_low: list[float] = []
+    nsga_high: list[float] = []
+    for scenario in SCENARIO_ORDER:
+        ddpg_values = utility.loc[
+            (utility["method"] == "DDPG") & (utility["scenario"] == scenario) & (utility["evaluation_scenario"] == scenario),
+            "best_fixed_domain_utility",
+        ].to_numpy(dtype=float)
+        nsga_values = utility.loc[
+            (utility["method"] == "NSGA-II") & (utility["evaluation_scenario"] == scenario),
+            "best_fixed_domain_utility",
+        ].to_numpy(dtype=float)
+        mean, low, high = _mean_interval(ddpg_values)
+        ddpg_mean.append(mean)
+        ddpg_low.append(low)
+        ddpg_high.append(high)
+        mean, low, high = _mean_interval(nsga_values)
+        nsga_mean.append(mean)
+        nsga_low.append(low)
+        nsga_high.append(high)
+    ax.errorbar(
+        x,
+        ddpg_mean,
+        yerr=np.vstack([ddpg_low, ddpg_high]),
+        color=MUTED_COLORS["blue"],
+        marker="o",
+        linestyle="-",
+        linewidth=1.15,
+        markersize=4.5,
+        capsize=2.2,
+        label="DDPG",
+    )
+    ax.errorbar(
+        x,
+        nsga_mean,
+        yerr=np.vstack([nsga_low, nsga_high]),
+        color=MUTED_COLORS["dark"],
+        marker="s",
+        linestyle="--",
+        linewidth=1.05,
+        markersize=4.2,
+        capsize=2.0,
+        label="NSGA-II",
+    )
+    _style_axis(ax)
+    _panel_label(ax, "a")
+    ax.grid(axis="y", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.45)
+    ax.set_xticks(x)
+    ax.set_xticklabels([_scenario_label(item) for item in SCENARIO_ORDER])
+    ax.set_ylabel("Fixed-domain utility")
+    ax.legend(frameon=False, loc="lower right")
+
+    main_groups = [
+        "DDPG::Balanced_Performance",
+        "DDPG::Energy_Saving_Focus",
+        "DDPG::Energy_Generation_Focus",
+        "NSGA-II",
+    ]
+    display_labels = [_group_label(group) for group in main_groups]
+    y_positions = np.arange(len(main_groups))[::-1]
+    for axis, metric, label in [
+        (figure.add_subplot(grid[1, 0]), "HV", "b"),
+        (figure.add_subplot(grid[1, 1]), "IGD", "c"),
+    ]:
+        plotted_values: list[float] = []
+        for y_pos, group in zip(y_positions, main_groups, strict=True):
+            group_values = eq20.loc[eq20["group"] == group, metric].to_numpy(dtype=float)
+            mean, low, high = _mean_interval(group_values)
+            plotted_values.extend([mean - low, mean + high])
+            if group == "NSGA-II":
+                axis.errorbar(
+                    mean,
+                    y_pos,
+                    xerr=np.asarray([[low], [high]]),
+                    fmt="s",
+                    color=MUTED_COLORS["dark"],
+                    markersize=4.5,
+                    capsize=2.2,
+                    linewidth=1.0,
+                )
+            else:
+                axis.scatter(mean, y_pos, s=20, color=MUTED_COLORS["blue"], zorder=3)
+        if metric == "HV":
+            axis.axvline(1.331, color=MUTED_COLORS["light_gray"], linestyle="--", linewidth=0.9)
+            axis.text(1.331 + 0.01, y_positions[0] + 0.32, "ceiling = 1.331", fontsize=6.2, color=MUTED_COLORS["mid_gray"])
+        axis.set_xlim(min(plotted_values) - 0.03, max(max(plotted_values), 1.331 if metric == "HV" else max(plotted_values)) + 0.04)
+        _style_axis(axis)
+        _panel_label(axis, label)
+        axis.grid(axis="x", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.55)
+        axis.set_yticks(y_positions)
+        axis.set_yticklabels(display_labels)
+        axis.set_xlabel(metric)
+    figure.tight_layout(pad=0.35)
+    return figure, {
+        "reference_hash": reference_hash,
+        "reference_protocol": BENCHMARK_REFERENCE_PROTOCOL,
+        "plotted_methods": ["DDPG", "NSGA-II"],
+        "plotted_groups": display_labels,
+        "excluded_methods": ["CMA-ES", "RandomSearch", "FeasiblePoolRandom"],
+        "panel_layout": ["fixed_domain_post_hoc_utility", "equal_size_20_hv", "equal_size_20_igd"],
+        "output_contract_panel_removed": True,
+    }
+
+
+def _build_main_m5(frames: dict[str, pd.DataFrame], manifest: dict[str, Any]) -> tuple[plt.Figure, dict[str, Any]]:
+    summary = frames["feasible_projection_summary.csv"].copy()
+    metrics = frames["feasible_projection_metrics.csv"].copy()
+    reference_hash = _package_entry(manifest, "feasible_projection_summary.csv")["reference_hash"]
+    main_groups = [
+        "DDPG::Balanced_Performance",
+        "DDPG::Energy_Saving_Focus",
+        "DDPG::Energy_Generation_Focus",
+        "NSGA-II",
+    ]
+    summary_subset = summary.set_index("group").reindex(main_groups).dropna(subset=["unique_matched_sample_count"])
+    metrics_subset = metrics.loc[metrics["group"].isin(main_groups)].copy()
+    figure, axes = plt.subplots(1, 2, figsize=(DOUBLE_COL_IN, 6.2 * CM_TO_IN), gridspec_kw={"width_ratios": [1.0, 1.05]})
+    display_labels = [_group_label(group) for group in main_groups]
+    y_positions = np.arange(len(main_groups))[::-1]
+
+    ax = axes[0]
+    for y_pos, group in zip(y_positions, main_groups, strict=True):
+        row = summary_subset.loc[group]
+        retained = float(row["rows"])
+        projected = float(row["unique_matched_sample_count"])
+        ax.plot([retained, projected], [y_pos, y_pos], color=MUTED_COLORS["mid_gray"], linewidth=0.8, zorder=1)
+        ax.scatter(retained, y_pos, color=MUTED_COLORS["blue"], marker="o", s=22, zorder=3)
+        ax.scatter(projected, y_pos, color=MUTED_COLORS["rust"], marker="s", s=22, zorder=3)
+        ax.text(retained * 0.96, y_pos + 0.15, f"{retained:.0f}", ha="right", va="bottom", fontsize=6.2, color=MUTED_COLORS["blue"])
+        ax.text(projected * 1.04, y_pos - 0.17, f"{projected:.0f}", ha="left", va="top", fontsize=6.2, color=MUTED_COLORS["rust"])
+    _style_axis(ax)
+    _panel_label(ax, "a")
+    ax.grid(axis="x", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.55)
+    ax.set_xscale("log")
+    ax.set_xlabel("Candidate count (log scale)")
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(display_labels)
+    ax.legend(
+        handles=[
+            Line2D([0], [0], color=MUTED_COLORS["blue"], marker="o", linestyle="", markersize=4.5, label="Retained descriptor candidates"),
+            Line2D([0], [0], color=MUTED_COLORS["rust"], marker="s", linestyle="", markersize=4.5, label="Unique projected feasible blocks"),
+        ],
+        frameon=False,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.18),
+        ncol=2,
+    )
+
+    ax = axes[1]
+    distributions = [metrics_subset.loc[metrics_subset["group"] == group, "projection_distance"].to_numpy(dtype=float) for group in main_groups]
+    boxplot = ax.boxplot(
+        distributions,
+        vert=False,
+        positions=y_positions,
+        widths=0.56,
+        patch_artist=True,
+        whis=(5, 95),
+        medianprops={"color": MUTED_COLORS["dark"], "linewidth": 1.0},
+        boxprops={"linewidth": 0.8, "edgecolor": MUTED_COLORS["dark"]},
+        whiskerprops={"linewidth": 0.8, "color": MUTED_COLORS["mid_gray"]},
+        capprops={"linewidth": 0.8, "color": MUTED_COLORS["mid_gray"]},
+        flierprops={"markersize": 0},
+    )
+    for patch, group in zip(boxplot["boxes"], main_groups, strict=True):
+        patch.set_facecolor(MUTED_COLORS["blue"] if group != "NSGA-II" else MUTED_COLORS["off_white"])
+        patch.set_alpha(0.55 if group != "NSGA-II" else 0.95)
+    _style_axis(ax)
+    _panel_label(ax, "b")
+    ax.grid(axis="x", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.55)
+    ax.set_xlabel("Normalized projection distance")
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(display_labels)
+    figure.tight_layout(pad=0.35, rect=(0, 0, 1, 0.95))
+    return figure, {
+        "reference_hash": reference_hash,
+        "reference_protocol": BENCHMARK_REFERENCE_PROTOCOL,
+        "plotted_methods": ["DDPG", "NSGA-II"],
+        "plotted_groups": display_labels,
+        "excluded_methods": ["CMA-ES", "RandomSearch", "FeasiblePoolRandom"],
+        "panel_layout": ["representation_compression", "projection_distance_distribution"],
+        "uses_secondary_y_axis": False,
+        "nsga_projection_compression": {"descriptor_rows": 2000, "unique_projected_blocks": 51},
+        "projected_hv_igd_moved_to_supplementary": True,
+    }
+
+
+def _build_main_m6(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[plt.Figure, dict[str, Any]]:
+    direct = frames["physical_direct_cases.csv"].copy()
+    metrics = frames["physical_stress_metrics.csv"].set_index("target")
+    figure, axes = plt.subplots(1, 3, figsize=(DOUBLE_COL_IN, 4.9 * CM_TO_IN))
+    columns = [
+        ("analytic_EUIt", "physical_EUIt", "EUIt", "EUIt (kWh m$^{-2}$ y$^{-1}$)", "a"),
+        ("analytic_EG", "physical_EG_GHI_proxy", "EG_GHI_proxy", "EG proxy ($10^6$ kWh y$^{-1}$)", "b"),
+        ("analytic_H", "physical_H", "H", "H (h)", "c"),
+    ]
+    parity_limits = {}
+    axis_label_fontsize = 7.8
+    title_fontsize = 8.2
+    stats_fontsize = 7.0
+    for ax, (x_col, y_col, metric_key, title, label) in zip(axes, columns, strict=True):
+        x = direct[x_col].to_numpy(dtype=float)
+        y = direct[y_col].to_numpy(dtype=float)
+        ax.scatter(x, y, s=14, c=MUTED_COLORS["blue"], alpha=0.82, edgecolors="white", linewidths=0.25)
+        limits = _ensure_equal_limits(ax, x, y)
+        ax.plot(limits, limits, color=MUTED_COLORS["dark"], linestyle="--", linewidth=0.9)
+        coef = np.polyfit(x, y, deg=1)
+        xs = np.linspace(limits[0], limits[1], 100)
+        ax.plot(xs, coef[0] * xs + coef[1], color=MUTED_COLORS["ochre"], linewidth=1.0)
+        row = metrics.loc[metric_key]
+        text = f"n={int(row['count'])}\nMAE={row['MAE']:.3f}\nnMAE={row['nMAE']:.3f}\nρ={row['Spearman_rho']:.3f}\nrank={row['rank_preservation']:.2f}"
+        x_anchor, y_anchor, h_align, v_align = _sparsest_corner_anchor(x, y)
+        ax.text(
+            x_anchor,
+            y_anchor,
+            text,
+            transform=ax.transAxes,
+            ha=h_align,
+            va=v_align,
+            fontsize=stats_fontsize,
+            bbox={"facecolor": "white", "edgecolor": MUTED_COLORS["light_gray"], "linewidth": 0.35, "alpha": 0.82, "boxstyle": "round,pad=0.16"},
+        )
+        _style_axis(ax)
+        _panel_label(ax, label)
+        ax.set_title(title, fontsize=title_fontsize, pad=3.5)
+        ax.tick_params(labelsize=7.2)
+        parity_limits[metric_key] = {"xlim": list(ax.get_xlim()), "ylim": list(ax.get_ylim())}
+    figure.supxlabel("Analytic response-generator value", fontsize=axis_label_fontsize, y=0.02)
+    figure.supylabel("Physics-based stress-test value", fontsize=axis_label_fontsize, x=0.01)
+    figure.tight_layout(pad=0.35, w_pad=0.7, rect=(0.02, 0.04, 1, 1))
+    return figure, {
+        "parity_axes": parity_limits,
+        "direct_case_count": int(len(direct)),
+        "stress_test_label": "limited physics-based cross-model stress test",
+        "shared_axis_labels": ["Analytic response-generator value", "Physics-based stress-test value"],
+        "panel_title_fontsize": title_fontsize,
+        "axis_label_fontsize": axis_label_fontsize,
+        "statistics_fontsize": stats_fontsize,
+    }
+
+
+def _build_main_m7(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[plt.Figure, dict[str, Any]]:
+    cases = frames["climate_case_results.csv"].copy()
+    summary = frames["climate_summary.csv"].copy()
+    stability = frames["climate_rank_stability.csv"].copy()
+    figure, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 11.0 * CM_TO_IN))
+    metrics = [
+        ("delta_EUIt_vs_baseline", "mean_delta_EUIt", TARGET_LABELS["EUIt"], "a"),
+        ("delta_EG_vs_baseline", "mean_delta_EG", TARGET_LABELS["EG"], "b"),
+        ("delta_H_vs_baseline", "mean_delta_H", TARGET_LABELS["H"], "c"),
+    ]
+    stations = ["Beijing", "Guangzhou", "Harbin"]
+    palette = [CLIMATE_PALETTE[station] for station in stations]
+    x = np.arange(len(stations))
+    summary_index = summary.set_index("station").reindex(stations)
+    for ax, (case_column, summary_column, ylabel, label) in zip(axes.flatten()[:3], metrics, strict=True):
+        grouped = cases.groupby("station")[case_column]
+        means = summary_index[summary_column].to_numpy(dtype=float)
+        lowers = np.asarray([float(grouped.min().loc[station]) for station in stations], dtype=float)
+        uppers = np.asarray([float(grouped.max().loc[station]) for station in stations], dtype=float)
+        ax.axhline(0.0, color=MUTED_COLORS["light_gray"], linewidth=0.8, zorder=0)
+        ax.bar(x, means, color=palette, alpha=0.92, edgecolor=MUTED_COLORS["slate"], linewidth=0.4, zorder=2)
+        ax.errorbar(x, means, yerr=[means - lowers, uppers - means], fmt="none", ecolor=MUTED_COLORS["dark"], linewidth=0.85, capsize=2.0, zorder=3)
+        _style_axis(ax)
+        _panel_label(ax, label)
+        ax.set_xticks(x)
+        ax.set_xticklabels(stations)
+        ax.set_ylabel(f"Mean Δ relative to Dongtai {ylabel}")
+    ax = axes[1, 1]
+    pivot = stability.pivot(index="station", columns="rank_metric", values="spearman").reindex(index=stations, columns=["EUIt", "EG", "H"])
+    cmap = LinearSegmentedColormap.from_list("round2_muted_diverging", [MUTED_COLORS["rust"], MUTED_COLORS["off_white"], MUTED_COLORS["teal"]])
+    norm = TwoSlopeNorm(vmin=-1.0, vcenter=0.0, vmax=1.0)
+    im = ax.imshow(pivot.to_numpy(dtype=float), cmap=cmap, norm=norm, aspect="auto")
+    for i in range(pivot.shape[0]):
+        for j in range(pivot.shape[1]):
+            rgba = cmap(norm(float(pivot.iloc[i, j])))
+            luminance = 0.299 * rgba[0] + 0.587 * rgba[1] + 0.114 * rgba[2]
+            ax.text(j, i, f"{pivot.iloc[i, j]:.2f}", ha="center", va="center", fontsize=6.5, color="black" if luminance > 0.62 else "white")
+    _panel_label(ax, "d")
+    ax.set_xticks(np.arange(3))
+    ax.set_xticklabels(["EUIt", "EG", "H"])
+    ax.set_yticks(np.arange(len(stations)))
+    ax.set_yticklabels(stations)
+    cbar = figure.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
+    cbar.ax.tick_params(labelsize=6.4)
+    cbar.set_label("Spearman rank stability", fontsize=6.4)
+    figure.tight_layout(pad=0.35, w_pad=0.8, h_pad=0.8)
+    return figure, {
+        "direct_blocks": 4,
+        "additional_climates": 3,
+        "analysis_label": "limited four-block cross-climate physical sensitivity analysis",
+        "climate_palette": CLIMATE_PALETTE,
+        "palette_saturation": {key: _hex_saturation(value) for key, value in CLIMATE_PALETTE.items()},
+        "heatmap_center": 0.0,
+    }
+
+
+def _build_appendix_b3(frames: dict[str, pd.DataFrame], manifest: dict[str, Any]) -> tuple[plt.Figure, dict[str, Any]]:
+    ceiling = frames["benchmark_hv_ceiling.csv"].copy()
+    reference_hash = _package_entry(manifest, "benchmark_hv_ceiling.csv")["reference_hash"]
+    order = [
+        "DDPG::Balanced_Performance",
+        "DDPG::Energy_Saving_Focus",
+        "DDPG::Energy_Generation_Focus",
+        "NSGA-II",
+        "CMA-ES::Balanced_Performance",
+        "CMA-ES::Energy_Saving_Focus",
+        "CMA-ES::Energy_Generation_Focus",
+        "RandomSearch::Balanced_Performance",
+        "RandomSearch::Energy_Saving_Focus",
+        "RandomSearch::Energy_Generation_Focus",
+        "FeasiblePoolRandom::Balanced_Performance",
+        "FeasiblePoolRandom::Energy_Saving_Focus",
+        "FeasiblePoolRandom::Energy_Generation_Focus",
+    ]
+    display = ceiling.set_index("group").reindex(order).dropna(subset=["fraction_of_theoretical_max"])
+    y_positions = np.arange(len(display))[::-1]
+    labels = [_group_label(group, short=True) for group in display.index]
+    figure, axes = plt.subplots(1, 2, figsize=(DOUBLE_COL_IN, 6.6 * CM_TO_IN), gridspec_kw={"width_ratios": [1.0, 1.2]})
+    ax = axes[0]
+    ax.scatter(display["fraction_of_theoretical_max"], y_positions, marker="o", s=22, color=MUTED_COLORS["blue"], label="HV / theoretical ceiling")
+    ax.scatter(display["clipped_utopia_fraction"], y_positions, marker="s", s=22, color=MUTED_COLORS["rust"], label="Clipped-utopia fraction")
+    _style_axis(ax)
+    _panel_label(ax, "a")
+    ax.grid(axis="x", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.55)
+    ax.set_xlim(0.0, 1.02)
+    ax.set_xlabel("Fraction")
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(labels)
+
+    ax = axes[1]
+    ax.scatter(display["unique_objective_tuples"], y_positions, marker="^", s=24, color=MUTED_COLORS["blue"], label="Unique clipped objective tuples")
+    ax.scatter(display["unique_non_dominated_tuples"], y_positions, marker="s", s=22, color=MUTED_COLORS["rust"], label="Unique non-dominated tuples")
+    _style_axis(ax)
+    _panel_label(ax, "b")
+    ax.grid(axis="x", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.55)
+    ax.set_xscale("log")
+    ax.set_xlabel("Tuple count (log scale)")
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(labels)
+    figure.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.04), ncol=2)
+    figure.tight_layout(pad=0.35, rect=(0, 0, 1, 0.95))
+    return figure, {
+        "reference_hash": reference_hash,
+        "reference_protocol": BENCHMARK_REFERENCE_PROTOCOL,
+        "short_labels": labels,
+        "panel_b_scale": "log",
+        "group_order": labels,
+    }
+
+
+def _build_appendix_b4(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[plt.Figure, dict[str, Any]]:
+    gaps = frames["optimizer_linked_physical_gaps.csv"].copy()
+    order = [
+        ("DDPG", "Balanced_Performance"),
+        ("DDPG", "Energy_Saving_Focus"),
+        ("DDPG", "Energy_Generation_Focus"),
+        ("NSGA-II", "Balanced_Performance"),
+        ("NSGA-II", "Energy_Saving_Focus"),
+        ("NSGA-II", "Energy_Generation_Focus"),
+    ]
+    ordered = pd.concat(
+        [
+            gaps.loc[(gaps["optimizer_source"] == method) & (gaps["scenario"] == scenario)]
+            for method, scenario in order
+        ],
+        ignore_index=True,
+    )
+    labels = [f"{'DDPG' if method == 'DDPG' else 'NSGA'}-{_scenario_suffix(scenario)}" for method, scenario in order]
+    y_positions = np.arange(len(labels))[::-1]
+    figure, axes = plt.subplots(1, 3, figsize=(DOUBLE_COL_IN, 6.5 * CM_TO_IN), sharey=False)
+    targets = [
+        ("EUIt", "EUIt gap", "a"),
+        ("EG", "EG gap", "b"),
+        ("H", "H gap", "c"),
+    ]
+    for ax, (target, title, label) in zip(axes, targets, strict=True):
+        projection = ordered[f"projection_gap_{target}"].to_numpy(dtype=float)
+        cross_model = ordered[f"analytic_to_physical_gap_{target}"].to_numpy(dtype=float)
+        ax.barh(y_positions + 0.17, projection, height=0.28, color=MUTED_COLORS["blue"], edgecolor=MUTED_COLORS["slate"], linewidth=0.4, hatch="//", label="Projection gap" if label == "a" else None)
+        ax.scatter(np.zeros_like(y_positions, dtype=float), y_positions + 0.17, color=MUTED_COLORS["blue"], marker="|", s=95, zorder=4)
+        ax.barh(y_positions - 0.17, cross_model, height=0.28, color=MUTED_COLORS["rust"], edgecolor=MUTED_COLORS["slate"], linewidth=0.4, hatch="xx", label="Cross-model gap" if label == "a" else None)
+        ax.axvline(0.0, color=MUTED_COLORS["mid_gray"], linewidth=0.8)
+        _style_axis(ax)
+        _panel_label(ax, label)
+        ax.grid(axis="x", color=MUTED_COLORS["light_gray"], linewidth=0.5, alpha=0.55)
+        ax.set_title(title, fontsize=8.0, pad=3.5)
+        ax.set_yticks(y_positions)
+        ax.set_yticklabels(labels)
+    handles, handle_labels = axes[0].get_legend_handles_labels()
+    figure.legend(handles, handle_labels, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.08), ncol=2)
+    figure.tight_layout(pad=0.35, rect=(0, 0, 1, 0.9))
+    return figure, {
+        "legend_outside_axes": True,
+        "legend_bbox": [0.5, 1.08],
+        "case_labels": labels,
+        "zero_reference_line": True,
+    }
+
+
+def _bool_check(name: str, passed: bool, detail: str) -> dict[str, Any]:
+    return {"name": name, "passed": bool(passed), "detail": detail}
+
+
+def _figure_specific_visual_checks(metadata: dict[str, Any], text: str) -> list[dict[str, Any]]:
+    figure_id = metadata["figure_id"]
+    extra = metadata["extra"]
+    checks: list[dict[str, Any]] = []
+    if figure_id == "M4":
+        checks.extend(
+            [
+                _bool_check("M4 keeps only three panels", len(metadata["panel_descriptions"]) == 3, "The main benchmark figure should contain utility, HV, and IGD only."),
+                _bool_check("M4 removes the output-contract panel", bool(extra.get("output_contract_panel_removed")), "Output-contract counts should move out of the main figure."),
+                _bool_check(
+                    "M4 excludes CMA-ES, RandomSearch, and FeasiblePoolRandom labels",
+                    not any(token in text for token in ("CMA-ES", "RandomSearch", "FeasiblePoolRandom")),
+                    "The rendered PDF should not show diagnostic baseline labels.",
+                ),
+            ]
+        )
+    elif figure_id == "M5":
+        checks.extend(
+            [
+                _bool_check("M5 keeps only two panels", len(metadata["panel_descriptions"]) == 2, "The main projection figure should contain compression and distance diagnostics only."),
+                _bool_check("M5 avoids a secondary y-axis", not bool(extra.get("uses_secondary_y_axis")), "The revised layout must not use a twin axis."),
+                _bool_check(
+                    "M5 excludes CMA-ES, RandomSearch, and FeasiblePoolRandom labels",
+                    not any(token in text for token in ("CMA-ES", "RandomSearch", "FeasiblePoolRandom")),
+                    "Only DDPG and NSGA-II should remain in the main projection figure.",
+                ),
+            ]
+        )
+    elif figure_id == "M6":
+        checks.extend(
+            [
+                _bool_check(
+                    "M6 statistics font does not exceed axis-label font",
+                    float(extra.get("statistics_fontsize", 0.0)) <= float(extra.get("axis_label_fontsize", 0.0)),
+                    "Statistics text should remain smaller than the shared axis labels.",
+                ),
+                _bool_check("M6 direct-case count remains 18", int(extra.get("direct_case_count", -1)) == 18, "The revised figure must keep the same 18 direct feasible cases."),
+            ]
+        )
+    elif figure_id == "M7":
+        palette_saturation = extra.get("palette_saturation", {})
+        checks.extend(
+            [
+                _bool_check(
+                    "M7 uses a low-saturation climate palette",
+                    all(float(value) <= 0.36 for value in palette_saturation.values()),
+                    "Each climate bar color should remain muted rather than high-saturation.",
+                ),
+                _bool_check("M7 heatmap remains centered at zero", float(extra.get("heatmap_center", 1.0)) == 0.0, "The heatmap diverging palette should be centered at zero."),
+            ]
+        )
+    elif figure_id == "S6":
+        checks.extend(
+            [
+                _bool_check("S6 uses a log scale for tuple counts", extra.get("panel_b_scale") == "log", "The tuple-count panel should use a log-scaled x-axis."),
+                _bool_check(
+                    "S6 keeps only short labels",
+                    all(len(label) <= 7 for label in extra.get("short_labels", [])),
+                    "Supplementary labels should stay compact and horizontal.",
+                ),
+                _bool_check(
+                    "S6 avoids long scenario strings in rendered text",
+                    not any(token in text for token in ("Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus")),
+                    "The figure should not rely on long categorical axis labels.",
+                ),
+            ]
+        )
+    elif figure_id == "S7":
+        checks.extend(
+            [
+                _bool_check("S7 keeps the legend outside the plotting axes", bool(extra.get("legend_outside_axes")), "The legend should sit above the full figure."),
+                _bool_check("S7 keeps six short case labels", len(extra.get("case_labels", [])) == 6, "The bridge-diagnostic figure should contain six labeled cases."),
+            ]
+        )
+    return checks
+
+
+def _visual_qa(figures: list[dict[str, Any]], *, repo_root: Path, render_dir: Path, strict: bool = False) -> dict[str, Any]:
+    qa_rows = []
+    for item in figures:
+        metadata_path = Path(item["metadata_path"])
+        metadata = _read_json(metadata_path)
+        pdf_path = Path(item["outputs"]["pdf"])
+        png_path = _render_pdf_png(pdf_path, render_dir)
+        pdfinfo = _run_command(["pdfinfo", str(pdf_path)], repo_root)
+        fonts = _run_command(["pdffonts", str(pdf_path)], repo_root)
+        text = _extract_pdf_text(pdf_path, render_dir)
+        image = Image.open(png_path)
+        type3 = "Type 3" in fonts
+        forbidden_hits = [token for token in FORBIDDEN_TEXT if token in text]
+        checks = [
+            _bool_check("No Type 3 fonts", not type3, "Embedded fonts must remain vector TrueType or equivalent."),
+            _bool_check("No forbidden wording", not forbidden_hits, "Rendered PDF text must stay inside the manuscript claim boundary."),
+            _bool_check("Rendered page is non-empty", image.width > 0 and image.height > 0, "Rasterized QA output should produce a non-empty page."),
+        ]
+        checks.extend(_figure_specific_visual_checks(metadata, text))
+        unresolved = [check["name"] for check in checks if not check["passed"]]
+        qa = {
+            "figure_id": item["figure_id"],
+            "pdf_path": _relative_path(pdf_path, repo_root),
+            "render_png": _relative_path(png_path, repo_root),
+            "pdfinfo": pdfinfo,
+            "pdffonts": fonts,
+            "width_px": image.width,
+            "height_px": image.height,
+            "type3_fonts": type3,
+            "forbidden_text_hits": forbidden_hits,
+            "empty_render": image.width == 0 or image.height == 0,
+            "checks": checks,
+            "unresolved_visual_concerns": unresolved,
+        }
+        metadata["visual_qa"] = qa
+        _json_dump(metadata, metadata_path)
+        qa_rows.append(qa)
+    if strict:
+        failures = [row for row in qa_rows if row["unresolved_visual_concerns"]]
+        if failures:
+            raise RuntimeError("visual QA failed for " + ", ".join(row["figure_id"] for row in failures))
+    return {"generated_at": _utc_now(), "figures": qa_rows}
+
+
+def _write_gallery_section_page(pdf: PdfPages, title: str, subtitle: str) -> None:
+    section_figure = plt.figure(figsize=GALLERY_PAGE_IN)
+    ax = section_figure.add_subplot(111)
+    ax.axis("off")
+    ax.text(0.5, 0.62, title, ha="center", va="center", fontsize=20, family="serif", fontweight="bold")
+    ax.text(0.5, 0.46, subtitle, ha="center", va="center", fontsize=11, family="serif")
+    pdf.savefig(section_figure)
+    plt.close(section_figure)
+
+
+def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_root: Path, output_dir: Path) -> dict[str, str]:
+    snapshot_dir = repo_root / "paper" / "snapshots"
+    snapshot_dir.mkdir(parents=True, exist_ok=True)
+    qa_map = {entry["figure_id"]: entry for entry in qa["figures"]}
+    grouped = {
+        "main": [figure for figure in figures if figure["category"] == "main"],
+        "appendix": [figure for figure in figures if figure["category"] == "appendix"],
+    }
+    md_lines = [
+        "# Round 2 Figure Gallery",
+        "",
+        "## Part I - Main manuscript candidates",
+        "",
+    ]
+    pdf_path = snapshot_dir / "round2-figure-gallery.pdf"
+    generated_pdf_path = snapshot_dir / "round2-figure-gallery.generated.pdf"
+    with PdfPages(generated_pdf_path) as pdf:
+        _write_gallery_section_page(pdf, "Part I - Main manuscript candidates", "Locked candidate figures for Main Fig. 4-10.")
+        for index, (section_key, section_title) in enumerate(
+            [("main", "Part I - Main manuscript candidates"), ("appendix", "Part II - Supplementary Information candidates")],
+            start=1,
+        ):
+            if index == 2:
+                md_lines.extend(["## Part II - Supplementary Information candidates", ""])
+                _write_gallery_section_page(pdf, section_title, "Locked candidate figures for Supplementary Fig. S1-S9.")
+            for figure in grouped[section_key]:
+                qa_entry = qa_map[figure["figure_id"]]
+                metadata = _read_json(Path(figure["metadata_path"]))
+                revision_note = _default_revision_note(figure["figure_id"], figure["category"])
+                source_lines = ", ".join(f"`{source['path']}` ({source['sha256']})" for source in metadata["source_files"])
+                md_lines.extend(
+                    [
+                        f"### {metadata['planned_location']} ({figure['figure_id']} {figure['semantic_name']})",
+                        f"- Source files: {source_lines}",
+                        f"- Claim boundary: {metadata['claim_boundary']}",
+                        f"- Revision note: {revision_note}",
+                        f"- Unresolved visual concerns: {', '.join(qa_entry['unresolved_visual_concerns']) if qa_entry['unresolved_visual_concerns'] else 'None'}",
+                        "",
+                    ]
+                )
+                gallery_figure = plt.figure(figsize=GALLERY_PAGE_IN)
+                grid = gallery_figure.add_gridspec(2, 1, height_ratios=[4.2, 1.65])
+                image_ax = gallery_figure.add_subplot(grid[0, 0])
+                image_ax.axis("off")
+                rendered = Image.open(repo_root / qa_entry["render_png"])
+                image_ax.imshow(rendered)
+                text_ax = gallery_figure.add_subplot(grid[1, 0])
+                text_ax.axis("off")
+                source_paths = ", ".join(source["path"] for source in metadata["source_files"])
+                source_hashes = ", ".join(source["sha256"][:12] + "..." for source in metadata["source_files"])
+                text = "\n".join(
+                    [
+                        f"{metadata['planned_location']} ({figure['figure_id']} {figure['semantic_name']})",
+                        f"Source files: {source_paths}",
+                        f"Source SHA: {source_hashes}",
+                        f"Claim boundary: {metadata['claim_boundary']}",
+                        f"Revision note: {revision_note}",
+                        f"Unresolved concerns: {', '.join(qa_entry['unresolved_visual_concerns']) if qa_entry['unresolved_visual_concerns'] else 'None'}",
+                    ]
+                )
+                text_ax.text(0.01, 0.98, text, va="top", ha="left", fontsize=8, family="serif")
+                pdf.savefig(gallery_figure)
+                plt.close(gallery_figure)
+    try:
+        generated_pdf_path.replace(pdf_path)
+        final_pdf_path = pdf_path
+    except PermissionError:
+        final_pdf_path = generated_pdf_path
+    md_path = snapshot_dir / "round2-figure-gallery.md"
+    md_path.write_text("\n".join(md_lines), encoding="utf-8")
+    return {"pdf": str(final_pdf_path), "md": str(md_path)}
+
+
+def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str, str]:
+    research_root = repo_root / "research" / "reviewer-round-02"
+    research_root.mkdir(parents=True, exist_ok=True)
+    supplementary_root = repo_root / "paper" / "supplementary" / "round2"
+    supplementary_root.mkdir(parents=True, exist_ok=True)
+    main_figures = [figure for figure in figures if figure["category"] == "main"]
+    supplementary_figures = [figure for figure in figures if figure["category"] == "appendix"]
+    plan_lines = [
+        "# Round 2 Figure Plan",
+        "",
+        "## Main manuscript lock",
+        "- Fig. 1-3 remain user-maintained Visio figures and are not modified by this task.",
+        "",
+    ]
+    caption_lines = [
+        "# Round 2 Caption Drafts",
+        "",
+        "## Main manuscript candidates",
+        "",
+    ]
+    for collection, heading in [(main_figures, "## Supplementary Information candidates"), (supplementary_figures, None)]:
+        for figure in collection:
+            metadata = _read_json(Path(figure["metadata_path"]))
+            source_paths = ", ".join(source["path"] for source in metadata["source_files"])
+            revision_note = _default_revision_note(figure["figure_id"], figure["category"])
+            plan_lines.extend(
+                [
+                    f"### {metadata['planned_location']} ({figure['figure_id']} {figure['semantic_name']})",
+                    f"- Source files: {source_paths}",
+                    f"- Claim boundary: {metadata['claim_boundary']}",
+                    f"- Revision note: {revision_note}",
+                    "",
+                ]
+            )
+            caption_lines.extend(
+                [
+                    f"### {metadata['planned_location']} ({figure['figure_id']} {figure['semantic_name']})",
+                    f"This candidate figure summarizes {'; '.join(metadata['panel_descriptions'])}. It uses {source_paths} and should be interpreted within the following boundary: {metadata['claim_boundary']}.",
+                    f"Revision note: {revision_note}",
+                    "",
+                ]
+            )
+        if heading:
+            plan_lines.extend([heading, ""])
+            caption_lines.extend([heading, ""])
+    table_lines = [
+        "# Round 2 Table Plan",
+        "",
+        "## Main manuscript tables",
+        "1. Morphology descriptors: name, symbol, unit or type, formula, interpretation, and dependency note.",
+        "2. Evaluation modes: analytic response generation, surrogate prediction, analytic reevaluation, feasible projection, physics-based stress test, and cross-climate sensitivity.",
+        "3. Surrogate robustness summary.",
+        "4. Optimizer budget and output contract.",
+        "5. Canonical DDPG-NSGA-II benchmark.",
+        "6. Physical and climate evidence summary kept intentionally compact.",
+        "",
+        "## Supplementary Information tables",
+        "- Building prototype details.",
+        "- Full hyperparameter tables.",
+        "- Scale-study candidate details.",
+        "- Residual and tail diagnostics.",
+        "- Seed-level diagnostics and checkpoint audit.",
+        "- Complete CMA-ES and RandomSearch metrics.",
+        "- All projected feasible HV and IGD metrics.",
+        "- Per-case physical and climate results.",
+        "- Runtime detail plus release and reproducibility manifests.",
+    ]
+    map_lines = [
+        "# Main vs Supplement Map",
+        "",
+        "## Main manuscript figures",
+        "- Fig. 1-3: user-maintained Visio figures; unchanged in this task.",
+        "- Fig. 4: M1 data and surrogate validation.",
+        "- Fig. 5: M2 surrogate robustness.",
+        "- Fig. 6: M3 DDPG training dynamics.",
+        "- Fig. 7: M4 benchmark comparison (revised).",
+        "- Fig. 8: M5 descriptor-to-feasible projection (revised).",
+        "- Fig. 9: M6 cross-model stress test (revised).",
+        "- Fig. 10: M7 cross-climate sensitivity (revised).",
+        "",
+        "## Supplementary Information figures",
+        "- Fig. S1: A1 descriptor distributions.",
+        "- Fig. S2: A2 residual diagnostics.",
+        "- Fig. S3: A3 scale study.",
+        "- Fig. S4: B1 seed diagnostics.",
+        "- Fig. S5: B2 morphology signatures.",
+        "- Fig. S6: B3 HV ceiling and output-contract diagnostics.",
+        "- Fig. S7: B4 optimizer-linked gap decomposition.",
+        "- Fig. S8: B5 nonlinear response profiles.",
+        "- Fig. S9: B6 climate case detail.",
+        "",
+        "## Candidate figure coverage",
+        "- Candidate figure slots covered here: 16 (Main Fig. 4-10 and Supplementary Fig. S1-S9).",
+        "- Fig. 1-3 stay outside the builder because they remain manual Visio assets.",
+        "",
+        "## Table split",
+        "- Main manuscript retains morphology descriptors, evaluation modes, surrogate robustness, optimizer budget and output contract, the canonical DDPG-NSGA-II benchmark, and a compact physical-climate evidence summary.",
+        "- Supplementary Information receives building details, hyperparameters, scale-study candidates, residual and tail diagnostics, seed and checkpoint diagnostics, complete CMA-ES and RandomSearch metrics, projected feasible HV and IGD, per-case physical and climate results, runtime detail, and reproducibility manifests.",
+    ]
+    supplementary_lines = [
+        "# Supplementary Structure Plan",
+        "",
+        "S1. Case settings and analytic response generation",
+        "- building prototypes",
+        "- random morphology generation",
+        "- descriptor definitions and dependencies",
+        "- analytic EUIt, EG, and H equations",
+        "- Fig. S1",
+        "",
+        "S2. Surrogate selection and validation",
+        "- scale study",
+        "- repeated CV",
+        "- residual and tail diagnostics",
+        "- leave-one-OSLI-out",
+        "- outer-shell and feature-tail holdouts",
+        "- Fig. S2-S3",
+        "",
+        "S3. DDPG training and benchmark diagnostics",
+        "- seed-level convergence",
+        "- output contracts",
+        "- equal-size sensitivity",
+        "- HV ceiling",
+        "- checkpoint sensitivity",
+        "- CMA-ES and RandomSearch diagnostics",
+        "- Fig. S4 and S6",
+        "",
+        "S4. Morphology interpretation",
+        "- descriptor signatures",
+        "- nonlinear profiles",
+        "- Fig. S5 and S8",
+        "",
+        "S5. Feasible projection and physics-based stress-test details",
+        "- complete projection metrics",
+        "- optimizer-linked six-case decomposition",
+        "- per-case physical results",
+        "- Fig. S7",
+        "",
+        "S6. Cross-climate case details",
+        "- weather metadata",
+        "- four-block results",
+        "- Fig. S9",
+        "",
+        "Future manuscript text should cite Supplementary Sections S1-S6 instead of extending the current appendix A/B structure.",
+    ]
+    readme_lines = [
+        "# Round 2 Supplementary Planning",
+        "",
+        "This directory is planning-only in the current task.",
+        "",
+        "- No Supplementary Information TeX is created here yet.",
+        "- The canonical candidate figures remain under `paper/manuscript/figures/round2_candidate/appendix/` for build continuity.",
+        "- The intended Supplementary Information structure is defined in `research/reviewer-round-02/supplementary-structure-plan.md`.",
+        "- The Main vs Supplement split is defined in `research/reviewer-round-02/main-vs-supplement-map.md`.",
+    ]
+    plan_path = research_root / "round2-figure-plan.md"
+    caption_path = research_root / "round2-caption-drafts.md"
+    table_path = research_root / "round2-table-plan.md"
+    map_path = research_root / "main-vs-supplement-map.md"
+    supplementary_path = research_root / "supplementary-structure-plan.md"
+    readme_path = supplementary_root / "README.md"
+    plan_path.write_text("\n".join(plan_lines), encoding="utf-8")
+    caption_path.write_text("\n".join(caption_lines), encoding="utf-8")
+    table_path.write_text("\n".join(table_lines), encoding="utf-8")
+    map_path.write_text("\n".join(map_lines), encoding="utf-8")
+    supplementary_path.write_text("\n".join(supplementary_lines), encoding="utf-8")
+    readme_path.write_text("\n".join(readme_lines), encoding="utf-8")
+    return {
+        "plan": str(plan_path),
+        "captions": str(caption_path),
+        "tables": str(table_path),
+        "main_vs_supplement_map": str(map_path),
+        "supplementary_structure": str(supplementary_path),
+        "supplementary_readme": str(readme_path),
+    }
+
+
+def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, ...]:
+    return (
+        FigureSpec(
+            "M1",
+            "data_and_surrogate_validation",
+            "main",
+            "Main Fig. 4",
+            ("descriptor_coverage.csv", "surrogate_parity_mean_predictions.csv"),
+            (
+                "PCA cumulative explained variance for the 12 morphology descriptors.",
+                "EUIt repeated-CV parity using sample-level mean out-of-fold predictions.",
+                "EG repeated-CV parity using sample-level mean out-of-fold predictions.",
+                "H repeated-CV parity using sample-level mean out-of-fold predictions.",
+            ),
+            "Supports descriptor-space coverage and analytic-target surrogate fidelity only.",
+            _build_main_m1,
+        ),
+        FigureSpec(
+            "M2",
+            "surrogate_robustness",
+            "main",
+            "Main Fig. 5",
+            ("surrogate_validation_regimes.csv",),
+            (
+                "nMAE heatmap across repeated CV, leave-one-OSLI-out, outer-shell, and feature-tail regimes.",
+                "Spearman heatmap across the same surrogate-validation regimes.",
+            ),
+            "All panels remain analytic-target surrogate-validation evidence, not physical validation.",
+            _build_main_m2,
+        ),
+        FigureSpec(
+            "M3",
+            "ddpg_training_dynamics",
+            "main",
+            "Main Fig. 6",
+            ("ddpg_training_curves_summary.csv", "ddpg_seed_diagnostics.csv"),
+            (
+                "Episode cumulative reward across 20 seeds.",
+                "Episode-end EUIt across 20 seeds.",
+                "Episode-end EG across 20 seeds.",
+                "Episode-end H across 20 seeds.",
+            ),
+            "Training dynamics describe serialized surrogate-query search only.",
+            _build_main_m3,
+        ),
+        FigureSpec(
+            "M4",
+            "benchmark_fairness",
+            "main",
+            "Main Fig. 7",
+            ("benchmark_utility.csv", "benchmark_equal_size_20.csv", "benchmark_output_contract_counts.csv"),
+            (
+                "Fixed-domain post-hoc utility for matched DDPG scenarios and NSGA-II.",
+                "Equal-size-20 HV under benchmark-reference-v2.",
+                "Equal-size-20 IGD under benchmark-reference-v2.",
+            ),
+            "Equal-size metrics remain benchmark-reference-v2 evidence only; broader contract and diagnostic baselines are deferred to Supplementary Information.",
+            _build_main_m4,
+        ),
+        FigureSpec(
+            "M5",
+            "feasible_projection",
+            "main",
+            "Main Fig. 8",
+            ("feasible_projection_summary.csv", "feasible_projection_metrics.csv"),
+            (
+                "Descriptor-space compression from retained candidates to unique projected feasible blocks.",
+                "Projection-distance distribution from descriptor candidates to feasible blocks.",
+            ),
+            "Projection remains a nearest-neighbour representation diagnostic rather than physical validation.",
+            _build_main_m5,
+        ),
+        FigureSpec(
+            "M6",
+            "physical_cross_model_stress_test",
+            "main",
+            "Main Fig. 9",
+            ("physical_direct_cases.csv", "physical_stress_metrics.csv"),
+            (
+                "EUIt parity for the 18 direct feasible cases.",
+                "GHI-based rooftop-PV proxy parity for the 18 direct feasible cases.",
+                "Direct-sun-hours parity for the 18 direct feasible cases.",
+            ),
+            "This figure is limited to the direct-case physics-based cross-model stress test and does not support optimizer-superiority claims.",
+            _build_main_m6,
+        ),
+        FigureSpec(
+            "M7",
+            "cross_climate_sensitivity",
+            "main",
+            "Main Fig. 10",
+            ("climate_case_results.csv", "climate_summary.csv", "climate_rank_stability.csv"),
+            (
+                "Mean ΔEUIt relative to Dongtai with four-block spread.",
+                "Mean ΔEG relative to Dongtai with four-block spread.",
+                "Mean ΔH relative to Dongtai with four-block spread.",
+                "Rank-stability heatmap across Beijing, Guangzhou, and Harbin.",
+            ),
+            "This figure is a limited four-block cross-climate physical sensitivity analysis only.",
+            _build_main_m7,
+        ),
+        FigureSpec(
+            "S1",
+            "A1_descriptor_distributions",
+            "appendix",
+            "Supplementary Fig. S1",
+            ("descriptor_coverage.csv",),
+            (
+                "Descriptor interquartile summaries for the 12 morphology descriptors.",
+                "OSLI frequency distribution.",
+                "Normalized nearest-neighbor distance distribution.",
+            ),
+            "Descriptive coverage diagnostics only.",
+            _build_appendix_a1,
+        ),
+        FigureSpec(
+            "S2",
+            "A2_residual_diagnostics",
+            "appendix",
+            "Supplementary Fig. S2",
+            ("surrogate_parity_mean_predictions.csv",),
+            (
+                "EUIt residual distribution.",
+                "EG residual distribution.",
+                "H residual distribution.",
+            ),
+            "Residual diagnostics describe analytic-target surrogate error only.",
+            _build_appendix_a2,
+        ),
+        FigureSpec(
+            "S3",
+            "A3_scale_study",
+            "appendix",
+            "Supplementary Fig. S3",
+            ("scale_study.csv",),
+            (
+                "Mean target nMAE across dataset scales.",
+                "Mean tail nMAE across dataset scales.",
+                "Mean R² across dataset scales.",
+                "Selection objective across dataset scales.",
+            ),
+            "Scale-study rows support the surrogate-selection rationale only.",
+            _build_appendix_a3,
+        ),
+        FigureSpec(
+            "S4",
+            "B1_seed_diagnostics",
+            "appendix",
+            "Supplementary Fig. S4",
+            ("ddpg_seed_diagnostics.csv",),
+            (
+                "Best reward by scenario.",
+                "Final reward by scenario.",
+                "Plateau episode by scenario.",
+                "Best-to-final regression ratio by scenario.",
+            ),
+            "Seed diagnostics remain Supplementary Information training evidence only.",
+            _build_appendix_b1,
+        ),
+        FigureSpec(
+            "S5",
+            "B2_morphology_signatures",
+            "appendix",
+            "Supplementary Fig. S5",
+            ("morphology_signatures.csv",),
+            ("Median morphology descriptor signatures for representative retained-output groups.",),
+            "Descriptor signatures are descriptive summaries, not stable design rules.",
+            _build_appendix_b2,
+        ),
+        FigureSpec(
+            "S6",
+            "B3_hv_ceiling_diagnostics",
+            "appendix",
+            "Supplementary Fig. S6",
+            ("benchmark_hv_ceiling.csv",),
+            (
+                "HV fraction of the theoretical ceiling alongside clipped-utopia fraction.",
+                "Unique clipped objective tuples and unique non-dominated tuples on a log-scaled count axis.",
+            ),
+            "HV ceiling and tuple-collapse panels remain supplementary diagnostics only.",
+            _build_appendix_b3,
+        ),
+        FigureSpec(
+            "S7",
+            "B4_optimizer_linked_gap_decomposition",
+            "appendix",
+            "Supplementary Fig. S7",
+            ("optimizer_linked_physical_gaps.csv",),
+            (
+                "EUIt projection and cross-model gap decomposition for optimizer-linked cases.",
+                "EG projection and cross-model gap decomposition for optimizer-linked cases.",
+                "H projection and cross-model gap decomposition for optimizer-linked cases.",
+            ),
+            "These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.",
+            _build_appendix_b4,
+        ),
+        FigureSpec(
+            "S8",
+            "B5_nonlinear_response_profiles",
+            "appendix",
+            "Supplementary Fig. S8",
+            ("scale_study.csv",),
+            (
+                "OSR to EUIt surrogate response profile.",
+                "FAR to EG surrogate response profile.",
+                "SVF to H surrogate response profile.",
+                "Theta to H surrogate response profile.",
+            ),
+            "Selected surrogate response profiles illustrate local trends only.",
+            lambda frames, manifest: _build_nonlinear_response_figure(repo_root, roots),
+        ),
+        FigureSpec(
+            "S9",
+            "B6_climate_case_detail",
+            "appendix",
+            "Supplementary Fig. S9",
+            ("climate_case_results.csv",),
+            (
+                "Per-block ΔEUIt heatmap across Beijing, Guangzhou, and Harbin.",
+                "Per-block ΔEG heatmap across Beijing, Guangzhou, and Harbin.",
+                "Per-block ΔH heatmap across Beijing, Guangzhou, and Harbin.",
+            ),
+            "Case-level climate details remain limited to four blocks and three additional climates.",
+            _build_appendix_b6,
+        ),
+    )

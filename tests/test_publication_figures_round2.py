@@ -165,3 +165,94 @@ def test_visual_qa_rejects_type3_and_forbidden_phrases(built_round2_assets: dict
     qa = json.loads((OUTPUT_ROOT / "visual_qa_summary.json").read_text(encoding="utf-8"))
     assert all(not item["type3_fonts"] for item in qa["figures"])
     assert all(not item["forbidden_text_hits"] for item in qa["figures"])
+
+
+def _metadata(relative_path: str) -> dict:
+    return json.loads((OUTPUT_ROOT / relative_path).read_text(encoding="utf-8"))
+
+
+def test_m4_only_contains_ddpg_and_nsga_main_comparison(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/benchmark_fairness.metadata.json")
+    assert metadata["extra"]["plotted_methods"] == ["DDPG", "NSGA-II"]
+    assert metadata["extra"]["excluded_methods"] == ["CMA-ES", "RandomSearch", "FeasiblePoolRandom"]
+
+
+def test_m4_removes_output_contract_panel_and_baseline_labels(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/benchmark_fairness.metadata.json")
+    text = _pdf_text(OUTPUT_ROOT / "main" / "benchmark_fairness.pdf")
+    assert metadata["extra"]["output_contract_panel_removed"] is True
+    assert len(metadata["panel_descriptions"]) == 3
+    assert "CMA-ES" not in text
+    assert "RandomSearch" not in text
+    assert "FeasiblePoolRandom" not in text
+
+
+def test_m5_keeps_only_main_groups_and_no_secondary_axis(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/feasible_projection.metadata.json")
+    assert metadata["extra"]["plotted_methods"] == ["DDPG", "NSGA-II"]
+    assert metadata["extra"]["uses_secondary_y_axis"] is False
+    assert metadata["extra"]["nsga_projection_compression"] == {"descriptor_rows": 2000, "unique_projected_blocks": 51}
+
+
+def test_m5_removes_projected_hv_igd_panels_and_diagnostic_labels(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/feasible_projection.metadata.json")
+    text = _pdf_text(OUTPUT_ROOT / "main" / "feasible_projection.pdf")
+    assert len(metadata["panel_descriptions"]) == 2
+    assert metadata["extra"]["projected_hv_igd_moved_to_supplementary"] is True
+    assert "CMA-ES" not in text
+    assert "RandomSearch" not in text
+    assert "FeasiblePoolRandom" not in text
+
+
+def test_m6_statistics_font_stays_below_axis_label_font(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/physical_cross_model_stress_test.metadata.json")
+    assert metadata["extra"]["statistics_fontsize"] <= metadata["extra"]["axis_label_fontsize"]
+    assert metadata["extra"]["direct_case_count"] == 18
+
+
+def test_m7_palette_is_muted_and_heatmap_zero_centered(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/cross_climate_sensitivity.metadata.json")
+    saturation = metadata["extra"]["palette_saturation"]
+    assert max(saturation.values()) <= 0.36
+    assert metadata["extra"]["heatmap_center"] == 0.0
+
+
+def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
+    metadata = _metadata("appendix/B3_hv_ceiling_diagnostics.metadata.json")
+    text = _pdf_text(OUTPUT_ROOT / "appendix" / "B3_hv_ceiling_diagnostics.pdf")
+    assert metadata["figure_id"] == "S6"
+    assert metadata["extra"]["panel_b_scale"] == "log"
+    assert all(len(label) <= 7 for label in metadata["extra"]["short_labels"])
+    assert "Balanced_Performance" not in text
+    assert "Energy_Saving_Focus" not in text
+    assert "Energy_Generation_Focus" not in text
+
+
+def test_s7_legend_stays_outside_axes(built_round2_assets: dict) -> None:
+    metadata = _metadata("appendix/B4_optimizer_linked_gap_decomposition.metadata.json")
+    assert metadata["figure_id"] == "S7"
+    assert metadata["extra"]["legend_outside_axes"] is True
+    assert len(metadata["extra"]["case_labels"]) == 6
+
+
+def test_gallery_separates_main_and_supplementary_sections(built_round2_assets: dict) -> None:
+    gallery_text = (REPO_ROOT / "paper" / "snapshots" / "round2-figure-gallery.md").read_text(encoding="utf-8")
+    assert "## Part I - Main manuscript candidates" in gallery_text
+    assert "## Part II - Supplementary Information candidates" in gallery_text
+
+
+def test_supplementary_figure_ids_are_unique(built_round2_assets: dict) -> None:
+    supplementary_ids = []
+    for metadata_path in (OUTPUT_ROOT / "appendix").glob("*.metadata.json"):
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        supplementary_ids.append(metadata["figure_id"])
+    assert len(supplementary_ids) == len(set(supplementary_ids))
+    assert set(supplementary_ids) == {"S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"}
+
+
+def test_main_vs_supplement_map_covers_all_16_candidate_figures(built_round2_assets: dict) -> None:
+    text = (REPO_ROOT / "research" / "reviewer-round-02" / "main-vs-supplement-map.md").read_text(encoding="utf-8")
+    for label in ["Fig. 4", "Fig. 5", "Fig. 6", "Fig. 7", "Fig. 8", "Fig. 9", "Fig. 10"]:
+        assert label in text
+    for label in ["Fig. S1", "Fig. S2", "Fig. S3", "Fig. S4", "Fig. S5", "Fig. S6", "Fig. S7", "Fig. S8", "Fig. S9"]:
+        assert label in text

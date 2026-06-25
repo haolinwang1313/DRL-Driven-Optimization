@@ -1,7 +1,7 @@
 # Round 2 Figure Data Package
 
-- Generated at: `2026-06-25T08:04:29+00:00`
-- Build commit: `b4d20e3291f16ab0c0ee167b05e4d7f544c653e4`
+- Generated at: `2026-06-25T10:44:14+00:00`
+- Build commit: `f47ea38a68975fdf1c311614abf6035017903f9b`
 - Canonical reference hash: `a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc`
 
 ## Files

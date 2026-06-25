@@ -1,7 +1,7 @@
 {
   "figure_id": "M6",
   "semantic_name": "physical_cross_model_stress_test",
-  "planned_location": "Main Fig. 9 candidate",
+  "planned_location": "Main Fig. 9",
   "source_files": [
     {
       "path": "physical_direct_cases.csv",
@@ -19,8 +19,8 @@
   "filters": {},
   "reference_protocol": "",
   "reference_hash": "",
-  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
-  "timestamp": "2026-06-25T08:03:56+00:00",
+  "script_commit": "f47ea38a68975fdf1c311614abf6035017903f9b",
+  "timestamp": "2026-06-25T10:44:19+00:00",
   "units": [
     "EUIt (kWh/m²/y)",
     "EG (10⁶ kWh/y)",
@@ -28,8 +28,8 @@
   ],
   "panel_descriptions": [
     "EUIt parity for the 18 direct feasible cases.",
-    "Simplified rooftop-PV proxy parity for the 18 direct feasible cases.",
-    "January 20 windowsill direct-sun-hours parity for the 18 direct feasible cases."
+    "GHI-based rooftop-PV proxy parity for the 18 direct feasible cases.",
+    "Direct-sun-hours parity for the 18 direct feasible cases."
   ],
   "claim_boundary": "This figure is limited to the direct-case physics-based cross-model stress test and does not support optimizer-superiority claims.",
   "extra": {
@@ -66,19 +66,53 @@
       }
     },
     "direct_case_count": 18,
-    "stress_test_label": "limited physics-based cross-model stress test"
+    "stress_test_label": "limited physics-based cross-model stress test",
+    "shared_axis_labels": [
+      "Analytic response-generator value",
+      "Physics-based stress-test value"
+    ],
+    "panel_title_fontsize": 8.2,
+    "axis_label_fontsize": 7.8,
+    "statistics_fontsize": 7.0
   },
   "visual_qa": {
     "figure_id": "M6",
     "pdf_path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/physical_cross_model_stress_test.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:55 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.891 x 147.964 pts\nPage rot:        0\nFile size:       53397 bytes\nOptimized:       no\nPDF version:     1.4\n",
-    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\n",
-    "width_px": 1235,
-    "height_px": 370,
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:18 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       492.622 x 138.081 pts\nPage rot:        0\nFile size:       58248 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\nBMQQDV+DejaVuSans                    CID TrueType      Identity-H       yes yes yes     32  0\n",
+    "width_px": 1232,
+    "height_px": 346,
     "type3_fonts": false,
     "forbidden_text_hits": [],
     "empty_render": false,
+    "checks": [
+      {
+        "name": "No Type 3 fonts",
+        "passed": true,
+        "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "No forbidden wording",
+        "passed": true,
+        "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+      },
+      {
+        "name": "Rendered page is non-empty",
+        "passed": true,
+        "detail": "Rasterized QA output should produce a non-empty page."
+      },
+      {
+        "name": "M6 statistics font does not exceed axis-label font",
+        "passed": true,
+        "detail": "Statistics text should remain smaller than the shared axis labels."
+      },
+      {
+        "name": "M6 direct-case count remains 18",
+        "passed": true,
+        "detail": "The revised figure must keep the same 18 direct feasible cases."
+      }
+    ],
     "unresolved_visual_concerns": []
   }
 }

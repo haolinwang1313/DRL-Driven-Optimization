@@ -1,7 +1,7 @@
 {
-  "figure_id": "B6",
+  "figure_id": "S9",
   "semantic_name": "B6_climate_case_detail",
-  "planned_location": "Appendix Fig. B6 candidate",
+  "planned_location": "Supplementary Fig. S9",
   "source_files": [
     {
       "path": "climate_case_results.csv",
@@ -13,8 +13,8 @@
   "filters": {},
   "reference_protocol": "",
   "reference_hash": "",
-  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
-  "timestamp": "2026-06-25T08:04:04+00:00",
+  "script_commit": "f47ea38a68975fdf1c311614abf6035017903f9b",
+  "timestamp": "2026-06-25T10:44:26+00:00",
   "units": [
     "EUIt (kWh/m²/y)",
     "EG (10⁶ kWh/y)",
@@ -28,16 +28,33 @@
   "claim_boundary": "Case-level climate details remain limited to four blocks and three additional climates.",
   "extra": {},
   "visual_qa": {
-    "figure_id": "B6",
+    "figure_id": "S9",
     "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B6_climate_case_detail.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/B6_climate_case_detail.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:03 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.897 x 145.46 pts\nPage rot:        0\nFile size:       70189 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:25 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.897 x 145.46 pts\nPage rot:        0\nFile size:       61375 bytes\nOptimized:       no\nPDF version:     1.4\n",
     "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     21  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     28  0\n",
     "width_px": 1235,
     "height_px": 364,
     "type3_fonts": false,
     "forbidden_text_hits": [],
     "empty_render": false,
+    "checks": [
+      {
+        "name": "No Type 3 fonts",
+        "passed": true,
+        "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "No forbidden wording",
+        "passed": true,
+        "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+      },
+      {
+        "name": "Rendered page is non-empty",
+        "passed": true,
+        "detail": "Rasterized QA output should produce a non-empty page."
+      }
+    ],
     "unresolved_visual_concerns": []
   }
 }

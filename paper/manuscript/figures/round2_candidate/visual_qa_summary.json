@@ -1,212 +1,559 @@
 {
-  "generated_at": "2026-06-25T08:04:07+00:00",
+  "generated_at": "2026-06-25T10:44:28+00:00",
   "figures": [
     {
       "figure_id": "M1",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/data_and_surrogate_validation.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/data_and_surrogate_validation.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:51 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.901 x 309.218 pts\nPage rot:        0\nFile size:       146232 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:15 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.901 x 309.218 pts\nPage rot:        0\nFile size:       146191 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     19  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     26  0\n",
       "width_px": 1235,
       "height_px": 774,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "M2",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/surrogate_robustness.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/surrogate_robustness.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:52 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.168 x 145.285 pts\nPage rot:        0\nFile size:       63951 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:15 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.168 x 145.285 pts\nPage rot:        0\nFile size:       55842 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     19  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     26  0\n",
       "width_px": 1241,
       "height_px": 364,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "M3",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/ddpg_training_dynamics.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/ddpg_training_dynamics.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:52 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.947 x 315.508 pts\nPage rot:        0\nFile size:       224897 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:16 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.947 x 315.508 pts\nPage rot:        0\nFile size:       224858 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
       "width_px": 1235,
       "height_px": 789,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "M4",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/benchmark_fairness.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/benchmark_fairness.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:54 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       488.942 x 315.181 pts\nPage rot:        0\nFile size:       58988 bytes\nOptimized:       no\nPDF version:     1.4\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     26  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     33  0\n",
-      "width_px": 1223,
-      "height_px": 788,
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:17 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       446.846 x 221.902 pts\nPage rot:        0\nFile size:       47347 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
+      "width_px": 1118,
+      "height_px": 555,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "M4 keeps only three panels",
+          "passed": true,
+          "detail": "The main benchmark figure should contain utility, HV, and IGD only."
+        },
+        {
+          "name": "M4 removes the output-contract panel",
+          "passed": true,
+          "detail": "Output-contract counts should move out of the main figure."
+        },
+        {
+          "name": "M4 excludes CMA-ES, RandomSearch, and FeasiblePoolRandom labels",
+          "passed": true,
+          "detail": "The rendered PDF should not show diagnostic baseline labels."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "M5",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/feasible_projection.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/feasible_projection.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:55 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       492.846 x 309.626 pts\nPage rot:        0\nFile size:       81684 bytes\nOptimized:       no\nPDF version:     1.4\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     36  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     43  0\n",
-      "width_px": 1233,
-      "height_px": 775,
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:18 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.836 x 163.268 pts\nPage rot:        0\nFile size:       48798 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1238,
+      "height_px": 409,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "M5 keeps only two panels",
+          "passed": true,
+          "detail": "The main projection figure should contain compression and distance diagnostics only."
+        },
+        {
+          "name": "M5 avoids a secondary y-axis",
+          "passed": true,
+          "detail": "The revised layout must not use a twin axis."
+        },
+        {
+          "name": "M5 excludes CMA-ES, RandomSearch, and FeasiblePoolRandom labels",
+          "passed": true,
+          "detail": "Only DDPG and NSGA-II should remain in the main projection figure."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "M6",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/physical_cross_model_stress_test.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:55 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.891 x 147.964 pts\nPage rot:        0\nFile size:       53397 bytes\nOptimized:       no\nPDF version:     1.4\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\n",
-      "width_px": 1235,
-      "height_px": 370,
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:18 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       492.622 x 138.081 pts\nPage rot:        0\nFile size:       58248 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\nBMQQDV+DejaVuSans                    CID TrueType      Identity-H       yes yes yes     32  0\n",
+      "width_px": 1232,
+      "height_px": 346,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "M6 statistics font does not exceed axis-label font",
+          "passed": true,
+          "detail": "Statistics text should remain smaller than the shared axis labels."
+        },
+        {
+          "name": "M6 direct-case count remains 18",
+          "passed": true,
+          "detail": "The revised figure must keep the same 18 direct feasible cases."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "M7",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/cross_climate_sensitivity.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:56 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       491.282 x 309.116 pts\nPage rot:        0\nFile size:       54478 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:19 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       491.273 x 309.909 pts\nPage rot:        0\nFile size:       54720 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
       "width_px": 1229,
-      "height_px": 773,
+      "height_px": 775,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "M7 uses a low-saturation climate palette",
+          "passed": true,
+          "detail": "Each climate bar color should remain muted rather than high-saturation."
+        },
+        {
+          "name": "M7 heatmap remains centered at zero",
+          "passed": true,
+          "detail": "The heatmap diverging palette should be centered at zero."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "A1",
+      "figure_id": "S1",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A1_descriptor_distributions.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/A1_descriptor_distributions.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:57 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.57 x 148.044 pts\nPage rot:        0\nFile size:       50937 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:20 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.57 x 148.044 pts\nPage rot:        0\nFile size:       50896 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\n",
       "width_px": 1234,
       "height_px": 371,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "A2",
+      "figure_id": "S2",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A2_residual_diagnostics.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/A2_residual_diagnostics.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:57 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.929 x 139.46 pts\nPage rot:        0\nFile size:       42949 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:20 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.929 x 139.46 pts\nPage rot:        0\nFile size:       42914 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
       "width_px": 1235,
       "height_px": 349,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "A3",
+      "figure_id": "S3",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A3_scale_study.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/A3_scale_study.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:58 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       490.404 x 303.902 pts\nPage rot:        0\nFile size:       44127 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:21 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       490.404 x 303.902 pts\nPage rot:        0\nFile size:       44096 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     19  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     26  0\n",
       "width_px": 1227,
       "height_px": 760,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "B1",
+      "figure_id": "S4",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B1_seed_diagnostics.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/B1_seed_diagnostics.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:59 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.914 x 303.957 pts\nPage rot:        0\nFile size:       45338 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:21 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.914 x 303.957 pts\nPage rot:        0\nFile size:       45304 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
       "width_px": 1235,
       "height_px": 760,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "B2",
+      "figure_id": "S5",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B2_morphology_signatures.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/B2_morphology_signatures.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:59 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       490.839 x 134.021 pts\nPage rot:        0\nFile size:       70942 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:22 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       490.839 x 134.021 pts\nPage rot:        0\nFile size:       60875 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
       "width_px": 1228,
       "height_px": 336,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "B3",
+      "figure_id": "S6",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B3_hv_ceiling_diagnostics.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/B3_hv_ceiling_diagnostics.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:00 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       488.854 x 303.938 pts\nPage rot:        0\nFile size:       53843 bytes\nOptimized:       no\nPDF version:     1.4\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
-      "width_px": 1223,
-      "height_px": 760,
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:22 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.792 x 193.35 pts\nPage rot:        0\nFile size:       50546 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     19  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     26  0\n",
+      "width_px": 1237,
+      "height_px": 484,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "S6 uses a log scale for tuple counts",
+          "passed": true,
+          "detail": "The tuple-count panel should use a log-scaled x-axis."
+        },
+        {
+          "name": "S6 keeps only short labels",
+          "passed": true,
+          "detail": "Supplementary labels should stay compact and horizontal."
+        },
+        {
+          "name": "S6 avoids long scenario strings in rendered text",
+          "passed": true,
+          "detail": "The figure should not rely on long categorical axis labels."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "B4",
+      "figure_id": "S7",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B4_optimizer_linked_gap_decomposition.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/B4_optimizer_linked_gap_decomposition.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:01 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.934 x 145.168 pts\nPage rot:        0\nFile size:       44908 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:23 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.764 x 196.892 pts\nPage rot:        0\nFile size:       45438 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
-      "width_px": 1235,
-      "height_px": 363,
+      "width_px": 1237,
+      "height_px": 493,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "S7 keeps the legend outside the plotting axes",
+          "passed": true,
+          "detail": "The legend should sit above the full figure."
+        },
+        {
+          "name": "S7 keeps six short case labels",
+          "passed": true,
+          "detail": "The bridge-diagnostic figure should contain six labeled cases."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "B5",
+      "figure_id": "S8",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B5_nonlinear_response_profiles.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/B5_nonlinear_response_profiles.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:03 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       497.376 x 292.531 pts\nPage rot:        0\nFile size:       48710 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:24 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       497.376 x 292.531 pts\nPage rot:        0\nFile size:       48670 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
       "width_px": 1244,
       "height_px": 732,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     },
     {
-      "figure_id": "B6",
+      "figure_id": "S9",
       "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B6_climate_case_detail.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/B6_climate_case_detail.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:03 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.897 x 145.46 pts\nPage rot:        0\nFile size:       70189 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:25 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.897 x 145.46 pts\nPage rot:        0\nFile size:       61375 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     21  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     28  0\n",
       "width_px": 1235,
       "height_px": 364,
       "type3_fonts": false,
       "forbidden_text_hits": [],
       "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
       "unresolved_visual_concerns": []
     }
   ]

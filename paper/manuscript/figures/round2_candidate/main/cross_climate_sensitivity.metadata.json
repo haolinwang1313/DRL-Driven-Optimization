@@ -1,7 +1,7 @@
 {
   "figure_id": "M7",
   "semantic_name": "cross_climate_sensitivity",
-  "planned_location": "Main Fig. 10 candidate",
+  "planned_location": "Main Fig. 10",
   "source_files": [
     {
       "path": "climate_case_results.csv",
@@ -25,8 +25,8 @@
   "filters": {},
   "reference_protocol": "",
   "reference_hash": "",
-  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
-  "timestamp": "2026-06-25T08:03:57+00:00",
+  "script_commit": "f47ea38a68975fdf1c311614abf6035017903f9b",
+  "timestamp": "2026-06-25T10:44:19+00:00",
   "units": [
     "EUIt (kWh/m²/y)",
     "EG (10⁶ kWh/y)",
@@ -42,19 +42,57 @@
   "extra": {
     "direct_blocks": 4,
     "additional_climates": 3,
-    "analysis_label": "limited four-block cross-climate physical sensitivity analysis"
+    "analysis_label": "limited four-block cross-climate physical sensitivity analysis",
+    "climate_palette": {
+      "Beijing": "#66788A",
+      "Guangzhou": "#5F8274",
+      "Harbin": "#A86F52"
+    },
+    "palette_saturation": {
+      "Beijing": 0.14999999999999994,
+      "Guangzhou": 0.1555555555555555,
+      "Harbin": 0.3439999999999999
+    },
+    "heatmap_center": 0.0
   },
   "visual_qa": {
     "figure_id": "M7",
     "pdf_path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/cross_climate_sensitivity.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:56 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       491.282 x 309.116 pts\nPage rot:        0\nFile size:       54478 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:19 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       491.273 x 309.909 pts\nPage rot:        0\nFile size:       54720 bytes\nOptimized:       no\nPDF version:     1.4\n",
     "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
     "width_px": 1229,
-    "height_px": 773,
+    "height_px": 775,
     "type3_fonts": false,
     "forbidden_text_hits": [],
     "empty_render": false,
+    "checks": [
+      {
+        "name": "No Type 3 fonts",
+        "passed": true,
+        "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "No forbidden wording",
+        "passed": true,
+        "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+      },
+      {
+        "name": "Rendered page is non-empty",
+        "passed": true,
+        "detail": "Rasterized QA output should produce a non-empty page."
+      },
+      {
+        "name": "M7 uses a low-saturation climate palette",
+        "passed": true,
+        "detail": "Each climate bar color should remain muted rather than high-saturation."
+      },
+      {
+        "name": "M7 heatmap remains centered at zero",
+        "passed": true,
+        "detail": "The heatmap diverging palette should be centered at zero."
+      }
+    ],
     "unresolved_visual_concerns": []
   }
 }
