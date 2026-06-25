@@ -1,0 +1,2320 @@
+{
+  "generated_at": "2026-06-25T12:19:13.581333",
+  "items": [
+    {
+      "path": "initial_paper/Dataset.xlsx",
+      "category": "historical_data",
+      "exists": false,
+      "git_tracked": false,
+      "git_ignored": false,
+      "size_bytes": 24366,
+      "modified_time_local": null,
+      "sha256": "562502611d4a805662d11fe8f89903ee6c61bec5a44113e20ee15ded8c9bed79",
+      "git_blob_sha1": "9b575e4cc1550c450a7ce2c64bc734cc0a525d52",
+      "content_commit_used": "94b37f026e298d3c7ee30f865ffa09331dd09383",
+      "rows": 286,
+      "columns": [
+        "Method",
+        "EUlt (kWh/m²/y)",
+        "EG (10⁶ kWh/y)",
+        "H (h)",
+        "Unnamed: 4"
+      ],
+      "missing_values_total": 136,
+      "source_class": "historical_external_or_original_submission_dataset_unverified_physical_origin",
+      "enters_current_manuscript": false,
+      "public_release_readiness": "rights_unknown_not_present_in_worktree"
+    },
+    {
+      "path": "data/external/benchmark/dataset.xlsx",
+      "category": "data",
+      "exists": false,
+      "git_tracked": false,
+      "git_ignored": false,
+      "size_bytes": null,
+      "modified_time_local": null,
+      "sha256": null,
+      "source_class": "external_or_metadata",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct"
+    },
+    {
+      "path": "artifacts/publication/data/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 144070,
+      "modified_time_local": "2026-04-05T00:24:50.513915",
+      "sha256": "db9b53a87f0e9c3b9292e2292833ab39ed5d160aee613270bc96f304b06ede4d",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "rows": 500,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 499.0,
+          "mean": 249.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 2.907986111111111,
+          "mean": 1.7350347222222222
+        },
+        "SD": {
+          "min": 9.75,
+          "max": 69.375,
+          "mean": 42.162
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 18.61111111111111,
+          "mean": 8.587759209597374
+        },
+        "AR_ew": {
+          "min": 0.3272266208446214,
+          "max": 2.050931715850356,
+          "mean": 0.9181316217832914
+        },
+        "AR_ns": {
+          "min": 0.6687658992034103,
+          "max": 6.351196090439752,
+          "mean": 2.4448895502090635
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7366052487566491,
+          "mean": 0.6055371392314168
+        },
+        "BD": {
+          "min": 0.15625,
+          "max": 0.2604166666666667,
+          "mean": 0.20845486111111108
+        },
+        "OSR": {
+          "min": 0.2901492537313432,
+          "max": 1.0923076923076922,
+          "mean": 0.4832967870625961
+        },
+        "SC": {
+          "min": 0.5188975748734265,
+          "max": 1.129722906114948,
+          "mean": 0.6706215071771459
+        },
+        "PAR": {
+          "min": 0.1034482758620689,
+          "max": 0.1577831482911935,
+          "mean": 0.12800163611339754
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.949366786133496,
+          "mean": -0.3427095843986635
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 3.932
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.06874994721265,
+          "mean": 70.57989486279443
+        },
+        "EG": {
+          "min": 1.7961008302063557,
+          "max": 2.85,
+          "mean": 2.393486899498741
+        },
+        "H": {
+          "min": 6.063212785919484,
+          "max": 7.85,
+          "mean": 6.9698568061988775
+        }
+      }
+    },
+    {
+      "path": "artifacts/publication/data/simulated_blocks.jsonl",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 315653,
+      "modified_time_local": "2026-04-05T00:24:50.528313",
+      "sha256": "a716ea4c2b196837979cb1672bd94858ff15c39b166eb96fbe5b31e2bf61c261",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "lines": 500
+    },
+    {
+      "path": "artifacts/publication/imported/data/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 144070,
+      "modified_time_local": "2026-04-05T00:24:50.513915",
+      "sha256": "db9b53a87f0e9c3b9292e2292833ab39ed5d160aee613270bc96f304b06ede4d",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "rows": 500,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 499.0,
+          "mean": 249.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 2.907986111111111,
+          "mean": 1.7350347222222222
+        },
+        "SD": {
+          "min": 9.75,
+          "max": 69.375,
+          "mean": 42.162
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 18.61111111111111,
+          "mean": 8.587759209597374
+        },
+        "AR_ew": {
+          "min": 0.3272266208446214,
+          "max": 2.050931715850356,
+          "mean": 0.9181316217832914
+        },
+        "AR_ns": {
+          "min": 0.6687658992034103,
+          "max": 6.351196090439752,
+          "mean": 2.4448895502090635
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7366052487566491,
+          "mean": 0.6055371392314168
+        },
+        "BD": {
+          "min": 0.15625,
+          "max": 0.2604166666666667,
+          "mean": 0.20845486111111108
+        },
+        "OSR": {
+          "min": 0.2901492537313432,
+          "max": 1.0923076923076922,
+          "mean": 0.4832967870625961
+        },
+        "SC": {
+          "min": 0.5188975748734265,
+          "max": 1.129722906114948,
+          "mean": 0.6706215071771459
+        },
+        "PAR": {
+          "min": 0.1034482758620689,
+          "max": 0.1577831482911935,
+          "mean": 0.12800163611339754
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.949366786133496,
+          "mean": -0.3427095843986635
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 3.932
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.06874994721265,
+          "mean": 70.57989486279443
+        },
+        "EG": {
+          "min": 1.7961008302063557,
+          "max": 2.85,
+          "mean": 2.393486899498741
+        },
+        "H": {
+          "min": 6.063212785919484,
+          "max": 7.85,
+          "mean": 6.9698568061988775
+        }
+      }
+    },
+    {
+      "path": "artifacts/publication/imported/data/simulated_blocks.jsonl",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 315653,
+      "modified_time_local": "2026-04-05T00:24:50.528313",
+      "sha256": "a716ea4c2b196837979cb1672bd94858ff15c39b166eb96fbe5b31e2bf61c261",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "lines": 500
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 576786,
+      "modified_time_local": "2026-04-06T14:36:02.445545",
+      "sha256": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 2000,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 1999.0,
+          "mean": 999.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 3.333333333333333,
+          "mean": 1.7465407986111112
+        },
+        "SD": {
+          "min": 8.625,
+          "max": 69.375,
+          "mean": 42.4711875
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 22.58823529411765,
+          "mean": 8.634587230968034
+        },
+        "AR_ew": {
+          "min": 0.1965829667406193,
+          "max": 2.252757955391737,
+          "mean": 0.9287328319488459
+        },
+        "AR_ns": {
+          "min": 0.6653698315265142,
+          "max": 7.204122706894503,
+          "mean": 2.4509801009311833
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7436255922366087,
+          "mean": 0.606710909768132
+        },
+        "BD": {
+          "min": 0.1475694444444444,
+          "max": 0.2690972222222222,
+          "mean": 0.20813802083333333
+        },
+        "OSR": {
+          "min": 0.2557291666666667,
+          "max": 1.0923076923076922,
+          "mean": 0.47776333340564514
+        },
+        "SC": {
+          "min": 0.5031928750321852,
+          "max": 1.1444767290534232,
+          "mean": 0.6651278725106724
+        },
+        "PAR": {
+          "min": 0.1004827586206896,
+          "max": 0.1577831482911935,
+          "mean": 0.12755630786284158
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.98650070138696,
+          "mean": 0.5113911637400961
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 4.013
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.28421589527046,
+          "mean": 70.5741083711014
+        },
+        "EG": {
+          "min": 1.7612768169896589,
+          "max": 2.85,
+          "mean": 2.397007668721869
+        },
+        "H": {
+          "min": 6.006569520434968,
+          "max": 7.85,
+          "mean": 6.96616929178363
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_samples.meta.json",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 2250,
+      "modified_time_local": "2026-04-06T14:36:02.471864",
+      "sha256": "53af4e0b049b8fc5a4fb026bac09168d73a60f35900266021a407a3d5a001811",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_blocks.jsonl",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 1263863,
+      "modified_time_local": "2026-04-06T14:36:02.463853",
+      "sha256": "c109067839cd4ac79ce3799d4a38b09710e00faa2b90871329298da570852252",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "lines": 2000
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/dataset_scale_protocol.json",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 11044,
+      "modified_time_local": "2026-04-06T14:36:00.544563",
+      "sha256": "f3e67b7beaca75dcf2af18c86e6c5ade173f04fe281348b9895280b8343f205d",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/selected_dataset.json",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 357,
+      "modified_time_local": "2026-04-06T14:36:00.556512",
+      "sha256": "aa9500d765e1f4f6f14d75072f9eeca0879a698f96dd4c757338f53348d0d612",
+      "source_class": "external_or_metadata",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 144096,
+      "modified_time_local": "2026-04-06T14:36:00.796888",
+      "sha256": "7639fba26b7d995b8099413817d7d546de0d18892ed7c915dafe5758aca14b51",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "rows": 500,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 499.0,
+          "mean": 249.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 2.907986111111111,
+          "mean": 1.7350347222222222
+        },
+        "SD": {
+          "min": 9.75,
+          "max": 69.375,
+          "mean": 42.162
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 18.61111111111111,
+          "mean": 8.587759209597374
+        },
+        "AR_ew": {
+          "min": 0.3272266208446214,
+          "max": 2.050931715850356,
+          "mean": 0.9181316217832914
+        },
+        "AR_ns": {
+          "min": 0.6687658992034103,
+          "max": 6.351196090439752,
+          "mean": 2.4448895502090635
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7366052487566491,
+          "mean": 0.6055371392314168
+        },
+        "BD": {
+          "min": 0.15625,
+          "max": 0.2604166666666667,
+          "mean": 0.20845486111111108
+        },
+        "OSR": {
+          "min": 0.2901492537313432,
+          "max": 1.0923076923076922,
+          "mean": 0.4832967870625961
+        },
+        "SC": {
+          "min": 0.5188975748734265,
+          "max": 1.129722906114948,
+          "mean": 0.6706215071771459
+        },
+        "PAR": {
+          "min": 0.1034482758620689,
+          "max": 0.1577831482911935,
+          "mean": 0.12800163611339754
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.949366786133496,
+          "mean": -0.3427095843986635
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 3.932
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.06874994721265,
+          "mean": 70.57989486279443
+        },
+        "EG": {
+          "min": 1.7998630044980526,
+          "max": 2.85,
+          "mean": 2.38952456726469
+        },
+        "H": {
+          "min": 6.06825794518234,
+          "max": 7.85,
+          "mean": 6.969443910333481
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1000/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 287936,
+      "modified_time_local": "2026-04-06T14:36:00.762910",
+      "sha256": "844e171b2fbb2c02453016a55ce8deed6b074a697ab3921237f30741d1422b28",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "rows": 1000,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 999.0,
+          "mean": 499.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 2.907986111111111,
+          "mean": 1.7475260416666667
+        },
+        "SD": {
+          "min": 9.75,
+          "max": 69.375,
+          "mean": 42.794625
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 18.61111111111111,
+          "mean": 8.646687154004164
+        },
+        "AR_ew": {
+          "min": 0.2839828799458962,
+          "max": 2.050931715850356,
+          "mean": 0.9222409636395446
+        },
+        "AR_ns": {
+          "min": 0.6653698315265142,
+          "max": 6.351196090439752,
+          "mean": 2.4612553115812132
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7424989834919399,
+          "mean": 0.6072244545467251
+        },
+        "BD": {
+          "min": 0.15625,
+          "max": 0.2690972222222222,
+          "mean": 0.20774305555555556
+        },
+        "OSR": {
+          "min": 0.2901492537313432,
+          "max": 1.0923076923076922,
+          "mean": 0.47699488349598673
+        },
+        "SC": {
+          "min": 0.5077836065573771,
+          "max": 1.129722906114948,
+          "mean": 0.6645057382168817
+        },
+        "PAR": {
+          "min": 0.1034482758620689,
+          "max": 0.1577831482911935,
+          "mean": 0.1276130529128684
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.949366786133496,
+          "mean": -0.42561770024138695
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 4.023
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.28421589527046,
+          "mean": 70.54755866810346
+        },
+        "EG": {
+          "min": 1.7998630044980526,
+          "max": 2.85,
+          "mean": 2.4008635640415323
+        },
+        "H": {
+          "min": 6.06825794518234,
+          "max": 7.85,
+          "mean": 6.972567376637402
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 432299,
+      "modified_time_local": "2026-04-06T14:36:00.872303",
+      "sha256": "59598a0f741cc880be9dc523678125fa7e6f8ef00c827da6879055c998a46e96",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "rows": 1500,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 1499.0,
+          "mean": 749.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 3.333333333333333,
+          "mean": 1.749513888888889
+        },
+        "SD": {
+          "min": 8.625,
+          "max": 69.375,
+          "mean": 42.5615
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 22.58823529411765,
+          "mean": 8.659427167712304
+        },
+        "AR_ew": {
+          "min": 0.1965829667406193,
+          "max": 2.050931715850356,
+          "mean": 0.9256975515206626
+        },
+        "AR_ns": {
+          "min": 0.6653698315265142,
+          "max": 7.204122706894503,
+          "mean": 2.45779089528297
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7424989834919399,
+          "mean": 0.6064485176834102
+        },
+        "BD": {
+          "min": 0.1475694444444444,
+          "max": 0.2690972222222222,
+          "mean": 0.2078472222222222
+        },
+        "OSR": {
+          "min": 0.2557291666666667,
+          "max": 1.0923076923076922,
+          "mean": 0.47681488875169104
+        },
+        "SC": {
+          "min": 0.5031928750321852,
+          "max": 1.129722906114948,
+          "mean": 0.6643260197606335
+        },
+        "PAR": {
+          "min": 0.1034482758620689,
+          "max": 0.1577831482911935,
+          "mean": 0.12765553462161572
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.949366786133496,
+          "mean": 0.2767856178032274
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 3.989333333333333
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.28421589527046,
+          "mean": 70.5586911213228
+        },
+        "EG": {
+          "min": 1.7612768169896589,
+          "max": 2.85,
+          "mean": 2.3969345135002778
+        },
+        "H": {
+          "min": 6.006569520434968,
+          "max": 7.85,
+          "mean": 6.966308032471365
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.csv",
+      "category": "data",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 576786,
+      "modified_time_local": "2026-04-06T14:36:00.830134",
+      "sha256": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc",
+      "source_class": "fallback_analytic",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "not_git_direct",
+      "rows": 2000,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 1999.0,
+          "mean": 999.5
+        },
+        "FAR": {
+          "min": 0.6770833333333334,
+          "max": 3.333333333333333,
+          "mean": 1.7465407986111112
+        },
+        "SD": {
+          "min": 8.625,
+          "max": 69.375,
+          "mean": 42.4711875
+        },
+        "AF": {
+          "min": 2.6,
+          "max": 22.58823529411765,
+          "mean": 8.634587230968034
+        },
+        "AR_ew": {
+          "min": 0.1965829667406193,
+          "max": 2.252757955391737,
+          "mean": 0.9287328319488459
+        },
+        "AR_ns": {
+          "min": 0.6653698315265142,
+          "max": 7.204122706894503,
+          "mean": 2.4509801009311833
+        },
+        "SVF": {
+          "min": 0.4151063179509038,
+          "max": 0.7436255922366087,
+          "mean": 0.606710909768132
+        },
+        "BD": {
+          "min": 0.1475694444444444,
+          "max": 0.2690972222222222,
+          "mean": 0.20813802083333333
+        },
+        "OSR": {
+          "min": 0.2557291666666667,
+          "max": 1.0923076923076922,
+          "mean": 0.47776333340564514
+        },
+        "SC": {
+          "min": 0.5031928750321852,
+          "max": 1.1444767290534232,
+          "mean": 0.6651278725106724
+        },
+        "PAR": {
+          "min": 0.1004827586206896,
+          "max": 0.1577831482911935,
+          "mean": 0.12755630786284158
+        },
+        "theta": {
+          "min": -44.91535662273134,
+          "max": 44.98650070138696,
+          "mean": 0.5113911637400961
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 4.013
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 78.28421589527046,
+          "mean": 70.5741083711014
+        },
+        "EG": {
+          "min": 1.7612768169896589,
+          "max": 2.85,
+          "mean": 2.397007668721869
+        },
+        "H": {
+          "min": 6.006569520434968,
+          "max": 7.85,
+          "mean": 6.96616929178363
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/models/surrogate.pt",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 141489,
+      "modified_time_local": "2026-04-06T14:36:02.531443",
+      "sha256": "85fdc5b36f69fb610e224a66d841021c188471c5874966cfeca50b9cd9cf3af4",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "release_or_lfs_needed"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/models/selected_surrogate.json",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 5451,
+      "modified_time_local": "2026-04-06T14:36:02.525011",
+      "sha256": "e6a8a2fd92afd7891d7ac03b26bbed687fb440f1ec948ded25cf23ccc87da6df",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "release_or_lfs_needed"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/models/cv_predictions.csv",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 126099,
+      "modified_time_local": "2026-04-06T14:36:02.494228",
+      "sha256": "60697fa277776ae02c6a5a367c8bd428b4a244d021e0ca2aa5edda114317b4a9",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "release_or_lfs_needed",
+      "rows": 2000,
+      "columns": [
+        "fold",
+        "sample_id",
+        "true_EUIt",
+        "true_EG",
+        "true_H",
+        "pred_EUIt",
+        "pred_EG",
+        "pred_H"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "fold": {
+          "min": 1.0,
+          "max": 5.0,
+          "mean": 3.0
+        },
+        "sample_id": {
+          "min": 0.0,
+          "max": 1999.0,
+          "mean": 999.5
+        },
+        "true_EUIt": {
+          "min": 66.0,
+          "max": 78.28422,
+          "mean": 70.5741083585
+        },
+        "true_EG": {
+          "min": 1.7612768,
+          "max": 2.85,
+          "mean": 2.39700766785
+        },
+        "true_H": {
+          "min": 6.0065694,
+          "max": 7.85,
+          "mean": 6.966169290950001
+        },
+        "pred_EUIt": {
+          "min": 63.530304,
+          "max": 78.50792,
+          "mean": 70.566092986
+        },
+        "pred_EG": {
+          "min": 1.7435603,
+          "max": 2.9088688,
+          "mean": 2.3965799589
+        },
+        "pred_H": {
+          "min": 6.0534253,
+          "max": 7.9457955,
+          "mean": 6.968335235299999
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate.pt",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 108209,
+      "modified_time_local": "2026-04-06T14:36:00.975597",
+      "sha256": "606d520f5d1ad294eb272bc49df9c0ec6c6ba21af51d642edb05b32751d65add",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "release_or_lfs_needed"
+    },
+    {
+      "path": "artifacts/publication/models/surrogate.pt",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 43953,
+      "modified_time_local": "2026-04-05T00:24:47.948845",
+      "sha256": "2798f0fd26e0df16fe1743ba94b1ea299b6870c297dc1aa3cd35d766f6fb90d6",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "release_or_lfs_needed"
+    },
+    {
+      "path": "artifacts/publication/models/surrogate_local_20260404.pt",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 42528,
+      "modified_time_local": "2026-04-05T00:24:47.969671",
+      "sha256": "df2d0d03c2cfef3b4872db5f719bbd1a95ae359ba5b1a310cbdfb1425e0905a0",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "release_or_lfs_needed"
+    },
+    {
+      "path": "artifacts/publication/optimization/ddpg_checkpoints/Balanced_Performance/actor_seed_00_timingprobe.pt",
+      "category": "checkpoint_or_model",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 15021,
+      "modified_time_local": "2026-04-06T18:47:28.188919",
+      "sha256": "81a57d92f9cbd4985586d06aca150fd735b2fcd4b523d3685ae7ca1f2b8f50e6",
+      "source_class": "trained_surrogate_or_policy",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "release_or_lfs_needed"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/optimization_results.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 624969,
+      "modified_time_local": "2026-04-06T14:36:02.348078",
+      "sha256": "c4bedfbc03ffb2dac4af1fb24cea615cf7a1b0121ea736189f81177742ffa8ea",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 2060,
+      "columns": [
+        "method",
+        "scenario",
+        "seed",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "reward"
+      ],
+      "missing_values_total": 2000,
+      "numeric_ranges": {
+        "seed": {
+          "min": 0.0,
+          "max": 20260329.0,
+          "mean": 19670213.383495145
+        },
+        "FAR": {
+          "min": 0.8826465606689453,
+          "max": 2.27974176719378,
+          "mean": 1.6861078027579977
+        },
+        "SD": {
+          "min": 15.428631429187828,
+          "max": 69.375,
+          "mean": 42.56103528775977
+        },
+        "AF": {
+          "min": 2.5999999046325684,
+          "max": 12.546011050974952,
+          "mean": 8.711908498632392
+        },
+        "AR_ew": {
+          "min": 0.2202804088592529,
+          "max": 1.2228951454162598,
+          "mean": 0.530628206906771
+        },
+        "AR_ns": {
+          "min": 0.6653698086738586,
+          "max": 4.004109829546898,
+          "mean": 1.6260102534302268
+        },
+        "SVF": {
+          "min": 0.5939403772354126,
+          "max": 0.7436255812644958,
+          "mean": 0.6597193512408487
+        },
+        "BD": {
+          "min": 0.1648749411106109,
+          "max": 0.2390153110027313,
+          "mean": 0.2003333180356326
+        },
+        "OSR": {
+          "min": 0.2557291686534881,
+          "max": 0.6240146160125732,
+          "mean": 0.4229966567125188
+        },
+        "SC": {
+          "min": 0.5244945883750916,
+          "max": 0.9432629346847534,
+          "mean": 0.6618883493071964
+        },
+        "PAR": {
+          "min": 0.1004827618598938,
+          "max": 0.1577831506729126,
+          "mean": 0.12814454938190295
+        },
+        "theta": {
+          "min": -44.91535568237305,
+          "max": 44.98649978637695,
+          "mean": 3.7853821384562925
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 5.919672428398613
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 71.01171112060547,
+          "mean": 66.2008401370743
+        },
+        "EG": {
+          "min": 2.5622572898864746,
+          "max": 2.8499999046325684,
+          "mean": 2.840740594933334
+        },
+        "H": {
+          "min": 7.170061111450195,
+          "max": 7.849999904632568,
+          "mean": 7.828933656562879
+        },
+        "reward": {
+          "min": 0.7974582446216312,
+          "max": 0.9863418573844708,
+          "mean": 0.8830181791062768
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_results.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 19240,
+      "modified_time_local": "2026-04-06T14:36:01.967066",
+      "sha256": "93ceef4839e69b313c176acfecb417d4cd9a6115cdf2c82e3e12305bab3930c6",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 60,
+      "columns": [
+        "method",
+        "scenario",
+        "seed",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "reward"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "seed": {
+          "min": 0.0,
+          "max": 19.0,
+          "mean": 9.5
+        },
+        "FAR": {
+          "min": 0.8826465606689453,
+          "max": 2.2501018047332764,
+          "mean": 1.6552338262399038
+        },
+        "SD": {
+          "min": 17.61187744140625,
+          "max": 69.375,
+          "mean": 47.57889337539673
+        },
+        "AF": {
+          "min": 2.5999999046325684,
+          "max": 11.50309944152832,
+          "mean": 7.802550621827444
+        },
+        "AR_ew": {
+          "min": 0.2202804088592529,
+          "max": 1.2228951454162598,
+          "mean": 0.7166791905959448
+        },
+        "AR_ns": {
+          "min": 0.6653698086738586,
+          "max": 2.950149774551392,
+          "mean": 1.0443115035692851
+        },
+        "SVF": {
+          "min": 0.5939403772354126,
+          "max": 0.7436255812644958,
+          "mean": 0.6954952677090963
+        },
+        "BD": {
+          "min": 0.1648749411106109,
+          "max": 0.2390153110027313,
+          "mean": 0.20375769709547362
+        },
+        "OSR": {
+          "min": 0.2557291686534881,
+          "max": 0.6240146160125732,
+          "mean": 0.456437182923158
+        },
+        "SC": {
+          "min": 0.5244945883750916,
+          "max": 0.9432629346847534,
+          "mean": 0.6776937196652094
+        },
+        "PAR": {
+          "min": 0.1004827618598938,
+          "max": 0.1577831506729126,
+          "mean": 0.1288481743385394
+        },
+        "theta": {
+          "min": -44.91535568237305,
+          "max": 44.98649978637695,
+          "mean": 20.507181485493977
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 6.047664804756641
+        },
+        "EUIt": {
+          "min": 66.35647583007812,
+          "max": 71.01171112060547,
+          "mean": 67.82231814066569
+        },
+        "EG": {
+          "min": 2.5622572898864746,
+          "max": 2.848583221435547,
+          "mean": 2.726219566663106
+        },
+        "H": {
+          "min": 7.170061111450195,
+          "max": 7.816663265228271,
+          "mean": 7.595766234397888
+        },
+        "reward": {
+          "min": 0.7974582446216312,
+          "max": 0.9863418573844708,
+          "mean": 0.8830181791062768
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_results_hp2000_full.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 19240,
+      "modified_time_local": "2026-04-06T14:36:01.983401",
+      "sha256": "93ceef4839e69b313c176acfecb417d4cd9a6115cdf2c82e3e12305bab3930c6",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 60,
+      "columns": [
+        "method",
+        "scenario",
+        "seed",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "reward"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "seed": {
+          "min": 0.0,
+          "max": 19.0,
+          "mean": 9.5
+        },
+        "FAR": {
+          "min": 0.8826465606689453,
+          "max": 2.2501018047332764,
+          "mean": 1.6552338262399038
+        },
+        "SD": {
+          "min": 17.61187744140625,
+          "max": 69.375,
+          "mean": 47.57889337539673
+        },
+        "AF": {
+          "min": 2.5999999046325684,
+          "max": 11.50309944152832,
+          "mean": 7.802550621827444
+        },
+        "AR_ew": {
+          "min": 0.2202804088592529,
+          "max": 1.2228951454162598,
+          "mean": 0.7166791905959448
+        },
+        "AR_ns": {
+          "min": 0.6653698086738586,
+          "max": 2.950149774551392,
+          "mean": 1.0443115035692851
+        },
+        "SVF": {
+          "min": 0.5939403772354126,
+          "max": 0.7436255812644958,
+          "mean": 0.6954952677090963
+        },
+        "BD": {
+          "min": 0.1648749411106109,
+          "max": 0.2390153110027313,
+          "mean": 0.20375769709547362
+        },
+        "OSR": {
+          "min": 0.2557291686534881,
+          "max": 0.6240146160125732,
+          "mean": 0.456437182923158
+        },
+        "SC": {
+          "min": 0.5244945883750916,
+          "max": 0.9432629346847534,
+          "mean": 0.6776937196652094
+        },
+        "PAR": {
+          "min": 0.1004827618598938,
+          "max": 0.1577831506729126,
+          "mean": 0.1288481743385394
+        },
+        "theta": {
+          "min": -44.91535568237305,
+          "max": 44.98649978637695,
+          "mean": 20.507181485493977
+        },
+        "OSLI": {
+          "min": 0.0,
+          "max": 8.0,
+          "mean": 6.047664804756641
+        },
+        "EUIt": {
+          "min": 66.35647583007812,
+          "max": 71.01171112060547,
+          "mean": 67.82231814066569
+        },
+        "EG": {
+          "min": 2.5622572898864746,
+          "max": 2.848583221435547,
+          "mean": 2.726219566663106
+        },
+        "H": {
+          "min": 7.170061111450195,
+          "max": 7.816663265228271,
+          "mean": 7.595766234397888
+        },
+        "reward": {
+          "min": 0.7974582446216312,
+          "max": 0.9863418573844708,
+          "mean": 0.8830181791062768
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/nsga2_results.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 611884,
+      "modified_time_local": "2026-04-06T14:36:01.890311",
+      "sha256": "b83015b321f3392781a50755e3889fb82f960853c4b201ee7b68591a54de0143",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 2000,
+      "columns": [
+        "method",
+        "scenario",
+        "seed",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "reward"
+      ],
+      "missing_values_total": 2000,
+      "numeric_ranges": {
+        "seed": {
+          "min": 20260310.0,
+          "max": 20260329.0,
+          "mean": 20260319.5
+        },
+        "FAR": {
+          "min": 1.2044363968470115,
+          "max": 2.27974176719378,
+          "mean": 1.6870340220535405
+        },
+        "SD": {
+          "min": 15.428631429187828,
+          "max": 63.47080092957557,
+          "mean": 42.41049954513066
+        },
+        "AF": {
+          "min": 3.198886186657906,
+          "max": 12.546011050974952,
+          "mean": 8.739189234936541
+        },
+        "AR_ew": {
+          "min": 0.3504182986383796,
+          "max": 0.745926896695425,
+          "mean": 0.5250466773960958
+        },
+        "AR_ns": {
+          "min": 0.6676568342387069,
+          "max": 4.004109829546898,
+          "mean": 1.643461215926055
+        },
+        "SVF": {
+          "min": 0.6071544268622004,
+          "max": 0.7176584814283362,
+          "mean": 0.6586460737468012
+        },
+        "BD": {
+          "min": 0.1732283320675324,
+          "max": 0.2251310832020883,
+          "mean": 0.20023058666383736
+        },
+        "OSR": {
+          "min": 0.3274854248274368,
+          "max": 0.5602417529192619,
+          "mean": 0.4219934409261996
+        },
+        "SC": {
+          "min": 0.5644200553965125,
+          "max": 0.7897612547727693,
+          "mean": 0.661414188196456
+        },
+        "PAR": {
+          "min": 0.1148572256049555,
+          "max": 0.1453627447553766,
+          "mean": 0.12812344063320386
+        },
+        "theta": {
+          "min": -14.756448528747754,
+          "max": 20.60552423926579,
+          "mean": 3.2837281580451614
+        },
+        "OSLI": {
+          "min": 1.3106086336608649,
+          "max": 7.95772161867777,
+          "mean": 5.915832657107872
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 69.68424224853516,
+          "mean": 66.15219579696655
+        },
+        "EG": {
+          "min": 2.7346980571746826,
+          "max": 2.8499999046325684,
+          "mean": 2.8441762257814407
+        },
+        "H": {
+          "min": 7.613861560821533,
+          "max": 7.849999904632568,
+          "mean": 7.835928679227829
+        },
+        "reward": {
+          "min": NaN,
+          "max": NaN,
+          "mean": NaN
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/paper_metrics.json",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 4852,
+      "modified_time_local": "2026-04-06T14:36:02.136739",
+      "sha256": "ced64decc5d88c0ddfa426af0a39b17dcae0d9aecbc3420681df3fae04fed97d",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/reports/top_candidate_reevaluation_2000.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 1717,
+      "modified_time_local": "2026-04-06T14:36:02.410917",
+      "sha256": "e36a9a632fb1ae9b020357ce4b94e9f863703e9b8f9eeb5c89ed746c72b09dea",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 4,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode",
+        "method",
+        "scenario",
+        "seed",
+        "surrogate_EUIt",
+        "surrogate_EG",
+        "surrogate_H"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 3.0,
+          "mean": 1.5
+        },
+        "FAR": {
+          "min": 1.713229933519384,
+          "max": 1.9390981197357176,
+          "mean": 1.8017679550099424
+        },
+        "SD": {
+          "min": 27.94848823547364,
+          "max": 49.52226805899404,
+          "mean": 38.30717366986936
+        },
+        "AF": {
+          "min": 7.332583427429199,
+          "max": 11.36875343322754,
+          "mean": 9.17529944843316
+        },
+        "AR_ew": {
+          "min": 0.4137147014893463,
+          "max": 0.870836615562439,
+          "mean": 0.6669577942678673
+        },
+        "AR_ns": {
+          "min": 0.6653698086738586,
+          "max": 2.2682318605877967,
+          "mean": 1.3569015542144083
+        },
+        "SVF": {
+          "min": 0.6358267068862915,
+          "max": 0.7319082021713257,
+          "mean": 0.6798802030989184
+        },
+        "BD": {
+          "min": 0.1820670631918906,
+          "max": 0.2185366749763488,
+          "mean": 0.2026916920491456
+        },
+        "OSR": {
+          "min": 0.3420711755752563,
+          "max": 0.4574187421749176,
+          "mean": 0.40714454710359727
+        },
+        "SC": {
+          "min": 0.5837851826453725,
+          "max": 0.7007375359535217,
+          "mean": 0.6374013439840207
+        },
+        "PAR": {
+          "min": 0.1225828765265441,
+          "max": 0.1562963277101516,
+          "mean": 0.1324090327678197
+        },
+        "theta": {
+          "min": -13.656211853027344,
+          "max": 30.14729690551757,
+          "mean": 4.537899858031649
+        },
+        "OSLI": {
+          "min": 6.134179592132568,
+          "max": 8.0,
+          "mean": 7.002223157998815
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 67.83626334995596,
+          "mean": 67.25968397239696
+        },
+        "EG": {
+          "min": 2.6892919320524675,
+          "max": 2.768777039251007,
+          "mean": 2.726422300160836
+        },
+        "H": {
+          "min": 7.37378986017898,
+          "max": 7.610525372744761,
+          "mean": 7.5059786899244365
+        },
+        "seed": {
+          "min": 5.0,
+          "max": 20260310.0,
+          "mean": 5065084.75
+        },
+        "surrogate_EUIt": {
+          "min": 66.0,
+          "max": 67.16808319091797,
+          "mean": 66.55555534362793
+        },
+        "surrogate_EG": {
+          "min": 2.751469135284424,
+          "max": 2.8499999046325684,
+          "mean": 2.821579694747925
+        },
+        "surrogate_H": {
+          "min": 7.670559406280518,
+          "max": 7.849998950958252,
+          "mean": 7.756222724914551
+        }
+      }
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark/reports/preference_delta_vs_nsga.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 719,
+      "modified_time_local": "2026-04-06T14:36:00.516891",
+      "sha256": "27217a6c7ca09002fe7aff870cdc3bbcd709673a7cafae1f6dae87dd25611414",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 3,
+      "columns": [
+        "selection_scenario",
+        "ddpg_scenario",
+        "ddpg_seed",
+        "ddpg_utility",
+        "nsga_seed",
+        "nsga_utility",
+        "utility_delta_ddpg_minus_nsga",
+        "EUIt_delta_ddpg_minus_nsga",
+        "EG_delta_ddpg_minus_nsga",
+        "H_delta_ddpg_minus_nsga"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "ddpg_seed": {
+          "min": 12.0,
+          "max": 12.0,
+          "mean": 12.0
+        },
+        "ddpg_utility": {
+          "min": 0.9070579810052533,
+          "max": 0.9355265734287956,
+          "mean": 0.924697039511383
+        },
+        "nsga_seed": {
+          "min": 20260319.0,
+          "max": 20260319.0,
+          "mean": 20260319.0
+        },
+        "nsga_utility": {
+          "min": 0.9999258850949676,
+          "max": 0.999944456222459,
+          "mean": 0.9999348056084473
+        },
+        "utility_delta_ddpg_minus_nsga": {
+          "min": -0.0928760945026618,
+          "max": -0.0644178827936634,
+          "mean": -0.07523776609706409
+        },
+        "EUIt_delta_ddpg_minus_nsga": {
+          "min": 0.5261459350585938,
+          "max": 0.5267333984375,
+          "mean": 0.5263417561848959
+        },
+        "EG_delta_ddpg_minus_nsga": {
+          "min": -0.0256543159484863,
+          "max": -0.0255942344665527,
+          "mean": -0.02563428878784177
+        },
+        "H_delta_ddpg_minus_nsga": {
+          "min": -0.013010025024414,
+          "max": -0.0129914283752441,
+          "mean": -0.013003826141357366
+        }
+      }
+    },
+    {
+      "path": "artifacts/publication/diagnostics/publication_diagnostics.json",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 6099,
+      "modified_time_local": "2026-04-05T00:24:50.812670",
+      "sha256": "cbcb4b490b722756d38b44ff84c9b34bbf5cf7ec1c971cdd1cc777efc0c1d173",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct"
+    },
+    {
+      "path": "artifacts/publication/reevaluation/top_candidate_reevaluation.csv",
+      "category": "artifact_bundle",
+      "exists": true,
+      "git_tracked": false,
+      "git_ignored": true,
+      "size_bytes": 1509,
+      "modified_time_local": "2026-04-05T00:27:59.121748",
+      "sha256": "e8fb9cf5d206288db67d8caf176ce37b9a9e91369d54a894dfe9f9a7df226c28",
+      "source_class": "optimizer_or_reevaluation_result",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "not_git_direct",
+      "rows": 3,
+      "columns": [
+        "sample_id",
+        "FAR",
+        "SD",
+        "AF",
+        "AR_ew",
+        "AR_ns",
+        "SVF",
+        "BD",
+        "OSR",
+        "SC",
+        "PAR",
+        "theta",
+        "OSLI",
+        "EUIt",
+        "EG",
+        "H",
+        "weather_station",
+        "simulation_mode",
+        "method",
+        "scenario",
+        "seed",
+        "surrogate_EUIt",
+        "reeval_abs_error_EUIt",
+        "surrogate_EG",
+        "reeval_abs_error_EG",
+        "surrogate_H",
+        "reeval_abs_error_H"
+      ],
+      "missing_values_total": 0,
+      "numeric_ranges": {
+        "sample_id": {
+          "min": 0.0,
+          "max": 2.0,
+          "mean": 1.0
+        },
+        "FAR": {
+          "min": 1.901086262253144,
+          "max": 2.407493562555008,
+          "mean": 2.111701115719426
+        },
+        "SD": {
+          "min": 33.30561291721508,
+          "max": 49.338422674705065,
+          "mean": 39.65765309085409
+        },
+        "AF": {
+          "min": 9.154140992790602,
+          "max": 13.909950490655396,
+          "mean": 11.267846129833066
+        },
+        "AR_ew": {
+          "min": 0.4307651972390676,
+          "max": 0.6234632000487766,
+          "mean": 0.5190527517580118
+        },
+        "AR_ns": {
+          "min": 0.6687659025192261,
+          "max": 1.2007885141977304,
+          "mean": 0.9219114002826254
+        },
+        "SVF": {
+          "min": 0.701752065489518,
+          "max": 0.7366052269935608,
+          "mean": 0.7192980142491985
+        },
+        "BD": {
+          "min": 0.1575294232137369,
+          "max": 0.203857306196387,
+          "mean": 0.18617172229155188
+        },
+        "OSR": {
+          "min": 0.37772118359295,
+          "max": 0.44673245014954,
+          "mean": 0.40676447446274455
+        },
+        "SC": {
+          "min": 0.5329079969736076,
+          "max": 0.6617153268907925,
+          "mean": 0.579417647000673
+        },
+        "PAR": {
+          "min": 0.1247130968256703,
+          "max": 0.1400394684617982,
+          "mean": 0.1349304718074573
+        },
+        "theta": {
+          "min": -22.351093788387725,
+          "max": 6.901150077709907,
+          "mean": -5.32177522580643
+        },
+        "OSLI": {
+          "min": 3.850596632454729,
+          "max": 8.0,
+          "mean": 6.067084910380834
+        },
+        "EUIt": {
+          "min": 66.0,
+          "max": 66.0,
+          "mean": 66.0
+        },
+        "EG": {
+          "min": 2.6374321555514206,
+          "max": 2.8283637954780407,
+          "mean": 2.734482930469938
+        },
+        "H": {
+          "min": 7.466046916650566,
+          "max": 7.67579044254052,
+          "mean": 7.587350999542352
+        },
+        "seed": {
+          "min": 1.0,
+          "max": 20260328.0,
+          "mean": 13506879.666666666
+        },
+        "surrogate_EUIt": {
+          "min": 66.0,
+          "max": 66.00076293945312,
+          "mean": 66.00035095214844
+        },
+        "reeval_abs_error_EUIt": {
+          "min": 0.0,
+          "max": 0.000762939453125,
+          "mean": 0.0003509521484375
+        },
+        "surrogate_EG": {
+          "min": 2.849987268447876,
+          "max": 2.8499999046325684,
+          "mean": 2.8499955336252847
+        },
+        "reeval_abs_error_EG": {
+          "min": 0.0216234729698352,
+          "max": 0.2125677490811477,
+          "mean": 0.11551260315534666
+        },
+        "surrogate_H": {
+          "min": 7.849949836730957,
+          "max": 7.849999904632568,
+          "mean": 7.849968910217285
+        },
+        "reeval_abs_error_H": {
+          "min": 0.1741593941904371,
+          "max": 0.3839529879820027,
+          "mean": 0.26261791067493334
+        }
+      }
+    },
+    {
+      "path": "paper/manuscript/figures/fig1.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 177014,
+      "modified_time_local": "2026-06-25T11:19:11.586389",
+      "sha256": "509d77838d0314277cbce5ddae25c7ca39c7859a9ec42193e47d05067b7d6446",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig2.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 59086,
+      "modified_time_local": "2026-06-25T11:19:11.589629",
+      "sha256": "9a05c202b0757c51cd3945cbff52bb5dcce50ca81f17d992536ce782a730f098",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig3.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 33175,
+      "modified_time_local": "2026-06-25T11:19:11.589629",
+      "sha256": "3cae0393fad59dd15229ae0df59545d4fa2f6ba6e30d710701cec9d4297bf952",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig4.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 60076,
+      "modified_time_local": "2026-06-25T11:19:11.590628",
+      "sha256": "bda4f4e5bde21dceb97af09ebe4938b4d952406582211b9c0a3c6d83d004e7b0",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig5.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 39059,
+      "modified_time_local": "2026-06-25T11:19:11.590628",
+      "sha256": "f47b8d9082acfa95021e9b359d95817869f5ff2ec394ddc21dd2cc368284e21c",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig6.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 226280,
+      "modified_time_local": "2026-06-25T11:19:11.592628",
+      "sha256": "6cc65560b84e2d6e59924982e5c587816ca7fea60d181a8638ab685387a1461a",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig7.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 58488,
+      "modified_time_local": "2026-06-25T11:19:11.593631",
+      "sha256": "ec9039dcfcdeb98eb1c0db1059b7c37d8db8b09a02a75c8c69d558b6bb6f8d42",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig8.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 44879,
+      "modified_time_local": "2026-06-25T11:19:11.593631",
+      "sha256": "12b559f68dfccbd3686060c5928ff990a81f3278578bcbd02090c80fc52a71ce",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig9.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 52077,
+      "modified_time_local": "2026-06-25T11:19:11.594629",
+      "sha256": "aed4f7877b86efec667d22f607ed9381786539c74591d9bec544ca05a74ea291",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig10.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 50246,
+      "modified_time_local": "2026-06-25T11:19:11.587626",
+      "sha256": "ed0d52af2b6a5b8a2f7f8f1a0b649e15e86fcd4c0020cfe96a84b379c795b359",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig11.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 49381,
+      "modified_time_local": "2026-06-25T11:19:11.587626",
+      "sha256": "34431aa639c911e739135b3208472c1e60c5723adb188d565b965d5ca01324e3",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig12.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 49939,
+      "modified_time_local": "2026-06-25T11:19:11.588628",
+      "sha256": "0565030ba4a7807ae11bccbc834a941e040a3aa4ce1bc3513e30fc9545f395b2",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper/manuscript/figures/fig13.pdf",
+      "category": "figure",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 52843,
+      "modified_time_local": "2026-06-25T11:19:11.588628",
+      "sha256": "2d0b3d69df7c531e78be1290fe29e5b17bfe55b99a98de4ba02490c07d686233",
+      "source_class": "tracked_manuscript_pdf",
+      "enters_current_manuscript": true,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "tools/build_manuscript_result_figures.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 21469,
+      "modified_time_local": "2026-06-25T11:19:11.615137",
+      "sha256": "9cb14af591a3b248ae9894d807c3949910e0d1588975c0ac1b6cab86e132957c",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "tools/build_four_method_physprobe_figure.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 7170,
+      "modified_time_local": "2026-06-25T11:19:11.614137",
+      "sha256": "44993958d54edc3237c0e74f4e5081dfde27f7eb940591e2beea53767c5f9685",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper_repro/simulation.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 11636,
+      "modified_time_local": "2026-04-05T22:43:03.100707",
+      "sha256": "76b38b0ce0c6edad97e7206d0bf23319760ae662c8863e59a009622aee3c07b8",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper_repro/morphology.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 6447,
+      "modified_time_local": "2026-04-03T00:14:27.452666",
+      "sha256": "b9526f5cd0de89a92da58c61e894df382c694724aa923edd710543cd7dd4f770",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper_repro/optimizers.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 33906,
+      "modified_time_local": "2026-04-11T14:07:01.565730",
+      "sha256": "f4cb7c4bf9d42d6be32ea081b8c28dae2fc850afedbed44e46dc53eff8e3f566",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper_repro/metrics.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 11489,
+      "modified_time_local": "2026-04-05T22:43:03.099666",
+      "sha256": "9cc430cf3784de8c10ead20fc30dbfc40355deea738e018c012cde231a09d1e9",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "paper_repro/physical_stack.py",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 48128,
+      "modified_time_local": "2026-04-11T14:07:01.566731",
+      "sha256": "6987683e6a380766cc58efb3102cb81c337f2dbb559e75199e257fae5b9b3ae3",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "configs/revision.yaml",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 4071,
+      "modified_time_local": "2026-06-25T11:19:11.580793",
+      "sha256": "ab9e2f7f296f47f126c7961c163d916415b6a5a3f08ae67c448c939469ebf869",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    },
+    {
+      "path": "data/catalog.yaml",
+      "category": "script_or_config",
+      "exists": true,
+      "git_tracked": true,
+      "git_ignored": false,
+      "size_bytes": 320,
+      "modified_time_local": "2026-06-25T11:19:11.581881",
+      "sha256": "03e52e9448c791375f33b90337cbd2553f31cd6a9fc03d506259d87bb97896d8",
+      "source_class": "source_code_or_config",
+      "enters_current_manuscript": null,
+      "public_release_readiness": "git_ok"
+    }
+  ],
+  "release_scan": [
+    {
+      "path": "artifacts/publication",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 79314011,
+      "secret_or_personal_risk": "low_to_medium",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "Zenodo/OSF or GitHub Release/LFS"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 25482969,
+      "secret_or_personal_risk": "low_to_medium",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "Zenodo/OSF or GitHub Release/LFS"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 31951266,
+      "secret_or_personal_risk": "medium",
+      "redistribution_risk": "unknown",
+      "recommended_channel": "Zenodo/OSF or GitHub Release/LFS"
+    },
+    {
+      "path": "data/external/benchmark/dataset.xlsx",
+      "exists": false,
+      "git_ignored": false,
+      "size_bytes": null,
+      "secret_or_personal_risk": "medium",
+      "redistribution_risk": "unknown",
+      "recommended_channel": "Git if small and rights cleared"
+    },
+    {
+      "path": "configs/revision.local.yaml",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 2991,
+      "secret_or_personal_risk": "high",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "do_not_publish"
+    },
+    {
+      "path": "server.local.yaml",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 1006,
+      "secret_or_personal_risk": "high",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "do_not_publish"
+    }
+  ]
+}
