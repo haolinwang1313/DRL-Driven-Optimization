@@ -1,31 +1,48 @@
 {
   "run_id": "20260625_round2_closure",
-  "artifacts": {
-    "sampling": {
-      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\data\\sampling_coverage_summary.csv",
+  "canonical_reference": {
+    "path": "research\\reviewer-round-02\\canonical-benchmark-reference.json",
+    "exists": true,
+    "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc"
+  },
+  "canonical_outputs": {
+    "canonical_benchmark_metrics": {
+      "path": "research\\reviewer-round-02\\canonical_benchmark_metrics.csv",
       "exists": true
     },
-    "surrogate_validation": {
-      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\models\\surrogate_validation_summary.csv",
+    "equal_size_repetitions_v2": {
+      "path": "research\\reviewer-round-02\\benchmark_equal_size_repetitions_v2.csv",
       "exists": true
     },
-    "benchmark_full_archive": {
-      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\optimization\\benchmark_full_archive.csv",
+    "equal_size_summary_v2": {
+      "path": "research\\reviewer-round-02\\benchmark_equal_size_summary_v2.csv",
       "exists": true
     },
-    "feasibility": {
-      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\optimization\\optimizer_projection_summary.csv",
+    "metric_lineage_audit_json": {
+      "path": "research\\reviewer-round-02\\metric-lineage-audit.json",
       "exists": true
     },
-    "physical": {
-      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\physical\\physical_validation_summary.json",
+    "optimizer_output_contract": {
+      "path": "research\\reviewer-round-02\\optimizer-output-contract.csv",
       "exists": true
     },
-    "climate": {
-      "path": "artifacts\\reviewer_round_02\\20260625_round2_closure\\climate\\climate_sensitivity_summary.csv",
+    "hv_ceiling_interpretation": {
+      "path": "research\\reviewer-round-02\\hv-ceiling-interpretation.md",
+      "exists": true
+    },
+    "canonical_result_registry": {
+      "path": "research\\reviewer-round-02\\canonical-result-registry.json",
+      "exists": true
+    },
+    "canonical_result_lock": {
+      "path": "research\\reviewer-round-02\\canonical-result-lock.md",
       "exists": true
     }
   },
-  "canonical_dataset_sha256": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc",
-  "canonical_surrogate_sha256": "85fdc5b36f69fb610e224a66d841021c188471c5874966cfeca50b9cd9cf3af4"
+  "physical_evidence_levels": {
+    "execution_closure": "complete",
+    "metric_agreement": "weak",
+    "ranking_transfer": "unsupported",
+    "optimizer_superiority_under_physical_evaluation": "unsupported"
+  }
 }
