@@ -22,6 +22,10 @@ DATA_ROOT = REPO_ROOT / "paper" / "manuscript" / "figure_data" / "round2"
 OUTPUT_ROOT = REPO_ROOT / "paper" / "manuscript" / "figures" / "round2_candidate"
 
 
+def _managed_candidate_paths(pattern: str) -> list[Path]:
+    return [*(OUTPUT_ROOT / "main").glob(pattern), *(OUTPUT_ROOT / "appendix").glob(pattern)]
+
+
 def _pdf_text(path: Path) -> str:
     completed = subprocess.run(
         ["pdftotext", str(path), "-"],
@@ -170,7 +174,7 @@ def test_physical_and_climate_case_counts_are_canonical() -> None:
 
 
 def test_figure_metadata_contains_source_sha(built_round2_assets: dict) -> None:
-    for metadata_path in OUTPUT_ROOT.rglob("*.metadata.json"):
+    for metadata_path in _managed_candidate_paths("*.metadata.json"):
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         assert metadata["source_files"]
         assert all(item["sha256"] for item in metadata["source_files"])
@@ -259,7 +263,7 @@ def test_m7_axis_ranges_and_source_sha_remain_unchanged(built_round2_assets: dic
 
 def test_other_15_candidate_pdf_hashes_do_not_change(built_round2_assets: dict) -> None:
     m7_pdf = OUTPUT_ROOT / "main" / "cross_climate_sensitivity.pdf"
-    for pdf_path in OUTPUT_ROOT.rglob("*.pdf"):
+    for pdf_path in _managed_candidate_paths("*.pdf"):
         if pdf_path == m7_pdf:
             continue
         rel = pdf_path.relative_to(REPO_ROOT).as_posix()

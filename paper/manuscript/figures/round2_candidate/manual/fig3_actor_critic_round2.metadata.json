@@ -1,0 +1,85 @@
+{
+    "figure_id":  "Fig3",
+    "semantic_name":  "actor_critic_architecture",
+    "source_tex":  "paper/manuscript/figures/source/fig3_actor_critic_round2.tex",
+    "source_tex_sha256":  "961c7ff9c9d6e15d7d9ad51db1c085d0b9f4797c019a64c24c57aee446ab997c",
+    "output_pdf":  "paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf",
+    "output_pdf_sha256":  "9262b21b375282c0163ec85762d9da946f2e8a869b5bfb78c5a95799e39b09a5",
+    "output_png":  "paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.png",
+    "output_png_sha256":  "cb22e29c293473652e6e8644a1bbc4fef3c94d0a768681dd70128fd478b5a7f7",
+    "implementation_source":  [
+                                  "paper_repro/optimizers.py",
+                                  "configs/revision.yaml"
+                              ],
+    "actor_architecture":  {
+                               "input_dim":  3,
+                               "hidden_layers":  [
+                                                     64,
+                                                     32
+                                                 ],
+                               "output_dim":  12,
+                               "output_activation":  "Sigmoid"
+                           },
+    "critic_architecture":  {
+                                "input_dim":  15,
+                                "hidden_layers":  [
+                                                      64,
+                                                      32
+                                                  ],
+                                "output_dim":  1
+                            },
+    "gamma":  0.999,
+    "tau":  0.001,
+    "batch_size":  128,
+    "actor_lr":  0.001,
+    "critic_lr":  0.002,
+    "dimensions":  {
+                       "canvas_cm":  {
+                                         "width":  17.5,
+                                         "height":  8.5
+                                     },
+                       "output_page_pts":  {
+                                               "width":  500.048,
+                                               "height":  244.93
+                                           },
+                       "output_page_cm":  {
+                                              "width":  17.641,
+                                              "height":  8.641
+                                          },
+                       "state_dim":  3,
+                       "action_dim":  12,
+                       "critic_input_dim":  15
+                   },
+    "palette":  {
+                    "FigTeal":  "#539F97",
+                    "FigBlue":  "#6C7AAD",
+                    "FigRose":  "#BE7A7A",
+                    "FigDark":  "#252525",
+                    "FigGrid":  "#E7EBEF",
+                    "FigNeutral":  "#F5F4F0",
+                    "FigLightTeal":  "#DDECEA",
+                    "FigLightBlue":  "#E3E6F0",
+                    "FigLightRose":  "#F0DFDF"
+                },
+    "validation_commands":  [
+                                "latexmk -pdf -interaction=nonstopmode -halt-on-error fig3_actor_critic_round2.tex",
+                                "pdftoppm -png -singlefile -r 600 paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2",
+                                "pdfinfo paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf",
+                                "pdffonts paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf",
+                                "pdftotext paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf -",
+                                "uv run pytest -q",
+                                "uv run python -m compileall paper_repro tools tests",
+                                "git diff --check"
+                            ],
+    "visual_qa":  {
+                      "pdfinfo":  "Creator:         TeX\nProducer:        pdfTeX-1.40.26\nCreationDate:    Thu Jun 25 20:56:02 2026 �й���׼ʱ��\nModDate:         Thu Jun 25 20:56:02 2026 �й���׼ʱ��\nCustom Metadata: yes\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       500.048 x 244.93 pts\nPage rot:        0\nFile size:       132901 bytes\nOptimized:       no\nPDF version:     1.5",
+                      "pdffonts":  "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nRGILXW+TeXGyreTermesX-Bold           Type 1            Custom           yes yes yes      7  0\nMRLWWP+txsys                         Type 1            Builtin          yes yes yes      8  0\nOGYQFN+txmiaX                        Type 1            Builtin          yes yes yes      9  0\nPPAOPL+NewTXBMI7                     Type 1            Builtin          yes yes yes     10  0\nZYDZEH+NewTXMI5                      Type 1            Builtin          yes yes yes     11  0\nHQISZU+NewTXMI7                      Type 1            Builtin          yes yes yes     12  0\nBIEZVS+TeXGyreTermesX-Regular        Type 1            Custom           yes yes yes     13  0\nHIHZAX+txsym                         Type 1            Builtin          yes yes yes     14  0\nBIEZVS+TeXGyreTermesX-Regular        Type 1            Custom           yes yes yes     15  0\nIBHVNI+txexs                         Type 1            Builtin          yes yes yes     16  0",
+                      "type3_fonts":  false,
+                      "text_extractable":  true,
+                      "forbidden_text_hits":  [
+
+                                              ],
+                      "manual_png_review":  "Reviewed rendered PNG for text clipping, legend clipping, formula crowding, and arrow routing."
+                  },
+    "claim_boundary":  "The figure documents the implemented DDPG training architecture; it does not imply that the underlying urban-design task is a natural physical-time control process."
+}
