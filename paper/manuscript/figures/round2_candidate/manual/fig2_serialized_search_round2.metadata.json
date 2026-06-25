@@ -1,0 +1,88 @@
+{
+  "figure_id": "Fig2",
+  "semantic_name": "serialized_static_black_box_search",
+  "source_tex": "paper/manuscript/figures/source/fig2_serialized_search_round2.tex",
+  "source_tex_sha256": "e9acc231210f405f9e2245eb60348407bd90e40fc1dcd065ce3189b32a4fc296",
+  "output_pdf": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
+  "output_pdf_sha256": "aabdd8ba6a68ea04998fca13c7434bb1f6f8be51b141d263b9308013b1a45ca1",
+  "output_png": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.png",
+  "output_png_sha256": "92e1419c96796d1f0458759a25a5ea9b0aee355d3e81548e2202c0dae4334118",
+  "implementation_source": [
+    "paper_repro/optimizers.py",
+    "configs/revision.yaml"
+  ],
+  "state_dimension": 3,
+  "action_dimension": 12,
+  "absolute_action": true,
+  "episode_length": 40,
+  "episodes_per_seed": 600,
+  "seeds_per_scenario": 20,
+  "initial_noise_std": 1.0,
+  "noise_decay": 0.9998,
+  "batch_size": 128,
+  "replay_capacity": 1000000,
+  "scenario_weights": {
+    "Balanced": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "Saving": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "Generation": [
+      0.2,
+      0.6,
+      0.2
+    ]
+  },
+  "state_definition": "s_t is the normalized guarded surrogate response vector [EUIt, EG, H].",
+  "action_definition": "a_t is an absolute normalized 12-dimensional morphology descriptor vector clipped to [0,1]^12 and denormalized with training-domain feature bounds.",
+  "environment_definition": "The environment is a static guarded DNN surrogate evaluator with nearest-sample distance guardrail, extrapolation penalty, and target-bound clipping before reward computation.",
+  "reward_formula": "r_t = 1 - ||w * (s_{t+1} - u)||_2 / ||w||_2, with u = (0,1,1).",
+  "dimensions": {
+    "canvas_cm": {
+      "width": 17.5,
+      "height": 8.2
+    },
+    "output_page_pts": {
+      "width": 496.063,
+      "height": 232.441
+    },
+    "output_page_cm": {
+      "width": 17.5,
+      "height": 8.2
+    }
+  },
+  "palette": {
+    "FigTeal": "#539F97",
+    "FigBlue": "#6C7AAD",
+    "FigRose": "#BE7A7A",
+    "FigDark": "#252525",
+    "FigGrid": "#E7EBEF",
+    "FigNeutral": "#F5F4F0",
+    "FigLightTeal": "#DDECEA",
+    "FigLightBlue": "#E3E6F0",
+    "FigLightRose": "#F0DFDF"
+  },
+  "validation_commands": [
+    "uv run --no-project python scripts/compile_latex.py D:/Code/Paper02DRL/paper/manuscript/figures/source/fig2_serialized_search_round2.tex --compiler texlive",
+    "pdftoppm -png -singlefile -r 600 paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2",
+    "pdfinfo paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
+    "pdffonts paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
+    "pdftotext paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf -",
+    "uv run pytest -q",
+    "uv run python -m compileall paper_repro tools tests",
+    "git diff --check"
+  ],
+  "visual_qa": {
+    "pdf_page_size": "496.063 x 232.441 pts (17.50 x 8.20 cm)",
+    "type3_fonts": false,
+    "text_extractable": true,
+    "forbidden_text_hits": [],
+    "manual_png_review": "Reviewed rendered PNG for panel boundaries, text clipping, formula crowding, arrow routing, and overlap between update, replay, reward, and static-search footnote regions."
+  },
+  "claim_boundary": "The sequence represents repeated policy-training queries to a static guarded surrogate and does not represent physical time evolution or incremental urban-morphology transformation."
+}
