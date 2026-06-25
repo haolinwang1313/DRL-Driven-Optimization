@@ -1,7 +1,25 @@
 # Round 2 Figure Plan
 
 ## Main manuscript lock
-- Fig. 1-3 remain user-maintained Visio figures and are not modified by this task.
+- Manual Fig. 1 is user supplied and is included for gallery/QA only; the automated workflow must not edit or re-export it.
+- Fig. 2 is the simplified serialized surrogate-query process candidate.
+- Fig. 3 is the simplified actor-critic architecture and learning-equation candidate.
+- Main Fig. 4-10 and Supplementary Fig. S1-S9 are rebuilt through the round-2 figure builder.
+
+### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
+- Source files: paper/manuscript/figures/round2_candidate/manual/fig1.pdf
+- Claim boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.
+- Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
+
+### Fig. 2 simplified candidate (Fig2 serialized_surrogate_query_process)
+- Source files: paper/manuscript/figures/source/fig2_serialized_search_round2.tex, paper/manuscript/figures/source/round2_figure_style.tex
+- Claim boundary: The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.
+- Revision note: Simplified the serialized surrogate-query episode into four process nodes plus a compact episode strip.
+
+### Fig. 3 simplified candidate (Fig3 actor_critic_architecture_and_learning)
+- Source files: paper/manuscript/figures/source/fig3_actor_critic_round2.tex, paper/manuscript/figures/source/round2_figure_style.tex
+- Claim boundary: The figure documents DDPG learning mechanics only and does not describe the surrogate environment or episode sequence.
+- Revision note: Simplified the actor-critic diagram into network architecture and four learning-equation groups.
 
 ### Main Fig. 4 (M1 data_and_surrogate_validation)
 - Source files: descriptor_coverage.csv, surrogate_parity_mean_predictions.csv

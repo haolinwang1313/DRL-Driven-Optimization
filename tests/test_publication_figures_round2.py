@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import subprocess
-from hashlib import sha256
 from pathlib import Path
 
 import pandas as pd
@@ -24,6 +23,10 @@ OUTPUT_ROOT = REPO_ROOT / "paper" / "manuscript" / "figures" / "round2_candidate
 
 def _managed_candidate_paths(pattern: str) -> list[Path]:
     return [*(OUTPUT_ROOT / "main").glob(pattern), *(OUTPUT_ROOT / "appendix").glob(pattern)]
+
+
+def _all_candidate_paths(pattern: str) -> list[Path]:
+    return [*(OUTPUT_ROOT / "manual").glob(pattern), *_managed_candidate_paths(pattern)]
 
 
 def _pdf_text(path: Path) -> str:
@@ -48,10 +51,6 @@ def _head_bytes(path: str) -> bytes:
     return completed.stdout
 
 
-def _sha256_bytes(payload: bytes) -> str:
-    return sha256(payload).hexdigest()
-
-
 @pytest.fixture(scope="session")
 def built_round2_assets() -> dict:
     build_round2_figure_data_package(DATA_ROOT, repo_root=REPO_ROOT, strict=True)
@@ -61,7 +60,6 @@ def built_round2_assets() -> dict:
         build_gallery=True,
         strict=True,
         repo_root=REPO_ROOT,
-        figure_ids=("M7",),
     )
 
 
@@ -174,7 +172,7 @@ def test_physical_and_climate_case_counts_are_canonical() -> None:
 
 
 def test_figure_metadata_contains_source_sha(built_round2_assets: dict) -> None:
-    for metadata_path in _managed_candidate_paths("*.metadata.json"):
+    for metadata_path in _all_candidate_paths("*.metadata.json"):
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         assert metadata["source_files"]
         assert all(item["sha256"] for item in metadata["source_files"])
@@ -184,6 +182,8 @@ def test_visual_qa_rejects_type3_and_forbidden_phrases(built_round2_assets: dict
     qa = json.loads((OUTPUT_ROOT / "visual_qa_summary.json").read_text(encoding="utf-8"))
     assert all(not item["type3_fonts"] for item in qa["figures"])
     assert all(not item["forbidden_text_hits"] for item in qa["figures"])
+    assert all(item["arial_font_hits"] for item in qa["figures"])
+    assert all(not item["forbidden_font_hits"] for item in qa["figures"] if item["font_policy"] != "manual_preserve")
 
 
 def _metadata(relative_path: str) -> dict:
@@ -261,15 +261,27 @@ def test_m7_axis_ranges_and_source_sha_remain_unchanged(built_round2_assets: dic
         assert metadata["extra"]["axis_limits"][panel]["ylim"] == pytest.approx(expected["ylim"])
 
 
-def test_other_15_candidate_pdf_hashes_do_not_change(built_round2_assets: dict) -> None:
-    m7_pdf = OUTPUT_ROOT / "main" / "cross_climate_sensitivity.pdf"
+def test_all_auto_candidate_pdfs_use_arial_without_times_or_type3(built_round2_assets: dict) -> None:
     for pdf_path in _managed_candidate_paths("*.pdf"):
-        if pdf_path == m7_pdf:
-            continue
-        rel = pdf_path.relative_to(REPO_ROOT).as_posix()
-        current_hash = _sha256_path(pdf_path)
-        head_hash = _sha256_bytes(_head_bytes(rel))
-        assert current_hash == head_hash, rel
+        fonts = subprocess.run(
+            ["pdffonts", str(pdf_path)],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        ).stdout
+        assert "Arial" in fonts, pdf_path
+        assert "Type 3" not in fonts, pdf_path
+        assert "Times" not in fonts, pdf_path
+        assert "NewTX" not in fonts, pdf_path
+
+
+def test_manual_fig1_hash_is_preserved_and_record_only(built_round2_assets: dict) -> None:
+    metadata = _metadata("manual/fig1.metadata.json")
+    assert metadata["figure_id"] == "Fig1"
+    assert metadata["font_policy"] == "manual_preserve"
+    assert metadata["outputs"]["pdf"]["sha256"] == _sha256_path(OUTPUT_ROOT / "manual" / "fig1.pdf")
 
 
 def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
@@ -294,6 +306,9 @@ def test_gallery_separates_main_and_supplementary_sections(built_round2_assets: 
     gallery_text = (REPO_ROOT / "paper" / "snapshots" / "round2-figure-gallery.md").read_text(encoding="utf-8")
     assert "## Part I - Main manuscript candidates" in gallery_text
     assert "## Part II - Supplementary Information candidates" in gallery_text
+    assert "Manual Fig. 1 candidate" in gallery_text
+    assert "Fig. 2 simplified candidate" in gallery_text
+    assert "Fig. 3 simplified candidate" in gallery_text
 
 
 def test_supplementary_figure_ids_are_unique(built_round2_assets: dict) -> None:
@@ -305,8 +320,10 @@ def test_supplementary_figure_ids_are_unique(built_round2_assets: dict) -> None:
     assert set(supplementary_ids) == {"S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"}
 
 
-def test_main_vs_supplement_map_covers_all_16_candidate_figures(built_round2_assets: dict) -> None:
+def test_main_vs_supplement_map_covers_all_19_candidate_figures(built_round2_assets: dict) -> None:
     text = (REPO_ROOT / "research" / "reviewer-round-02" / "main-vs-supplement-map.md").read_text(encoding="utf-8")
+    for label in ["Manual Fig. 1", "Fig. 2", "Fig. 3"]:
+        assert label in text
     for label in ["Fig. 4", "Fig. 5", "Fig. 6", "Fig. 7", "Fig. 8", "Fig. 9", "Fig. 10"]:
         assert label in text
     for label in ["Fig. S1", "Fig. S2", "Fig. S3", "Fig. S4", "Fig. S5", "Fig. S6", "Fig. S7", "Fig. S8", "Fig. S9"]:

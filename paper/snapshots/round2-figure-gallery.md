@@ -2,6 +2,24 @@
 
 ## Part I - Main manuscript candidates
 
+### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
+- Source files: `paper/manuscript/figures/round2_candidate/manual/fig1.pdf` (c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332)
+- Claim boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.
+- Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
+- Unresolved visual concerns: None
+
+### Fig. 2 simplified candidate (Fig2 serialized_surrogate_query_process)
+- Source files: `paper/manuscript/figures/source/fig2_serialized_search_round2.tex` (6d002851d50b588fb8d22b33d72f5b4c013fb18469d9576c00b9985e846ad4dc), `paper/manuscript/figures/source/round2_figure_style.tex` (396b9da979eef3e79363bc0d12277e8af916ab4905ebba39c2e6c65eb2148354)
+- Claim boundary: The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.
+- Revision note: Simplified the serialized surrogate-query episode into four process nodes plus a compact episode strip.
+- Unresolved visual concerns: None
+
+### Fig. 3 simplified candidate (Fig3 actor_critic_architecture_and_learning)
+- Source files: `paper/manuscript/figures/source/fig3_actor_critic_round2.tex` (4996867a2238c06475686b04a8c938b834b6ddff344912aa4ebcade633a55911), `paper/manuscript/figures/source/round2_figure_style.tex` (396b9da979eef3e79363bc0d12277e8af916ab4905ebba39c2e6c65eb2148354)
+- Claim boundary: The figure documents DDPG learning mechanics only and does not describe the surrogate environment or episode sequence.
+- Revision note: Simplified the actor-critic diagram into network architecture and four learning-equation groups.
+- Unresolved visual concerns: None
+
 ### Main Fig. 4 (M1 data_and_surrogate_validation)
 - Source files: `descriptor_coverage.csv` (cefa7377e3fb108e17439db483bf0d3e25758c7fcd2a1aaa5079b49caf4af098), `surrogate_parity_mean_predictions.csv` (5837b986d33d904cf641a57584e85718cbc64d64bffdb762665adf8886fe8c07)
 - Claim boundary: Supports descriptor-space coverage and analytic-target surrogate fidelity only.

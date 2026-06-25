@@ -1,7 +1,9 @@
 # Main vs Supplement Map
 
 ## Main manuscript figures
-- Fig. 1-3: user-maintained Visio figures; unchanged in this task.
+- Manual Fig. 1: user-supplied overview candidate; included for gallery/QA only.
+- Fig. 2: simplified serialized surrogate-query process candidate.
+- Fig. 3: simplified actor-critic architecture and learning-equation candidate.
 - Fig. 4: M1 data and surrogate validation.
 - Fig. 5: M2 surrogate robustness.
 - Fig. 6: M3 DDPG training dynamics.
@@ -22,8 +24,8 @@
 - Fig. S9: B6 climate case detail.
 
 ## Candidate figure coverage
-- Candidate figure slots covered here: 16 (Main Fig. 4-10 and Supplementary Fig. S1-S9).
-- Fig. 1-3 stay outside the builder because they remain manual Visio assets.
+- Candidate figure slots covered here: 19 (Manual Fig. 1, Fig. 2, Fig. 3, Main Fig. 4-10, and Supplementary Fig. S1-S9).
+- Manual Fig. 1 stays outside automatic editing; Fig. 2 and Fig. 3 are TikZ manual candidates that share `round2_figure_style.tex`.
 
 ## Table split
 - Main manuscript retains morphology descriptors, evaluation modes, surrogate robustness, optimizer budget and output contract, the canonical DDPG-NSGA-II benchmark, and a compact physical-climate evidence summary.

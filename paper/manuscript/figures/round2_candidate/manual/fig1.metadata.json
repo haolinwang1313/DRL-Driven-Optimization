@@ -1,0 +1,34 @@
+{
+  "figure_id": "Fig1",
+  "semantic_name": "manual_fig1_candidate",
+  "planned_location": "Manual Fig. 1 candidate",
+  "source_files": [
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
+      "sha256": "c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332",
+      "reference_protocol": "manual-candidate",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "manual-candidate",
+  "reference_hash": "",
+  "figure_style_version": "round2-arial-v1",
+  "font_policy": "manual_preserve",
+  "timestamp": "2026-06-25T15:11:53+00:00",
+  "panel_descriptions": [
+    "User-supplied manual overview of morphology generation, surrogate modeling, descriptor-space optimization, and assessment flow."
+  ],
+  "claim_boundary": "Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.",
+  "caption": "",
+  "outputs": {
+    "pdf": {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
+      "sha256": "c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332"
+    }
+  },
+  "extra": {
+    "manual_asset": true,
+    "automatic_editing_allowed": false
+  }
+}

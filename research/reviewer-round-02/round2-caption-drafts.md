@@ -2,6 +2,18 @@
 
 ## Main manuscript candidates
 
+### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
+This candidate figure summarizes User-supplied manual overview of morphology generation, surrogate modeling, descriptor-space optimization, and assessment flow.. It uses paper/manuscript/figures/round2_candidate/manual/fig1.pdf and should be interpreted within the following boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it..
+Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
+
+### Fig. 2 simplified candidate (Fig2 serialized_surrogate_query_process)
+Figure 2. Serialized surrogate-query process used in the DDPG benchmark. The normalized three-target state is mapped by the actor to an absolute 12-dimensional descriptor query. After Gaussian exploration and clipping, the query is evaluated by the guarded DNN surrogate, which returns the next state and normalized-distance reward. Each episode begins from a random descriptor query and terminates after 40 surrogate interactions. The sequence represents repeated black-box queries rather than physical time evolution; the actor--critic learning mechanics are shown in Fig. 3.
+Revision note: Simplified the serialized surrogate-query episode into four process nodes plus a compact episode strip.
+
+### Fig. 3 simplified candidate (Fig3 actor_critic_architecture_and_learning)
+Figure 3. Actor--critic architecture and learning equations used in the DDPG implementation. The online actor maps the three-dimensional state to a 12-dimensional normalized descriptor action, and the online critic evaluates the resulting state--action pair. Target copies provide the temporal-difference target and are updated softly using factor \(\tau\). The right panel summarizes the temporal-difference target, critic loss, actor objective, and target-network updates. Here, \(\mu\) denotes the actor policy, \(Q\) the action-value function, primed symbols the target networks, \(d_i\) the terminal indicator, and \(N\) the mini-batch size.
+Revision note: Simplified the actor-critic diagram into network architecture and four learning-equation groups.
+
 ### Main Fig. 4 (M1 data_and_surrogate_validation)
 This candidate figure summarizes PCA cumulative explained variance for the 12 morphology descriptors.; EUIt repeated-CV parity using sample-level mean out-of-fold predictions.; EG repeated-CV parity using sample-level mean out-of-fold predictions.; H repeated-CV parity using sample-level mean out-of-fold predictions.. It uses descriptor_coverage.csv, surrogate_parity_mean_predictions.csv and should be interpreted within the following boundary: Supports descriptor-space coverage and analytic-target surrogate fidelity only..
 Revision note: Carried forward from the canonical round-2 candidate set without a layout change in this task.
