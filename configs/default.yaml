@@ -2,9 +2,17 @@ project:
   name: paper02_repro
   random_seed: 20260310
   artifact_root: artifacts
-  benchmark_dataset: Dataset.xlsx
-  manuscript_pdf: manuscript1105_clean.pdf
-  supplementary_pdf: Supplementary Information.pdf
+  benchmark_dataset: data/external/benchmark/dataset.xlsx
+  manuscript_pdf: paper/submission/initial/manuscript-original.pdf
+  supplementary_pdf: paper/submission/initial/supplementary-information-original.pdf
+
+paths:
+  manuscript_source: paper/manuscript/manuscript.tex
+  response_source: paper/response/round-01/letter.tex
+  revision_tracker: paper/response/round-01/tracker/revision-tracker.json
+  benchmark_dataset: data/external/benchmark/dataset.xlsx
+  original_manuscript_pdf: paper/submission/initial/manuscript-original.pdf
+  original_supplementary_pdf: paper/submission/initial/supplementary-information-original.pdf
 
 runtime:
   device: auto

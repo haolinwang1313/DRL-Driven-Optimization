@@ -1,5 +1,7 @@
 # Paper Improvement Log
 
+Migration note: This is a pre-migration historical log. Some entries use the old repository layout; see `docs/migration-map.md` for path mappings.
+
 ## Score Progression
 
 | Round | Score | Verdict | Key Changes |

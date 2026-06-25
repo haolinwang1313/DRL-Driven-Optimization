@@ -1,5 +1,7 @@
 # Auto Review Log
 
+Migration note: This is a pre-migration historical log. Internal review rounds are agent-review rounds, not formal journal review rounds. Some entries use the old repository layout; see `docs/migration-map.md` for path mappings.
+
 ## Round 1 (2026-04-06T22:32:10.7813131+08:00)
 
 ### Assessment (Summary)

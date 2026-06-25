@@ -1,5 +1,7 @@
 # Experiment Log
 
+Migration note: This is a pre-migration historical log. Some entries use the old repository layout; see `docs/migration-map.md` for path mappings.
+
 ## 2026-04-06T22:32:10.7813131+08:00
 
 ### Action

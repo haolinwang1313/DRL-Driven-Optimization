@@ -1,5 +1,7 @@
 # Reviewer Memory
 
+Migration note: This is a pre-migration historical log. Internal review rounds are agent-review rounds, not formal journal review rounds. Some entries use the old repository layout; see `docs/migration-map.md` for path mappings.
+
 Hard-mode reviewer memory will be appended here after each completed round.
 
 ## Round 1 - Score: 4/10

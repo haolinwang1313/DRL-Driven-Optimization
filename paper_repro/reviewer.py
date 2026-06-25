@@ -86,7 +86,7 @@ def build_revision_review_prompt(config: Config) -> str:
     diagnostics_path = Path(config["publication"]["diagnostics_dir"]) / "publication_diagnostics.json"
     reevaluation_path = Path(config["publication"]["reevaluation_dir"]) / "top_candidate_reevaluation.csv"
     tracker_path = Path(config["publication"]["tracker_path"])
-    manuscript_path = Path("elsarticle") / "manuscript.tex"
+    manuscript_path = Path(config.raw.get("paths", {}).get("manuscript_source", "paper/manuscript/manuscript.tex"))
 
     diagnostics_text = diagnostics_path.read_text(encoding="utf-8") if diagnostics_path.exists() else "{}"
     tracker_text = tracker_path.read_text(encoding="utf-8") if tracker_path.exists() else "{}"

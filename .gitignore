@@ -1,26 +1,56 @@
+# Python
 __pycache__/
-.pytest_cache/
-*.pyc
+*.py[cod]
 *.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local secrets and machine configuration
+.env
+.env.*
+!.env.example
+server.local.yaml
+configs/*.local.yaml
+
+# Agent/runtime state
+.aris/
+.agents/
+.codex/
+.trellis/*
+!.trellis/spec/
+!.trellis/spec/**
+!.trellis/tasks/
+!.trellis/tasks/**
+
+# Generated experiment outputs
+artifacts/
+artifacts_smoke/
+
+# Local benchmark data with unclear redistribution rights
+data/external/benchmark/*.xlsx
+
+# LaTeX build
+paper/**/build/
 *.aux
 *.bbl
+*.blg
 *.fdb_latexmk
 *.fls
 *.log
 *.out
 *.spl
+*.synctex.gz
 
-.*
-!.gitignore
-
-artifacts/
-artifacts_smoke/
-server.local.yaml
-configs/revision.local.yaml
-
+# Temporary
 tmp_page*.png
 tmp_table*.png
 AGENTS.md.local-backup
-slides/
-tests/
-initial_paper/
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

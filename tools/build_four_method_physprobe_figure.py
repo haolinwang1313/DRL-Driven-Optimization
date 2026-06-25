@@ -195,7 +195,7 @@ def main() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     set_style()
     frame = load_plot_frame(repo_root)
-    build_figure(frame, repo_root / "elsarticle" / "fig" / "fig12_four_method_physprobe.pdf")
+    build_figure(frame, repo_root / "paper" / "manuscript" / "figures" / "fig13.pdf")
 
 
 if __name__ == "__main__":

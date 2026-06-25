@@ -20,7 +20,7 @@ from paper_repro.surrogate import load_surrogate
 
 CURRENT_COMPARE_RUN = "20260405_highest_precision_2000_compare"
 CURRENT_SELECTION_RUN = "20260405_surrogate_rebenchmark"
-STATIC_FIG_COMMIT = "87b1e66eb217251587be94e95e73898ed4740859"
+STATIC_FIG_COMMIT = "HEAD"
 DDPG_LOG_SHARD_GROUPS = {
     "rev": ["balrev", "savrev", "genrev"],
     "match": ["match_bal", "match_es", "match_eg"],
@@ -136,8 +136,8 @@ def _restore_pdf_from_git(repo_root: Path, commit: str, repo_relative_path: str,
 
 def _compile_manuscript(repo_root: Path) -> None:
     subprocess.run(
-        ["latexmk", "-pdf", "-interaction=nonstopmode", "manuscript.tex"],
-        cwd=repo_root / "elsarticle",
+        ["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-outdir=build", "manuscript.tex"],
+        cwd=repo_root / "paper" / "manuscript",
         check=True,
     )
 
@@ -447,7 +447,7 @@ def build_nonlinear_response(bundle, dataset: pd.DataFrame, out_pdf: Path) -> No
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Rebuild the current manuscript figure set.")
-    parser.add_argument("--repo-root", type=Path, default=Path.cwd(), help="Repository root containing elsarticle/ and artifacts/server_runs/.")
+    parser.add_argument("--repo-root", type=Path, default=Path.cwd(), help="Repository root containing paper/manuscript/ and artifacts/server_runs/.")
     parser.add_argument("--static-fig-commit", default=STATIC_FIG_COMMIT, help="Commit that provides the kept fig10/fig11 PDFs.")
     parser.add_argument("--compile-manuscript", action="store_true", help="Run latexmk after rebuilding the figure PDFs.")
     return parser.parse_args()
@@ -457,7 +457,7 @@ def main() -> None:
     args = parse_args()
     root = args.repo_root.resolve()
     compare_root, selection_root = _resolve_result_roots(root)
-    fig_dir = root / "elsarticle" / "fig"
+    fig_dir = root / "paper" / "manuscript" / "figures"
 
     set_journal_style()
     cv = pd.read_csv(compare_root / "models" / "cv_predictions.csv")
@@ -475,11 +475,11 @@ def main() -> None:
     build_fig7(combined, fig_dir / "fig7.pdf")
     build_fig8(combined, fig_dir / "fig8.pdf")
     build_fig9(ddpg, nsga, combined, config["optimization"]["utility_weights"], fig_dir / "fig9.pdf")
-    build_nonlinear_response(bundle, dataset, fig_dir / "nonlinear_response_profiles.pdf")
+    build_nonlinear_response(bundle, dataset, fig_dir / "fig12.pdf")
 
     # fig10/fig11 are intentionally pinned to the approved manuscript version.
-    _restore_pdf_from_git(root, args.static_fig_commit, "elsarticle/fig/fig10.pdf", fig_dir / "fig10.pdf")
-    _restore_pdf_from_git(root, args.static_fig_commit, "elsarticle/fig/fig11.pdf", fig_dir / "fig11.pdf")
+    _restore_pdf_from_git(root, args.static_fig_commit, "paper/manuscript/figures/fig10.pdf", fig_dir / "fig10.pdf")
+    _restore_pdf_from_git(root, args.static_fig_commit, "paper/manuscript/figures/fig11.pdf", fig_dir / "fig11.pdf")
 
     if args.compile_manuscript:
         _compile_manuscript(root)

@@ -1,5 +1,7 @@
 # Findings
 
+Migration note: This is a pre-migration research note. Some entries use the old repository layout; see `docs/migration-map.md` for path mappings.
+
 ## Current Verdict
 
 - Current stage: `review loop`

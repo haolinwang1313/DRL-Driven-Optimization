@@ -162,7 +162,7 @@ def report_pipeline(config: Config) -> dict:
             "",
             "## Assumptions",
             "- AR was reconstructed as AR_ew and AR_ns using directional canyon aspect ratios.",
-            "- Dataset.xlsx is used as a benchmark only and is not used during surrogate training.",
+            f"- {config['project']['benchmark_dataset']} is used as a benchmark only and is not used during surrogate training.",
             "- The current end-to-end run uses the fallback analytic simulator unless a physical stack is fully available.",
             "",
             "## Outputs",
