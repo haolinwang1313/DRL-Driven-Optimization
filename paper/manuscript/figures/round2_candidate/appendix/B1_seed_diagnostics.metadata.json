@@ -13,8 +13,10 @@
   "filters": {},
   "reference_protocol": "",
   "reference_hash": "",
-  "script_commit": "f47ea38a68975fdf1c311614abf6035017903f9b",
-  "timestamp": "2026-06-25T10:44:22+00:00",
+  "script_commit": "8cc1945e652658999fdbfe2554685d0477156b90",
+  "timestamp": "2026-06-25T15:11:09+00:00",
+  "figure_style_version": "round2-arial-v1",
+  "font_policy": "strict_arial",
   "units": [
     "EUIt (kWh/m²/y)",
     "EG (10⁶ kWh/y)",
@@ -32,11 +34,17 @@
     "figure_id": "S4",
     "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B1_seed_diagnostics.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/B1_seed_diagnostics.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 18:44:21 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.914 x 303.957 pts\nPage rot:        0\nFile size:       45304 bytes\nOptimized:       no\nPDF version:     1.4\n",
-    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:08 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.873 x 304.024 pts\nPage rot:        0\nFile size:       39391 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
     "width_px": 1235,
-    "height_px": 760,
+    "height_px": 761,
     "type3_fonts": false,
+    "arial_font_hits": [
+      "Arial",
+      "ArialMT"
+    ],
+    "forbidden_font_hits": [],
+    "font_policy": "strict_arial",
     "forbidden_text_hits": [],
     "empty_render": false,
     "checks": [
@@ -44,6 +52,11 @@
         "name": "No Type 3 fonts",
         "passed": true,
         "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "Arial font present",
+        "passed": true,
+        "detail": "Publication figures must resolve visible text to Arial."
       },
       {
         "name": "No forbidden wording",
@@ -54,6 +67,11 @@
         "name": "Rendered page is non-empty",
         "passed": true,
         "detail": "Rasterized QA output should produce a non-empty page."
+      },
+      {
+        "name": "No Times or NewTX fonts",
+        "passed": true,
+        "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
       }
     ],
     "unresolved_visual_concerns": []

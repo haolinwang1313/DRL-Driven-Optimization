@@ -15,6 +15,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 
+from matplotlib import font_manager
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm, to_rgb
 from matplotlib.backends.backend_pdf import PdfPages
@@ -109,6 +110,10 @@ FORBIDDEN_TEXT = [
 ]
 SECRET_LIKE_TOKENS = ("password", "token", "secret", "host", "user", "pid", "identity", "ssh", "remote")
 BENCHMARK_REFERENCE_PROTOCOL = "benchmark-reference-v2"
+FIGURE_STYLE_VERSION = "round2-arial-v1"
+STRICT_FONT_POLICY = "strict_arial"
+MANUAL_PRESERVE_FONT_POLICY = "manual_preserve"
+ARIAL_REQUIRED_MESSAGE = "Arial is required for the publication figure set and was not found."
 
 
 @dataclass(frozen=True)
@@ -168,16 +173,28 @@ def _read_json(path: Path) -> Any:
 
 
 def _set_publication_style() -> None:
+    try:
+        font_manager.findfont(
+            font_manager.FontProperties(family="Arial"),
+            fallback_to_default=False,
+        )
+    except ValueError as exc:
+        raise RuntimeError(ARIAL_REQUIRED_MESSAGE) from exc
     plt.rcParams.update(
         {
-            "font.family": "serif",
-            "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial"],
             "font.size": 8,
             "axes.labelsize": 8,
             "axes.titlesize": 8,
             "xtick.labelsize": 7,
             "ytick.labelsize": 7,
             "legend.fontsize": 7,
+            "mathtext.fontset": "custom",
+            "mathtext.rm": "Arial",
+            "mathtext.it": "Arial:italic",
+            "mathtext.bf": "Arial:bold",
+            "mathtext.sf": "Arial",
             "axes.linewidth": 0.8,
             "xtick.direction": "in",
             "ytick.direction": "in",
@@ -260,6 +277,12 @@ def _sparsest_corner_anchor(x: np.ndarray, y: np.ndarray) -> tuple[float, float,
 
 
 def _default_revision_note(figure_id: str, category: str) -> str:
+    if figure_id in {"Fig1", "Fig2", "Fig3"}:
+        return {
+            "Fig1": "User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.",
+            "Fig2": "Simplified the serialized surrogate-query episode into four process nodes plus a compact episode strip.",
+            "Fig3": "Simplified the actor-critic diagram into network architecture and four learning-equation groups.",
+        }[figure_id]
     if figure_id in {"M4", "M5", "M6", "M7", "S6", "S7"}:
         return {
             "M4": "Simplified the main benchmark figure to fixed-domain utility plus matched-size HV/IGD for DDPG and NSGA-II only.",
@@ -2082,6 +2105,160 @@ def _render_pdf_png(pdf_path: Path, render_dir: Path) -> Path:
     return png_path
 
 
+def _manual_source_entry(path: Path, repo_root: Path) -> dict[str, str]:
+    return {
+        "path": _relative_path(path, repo_root),
+        "sha256": _sha256_path(path),
+        "reference_protocol": "manual-candidate",
+        "reference_hash": "",
+    }
+
+
+def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[str, Any]]:
+    manual_dir = output_root / "manual"
+    style_path = repo_root / "paper" / "manuscript" / "figures" / "source" / "round2_figure_style.tex"
+    specs = [
+        {
+            "figure_id": "Fig1",
+            "semantic_name": "manual_fig1_candidate",
+            "planned_location": "Manual Fig. 1 candidate",
+            "pdf": manual_dir / "fig1.pdf",
+            "metadata": manual_dir / "fig1.metadata.json",
+            "source_files": [manual_dir / "fig1.pdf"],
+            "panel_descriptions": (
+                "User-supplied manual overview of morphology generation, surrogate modeling, descriptor-space optimization, and assessment flow.",
+            ),
+            "claim_boundary": "Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.",
+            "font_policy": MANUAL_PRESERVE_FONT_POLICY,
+            "extra": {
+                "manual_asset": True,
+                "automatic_editing_allowed": False,
+            },
+        },
+        {
+            "figure_id": "Fig2",
+            "semantic_name": "serialized_surrogate_query_process",
+            "planned_location": "Fig. 2 simplified candidate",
+            "pdf": manual_dir / "fig2_serialized_search_round2.pdf",
+            "png": manual_dir / "fig2_serialized_search_round2.png",
+            "metadata": manual_dir / "fig2_serialized_search_round2.metadata.json",
+            "source_files": [
+                repo_root / "paper" / "manuscript" / "figures" / "source" / "fig2_serialized_search_round2.tex",
+                style_path,
+            ],
+            "panel_descriptions": (
+                "Four-node serialized surrogate-query process.",
+                "Compact 40-query episode strip.",
+            ),
+            "claim_boundary": "The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.",
+            "font_policy": STRICT_FONT_POLICY,
+            "caption": (
+                "Figure 2. Serialized surrogate-query process used in the DDPG benchmark. "
+                "The normalized three-target state is mapped by the actor to an absolute 12-dimensional descriptor query. "
+                "After Gaussian exploration and clipping, the query is evaluated by the guarded DNN surrogate, "
+                "which returns the next state and normalized-distance reward. Each episode begins from a random descriptor "
+                "query and terminates after 40 surrogate interactions. The sequence represents repeated black-box queries "
+                "rather than physical time evolution; the actor--critic learning mechanics are shown in Fig. 3."
+            ),
+            "extra": {
+                "main_nodes": ["Current state", "Actor query", "Guarded surrogate", "Next state and reward"],
+                "episode_length": 40,
+                "episodes_per_seed": 600,
+                "seeds_per_scenario": 20,
+                "arrow_line_styles": ["solid"],
+                "excluded_visible_content": [
+                    "Replay buffer",
+                    "Actor--critic update",
+                    "Critic loss",
+                    "Target actor",
+                    "scenario weight values",
+                    "full d_w equation",
+                ],
+            },
+        },
+        {
+            "figure_id": "Fig3",
+            "semantic_name": "actor_critic_architecture_and_learning",
+            "planned_location": "Fig. 3 simplified candidate",
+            "pdf": manual_dir / "fig3_actor_critic_round2.pdf",
+            "png": manual_dir / "fig3_actor_critic_round2.png",
+            "metadata": manual_dir / "fig3_actor_critic_round2.metadata.json",
+            "source_files": [
+                repo_root / "paper" / "manuscript" / "figures" / "source" / "fig3_actor_critic_round2.tex",
+                style_path,
+            ],
+            "panel_descriptions": (
+                "Online and target actor-critic network architecture.",
+                "TD target, critic loss, actor objective, and soft-update equations.",
+            ),
+            "claim_boundary": "The figure documents DDPG learning mechanics only and does not describe the surrogate environment or episode sequence.",
+            "font_policy": STRICT_FONT_POLICY,
+            "caption": (
+                "Figure 3. Actor--critic architecture and learning equations used in the DDPG implementation. "
+                "The online actor maps the three-dimensional state to a 12-dimensional normalized descriptor action, "
+                "and the online critic evaluates the resulting state--action pair. Target copies provide the temporal-difference "
+                "target and are updated softly using factor \\(\\tau\\). The right panel summarizes the temporal-difference target, "
+                "critic loss, actor objective, and target-network updates. Here, \\(\\mu\\) denotes the actor policy, \\(Q\\) the "
+                "action-value function, primed symbols the target networks, \\(d_i\\) the terminal indicator, and \\(N\\) the mini-batch size."
+            ),
+            "extra": {
+                "equation_groups": ["TD target", "Critic loss", "Actor objective", "Soft updates"],
+                "arrow_line_styles": ["solid", "dashed"],
+                "actor_architecture": {"input_dim": 3, "hidden_layers": [64, 32], "output_dim": 12, "output_activation": "Sigmoid"},
+                "critic_architecture": {"input_dim": 15, "hidden_layers": [64, 32], "output_dim": 1},
+                "batch_size": 128,
+                "gamma": 0.999,
+                "tau": 0.001,
+            },
+        },
+    ]
+    figures = []
+    for spec in specs:
+        pdf_path = spec["pdf"]
+        if not pdf_path.exists():
+            continue
+        outputs = {"pdf": str(pdf_path)}
+        png_path = spec.get("png")
+        if isinstance(png_path, Path) and png_path.exists():
+            outputs["png"] = str(png_path)
+        source_files = [path for path in spec["source_files"] if path.exists()]
+        metadata = {
+            "figure_id": spec["figure_id"],
+            "semantic_name": spec["semantic_name"],
+            "planned_location": spec["planned_location"],
+            "source_files": [_manual_source_entry(path, repo_root) for path in source_files],
+            "filters": {},
+            "reference_protocol": "manual-candidate",
+            "reference_hash": "",
+            "figure_style_version": FIGURE_STYLE_VERSION,
+            "font_policy": spec["font_policy"],
+            "timestamp": _utc_now(),
+            "panel_descriptions": list(spec["panel_descriptions"]),
+            "claim_boundary": spec["claim_boundary"],
+            "caption": spec.get("caption", ""),
+            "outputs": {
+                name: {
+                    "path": _relative_path(path, repo_root),
+                    "sha256": _sha256_path(path),
+                }
+                for name, path in {"pdf": pdf_path, "png": png_path}.items()
+                if isinstance(path, Path) and path.exists()
+            },
+            "extra": spec["extra"],
+        }
+        _json_dump(metadata, spec["metadata"])
+        figures.append(
+            {
+                "figure_id": spec["figure_id"],
+                "semantic_name": spec["semantic_name"],
+                "category": "main",
+                "outputs": outputs,
+                "metadata_path": str(spec["metadata"]),
+            }
+        )
+    return figures
+
+
 def _extract_pdf_text(pdf_path: Path, render_dir: Path) -> str:
     txt_path = render_dir / f"{pdf_path.stem}.txt"
     subprocess.run(["pdftotext", str(pdf_path), str(txt_path)], check=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -2181,47 +2358,34 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
 def _write_visio_docs(repo_root: Path) -> dict[str, str]:
     research_root = repo_root / "research" / "reviewer-round-02"
     research_root.mkdir(parents=True, exist_ok=True)
-    fig1_text = _read_text_extract(research_root / "fig1_text_extract.txt")
-    fig2_text = _read_text_extract(research_root / "fig2_text_extract.txt")
-    fig3_text = _read_text_extract(research_root / "fig3_text_extract.txt")
     spec_lines = [
-        "# Visio Figure 1–3 Revision Spec",
+        "# Manual Figure 1-3 Candidate Status",
         "",
         "## Fig. 1",
-        "- Restructure the figure into six blocks: feasible morphology generation, analytic response generation, DNN surrogate, descriptor-space optimization, feasible morphology projection, and physics-based stress testing.",
-        "- Replace any direct EnergyPlus/Radiance-to-2000-sample implication with `analytic response generator`.",
-        "- Replace the reward formula block with:",
-        "  z_i = (y_i - y_i^{min}) / (y_i^{max} - y_i^{min})",
-        "  u = (0,1,1)",
-        "  d_w = || w ⊙ (z-u) ||_2 / ||w||_2",
-        "  R = 1 - d_w",
-        "- Label `w` as `axis-scaling coefficients`.",
-        f"- Current OCR extract still contains: `{', '.join(token for token in ['street loactions', 'Acotr netword', 'Critic netword'] if token in fig1_text)}`.",
+        "- User-supplied manual PDF.",
+        "- Included in visual QA and gallery only.",
+        "- The automated workflow must not edit, crop, recolor, or re-export this file.",
         "",
         "## Fig. 2",
-        "- Reframe the title and flow as `serialized static black-box search`.",
-        "- State explicitly: one episode = 40 sequential surrogate queries, reset = random action at episode start, termination = fixed 40-step horizon, and no physical time evolution.",
-        "- Action must be drawn as a 12-dimensional absolute normalized descriptor vector, not as an incremental perturbation of the previous morphology.",
-        f"- Existing text extract availability: {'present' if fig2_text else 'missing'}; use the task prompt as the authoritative rewrite spec.",
+        "- TikZ candidate simplified to a four-node serialized surrogate-query process plus a compact episode strip.",
+        "- Uses shared `round2_figure_style.tex` and XeLaTeX/Arial typography.",
+        "- Actor-critic learning details are delegated to Fig. 3.",
         "",
         "## Fig. 3",
-        "- Replace network labels with: Actor network, Critic network, Target actor network, Target critic network.",
-        "- Define actor input/output, critic input, replay tuple, and soft update exactly as in the task brief.",
-        "- Add formula symbol definitions for Q, μ, γ, τ, N, θ, and θ′.",
-        f"- Current OCR extract still contains legacy wording such as: `{('Target actor network' if 'Target actor network' in fig3_text else 'manual label check required')}`.",
+        "- TikZ candidate simplified to network architecture plus four learning-equation groups.",
+        "- Uses shared `round2_figure_style.tex` and XeLaTeX/Arial typography.",
+        "- Surrogate-environment and episode-sequence details are delegated to Fig. 2.",
     ]
     spec_path = research_root / "visio-figure-1-3-spec.md"
     spec_path.write_text("\n".join(spec_lines), encoding="utf-8")
 
     labels_csv = pd.DataFrame(
         [
-            ["Fig1", "text", "street loactions", "street locations", "Correct typo or remove the phrase entirely."],
-            ["Fig1", "text", "Acotr netword", "Actor network", "Actor label must be corrected."],
-            ["Fig1", "text", "Critic netword", "Critic network", "Critic label must be corrected."],
-            ["Fig1", "formula", "R = 10^6 - dweighted", "R = 1 - d_w", "Replace the obsolete reward offset."],
-            ["Fig2", "flow", "implicit physical-time control", "serialized static black-box search", "Clarify no physical time evolution."],
-            ["Fig3", "text", "Target actor network", "Target actor network", "Keep exact wording and define color/arrow semantics."],
-            ["Fig3", "equation", "soft update legacy form", "θ′ ← τθ + (1-τ)θ′", "Use the canonical soft-update expression."],
+            ["Fig1", "asset", "manual PDF", "manual PDF", "Preserve exactly; record-only QA."],
+            ["Fig2", "scope", "dashboard-style mixed content", "serialized surrogate-query process", "Replay and learning mechanics removed from the figure."],
+            ["Fig2", "font", "newtx/serif", "Arial via XeLaTeX", "Shared style file controls typography."],
+            ["Fig3", "scope", "dashboard-style update diagram", "architecture plus learning equations", "Surrogate and episode details removed from the figure."],
+            ["Fig3", "font", "newtx/serif", "Arial via XeLaTeX", "Shared style file controls typography."],
         ],
         columns=["figure_id", "element_type", "original_text", "replacement_text", "note"],
     )
@@ -2322,7 +2486,9 @@ def build_round2_revision_figures(
         metadata_path = _metadata_path(base_path)
         expected_outputs = {fmt: base_path.with_suffix(f".{fmt}") for fmt in formats}
         has_existing = metadata_path.exists() and all(path.exists() for path in expected_outputs.values())
-        should_rebuild = overwrite or not has_existing or (bool(selected_ids) and spec.figure_id in selected_ids)
+        existing_metadata = _read_json(metadata_path) if metadata_path.exists() else {}
+        has_current_style = existing_metadata.get("figure_style_version") == FIGURE_STYLE_VERSION
+        should_rebuild = overwrite or not has_existing or not has_current_style or (bool(selected_ids) and spec.figure_id in selected_ids)
         if should_rebuild:
             figure, extra = spec.builder(frames, package_manifest)
             outputs = _save_figure_outputs(figure, base_path, formats=formats, dpi=dpi)
@@ -2340,6 +2506,8 @@ def build_round2_revision_figures(
                 "reference_hash": next((entry["reference_hash"] for entry in source_entries if entry["reference_hash"]), ""),
                 "script_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root).decode().strip(),
                 "timestamp": _utc_now(),
+                "figure_style_version": FIGURE_STYLE_VERSION,
+                "font_policy": STRICT_FONT_POLICY,
                 "units": [label for label in TARGET_LABELS.values()],
                 "panel_descriptions": list(spec.panel_descriptions),
                 "claim_boundary": spec.claim_boundary,
@@ -2359,10 +2527,13 @@ def build_round2_revision_figures(
             }
         )
 
+    gallery_figures = [*_manual_candidate_figures(root, output_root), *built_figures]
     render_dir = root / "paper" / "manuscript" / "build" / "round2_candidate_render"
-    if changed_ids:
+    expected_qa_ids = {item["figure_id"] for item in gallery_figures}
+    missing_qa_ids = expected_qa_ids.difference(existing_qa_map)
+    if changed_ids or missing_qa_ids:
         qa_rows = []
-        for item in built_figures:
+        for item in gallery_figures:
             if item["figure_id"] in changed_ids or item["figure_id"] not in existing_qa_map:
                 qa_entry = _visual_qa([item], repo_root=root, render_dir=render_dir, strict=strict)["figures"][0]
             else:
@@ -2372,17 +2543,17 @@ def build_round2_revision_figures(
     elif qa_path.exists():
         qa = _read_json(qa_path)
     else:
-        qa = _visual_qa(built_figures, repo_root=root, render_dir=render_dir, strict=strict)
+        qa = _visual_qa(gallery_figures, repo_root=root, render_dir=render_dir, strict=strict)
     _json_dump(qa, qa_path)
-    gallery = _write_gallery(built_figures, qa, repo_root=root, output_dir=output_root) if build_gallery else {}
+    gallery = _write_gallery(gallery_figures, qa, repo_root=root, output_dir=output_root) if build_gallery else {}
     visio_docs = _write_visio_docs(root)
-    plan_docs = _write_plan_docs(root, built_figures)
+    plan_docs = _write_plan_docs(root, gallery_figures)
     return {
         "status": "built",
         "manifest": str(manifest_path),
         "manifest_sha256": _sha256_path(manifest_path),
         "canonical_reference_hash": package_manifest["canonical_reference_hash"],
-        "figures": built_figures,
+        "figures": gallery_figures,
         "visual_qa": str(qa_path),
         "gallery": gallery,
         "visio_docs": visio_docs,
@@ -2826,6 +2997,11 @@ def _bool_check(name: str, passed: bool, detail: str) -> dict[str, Any]:
     return {"name": name, "passed": bool(passed), "detail": detail}
 
 
+def _font_hits(fonts: str, tokens: tuple[str, ...]) -> list[str]:
+    lowered = fonts.lower()
+    return [token for token in tokens if token.lower() in lowered]
+
+
 def _figure_specific_visual_checks(metadata: dict[str, Any], text: str) -> list[dict[str, Any]]:
     figure_id = metadata["figure_id"]
     extra = metadata["extra"]
@@ -2915,12 +3091,24 @@ def _visual_qa(figures: list[dict[str, Any]], *, repo_root: Path, render_dir: Pa
         text = _extract_pdf_text(pdf_path, render_dir)
         image = Image.open(png_path)
         type3 = "Type 3" in fonts
+        arial_hits = _font_hits(fonts, ("Arial", "ArialMT"))
+        forbidden_font_hits = _font_hits(fonts, ("TimesNewRoman", "Times", "NewTX", "TeXGyreTermes"))
+        font_policy = metadata.get("font_policy", STRICT_FONT_POLICY)
         forbidden_hits = [token for token in FORBIDDEN_TEXT if token in text]
         checks = [
             _bool_check("No Type 3 fonts", not type3, "Embedded fonts must remain vector TrueType or equivalent."),
+            _bool_check("Arial font present", bool(arial_hits), "Publication figures must resolve visible text to Arial."),
             _bool_check("No forbidden wording", not forbidden_hits, "Rendered PDF text must stay inside the manuscript claim boundary."),
             _bool_check("Rendered page is non-empty", image.width > 0 and image.height > 0, "Rasterized QA output should produce a non-empty page."),
         ]
+        if font_policy != MANUAL_PRESERVE_FONT_POLICY:
+            checks.append(
+                _bool_check(
+                    "No Times or NewTX fonts",
+                    not forbidden_font_hits,
+                    "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes.",
+                )
+            )
         checks.extend(_figure_specific_visual_checks(metadata, text))
         unresolved = [check["name"] for check in checks if not check["passed"]]
         qa = {
@@ -2932,6 +3120,9 @@ def _visual_qa(figures: list[dict[str, Any]], *, repo_root: Path, render_dir: Pa
             "width_px": image.width,
             "height_px": image.height,
             "type3_fonts": type3,
+            "arial_font_hits": arial_hits,
+            "forbidden_font_hits": forbidden_font_hits,
+            "font_policy": font_policy,
             "forbidden_text_hits": forbidden_hits,
             "empty_render": image.width == 0 or image.height == 0,
             "checks": checks,
@@ -2951,8 +3142,8 @@ def _write_gallery_section_page(pdf: PdfPages, title: str, subtitle: str) -> Non
     section_figure = plt.figure(figsize=GALLERY_PAGE_IN)
     ax = section_figure.add_subplot(111)
     ax.axis("off")
-    ax.text(0.5, 0.62, title, ha="center", va="center", fontsize=20, family="serif", fontweight="bold")
-    ax.text(0.5, 0.46, subtitle, ha="center", va="center", fontsize=11, family="serif")
+    ax.text(0.5, 0.62, title, ha="center", va="center", fontsize=20, family="sans-serif", fontweight="bold")
+    ax.text(0.5, 0.46, subtitle, ha="center", va="center", fontsize=11, family="sans-serif")
     pdf.savefig(section_figure)
     plt.close(section_figure)
 
@@ -2974,7 +3165,7 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
     pdf_path = snapshot_dir / "round2-figure-gallery.pdf"
     generated_pdf_path = snapshot_dir / "round2-figure-gallery.generated.pdf"
     with PdfPages(generated_pdf_path) as pdf:
-        _write_gallery_section_page(pdf, "Part I - Main manuscript candidates", "Locked candidate figures for Main Fig. 4-10.")
+        _write_gallery_section_page(pdf, "Part I - Main manuscript candidates", "Manual Fig. 1-3 plus locked candidate Main Fig. 4-10.")
         for index, (section_key, section_title) in enumerate(
             [("main", "Part I - Main manuscript candidates"), ("appendix", "Part II - Supplementary Information candidates")],
             start=1,
@@ -3037,7 +3228,7 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
                         f"Unresolved concerns: {', '.join(qa_entry['unresolved_visual_concerns']) if qa_entry['unresolved_visual_concerns'] else 'None'}",
                     ]
                 )
-                text_ax.text(0.01, 0.98, text, va="top", ha="left", fontsize=8, family="serif")
+                text_ax.text(0.01, 0.98, text, va="top", ha="left", fontsize=8, family="sans-serif")
                 pdf.savefig(gallery_figure)
                 plt.close(gallery_figure)
     try:
@@ -3061,7 +3252,10 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "# Round 2 Figure Plan",
         "",
         "## Main manuscript lock",
-        "- Fig. 1-3 remain user-maintained Visio figures and are not modified by this task.",
+        "- Manual Fig. 1 is user supplied and is included for gallery/QA only; the automated workflow must not edit or re-export it.",
+        "- Fig. 2 is the simplified serialized surrogate-query process candidate.",
+        "- Fig. 3 is the simplified actor-critic architecture and learning-equation candidate.",
+        "- Main Fig. 4-10 and Supplementary Fig. S1-S9 are rebuilt through the round-2 figure builder.",
         "",
     ]
     caption_lines = [
@@ -3085,13 +3279,15 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
                 ]
             )
             caption_lines.extend(
-                [
-                    f"### {metadata['planned_location']} ({figure['figure_id']} {figure['semantic_name']})",
-                    f"This candidate figure summarizes {'; '.join(metadata['panel_descriptions'])}. It uses {source_paths} and should be interpreted within the following boundary: {metadata['claim_boundary']}.",
-                    f"Revision note: {revision_note}",
-                    "",
-                ]
+                [f"### {metadata['planned_location']} ({figure['figure_id']} {figure['semantic_name']})"]
             )
+            if metadata.get("caption"):
+                caption_lines.append(metadata["caption"])
+            else:
+                caption_lines.append(
+                    f"This candidate figure summarizes {'; '.join(metadata['panel_descriptions'])}. It uses {source_paths} and should be interpreted within the following boundary: {metadata['claim_boundary']}."
+                )
+            caption_lines.extend([f"Revision note: {revision_note}", ""])
         if heading:
             plan_lines.extend([heading, ""])
             caption_lines.extend([heading, ""])
@@ -3121,7 +3317,9 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "# Main vs Supplement Map",
         "",
         "## Main manuscript figures",
-        "- Fig. 1-3: user-maintained Visio figures; unchanged in this task.",
+        "- Manual Fig. 1: user-supplied overview candidate; included for gallery/QA only.",
+        "- Fig. 2: simplified serialized surrogate-query process candidate.",
+        "- Fig. 3: simplified actor-critic architecture and learning-equation candidate.",
         "- Fig. 4: M1 data and surrogate validation.",
         "- Fig. 5: M2 surrogate robustness.",
         "- Fig. 6: M3 DDPG training dynamics.",
@@ -3142,8 +3340,8 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "- Fig. S9: B6 climate case detail.",
         "",
         "## Candidate figure coverage",
-        "- Candidate figure slots covered here: 16 (Main Fig. 4-10 and Supplementary Fig. S1-S9).",
-        "- Fig. 1-3 stay outside the builder because they remain manual Visio assets.",
+        "- Candidate figure slots covered here: 19 (Manual Fig. 1, Fig. 2, Fig. 3, Main Fig. 4-10, and Supplementary Fig. S1-S9).",
+        "- Manual Fig. 1 stays outside automatic editing; Fig. 2 and Fig. 3 are TikZ manual candidates that share `round2_figure_style.tex`.",
         "",
         "## Table split",
         "- Main manuscript retains morphology descriptors, evaluation modes, surrogate robustness, optimizer budget and output contract, the canonical DDPG-NSGA-II benchmark, and a compact physical-climate evidence summary.",
