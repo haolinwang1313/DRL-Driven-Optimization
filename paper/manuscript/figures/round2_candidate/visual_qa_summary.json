@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T11:56:01+00:00",
+  "generated_at": "2026-06-25T14:54:37+00:00",
   "figures": [
     {
       "figure_id": "M1",
@@ -225,7 +225,7 @@
       "figure_id": "M7",
       "pdf_path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/cross_climate_sensitivity.png",
-      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 19:56:00 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.823 x 309.89 pts\nPage rot:        0\nFile size:       55041 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 22:54:35 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.823 x 309.89 pts\nPage rot:        0\nFile size:       54996 bytes\nOptimized:       no\nPDF version:     1.4\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
       "width_px": 1235,
       "height_px": 775,

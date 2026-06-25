@@ -25,8 +25,8 @@
   "filters": {},
   "reference_protocol": "",
   "reference_hash": "",
-  "script_commit": "0d992a58d246bf0e7b7816d9361e68f387f724e1",
-  "timestamp": "2026-06-25T11:56:01+00:00",
+  "script_commit": "4595d2d61fc74b3faf502eb1c20c52f85e3ce259",
+  "timestamp": "2026-06-25T14:54:36+00:00",
   "units": [
     "EUIt (kWh/m²/y)",
     "EG (10⁶ kWh/y)",
@@ -55,9 +55,9 @@
     },
     "heatmap_center": 0.0,
     "heatmap_anchor_colors": {
-      "negative": "#6C7AAD",
+      "negative": "#BE7A7A",
       "center": "#F5F4F0",
-      "positive": "#BE7A7A"
+      "positive": "#6C7AAD"
     },
     "axis_limits": {
       "a": {
@@ -106,7 +106,7 @@
     "figure_id": "M7",
     "pdf_path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/cross_climate_sensitivity.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 19:56:00 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.823 x 309.89 pts\nPage rot:        0\nFile size:       55041 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 22:54:35 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.823 x 309.89 pts\nPage rot:        0\nFile size:       54996 bytes\nOptimized:       no\nPDF version:     1.4\n",
     "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
     "width_px": 1235,
     "height_px": 775,

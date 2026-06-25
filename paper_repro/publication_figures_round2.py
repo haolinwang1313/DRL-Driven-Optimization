@@ -2684,9 +2684,9 @@ def _build_main_m7(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[
     ax = axes[1, 1]
     pivot = stability.pivot(index="station", columns="rank_metric", values="spearman").reindex(index=stations, columns=["EUIt", "EG", "H"])
     heatmap_anchor_colors = {
-        "negative": REFERENCE_PALETTE["slate_blue"],
+        "negative": REFERENCE_PALETTE["dusty_rose"],
         "center": REFERENCE_PALETTE["off_white"],
-        "positive": REFERENCE_PALETTE["dusty_rose"],
+        "positive": REFERENCE_PALETTE["slate_blue"],
     }
     cmap = LinearSegmentedColormap.from_list("round2_reference_diverging", [heatmap_anchor_colors["negative"], heatmap_anchor_colors["center"], heatmap_anchor_colors["positive"]])
     norm = TwoSlopeNorm(vmin=-1.0, vcenter=0.0, vmax=1.0)

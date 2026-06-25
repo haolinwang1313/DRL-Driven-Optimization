@@ -238,9 +238,9 @@ def test_m7_palette_is_muted_and_heatmap_zero_centered(built_round2_assets: dict
         "Harbin": "#BE7A7A",
     }
     assert metadata["extra"]["heatmap_anchor_colors"] == {
-        "negative": "#6C7AAD",
+        "negative": "#BE7A7A",
         "center": "#F5F4F0",
-        "positive": "#BE7A7A",
+        "positive": "#6C7AAD",
     }
     assert max(saturation.values()) <= 0.36
     assert metadata["extra"]["heatmap_center"] == 0.0
