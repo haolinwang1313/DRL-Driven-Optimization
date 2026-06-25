@@ -1,0 +1,54 @@
+I Model Generation                                                                  III DNN-based Surrogate Model
+Building type and open
+street loactions are                                                                                                                                       3 Energy performance
+randomly combined                                                   Input         12 Urban                                                                       indicators
+into n different block                                                          morphological                                                                 EUIt(kWh/m2/y)
+morphology layouts                                                                 factors                                                                     EG( kWh/y)
+                                                                                                                                                                    H(h)
+                                                                                                                   DNN
+
+                                                                 5m                IV DDPG Framework
+                                                                5m
+                                                             60m
+                                                                                                        St+1                                                      a =  x1, x2 ,..., x12 
+                                                                                                                                                                                             T
+                                                                                    St
+                                                                                                                                         s =  y1 , y2 , y3  =  DNNEUIt ( a ) , DNNEG ( a ) , DNNH ( a )
+                                                                                                                                                            T
+
+
+
+
+                                                                                                                                                           (w             − 0) + ( w2,norm −1) + ( w3,norm −1)
+                                                                                                                                                                              2               2              2
+                                                                                                                                             dweighted =
+                                                     80m                                                                                                        1, norm
+
+
+                                                                                                                                                                    R = 106 − dweighted
+  Input
+
+
+
+
+                 240m                                                                        Environment                                                        MDP Process
+                                          80m
+                                                                                            at                       Experience                            Random
+                                                                                   noise           st,at,rt,st+1                                                                   N(st,at,rt,st+1)
+                                                                                                                      buffer ⅅ                             sampling
+                                         Cooling set point: 26℃                      μ(st|θ𝓊 )                                                                    Mini batch
+
+II Performance Simulation                Heating set point: 18℃                             Acotr netword              DDPG                                     Critic netword
+                                                                                                                       Agent
+                                         Occupancy: 0.03People/m2
+                                                                                           Adam optimizer                                                       Adam optimizer
+                                                                                      Update θQ        Gradient                                  Update θμ                               Gradient
+                                                                                                                     Gradient
+                                                                                            Online network                                                      Online network
+                                        Setting of HVAC                                                                  a Q
+       UWG                                                                           Soft update           yt                                                                          Soft update
+                        Thermal Zone                            Simulation by
+      Modified                         Setting of schedule                                  Target network                                                       Target network
+                         Generation                              EnergyPlus                                           ' ( st +1 |   ' )
+      EPW file                         Setting of Radiance
+

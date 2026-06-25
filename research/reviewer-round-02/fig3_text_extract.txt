@@ -1,0 +1,35 @@
+                   Energy performance                                     Block morphological         Performance                      Energy performance                              Block morphological
+Reformulation          indicators                                               factors             evaluation result                   indicators (new)                                  factors (new)
+
+
+Markov Process                 St            Noise                                 At                            Rt                                     St+1           Noise                     At+1
+
+
+                                                                                                  DDPG Environment
+DDPG Agent            Actor network                                         Critic network                DNN-based                    Target actor network                            Target critic network
+                                                                                                        Surrogate Model
+
+
+
+
+         Policy gradient:                                                                        Soft update:                   Minimized loss function:
+                                  (
+           J  1 N  i aQ s, a  Q         )                              Q value:            Q '   Q + (1 −  ) Q '                       (
+                                                                                                                                yi = ri +  Q ' si +1 ,  ' ( si +∣
+                                                                                                                                                                  1 
+                                                                                                                                                                      '
+                                                                                                                                                                         )  Q'
+                                                                                                                                                                         ∣         )         Q' value:
+Update
+                                                                               (
+                                                                             Q St , At tQ   )                                                  (                         ))                 (
+                                                                                                                                                                                          Q ' St , At tQ '   )
+                                                   (             )                                  + (1 −  )             L = 1 N  yi − Q ( si +1 , a∣
+                                                                                                                                                                               2
+                                                                                                                                                            i 
+                                                                                                   '                     '
+                                               
+                                                    s                                                                                                            Q
+
+                            s = st , a =  ( si )                    si                                                                     i
+

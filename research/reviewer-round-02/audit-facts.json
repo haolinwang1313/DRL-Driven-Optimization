@@ -1,0 +1,1440 @@
+{
+  "generated_at": "2026-06-25T12:19:13.581333",
+  "git": {
+    "branch": "audit/reviewer-round2-evidence",
+    "head": "0490410c17abf697705b6bb450fdf4337f581a29",
+    "main": "0490410c17abf697705b6bb450fdf4337f581a29",
+    "origin_main": "0490410c17abf697705b6bb450fdf4337f581a29",
+    "left_right_main_origin_main": "0\t0",
+    "status_short_branch": [
+      "## audit/reviewer-round2-evidence",
+      "?? .trellis/tasks/"
+    ]
+  },
+  "github": {
+    "visibility": "PRIVATE",
+    "checked_by": "gh repo view haolinwang1313/DRL-Driven-Optimization --json visibility,nameWithOwner,url"
+  },
+  "historical_dataset": {
+    "path": "initial_paper/Dataset.xlsx",
+    "present_in_worktree": false,
+    "history_commits": [
+      "630fdc483b9dc0d192d563836c01dee68e3fb5b9",
+      "1feb553e98db3013e8eba937e530d1bb9311d0a9",
+      "94b37f026e298d3c7ee30f865ffa09331dd09383",
+      "cc4b895b9ae45956150ef0b2f16ebd9ffaa69cb9"
+    ],
+    "deleted_by_commits": [
+      "630fdc483b9dc0d192d563836c01dee68e3fb5b9",
+      "1feb553e98db3013e8eba937e530d1bb9311d0a9"
+    ],
+    "content_commit_used": "94b37f026e298d3c7ee30f865ffa09331dd09383",
+    "blob_sha1": "9b575e4cc1550c450a7ce2c64bc734cc0a525d52",
+    "size_bytes": 24366,
+    "sha256": "562502611d4a805662d11fe8f89903ee6c61bec5a44113e20ee15ded8c9bed79",
+    "sheets": [
+      "Sheet1"
+    ],
+    "sheet_stats": {
+      "Sheet1": {
+        "rows": 286,
+        "columns": [
+          "Method",
+          "EUlt (kWh/m²/y)",
+          "EG (10⁶ kWh/y)",
+          "H (h)",
+          "Unnamed: 4"
+        ],
+        "missing_values_total": 136,
+        "numeric_ranges": {
+          "EUlt (kWh/m²/y)": {
+            "min": 68.02836195472094,
+            "max": 75.3,
+            "mean": 71.27338430408633
+          },
+          "EG (10⁶ kWh/y)": {
+            "min": 1.72,
+            "max": 2.85,
+            "mean": 2.3675710240127157
+          },
+          "H (h)": {
+            "min": 6.8,
+            "max": 7.7,
+            "mean": 7.176389865509551
+          }
+        }
+      }
+    }
+  },
+  "current_dataset": {
+    "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_samples.csv",
+    "rows": 2000,
+    "columns": [
+      "sample_id",
+      "FAR",
+      "SD",
+      "AF",
+      "AR_ew",
+      "AR_ns",
+      "SVF",
+      "BD",
+      "OSR",
+      "SC",
+      "PAR",
+      "theta",
+      "OSLI",
+      "EUIt",
+      "EG",
+      "H",
+      "weather_station",
+      "simulation_mode"
+    ],
+    "missing_values_total": 0,
+    "osl_i_counts": {
+      "0.0": 191,
+      "1.0": 261,
+      "2.0": 232,
+      "3.0": 217,
+      "4.0": 212,
+      "5.0": 217,
+      "6.0": 222,
+      "7.0": 199,
+      "8.0": 249
+    },
+    "exact_duplicate_feature_rows": 0,
+    "near_duplicate_count_nn_lt_1e-6": 0,
+    "near_duplicate_count_nn_lt_0.01": 0,
+    "nearest_neighbor_normalized": {
+      "min": 0.06767783412087773,
+      "p05": 0.12175843985820048,
+      "median": 0.1991756882074244,
+      "mean": 0.2055624548230215,
+      "p95": 0.31346758347323345,
+      "max": 0.5847277839632452
+    },
+    "pca": {
+      "components_for_95pct_variance": 6,
+      "participation_ratio": 5.021178683530487,
+      "explained_variance_ratio": [
+        0.27879516985091335,
+        0.2561346725040333,
+        0.193203247901503,
+        0.09184250943118108,
+        0.07941762575625728,
+        0.05193854606922139,
+        0.0308052720046579,
+        0.008071839646283639,
+        0.0054745058241593356,
+        0.00359622034341974,
+        0.0005982755951700381,
+        0.00012211507319980226
+      ]
+    },
+    "deterministic_relations": {
+      "FAR_minus_BD_times_AF_max_abs": 1.3322676295501878e-15,
+      "FAR_minus_BD_times_AF_mean_abs": 2.6412205755832474e-16,
+      "OSR_minus_1_minus_BD_over_FAR_max_abs": 2.220446049250313e-16,
+      "OSR_minus_1_minus_BD_over_FAR_mean_abs": 4.563016631209393e-17
+    },
+    "blocks": {
+      "exists": true,
+      "rows": 2000,
+      "prototype_counts": {
+        "S-2": 1781,
+        "S-3": 1768,
+        "C-1": 1794,
+        "P-1": 1747,
+        "P-4": 1844,
+        "P-3": 1774,
+        "C-2": 1719,
+        "P-2": 1773,
+        "S-1": 1800
+      },
+      "floor_counts": {
+        "12": 596,
+        "25": 300,
+        "3": 1785,
+        "2": 1752,
+        "24": 317,
+        "16": 295,
+        "4": 581,
+        "10": 597,
+        "6": 582,
+        "8": 552,
+        "9": 560,
+        "27": 284,
+        "11": 625,
+        "20": 297,
+        "28": 287,
+        "1": 1804,
+        "26": 346,
+        "14": 304,
+        "17": 301,
+        "5": 601,
+        "19": 307,
+        "15": 318,
+        "23": 280,
+        "7": 579,
+        "22": 300,
+        "18": 279,
+        "21": 294,
+        "30": 320,
+        "29": 304,
+        "13": 253
+      }
+    }
+  },
+  "data_lineage": {
+    "hashes": {
+      "publication_data": "db9b53a87f0e9c3b9292e2292833ab39ed5d160aee613270bc96f304b06ede4d",
+      "publication_imported_data": "db9b53a87f0e9c3b9292e2292833ab39ed5d160aee613270bc96f304b06ede4d",
+      "highest_precision_data": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc",
+      "surrogate_rebenchmark_active": "59598a0f741cc880be9dc523678125fa7e6f8ef00c827da6879055c998a46e96",
+      "surrogate_rebenchmark_scale_500": "7639fba26b7d995b8099413817d7d546de0d18892ed7c915dafe5758aca14b51",
+      "surrogate_rebenchmark_scale_1000": "844e171b2fbb2c02453016a55ce8deed6b074a697ab3921237f30741d1422b28",
+      "surrogate_rebenchmark_scale_1500": "59598a0f741cc880be9dc523678125fa7e6f8ef00c827da6879055c998a46e96",
+      "surrogate_rebenchmark_scale_2000": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc"
+    },
+    "rows": {
+      "publication_data": 500,
+      "publication_imported_data": 500,
+      "highest_precision_data": 2000,
+      "surrogate_rebenchmark_active": 1500,
+      "surrogate_rebenchmark_scale_500": 500,
+      "surrogate_rebenchmark_scale_1000": 1000,
+      "surrogate_rebenchmark_scale_1500": 1500,
+      "surrogate_rebenchmark_scale_2000": 2000
+    },
+    "relations": {
+      "surrogate_rebenchmark_scale_500_is_prefix_of_scale_2000": true,
+      "surrogate_rebenchmark_scale_1000_is_prefix_of_scale_2000": true,
+      "surrogate_rebenchmark_scale_1500_is_prefix_of_scale_2000": true,
+      "highest_precision_data_sha_equals_surrogate_rebenchmark_scale_2000": true,
+      "highest_precision_data_sha_equals_surrogate_rebenchmark_active": false,
+      "publication_data_sha_equals_publication_imported_data": true,
+      "publication_data_sha_equals_highest_precision_data": false
+    }
+  },
+  "fig9_hv": {
+    "fig9_rows": [
+      {
+        "scenario": "Balanced_Performance",
+        "DDPG_best_utility": 0.733125514077819,
+        "NSGAII_best_utility": 0.9999995323705076,
+        "DDPG_minus_NSGAII": -0.26687401829268864,
+        "utility_direction": "larger_is_better",
+        "normalization_minmax_source": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/optimization_results.csv",
+        "DDPG_method": "DDPG",
+        "DDPG_scenario": "Balanced_Performance",
+        "DDPG_seed": "5",
+        "DDPG_row_index": 5,
+        "NSGAII_method": "NSGA-II",
+        "NSGAII_scenario": "NSGA-II",
+        "NSGAII_seed": "20260310",
+        "NSGAII_row_index": 61
+      },
+      {
+        "scenario": "Energy_Saving_Focus",
+        "DDPG_best_utility": 0.8597227209533328,
+        "NSGAII_best_utility": 0.9999997194823047,
+        "DDPG_minus_NSGAII": -0.1402769985289719,
+        "utility_direction": "larger_is_better",
+        "normalization_minmax_source": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/optimization_results.csv",
+        "DDPG_method": "DDPG",
+        "DDPG_scenario": "Energy_Saving_Focus",
+        "DDPG_seed": "16",
+        "DDPG_row_index": 56,
+        "NSGAII_method": "NSGA-II",
+        "NSGAII_scenario": "NSGA-II",
+        "NSGAII_seed": "20260310",
+        "NSGAII_row_index": 61
+      },
+      {
+        "scenario": "Energy_Generation_Focus",
+        "DDPG_best_utility": 0.9535704056035622,
+        "NSGAII_best_utility": 0.9999997194823047,
+        "DDPG_minus_NSGAII": -0.046429313878742495,
+        "utility_direction": "larger_is_better",
+        "normalization_minmax_source": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/optimization_results.csv",
+        "DDPG_method": "DDPG",
+        "DDPG_scenario": "Energy_Generation_Focus",
+        "DDPG_seed": "8",
+        "DDPG_row_index": 28,
+        "NSGAII_method": "NSGA-II",
+        "NSGAII_scenario": "NSGA-II",
+        "NSGAII_seed": "20260310",
+        "NSGAII_row_index": 61
+      }
+    ],
+    "normalization_minmax": {
+      "EUIt": {
+        "min": 66.0,
+        "max": 71.01171112060547
+      },
+      "EG": {
+        "min": 2.5622572898864746,
+        "max": 2.8499999046325684
+      },
+      "H": {
+        "min": 7.170061111450195,
+        "max": 7.849999904632568
+      }
+    },
+    "full_hv_igd": [
+      {
+        "group": "Balanced_Performance",
+        "HV": 0.347404240428601,
+        "IGD": 0.7196336732419489,
+        "archive_rows": 20,
+        "non_dominated_rows": 6
+      },
+      {
+        "group": "Energy_Generation_Focus",
+        "HV": 1.0107424885251182,
+        "IGD": 0.22048366927452373,
+        "archive_rows": 20,
+        "non_dominated_rows": 3
+      },
+      {
+        "group": "Energy_Saving_Focus",
+        "HV": 0.6252282421179792,
+        "IGD": 0.5490857458951972,
+        "archive_rows": 20,
+        "non_dominated_rows": 5
+      },
+      {
+        "group": "NSGA-II",
+        "HV": 1.3310000000000002,
+        "IGD": 0.10676879393889152,
+        "archive_rows": 2000,
+        "non_dominated_rows": 100
+      }
+    ],
+    "archive_counts": {
+      "Balanced_Performance": 20,
+      "Energy_Generation_Focus": 20,
+      "Energy_Saving_Focus": 20,
+      "NSGA-II": 2000
+    },
+    "seed_counts": {
+      "Balanced_Performance": 20,
+      "Energy_Generation_Focus": 20,
+      "Energy_Saving_Focus": 20,
+      "NSGA-II": 20
+    }
+  },
+  "physical_scan": {
+    "matching_files": [
+      "artifacts/publication/optimization/ddpg_checkpoints/Balanced_Performance/actor_seed_00_timingprobe.pt",
+      "artifacts/publication/optimization/ddpg_logs_all_timingprobe.json",
+      "artifacts/publication/optimization/ddpg_logs_timingprobe.json",
+      "artifacts/publication/optimization/ddpg_results_timingprobe.csv",
+      "tools/__pycache__/build_four_method_physprobe_figure.cpython-311.pyc",
+      "tools/__pycache__/install_physical_stack_remote.cpython-311.pyc",
+      "tools/build_four_method_physprobe_figure.py",
+      "tools/install_physical_stack_remote.py"
+    ],
+    "expected_physical_csvs": {
+      "artifacts/publication/reevaluation/physical_stack_candidate_probe_asynccheck30.csv": false,
+      "artifacts/publication/reevaluation/physical_stack_candidate_probe_asynccheck29.csv": false,
+      "artifacts/publication/reevaluation/physical_stack_candidate_probe_asynccheck28.csv": false,
+      "artifacts/publication/reevaluation/physical_stack_candidate_probe_asynccheck27.csv": false,
+      "artifacts/publication/reevaluation/physical_stack_candidate_probe_physprobe_methods_v2.csv": false
+    },
+    "local_server_config_exists": true,
+    "local_server_config_ignored": true,
+    "env_exists": false
+  },
+  "release_scan": [
+    {
+      "path": "artifacts/publication",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 79314011,
+      "secret_or_personal_risk": "low_to_medium",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "Zenodo/OSF or GitHub Release/LFS"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_highest_precision_2000_compare",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 25482969,
+      "secret_or_personal_risk": "low_to_medium",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "Zenodo/OSF or GitHub Release/LFS"
+    },
+    {
+      "path": "artifacts/server_runs/20260405_surrogate_rebenchmark",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 31951266,
+      "secret_or_personal_risk": "medium",
+      "redistribution_risk": "unknown",
+      "recommended_channel": "Zenodo/OSF or GitHub Release/LFS"
+    },
+    {
+      "path": "data/external/benchmark/dataset.xlsx",
+      "exists": false,
+      "git_ignored": false,
+      "size_bytes": null,
+      "secret_or_personal_risk": "medium",
+      "redistribution_risk": "unknown",
+      "recommended_channel": "Git if small and rights cleared"
+    },
+    {
+      "path": "configs/revision.local.yaml",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 2991,
+      "secret_or_personal_risk": "high",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "do_not_publish"
+    },
+    {
+      "path": "server.local.yaml",
+      "exists": true,
+      "git_ignored": true,
+      "size_bytes": 1006,
+      "secret_or_personal_risk": "high",
+      "redistribution_risk": "project_generated_or_config_dependent",
+      "recommended_channel": "do_not_publish"
+    }
+  ],
+  "selected_surrogate_current_compare": {
+    "protocol_version": "surrogate-selection-v1",
+    "candidate_presets": [
+      "anchor_minmax",
+      "tuned_minmax",
+      "tuned_standard",
+      "tuned_standard_huber"
+    ],
+    "original_scale": 500,
+    "comparison_csv": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_comparison.csv",
+    "regime_winners_csv": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_regime_winners.csv",
+    "best_original_500": {
+      "dataset_scale": 500,
+      "regime_type": "original",
+      "candidate": "tuned_standard",
+      "tuning": "optuna",
+      "feature_scaler": "standard",
+      "target_scaler": "standard",
+      "loss": "mae",
+      "mean_target_mae": 0.09829401691754659,
+      "mean_target_nmae": 0.021025936833090075,
+      "mean_tail_mae": 0.11637711087862651,
+      "mean_tail_nmae": 0.023865214900754998,
+      "mean_r2": 0.9794581866253815,
+      "worst_target_nmae": 0.027681823759672715,
+      "selection_objective": 0.026992240558278823,
+      "model_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_500/tuned_standard/surrogate.pt",
+      "cv_predictions_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_500/tuned_standard/cv_predictions.csv",
+      "summary_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_500/tuned_standard/surrogate_summary.json",
+      "dataset_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.csv",
+      "dataset_meta_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.meta.json",
+      "dataset_blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_blocks.jsonl"
+    },
+    "best_expanded": {
+      "dataset_scale": 2000,
+      "regime_type": "expanded",
+      "candidate": "tuned_standard",
+      "tuning": "optuna",
+      "feature_scaler": "standard",
+      "target_scaler": "standard",
+      "loss": "mae",
+      "mean_target_mae": 0.0868063434759775,
+      "mean_target_nmae": 0.0182490271467887,
+      "mean_tail_mae": 0.0982603597640991,
+      "mean_tail_nmae": 0.0202777747596759,
+      "mean_r2": 0.9822946934164416,
+      "worst_target_nmae": 0.0242168098071241,
+      "selection_objective": 0.0233184708367077,
+      "model_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_2000/tuned_standard/surrogate.pt",
+      "cv_predictions_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_2000/tuned_standard/cv_predictions.csv",
+      "summary_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_2000/tuned_standard/surrogate_summary.json",
+      "dataset_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.csv",
+      "dataset_meta_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.meta.json",
+      "dataset_blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_blocks.jsonl"
+    },
+    "selected_for_optimization": {
+      "dataset_scale": 2000,
+      "regime_type": "expanded",
+      "candidate": "tuned_standard",
+      "tuning": "optuna",
+      "feature_scaler": "standard",
+      "target_scaler": "standard",
+      "loss": "mae",
+      "mean_target_mae": 0.0868063434759775,
+      "mean_target_nmae": 0.0182490271467887,
+      "mean_tail_mae": 0.0982603597640991,
+      "mean_tail_nmae": 0.0202777747596759,
+      "mean_r2": 0.9822946934164416,
+      "worst_target_nmae": 0.0242168098071241,
+      "selection_objective": 0.0233184708367077,
+      "model_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_2000/tuned_standard/surrogate.pt",
+      "cv_predictions_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_2000/tuned_standard/cv_predictions.csv",
+      "summary_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_2000/tuned_standard/surrogate_summary.json",
+      "dataset_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.csv",
+      "dataset_meta_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.meta.json",
+      "dataset_blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_blocks.jsonl"
+    },
+    "scale_selection": {
+      "mode": "highest_accuracy_override",
+      "reason": "user requested strict highest-precision surrogate for optimizer comparison",
+      "selected_dataset_scale": 2000,
+      "selected_candidate": "tuned_standard"
+    },
+    "selected_model_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate.pt",
+    "selected_cv_predictions_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/cv_predictions.csv",
+    "selected_summary_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_summary.json",
+    "selected_dataset_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/simulated_samples.csv",
+    "selected_dataset_meta_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/simulated_samples.meta.json",
+    "leakage_guard": {
+      "benchmark_dataset_used_for_training": false,
+      "imported_publication_results_used_for_training": false
+    }
+  },
+  "selected_surrogate_rebenchmark": {
+    "protocol_version": "surrogate-selection-v1",
+    "candidate_presets": [
+      "anchor_minmax",
+      "tuned_minmax",
+      "tuned_standard",
+      "tuned_standard_huber"
+    ],
+    "original_scale": 500,
+    "comparison_csv": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_comparison.csv",
+    "regime_winners_csv": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_regime_winners.csv",
+    "best_original_500": {
+      "dataset_scale": 500,
+      "regime_type": "original",
+      "candidate": "tuned_standard",
+      "tuning": "optuna",
+      "feature_scaler": "standard",
+      "target_scaler": "standard",
+      "loss": "mae",
+      "mean_target_mae": 0.09829401691754659,
+      "mean_target_nmae": 0.021025936833090075,
+      "mean_tail_mae": 0.11637711087862651,
+      "mean_tail_nmae": 0.023865214900754998,
+      "mean_r2": 0.9794581866253815,
+      "worst_target_nmae": 0.027681823759672715,
+      "selection_objective": 0.026992240558278823,
+      "model_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_500/tuned_standard/surrogate.pt",
+      "cv_predictions_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_500/tuned_standard/cv_predictions.csv",
+      "summary_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_500/tuned_standard/surrogate_summary.json",
+      "dataset_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.csv",
+      "dataset_meta_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.meta.json",
+      "dataset_blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_blocks.jsonl"
+    },
+    "best_expanded": {
+      "dataset_scale": 1500,
+      "regime_type": "expanded",
+      "candidate": "tuned_standard_huber",
+      "tuning": "optuna",
+      "feature_scaler": "standard",
+      "target_scaler": "standard",
+      "loss": "huber",
+      "mean_target_mae": 0.0896762601269616,
+      "mean_target_nmae": 0.018946433464484557,
+      "mean_tail_mae": 0.10201940271589492,
+      "mean_tail_nmae": 0.021373404541478593,
+      "mean_r2": 0.9805799668970011,
+      "worst_target_nmae": 0.02481995982789348,
+      "selection_objective": 0.024289784599854206,
+      "model_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_1500/tuned_standard_huber/surrogate.pt",
+      "cv_predictions_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_1500/tuned_standard_huber/cv_predictions.csv",
+      "summary_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_1500/tuned_standard_huber/surrogate_summary.json",
+      "dataset_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.csv",
+      "dataset_meta_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.meta.json",
+      "dataset_blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_blocks.jsonl"
+    },
+    "selected_for_optimization": {
+      "dataset_scale": 1500,
+      "regime_type": "expanded",
+      "candidate": "tuned_standard_huber",
+      "tuning": "optuna",
+      "feature_scaler": "standard",
+      "target_scaler": "standard",
+      "loss": "huber",
+      "mean_target_mae": 0.0896762601269616,
+      "mean_target_nmae": 0.018946433464484557,
+      "mean_tail_mae": 0.10201940271589492,
+      "mean_tail_nmae": 0.021373404541478593,
+      "mean_r2": 0.9805799668970011,
+      "worst_target_nmae": 0.02481995982789348,
+      "selection_objective": 0.024289784599854206,
+      "model_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_1500/tuned_standard_huber/surrogate.pt",
+      "cv_predictions_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_1500/tuned_standard_huber/cv_predictions.csv",
+      "summary_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_selection/scale_1500/tuned_standard_huber/surrogate_summary.json",
+      "dataset_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.csv",
+      "dataset_meta_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.meta.json",
+      "dataset_blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_blocks.jsonl"
+    },
+    "scale_selection": {
+      "mode": "smallest_within_primary_tolerance",
+      "tolerance_pct": 0.05,
+      "best_primary_mean_target_nmae": 0.01824902714678878,
+      "primary_threshold": 0.01916147850412822,
+      "eligible_scales": [
+        1500,
+        2000
+      ]
+    },
+    "selected_model_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate.pt",
+    "selected_cv_predictions_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/cv_predictions.csv",
+    "selected_summary_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/models/surrogate_summary.json",
+    "selected_dataset_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/simulated_samples.csv",
+    "selected_dataset_meta_alias": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/simulated_samples.meta.json",
+    "leakage_guard": {
+      "benchmark_dataset_used_for_training": false,
+      "imported_publication_results_used_for_training": false
+    }
+  },
+  "dataset_protocol_current_compare": {
+    "protocol_version": "dataset-scale-study-v1",
+    "baseline_scale": 500,
+    "explored_scales": [
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "active_scale": 500,
+    "nested_prefix_protocol": true,
+    "source_scale": 2000,
+    "seed": 20260310,
+    "weather_station": "Dongtai, Jiangsu",
+    "simulation_mode": "fallback_analytic",
+    "regimes": [
+      {
+        "dataset_scale": 500,
+        "baseline_scale": 500,
+        "regime_type": "original",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 2.907986111111111
+          },
+          "SD": {
+            "min": 9.75,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 18.61111111111111
+          },
+          "AR_ew": {
+            "min": 0.3272266208446214,
+            "max": 2.050931715850356
+          },
+          "AR_ns": {
+            "min": 0.6687658992034103,
+            "max": 6.3511960904397515
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7366052487566491
+          },
+          "BD": {
+            "min": 0.15625,
+            "max": 0.2604166666666667
+          },
+          "OSR": {
+            "min": 0.29014925373134326,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5188975748734265,
+            "max": 1.1297229061149479
+          },
+          "PAR": {
+            "min": 0.10344827586206896,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.949366786133496
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.06874994721265
+          },
+          "EG": {
+            "min": 1.7998630044980526,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.06825794518234,
+            "max": 7.85
+          }
+        }
+      },
+      {
+        "dataset_scale": 1000,
+        "baseline_scale": 500,
+        "regime_type": "expanded",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1000/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1000/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 2.907986111111111
+          },
+          "SD": {
+            "min": 9.75,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 18.61111111111111
+          },
+          "AR_ew": {
+            "min": 0.2839828799458962,
+            "max": 2.050931715850356
+          },
+          "AR_ns": {
+            "min": 0.6653698315265142,
+            "max": 6.3511960904397515
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7424989834919399
+          },
+          "BD": {
+            "min": 0.15625,
+            "max": 0.2690972222222222
+          },
+          "OSR": {
+            "min": 0.29014925373134326,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5077836065573771,
+            "max": 1.1297229061149479
+          },
+          "PAR": {
+            "min": 0.10344827586206896,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.949366786133496
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.28421589527046
+          },
+          "EG": {
+            "min": 1.7998630044980526,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.06825794518234,
+            "max": 7.85
+          }
+        }
+      },
+      {
+        "dataset_scale": 1500,
+        "baseline_scale": 500,
+        "regime_type": "expanded",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 3.3333333333333335
+          },
+          "SD": {
+            "min": 8.625,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 22.58823529411765
+          },
+          "AR_ew": {
+            "min": 0.19658296674061937,
+            "max": 2.050931715850356
+          },
+          "AR_ns": {
+            "min": 0.6653698315265142,
+            "max": 7.204122706894503
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7424989834919399
+          },
+          "BD": {
+            "min": 0.14756944444444445,
+            "max": 0.2690972222222222
+          },
+          "OSR": {
+            "min": 0.2557291666666667,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5031928750321852,
+            "max": 1.1297229061149479
+          },
+          "PAR": {
+            "min": 0.10344827586206896,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.949366786133496
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.28421589527046
+          },
+          "EG": {
+            "min": 1.7612768169896587,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.006569520434968,
+            "max": 7.85
+          }
+        }
+      },
+      {
+        "dataset_scale": 2000,
+        "baseline_scale": 500,
+        "regime_type": "expanded",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 3.3333333333333335
+          },
+          "SD": {
+            "min": 8.625,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 22.58823529411765
+          },
+          "AR_ew": {
+            "min": 0.19658296674061937,
+            "max": 2.252757955391737
+          },
+          "AR_ns": {
+            "min": 0.6653698315265142,
+            "max": 7.204122706894503
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7436255922366087
+          },
+          "BD": {
+            "min": 0.14756944444444445,
+            "max": 0.2690972222222222
+          },
+          "OSR": {
+            "min": 0.2557291666666667,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5031928750321852,
+            "max": 1.1444767290534232
+          },
+          "PAR": {
+            "min": 0.10048275862068966,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.98650070138696
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.28421589527046
+          },
+          "EG": {
+            "min": 1.7612768169896587,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.006569520434968,
+            "max": 7.85
+          }
+        }
+      }
+    ],
+    "summary_csv": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/dataset_scale_summary.csv"
+  },
+  "dataset_protocol_rebenchmark": {
+    "protocol_version": "dataset-scale-study-v1",
+    "baseline_scale": 500,
+    "explored_scales": [
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "active_scale": 500,
+    "nested_prefix_protocol": true,
+    "source_scale": 2000,
+    "seed": 20260310,
+    "weather_station": "Dongtai, Jiangsu",
+    "simulation_mode": "fallback_analytic",
+    "regimes": [
+      {
+        "dataset_scale": 500,
+        "baseline_scale": 500,
+        "regime_type": "original",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_500/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 2.907986111111111
+          },
+          "SD": {
+            "min": 9.75,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 18.61111111111111
+          },
+          "AR_ew": {
+            "min": 0.3272266208446214,
+            "max": 2.050931715850356
+          },
+          "AR_ns": {
+            "min": 0.6687658992034103,
+            "max": 6.3511960904397515
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7366052487566491
+          },
+          "BD": {
+            "min": 0.15625,
+            "max": 0.2604166666666667
+          },
+          "OSR": {
+            "min": 0.29014925373134326,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5188975748734265,
+            "max": 1.1297229061149479
+          },
+          "PAR": {
+            "min": 0.10344827586206896,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.949366786133496
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.06874994721265
+          },
+          "EG": {
+            "min": 1.7998630044980526,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.06825794518234,
+            "max": 7.85
+          }
+        }
+      },
+      {
+        "dataset_scale": 1000,
+        "baseline_scale": 500,
+        "regime_type": "expanded",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1000/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1000/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 2.907986111111111
+          },
+          "SD": {
+            "min": 9.75,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 18.61111111111111
+          },
+          "AR_ew": {
+            "min": 0.2839828799458962,
+            "max": 2.050931715850356
+          },
+          "AR_ns": {
+            "min": 0.6653698315265142,
+            "max": 6.3511960904397515
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7424989834919399
+          },
+          "BD": {
+            "min": 0.15625,
+            "max": 0.2690972222222222
+          },
+          "OSR": {
+            "min": 0.29014925373134326,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5077836065573771,
+            "max": 1.1297229061149479
+          },
+          "PAR": {
+            "min": 0.10344827586206896,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.949366786133496
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.28421589527046
+          },
+          "EG": {
+            "min": 1.7998630044980526,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.06825794518234,
+            "max": 7.85
+          }
+        }
+      },
+      {
+        "dataset_scale": 1500,
+        "baseline_scale": 500,
+        "regime_type": "expanded",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_1500/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 3.3333333333333335
+          },
+          "SD": {
+            "min": 8.625,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 22.58823529411765
+          },
+          "AR_ew": {
+            "min": 0.19658296674061937,
+            "max": 2.050931715850356
+          },
+          "AR_ns": {
+            "min": 0.6653698315265142,
+            "max": 7.204122706894503
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7424989834919399
+          },
+          "BD": {
+            "min": 0.14756944444444445,
+            "max": 0.2690972222222222
+          },
+          "OSR": {
+            "min": 0.2557291666666667,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5031928750321852,
+            "max": 1.1297229061149479
+          },
+          "PAR": {
+            "min": 0.10344827586206896,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.949366786133496
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.28421589527046
+          },
+          "EG": {
+            "min": 1.7612768169896587,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.006569520434968,
+            "max": 7.85
+          }
+        }
+      },
+      {
+        "dataset_scale": 2000,
+        "baseline_scale": 500,
+        "regime_type": "expanded",
+        "nested_prefix_protocol": true,
+        "weather_station": "Dongtai, Jiangsu",
+        "weather_epw": null,
+        "simulation_mode": "fallback_analytic",
+        "feature_columns": [
+          "FAR",
+          "SD",
+          "AF",
+          "AR_ew",
+          "AR_ns",
+          "SVF",
+          "BD",
+          "OSR",
+          "SC",
+          "PAR",
+          "theta",
+          "OSLI"
+        ],
+        "target_columns": [
+          "EUIt",
+          "EG",
+          "H"
+        ],
+        "seed": 20260310,
+        "source_scale": 2000,
+        "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.csv",
+        "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_blocks.jsonl",
+        "assumptions": [
+          "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+          "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+          "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+        ],
+        "feature_ranges": {
+          "FAR": {
+            "min": 0.6770833333333334,
+            "max": 3.3333333333333335
+          },
+          "SD": {
+            "min": 8.625,
+            "max": 69.375
+          },
+          "AF": {
+            "min": 2.6,
+            "max": 22.58823529411765
+          },
+          "AR_ew": {
+            "min": 0.19658296674061937,
+            "max": 2.252757955391737
+          },
+          "AR_ns": {
+            "min": 0.6653698315265142,
+            "max": 7.204122706894503
+          },
+          "SVF": {
+            "min": 0.4151063179509038,
+            "max": 0.7436255922366087
+          },
+          "BD": {
+            "min": 0.14756944444444445,
+            "max": 0.2690972222222222
+          },
+          "OSR": {
+            "min": 0.2557291666666667,
+            "max": 1.0923076923076922
+          },
+          "SC": {
+            "min": 0.5031928750321852,
+            "max": 1.1444767290534232
+          },
+          "PAR": {
+            "min": 0.10048275862068966,
+            "max": 0.15778314829119353
+          },
+          "theta": {
+            "min": -44.91535662273134,
+            "max": 44.98650070138696
+          },
+          "OSLI": {
+            "min": 0.0,
+            "max": 8.0
+          }
+        },
+        "target_ranges": {
+          "EUIt": {
+            "min": 66.0,
+            "max": 78.28421589527046
+          },
+          "EG": {
+            "min": 1.7612768169896587,
+            "max": 2.85
+          },
+          "H": {
+            "min": 6.006569520434968,
+            "max": 7.85
+          }
+        }
+      }
+    ],
+    "summary_csv": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/dataset_scale_summary.csv"
+  }
+}
