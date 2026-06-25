@@ -1,0 +1,8 @@
+Paragraph inputs:
+- Scope: [selected checkpoint / scenario / validation mode]
+- Evidence: [key figure, table, or artifact]
+- Limitation: [what still does not close]
+
+Template:
+
+`On the selected [checkpoint / result bundle], [method or scenario] shows [result], as summarized in [figure or table]. Relative to [comparison basis], the evidence indicates that [narrow interpretation]. This pattern should nevertheless be interpreted conditionally, because [explicit limitation].`

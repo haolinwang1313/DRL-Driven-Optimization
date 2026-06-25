@@ -1,0 +1,15 @@
+project:
+  slug: drl-driven-optimization
+  title: Surrogate-Conditioned Benchmark Fragility in Block-Scale Urban Energy Design
+  stage: major-revision
+  journal: Applied Energy
+
+canonical:
+  package: paper_repro
+  config: configs/revision.yaml
+  manuscript: paper/manuscript/manuscript.tex
+  appendix: paper/manuscript/appendix.tex
+  response: paper/response/round-01/letter.tex
+  revision_tracker: paper/response/round-01/tracker/revision-tracker.json
+  status: paper/response/round-01/status.md
+  artifact_root: artifacts/publication

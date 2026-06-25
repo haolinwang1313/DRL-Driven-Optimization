@@ -1,0 +1,11 @@
+datasets:
+  - id: benchmark-dataset
+    original_name: Dataset.xlsx
+    current_path: data/external/benchmark/dataset.xlsx
+    source: not present in current worktree
+    obtained_date: null
+    sha256: null
+    license: unknown
+    redistributable: unknown
+    tracked_by_git: false
+    role: benchmark_only

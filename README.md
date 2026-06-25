@@ -1,81 +1,92 @@
 # Surrogate-Conditioned Benchmark Fragility in Block-Scale Urban Energy Design
 
-This repository contains the code and manuscript package for our block-scale urban morphology optimization study based on surrogate modeling, DDPG, and NSGA-II.
+This repository is a major-revision workspace for an `Applied Energy` manuscript. It is not a complete public data release. The current claim boundary is methodological: the workflow studies surrogate-conditioned optimizer benchmarking for block-scale urban morphology design, not general DRL superiority.
 
-The current version is maintained for an article under peer review. The repository is therefore kept intentionally concise and does not yet serve as a full public release of all workflows and artifacts.
+## Canonical Files
 
-## Overview
+- Revision config: `configs/revision.yaml`
+- Python package: `paper_repro/`
+- Manuscript: `paper/manuscript/manuscript.tex`
+- Response letter: `paper/response/round-01/letter.tex`
+- Revision tracker: `paper/response/round-01/tracker/revision-tracker.json`
+- Artifact root: `artifacts/publication`
 
-The study focuses on optimizing urban morphology factors to improve three block-scale energy indicators:
+## Repository Layout
 
-- `EUIt`: Energy Use Intensity
-- `EG`: Energy Generation
-- `H`: Sunlight Hours
+- `paper_repro/`: reusable pipeline code for simulation fallback, surrogate training, optimization, diagnostics, publication validation, and reviewer utilities.
+- `tools/`: helper entrypoints for figure rebuilding, result merging, checkpoint inspection, and batch orchestration.
+- `tests/`: lightweight regression tests restored from project history.
+- `configs/`: experiment and publication-mode configuration.
+- `data/`: local input data catalog and benchmark-data placement.
+- `experiments/`: historical experiment logbook and run definitions.
+- `research/`: research notes and findings.
+- `paper/manuscript/`: TeX manuscript, appendix, references, class file, and tracked figure PDFs.
+- `paper/response/round-01/`: formal first-round journal response package and migrated tracker/review state.
+- `paper/snapshots/`: working-draft PDF snapshots.
+- `paper/submission/`: frozen files only after confirmed journal submission.
+- `artifacts/`: generated experiment outputs; ignored by Git.
 
-The current workflow combines:
+## Install
 
-- parametric morphology generation
-- surrogate-based performance prediction
-- optimizer comparison between DDPG and fair-budget NSGA-II
-- benchmark-diagnostic analysis under different surrogate checkpoints
-
-## Repository Structure
-
-The main directories are:
-
-- `paper_repro/`: core pipeline, surrogate modeling, optimization, diagnostics, and reviewer utilities
-- `configs/`: runtime and revision configurations
-- `tools/`: helper scripts for reruns, figure generation, and result processing
-- `elsarticle/`: current manuscript source and figure files
-
-## Environment
-
-Recommended environment:
-
-- Python `3.10+`
-- local virtual environment managed with `uv` or standard `venv`
-
-Core Python dependencies include:
-
-- `torch`
-- `optuna`
-- `pymoo`
-- `scikit-learn`
-- `pandas`
-- `numpy`
-- `matplotlib`
-- `PyYAML`
-
-## Minimal Workflow
-
-Run all commands from the repository root.
-
-### 1. Build the revision dataset
+Run from the repository root:
 
 ```bash
-python -m paper_repro.cli --config configs/revision.yaml build-dataset
+uv sync
 ```
 
-### 2. Select the surrogate
+## Fast Verification
 
 ```bash
-python -m paper_repro.cli --config configs/revision.yaml select-surrogate
+uv run pytest -q
+uv run python -m paper_repro.cli --help
+uv run python -m compileall paper_repro tools
+uv run python -c "from paper_repro.config import Config; Config.from_yaml('configs/revision.yaml'); print('config ok')"
+uv run python tools/build_manuscript_result_figures.py --help
 ```
 
-### 3. Run the optimizers
+## Data Preparation
+
+The benchmark spreadsheet is expected at:
+
+```text
+data/external/benchmark/dataset.xlsx
+```
+
+The file is intentionally ignored until redistribution rights are clear. Record local copies in `data/catalog.yaml`. The benchmark dataset is used only for benchmark comparison and is not used during surrogate training.
+
+## Core Pipeline Commands
+
+These commands can be expensive and may depend on local artifacts or available simulation support:
 
 ```bash
-python -m paper_repro.cli --config configs/revision.yaml run-optimizers
+uv run python -m paper_repro.cli --config configs/revision.yaml build-dataset
+uv run python -m paper_repro.cli --config configs/revision.yaml select-surrogate
+uv run python -m paper_repro.cli --config configs/revision.yaml run-optimizers
+uv run python -m paper_repro.cli --config configs/revision.yaml publication-diagnostics
 ```
 
-### 4. Rebuild the manuscript figures
+Do not run long DDPG, NSGA-II, CMA-ES, random-search, remote-sync, or physical-probe workflows unless the task explicitly requires them.
+
+## Figure And TeX Builds
+
+Figure helper:
 
 ```bash
-uv run python tools/build_manuscript_result_figures.py --compile-manuscript
+uv run python tools/build_manuscript_result_figures.py --help
 ```
 
-## Notes
+Manuscript:
 
-- The repository supports a documented fallback analytic simulator when a full physical stack is unavailable.
-- The manuscript currently reflects the revision workflow centered on `configs/revision.yaml`.
-- The figure and manuscript package in `elsarticle/` represents the current submission version.
+```bash
+cd paper/manuscript
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build manuscript.tex
+```
+
+Response:
+
+```bash
+cd paper/response/round-01
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build letter.tex
+```
+
+Generated build products go under ignored `build/` directories. The tracked PDFs under `paper/snapshots/` are synchronized working snapshots, not proof of journal submission.
