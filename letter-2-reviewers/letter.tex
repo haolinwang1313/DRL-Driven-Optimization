@@ -1,7 +1,7 @@
-% Uncomment the following line to have comments hihglighted
-\documentclass[9pt,final]{extarticle}
-% Uncomment the following line to disable comments and highlights
-% \documentclass[9pt,final]{extarticle}
+% Uncomment the following line to have comments hihglighted
+\documentclass[10pt,final]{extarticle}
+% Uncomment the following line to disable comments and highlights
+% \documentclass[10pt,final]{extarticle}
 
 \input{addon/pkgloading-for-letter-to-reviewers}
 \input{addon/commands-for-letter-to-reviewers}
@@ -13,13 +13,13 @@
 % figures, and tables there, by prepending "paper:" to the original label).
 \externaldocument[paper:]{../elsarticle/manuscript}
 
-\def\PaperTitle{Policy Learning with Surrogate Approximators for Block-Scale Urban Morphology Design: A Comparative Benchmarking Study}
+\def\PaperTitle{Surrogate-Conditioned Benchmark Fragility in Block-Scale Urban Energy Design: A Comparative Study of Policy Learning and NSGA-II}
 \def\PaperId{{Applied Energy submission}}
 \def\PaperRevision{Revised manuscript}
 \def\SpecialIssueId{{N/A}}
 \def\Journal{{Applied Energy}}
 
-\def\AuthorsInLetter{Haolin Wang, Zhi Wu, Wei Gu, Pengxiang Liu, Qirun Sun, Wei Wang}
+\def\AuthorsInLetter{Haolin Wang, Zhi Wu, Wei Gu, Xiao Zang, Pengxiang Liu, Qirun Sun, Wei Wang}
 \def\AuthorsInSignature{Zhi Wu, on behalf of the authors}
 
 
@@ -38,6 +38,8 @@
 %
 \author[1]{Wei~Gu}
 %
+\author[1]{Xiao~Zang}
+%
 \author[2]{Pengxiang~Liu}
 \author[3]{Qirun~Sun}
 \author[4]{Wei~Wang}
@@ -48,10 +50,12 @@
 \affil[4]{Southeast University, Nanjing, China}
 
 %
-\date{}
-\begin{document}
-
-\maketitle
+\date{}
+\begin{document}
+
+\onehalfspacing
+
+\maketitle
 
 \input{intro}
 \vfill
@@ -73,18 +77,10 @@
 
 \SkipSpaceForReviewerComments
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-\bibliographystyle{unsrtnat}
-\bibliography{bibliography/bib}
-%
-%
-% Remove it when you are done
-\ifoptiondraft{
-	\pagebreak
-	\section*{How to use the commands of this response letter template}
+% Remove it when you are done
+\ifoptiondraft{
+	\pagebreak
+	\section*{How to use the commands of this response letter template}
 	\input{revision-notes/revisionnotes-example}
 	\pagebreak
 }{}

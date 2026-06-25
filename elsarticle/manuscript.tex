@@ -16,7 +16,7 @@
 \usepackage{tikz}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
-\graphicspath{{fig/}{../artifacts/publication/figures/}{../artifacts/publication/diagnostics/}}
+\graphicspath{{./}}
 \sloppy
 \newcommand{\stdfigure}[1]{\includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{#1}}
 \definecolor{figelevenblue}{RGB}{175,183,195}
@@ -64,7 +64,7 @@
             country={China}}
 
 \begin{abstract}
-Surrogate-assisted optimization is increasingly used to explore block-scale urban energy design, yet benchmark conclusions remain fragile when optimizer ranking depends more on the chosen surrogate than on independent evaluation. This study examines that risk through a bounded comparison between Deep Deterministic Policy Gradient (DDPG) and fair-budget NSGA-II in a shared surrogate environment for urban morphology design, using Energy Use Intensity (EUIt), Energy Generation (EG), and Sunlight Hours (H) as the three target indicators. A deep neural network (DNN) surrogate maps 12 morphological factors to these indicators, and the final benchmark is conducted on the most accurate surrogate identified from a 500/1000/1500/2000-sample scale study. On the selected 2000-sample surrogate, NSGA-II achieves stronger objective summaries, the largest Hypervolume, and the lowest IGD, while all three DDPG scenarios remain weaker under post-hoc preference-aligned utility selection. Supplementary checkpoint-sensitivity analysis shows that surrogates with similar training-fit metrics can still differ in extrapolative bound-violation behavior, and a same-budget CMA-ES follow-up indicates that corner exploitation is not unique to DDPG. A small-batch physical probe adds bounded external support: EUIt aligns most consistently, the current EG check remains weaker but directionally stable, and a revised windowsill-style direct-sun-hours check places H in the same broad range as the surrogate values, albeit with weaker stability than EUIt. Taken together, the paper supports a methodological interpretation of surrogate-conditioned benchmark fragility in urban energy design, not a claim of general policy-learning superiority.
+Optimizing urban morphology factors to improve Energy Use Intensity (EUIt), Energy Generation (EG), and Sunlight Hours (H) is a central task in block-scale urban energy design. Surrogate-assisted optimization offers a practical way to explore this problem, yet benchmark conclusions can become fragile when optimizer ranking depends more on the chosen surrogate than on independent evaluation. This study examines that risk through a bounded comparison between Deep Deterministic Policy Gradient (DDPG) and fair-budget NSGA-II in a shared surrogate environment for urban morphology design. A deep neural network (DNN) surrogate maps 12 morphological factors to the three target indicators, and the final benchmark is conducted on the most accurate surrogate identified from a 500/1000/1500/2000-sample scale study. On the selected 2000-sample surrogate, NSGA-II achieves stronger objective summaries, the largest Hypervolume, and the lowest IGD, while all three DDPG scenarios remain weaker under post-hoc preference-aligned utility selection. Supplementary checkpoint-sensitivity analysis shows that surrogates with similar training-fit metrics can still differ in extrapolative bound-violation behavior, and a same-budget CMA-ES follow-up indicates that corner exploitation is not unique to DDPG. A small-batch physical probe adds bounded external support: EUIt aligns most consistently, the current EG check remains weaker but directionally stable, and a revised windowsill-style direct-sun-hours check places H in the same broad range as the surrogate values, albeit with weaker stability than EUIt. Taken together, the results support interpreting the present workflow as a bounded methodological study of surrogate-conditioned benchmark fragility in urban energy design, with the comparative findings best understood within the current surrogate, benchmark, and validation context.
 \end{abstract}
 
 \begin{keyword}
@@ -146,7 +146,7 @@ This study proposes an integrated surrogate-assisted workflow for block-scale ur
 
 \begin{figure}[H]
 \centering
-\stdfigure{fig1}
+\stdfigure{fig1.pdf}
 \caption{Overview of the proposed method. The left block summarizes parametric morphology generation and performance simulation, while the right block shows the surrogate-assisted optimization workflow used during policy learning.}
 \label{fig:overview}
 \end{figure}
@@ -296,7 +296,7 @@ The parametric modeling process and the DNN surrogate together provide the basis
 
 \begin{figure}[H]
 \centering
-\stdfigure{fig2}
+\stdfigure{fig2.pdf}
 \caption{Conceptual framework of the DRL-based optimization. The upper part summarizes the relationship between DRL, the environment, and the DNN surrogate; the lower part details the stepwise Markov Decision Process used by the actor to query the surrogate and receive updated state and reward signals.}
 \label{fig:mdp}
 \end{figure}
@@ -627,7 +627,7 @@ Overall, the paper shows that optimizer ranking in surrogate-assisted urban ener
 
 \section*{Acknowledgment}
 
-This work was supported in part by the National Natural Science Foundation of China (Grant No.~52177077), and in part by the Fundamental Research Funds for the Central Universities (Grant No.~2242023R40022).
+This work was supported in part by the Outstanding Youth Fund of Jiangsu Province (Grant No.~BK20240076), and in part by the Excellent Young Scientists Fund (CN) (Grant No.~52522704).
 
 \input{references}
 
