@@ -1,0 +1,8 @@
+figure_id,element_type,original_text,replacement_text,note
+Fig1,text,street loactions,street locations,Correct typo or remove the phrase entirely.
+Fig1,text,Acotr netword,Actor network,Actor label must be corrected.
+Fig1,text,Critic netword,Critic network,Critic label must be corrected.
+Fig1,formula,R = 10^6 - dweighted,R = 1 - d_w,Replace the obsolete reward offset.
+Fig2,flow,implicit physical-time control,serialized static black-box search,Clarify no physical time evolution.
+Fig3,text,Target actor network,Target actor network,Keep exact wording and define color/arrow semantics.
+Fig3,equation,soft update legacy form,θ′ ← τθ + (1-τ)θ′,Use the canonical soft-update expression.
