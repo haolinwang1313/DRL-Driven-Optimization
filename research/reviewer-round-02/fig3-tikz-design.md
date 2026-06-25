@@ -13,14 +13,12 @@ This candidate replaces the legacy Visio-style Fig. 3 with a standalone TikZ ren
 - Replay mini-batch: `(s_i, a_i, r_i, s_{i+1}, d_i)`, `N = 128`
 - Discount factor: `gamma = 0.999`
 - Soft-update factor: `tau = 0.001`
-- Actor learning rate: `0.001`
-- Critic learning rate: `0.002`
 
 ## Layout
 
-The canvas uses a fixed TikZ bounding box of `17.5 cm x 8.5 cm`. The upper band contains the replay mini-batch, online actor, online critic, target actor, target critic, and temporal-difference target. The lower band contains the arrow legend, actor objective, critic loss, and the separate actor/critic soft target updates.
+The canvas uses a fixed TikZ bounding box of `17.5 cm x 6.6 cm`. The left side contains the replay batch notation, online actor, online critic, target actor, and target critic. The right side contains a single compact equation area with the TD target, critic loss, actor objective, and soft target updates.
 
-The design uses orthogonal TikZ paths for all main arrows. Solid dark arrows indicate forward tensor/data flow, dashed rose arrows indicate gradient and optimizer updates, and dash-dot gray arrows indicate soft target-network updates.
+The design uses solid dark arrows for forward tensor/data flow and dashed dark arrows for soft target-network updates. Gradient-update arrows and learning-rate values are intentionally omitted.
 
 ## Claim Boundary
 

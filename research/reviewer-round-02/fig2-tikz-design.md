@@ -10,24 +10,19 @@ This candidate redraws Fig. 2 as a serialized static black-box search workflow f
 - Action dimension: 12 normalized morphology descriptors
 - Action semantics: absolute descriptor action, not an incremental adjustment
 - Actor output activation: Sigmoid
-- Exploration: Gaussian noise with initial standard deviation `1.0`
+- Exploration: Gaussian noise is referenced in the caption and actor-query expression only
 - Action clipping: `clip(actor_action + noise, 0.0, 1.0)`
 - Descriptor mapping: normalized action mapped to training-domain feature bounds
 - Evaluator: selected DNN surrogate plus feature-distance guardrail, extrapolation penalty, and target-bound clipping
-- Replay tuple: `(state, action, reward, next_state, done)`
 - Episode length: 40 sequential surrogate queries
 - Episodes per seed: 600
 - Seeds per scenario: 20
-- Replay capacity: `1,000,000`
-- Replay batch size: 128
-- Noise decay: `0.9998` per query/update step
-- Scenario weights: Balanced `(1/3, 1/3, 1/3)`, Saving `(0.6, 0.2, 0.2)`, Generation `(0.2, 0.6, 0.2)`
 
 ## Layout
 
-Panel a shows the per-step query loop: normalized state, policy query, exploration/clipping, absolute descriptor action, guarded surrogate evaluator, next state, reward, replay transition, replay buffer, and actor--critic update. The feedback loop routes the next normalized state back to the next query without implying physical time evolution.
+The upper row shows one serialized query step as four nodes: current state, actor query, guarded surrogate, and next state and reward. The feedback loop routes the next normalized state back to the next query without implying physical time evolution.
 
-Panel b shows the episode and training protocol: random reset, query 1, query 2, an omitted middle sequence, query 40, fixed-horizon terminal condition, and the three independently trained reward scenarios.
+The bottom strip shows the episode sequence: random reset, query 1, query 2, an omitted middle sequence, query 40, and the fixed-horizon terminal condition.
 
 ## Recommended Manuscript Text
 

@@ -1,88 +1,63 @@
 {
   "figure_id": "Fig2",
-  "semantic_name": "serialized_static_black_box_search",
-  "source_tex": "paper/manuscript/figures/source/fig2_serialized_search_round2.tex",
-  "source_tex_sha256": "e9acc231210f405f9e2245eb60348407bd90e40fc1dcd065ce3189b32a4fc296",
-  "output_pdf": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
-  "output_pdf_sha256": "aabdd8ba6a68ea04998fca13c7434bb1f6f8be51b141d263b9308013b1a45ca1",
-  "output_png": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.png",
-  "output_png_sha256": "92e1419c96796d1f0458759a25a5ea9b0aee355d3e81548e2202c0dae4334118",
-  "implementation_source": [
-    "paper_repro/optimizers.py",
-    "configs/revision.yaml"
+  "semantic_name": "serialized_surrogate_query_process",
+  "planned_location": "Fig. 2 simplified candidate",
+  "source_files": [
+    {
+      "path": "paper/manuscript/figures/source/fig2_serialized_search_round2.tex",
+      "sha256": "6d002851d50b588fb8d22b33d72f5b4c013fb18469d9576c00b9985e846ad4dc",
+      "reference_protocol": "manual-candidate",
+      "reference_hash": ""
+    },
+    {
+      "path": "paper/manuscript/figures/source/round2_figure_style.tex",
+      "sha256": "396b9da979eef3e79363bc0d12277e8af916ab4905ebba39c2e6c65eb2148354",
+      "reference_protocol": "manual-candidate",
+      "reference_hash": ""
+    }
   ],
-  "state_dimension": 3,
-  "action_dimension": 12,
-  "absolute_action": true,
-  "episode_length": 40,
-  "episodes_per_seed": 600,
-  "seeds_per_scenario": 20,
-  "initial_noise_std": 1.0,
-  "noise_decay": 0.9998,
-  "batch_size": 128,
-  "replay_capacity": 1000000,
-  "scenario_weights": {
-    "Balanced": [
-      0.3333333333333333,
-      0.3333333333333333,
-      0.3333333333333333
-    ],
-    "Saving": [
-      0.6,
-      0.2,
-      0.2
-    ],
-    "Generation": [
-      0.2,
-      0.6,
-      0.2
-    ]
-  },
-  "state_definition": "s_t is the normalized guarded surrogate response vector [EUIt, EG, H].",
-  "action_definition": "a_t is an absolute normalized 12-dimensional morphology descriptor vector clipped to [0,1]^12 and denormalized with training-domain feature bounds.",
-  "environment_definition": "The environment is a static guarded DNN surrogate evaluator with nearest-sample distance guardrail, extrapolation penalty, and target-bound clipping before reward computation.",
-  "reward_formula": "r_t = 1 - ||w * (s_{t+1} - u)||_2 / ||w||_2, with u = (0,1,1).",
-  "dimensions": {
-    "canvas_cm": {
-      "width": 17.5,
-      "height": 8.2
+  "filters": {},
+  "reference_protocol": "manual-candidate",
+  "reference_hash": "",
+  "figure_style_version": "round2-arial-v1",
+  "font_policy": "strict_arial",
+  "timestamp": "2026-06-25T15:11:53+00:00",
+  "panel_descriptions": [
+    "Four-node serialized surrogate-query process.",
+    "Compact 40-query episode strip."
+  ],
+  "claim_boundary": "The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.",
+  "caption": "Figure 2. Serialized surrogate-query process used in the DDPG benchmark. The normalized three-target state is mapped by the actor to an absolute 12-dimensional descriptor query. After Gaussian exploration and clipping, the query is evaluated by the guarded DNN surrogate, which returns the next state and normalized-distance reward. Each episode begins from a random descriptor query and terminates after 40 surrogate interactions. The sequence represents repeated black-box queries rather than physical time evolution; the actor--critic learning mechanics are shown in Fig. 3.",
+  "outputs": {
+    "pdf": {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
+      "sha256": "c19ae47e6a7f51d361707f57f187fa0b15cb6f1b4dfaf501a0db297ddcfd4eac"
     },
-    "output_page_pts": {
-      "width": 496.063,
-      "height": 232.441
-    },
-    "output_page_cm": {
-      "width": 17.5,
-      "height": 8.2
+    "png": {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.png",
+      "sha256": "3f7abadc4cc0746c8c4b3d7bf7972ac9b5e30abd4452d049cc62cb32f0b698b1"
     }
   },
-  "palette": {
-    "FigTeal": "#539F97",
-    "FigBlue": "#6C7AAD",
-    "FigRose": "#BE7A7A",
-    "FigDark": "#252525",
-    "FigGrid": "#E7EBEF",
-    "FigNeutral": "#F5F4F0",
-    "FigLightTeal": "#DDECEA",
-    "FigLightBlue": "#E3E6F0",
-    "FigLightRose": "#F0DFDF"
-  },
-  "validation_commands": [
-    "uv run --no-project python scripts/compile_latex.py D:/Code/Paper02DRL/paper/manuscript/figures/source/fig2_serialized_search_round2.tex --compiler texlive",
-    "pdftoppm -png -singlefile -r 600 paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2",
-    "pdfinfo paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
-    "pdffonts paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
-    "pdftotext paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf -",
-    "uv run pytest -q",
-    "uv run python -m compileall paper_repro tools tests",
-    "git diff --check"
-  ],
-  "visual_qa": {
-    "pdf_page_size": "496.063 x 232.441 pts (17.50 x 8.20 cm)",
-    "type3_fonts": false,
-    "text_extractable": true,
-    "forbidden_text_hits": [],
-    "manual_png_review": "Reviewed rendered PNG for panel boundaries, text clipping, formula crowding, arrow routing, and overlap between update, replay, reward, and static-search footnote regions."
-  },
-  "claim_boundary": "The sequence represents repeated policy-training queries to a static guarded surrogate and does not represent physical time evolution or incremental urban-morphology transformation."
+  "extra": {
+    "main_nodes": [
+      "Current state",
+      "Actor query",
+      "Guarded surrogate",
+      "Next state and reward"
+    ],
+    "episode_length": 40,
+    "episodes_per_seed": 600,
+    "seeds_per_scenario": 20,
+    "arrow_line_styles": [
+      "solid"
+    ],
+    "excluded_visible_content": [
+      "Replay buffer",
+      "Actor--critic update",
+      "Critic loss",
+      "Target actor",
+      "scenario weight values",
+      "full d_w equation"
+    ]
+  }
 }

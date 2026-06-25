@@ -1,12 +1,9 @@
-Figure 2. Serialized static black-box search used in the DDPG
-benchmark. (a) At each query step, the actor maps the normalized
-three-target state to an absolute 12-dimensional normalized morphology-
-descriptor action. Gaussian exploration noise is added before the action
-is clipped and mapped to the sampled descriptor bounds. The guarded DNN
-surrogate then returns the next normalized target state and the
-normalized-distance reward, and the resulting transition is stored for
-actor--critic updating. (b) Each episode begins from a random descriptor
-query and terminates after 40 sequential surrogate interactions. Each
-scenario is trained independently for 600 episodes across 20 seeds. The
-sequence represents repeated policy-training queries rather than
-physical time evolution or incremental modification of one urban block.
+Figure 2. Serialized surrogate-query process used in the DDPG
+benchmark. The normalized three-target state is mapped by the actor to
+an absolute 12-dimensional descriptor query. After Gaussian exploration
+and clipping, the query is evaluated by the guarded DNN surrogate,
+which returns the next state and normalized-distance reward. Each
+episode begins from a random descriptor query and terminates after 40
+surrogate interactions. The sequence represents repeated black-box
+queries rather than physical time evolution; the actor--critic learning
+mechanics are shown in Fig. 3.

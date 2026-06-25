@@ -6,11 +6,10 @@ import subprocess
 from hashlib import sha256
 from pathlib import Path
 
-from paper_repro.config import Config
-
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_TEX = REPO_ROOT / "paper" / "manuscript" / "figures" / "source" / "fig2_serialized_search_round2.tex"
+STYLE_TEX = REPO_ROOT / "paper" / "manuscript" / "figures" / "source" / "round2_figure_style.tex"
 OUTPUT_ROOT = REPO_ROOT / "paper" / "manuscript" / "figures" / "round2_candidate" / "manual"
 OUTPUT_PDF = OUTPUT_ROOT / "fig2_serialized_search_round2.pdf"
 OUTPUT_PNG = OUTPUT_ROOT / "fig2_serialized_search_round2.png"
@@ -38,81 +37,73 @@ def _run(command: list[str]) -> str:
     return completed.stdout
 
 
-def test_fig2_tikz_source_matches_serialized_search_contract() -> None:
+def test_fig2_tikz_source_matches_simplified_query_contract() -> None:
     source = SOURCE_TEX.read_text(encoding="utf-8")
-    required = [
-        r"\bm s_t",
-        r"\bm a_t",
-        r"[0,1]^{12}",
-        r"\operatorname{clip}",
-        r"\mathcal N",
-        r"(\bm s_t,\bm a_t,r_t,\bm s_{t+1},d_t)",
+    assert r"\input{round2_figure_style.tex}" in source
+    assert "newtx" not in source
+    assert "\\usepackage[T1]{fontenc}" not in source
+
+    for token in (
+        "Current state",
+        "Actor query",
+        "Guarded surrogate",
+        "Next state and reward",
+        "absolute descriptor query",
         "40 sequential surrogate queries",
-        "600 episodes",
-        "20 seeds",
-        r"\bm w^B=(\tfrac13,\tfrac13,\tfrac13)",
-        r"\bm w^S=",
-        "(0.6,0.2,0.2)",
-        r"\bm w^G=",
-        "(0.2,0.6,0.2)",
-    ]
-    for token in required:
+        "Static black-box search; no physical-time evolution.",
+    ):
         assert token in source
+
+    assert source.count("\\node[") >= 9
     for forbidden in (
-        "Ladybug",
-        "Honeybee",
+        "Replay buffer",
+        "Actor--critic update",
+        "Critic loss",
+        "Target actor",
+        r"\bm w^B",
+        "(0.6,0.2,0.2)",
+        r"\|\bm w\odot",
         "EnergyPlus",
         "Radiance",
-        "morphology evolution",
-        "incremental action",
-        r"\Delta\bm a",
     ):
         assert forbidden not in source
-    assert "R=10^6" not in source.replace(" ", "")
-    assert "10^6-d" not in source.replace(" ", "")
 
 
-def test_fig2_outputs_metadata_and_config_values_are_consistent() -> None:
-    assert SOURCE_TEX.exists()
-    assert OUTPUT_PDF.exists()
-    assert OUTPUT_PNG.exists()
+def test_fig2_outputs_metadata_and_hashes_are_consistent() -> None:
     metadata = json.loads(METADATA.read_text(encoding="utf-8"))
-    cfg = Config.from_yaml(REPO_ROOT / "configs" / "revision.yaml")
-    ddpg = cfg["optimization"]["ddpg"]
     assert metadata["figure_id"] == "Fig2"
-    assert metadata["semantic_name"] == "serialized_static_black_box_search"
-    assert metadata["source_tex_sha256"] == _sha256(SOURCE_TEX)
-    assert metadata["output_pdf_sha256"] == _sha256(OUTPUT_PDF)
-    assert metadata["output_png_sha256"] == _sha256(OUTPUT_PNG)
-    assert metadata["state_dimension"] == 3
-    assert metadata["action_dimension"] == 12
-    assert metadata["absolute_action"] is True
-    assert metadata["episode_length"] == ddpg["max_steps_per_episode"] == 40
-    assert metadata["episodes_per_seed"] == ddpg["max_episodes"] == 600
-    assert metadata["seeds_per_scenario"] == ddpg["seeds_per_scenario"] == 20
-    assert metadata["initial_noise_std"] == ddpg["initial_noise_std"] == 1.0
-    assert metadata["noise_decay"] == ddpg["noise_decay"] == 0.9998
-    assert metadata["batch_size"] == ddpg["batch_size"] == 128
-    assert metadata["replay_capacity"] == ddpg["replay_buffer_size"] == 1_000_000
-    assert metadata["scenario_weights"]["Balanced"] == [1 / 3, 1 / 3, 1 / 3]
-    assert metadata["scenario_weights"]["Saving"] == [0.6, 0.2, 0.2]
-    assert metadata["scenario_weights"]["Generation"] == [0.2, 0.6, 0.2]
+    assert metadata["semantic_name"] == "serialized_surrogate_query_process"
+    assert metadata["font_policy"] == "strict_arial"
+    assert metadata["source_files"][0]["sha256"] == _sha256(SOURCE_TEX)
+    assert metadata["source_files"][1]["sha256"] == _sha256(STYLE_TEX)
+    assert metadata["outputs"]["pdf"]["sha256"] == _sha256(OUTPUT_PDF)
+    assert metadata["outputs"]["png"]["sha256"] == _sha256(OUTPUT_PNG)
+    assert metadata["extra"]["main_nodes"] == ["Current state", "Actor query", "Guarded surrogate", "Next state and reward"]
+    assert metadata["extra"]["episode_length"] == 40
+    assert metadata["extra"]["episodes_per_seed"] == 600
+    assert metadata["extra"]["seeds_per_scenario"] == 20
 
 
-def test_fig2_pdf_has_extractable_text_no_type3_fonts_and_expected_size() -> None:
+def test_fig2_pdf_uses_arial_no_type3_or_times_and_expected_size() -> None:
     fonts = _run(["pdffonts", str(OUTPUT_PDF)])
+    assert "Arial" in fonts
     assert "Type 3" not in fonts
+    assert "Times" not in fonts
+    assert "NewTX" not in fonts
+
     text = _run(["pdftotext", str(OUTPUT_PDF), "-"])
     for pattern in (
-        r"Per-step\s+surrogate-query\s+loop",
-        r"Absolute\s+descriptor\s+action",
-        r"Guarded\s+surrogate\s+evaluator",
+        r"Current\s+state",
+        r"Actor\s+query",
+        r"Guarded\s+surrogate",
+        r"Next\s+state\s+and\s+reward",
         r"40\s+sequential\s+surrogate\s+queries",
-        r"Reward\s+scenarios",
+        r"no\s+physical-time\s+evolution",
     ):
         assert re.search(pattern, text)
-    for forbidden in ("Ladybug", "Honeybee", "EnergyPlus", "Radiance", "10^6"):
+    for forbidden in ("Replay buffer", "Actor--critic update", "Critic loss", "Target actor", "EnergyPlus", "Radiance"):
         assert forbidden not in text
+
     pdfinfo = _run(["pdfinfo", str(OUTPUT_PDF)])
     match = re.search(r"Page size:\s+([0-9.]+) x ([0-9.]+) pts", pdfinfo)
     assert match is not None
@@ -120,4 +111,4 @@ def test_fig2_pdf_has_extractable_text_no_type3_fonts_and_expected_size() -> Non
     width_cm = width_pt * 2.54 / 72.0
     height_cm = height_pt * 2.54 / 72.0
     assert 17.45 <= width_cm <= 17.70
-    assert height_cm <= 8.40
+    assert 5.80 <= height_cm <= 6.35

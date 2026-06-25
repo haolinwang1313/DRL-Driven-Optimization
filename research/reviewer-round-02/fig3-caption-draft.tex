@@ -1,16 +1,10 @@
-Figure 3. Actor--critic architecture and parameter updates used in the
-DDPG implementation. A replay mini-batch provides the normalized
-three-target state, absolute normalized morphology-descriptor action,
-reward, next state, and terminal indicator. The online actor maps the
-three-dimensional state to a 12-dimensional descriptor action, while
-the online critic evaluates the state--action pair. The target networks
-construct the temporal-difference target. The online networks are
-updated through the actor objective and critic mean-squared-error loss,
-and the target parameters are updated softly using factor
-\(\tau\). Solid arrows denote forward tensor or data flow, dashed arrows
-denote gradient-based optimizer updates, and dash-dotted arrows denote
-soft target-network updates. Here, \(\mu\) denotes the actor policy,
-\(Q\) denotes the action-value function, \(\gamma\) denotes the discount
-factor, \(\tau\) denotes the soft-update factor, \(N\) denotes the
-mini-batch size, and \(\theta,\theta'\) denote online and target
-parameters.
+Figure 3. Actor--critic architecture and learning equations used in the
+DDPG implementation. The online actor maps the three-dimensional state
+to a 12-dimensional normalized descriptor action, and the online critic
+evaluates the resulting state--action pair. Target copies provide the
+temporal-difference target and are updated softly using factor
+\(\tau\). The right panel summarizes the temporal-difference target,
+critic loss, actor objective, and target-network updates. Here,
+\(\mu\) denotes the actor policy, \(Q\) the action-value function,
+primed symbols the target networks, \(d_i\) the terminal indicator, and
+\(N\) the mini-batch size.
