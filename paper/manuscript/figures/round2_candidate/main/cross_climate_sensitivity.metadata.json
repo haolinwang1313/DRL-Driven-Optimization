@@ -1,0 +1,60 @@
+{
+  "figure_id": "M7",
+  "semantic_name": "cross_climate_sensitivity",
+  "planned_location": "Main Fig. 10 candidate",
+  "source_files": [
+    {
+      "path": "climate_case_results.csv",
+      "sha256": "f624253730cdf63ce60f4e774516b4854f0c3dc6a33c4b2580a02b5df4bc3536",
+      "reference_protocol": "",
+      "reference_hash": ""
+    },
+    {
+      "path": "climate_summary.csv",
+      "sha256": "7a03bcf3714f398a72ad99f172320caac79dc865bc8989fc65d53a8262feb1e6",
+      "reference_protocol": "",
+      "reference_hash": ""
+    },
+    {
+      "path": "climate_rank_stability.csv",
+      "sha256": "ebd3f1d2ec549a98ab0173e104910fbcdf88df91a899446f8466dc6de30680dc",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:57+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Mean ΔEUIt relative to Dongtai with four-block spread.",
+    "Mean ΔEG relative to Dongtai with four-block spread.",
+    "Mean ΔH relative to Dongtai with four-block spread.",
+    "Rank-stability heatmap across Beijing, Guangzhou, and Harbin."
+  ],
+  "claim_boundary": "This figure is a limited four-block cross-climate physical sensitivity analysis only.",
+  "extra": {
+    "direct_blocks": 4,
+    "additional_climates": 3,
+    "analysis_label": "limited four-block cross-climate physical sensitivity analysis"
+  },
+  "visual_qa": {
+    "figure_id": "M7",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/cross_climate_sensitivity.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:56 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       491.282 x 309.116 pts\nPage rot:        0\nFile size:       54478 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     17  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     24  0\n",
+    "width_px": 1229,
+    "height_px": 773,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

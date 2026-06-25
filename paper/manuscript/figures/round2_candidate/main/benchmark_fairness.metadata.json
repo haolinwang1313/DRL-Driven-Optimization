@@ -1,0 +1,59 @@
+{
+  "figure_id": "M4",
+  "semantic_name": "benchmark_fairness",
+  "planned_location": "Main Fig. 7 candidate",
+  "source_files": [
+    {
+      "path": "benchmark_utility.csv",
+      "sha256": "c8dafd40dd57df9bdf21fbf5d5f8af3a798b1f82a03b414c9b1fe0e5c9be13de",
+      "reference_protocol": "",
+      "reference_hash": ""
+    },
+    {
+      "path": "benchmark_equal_size_20.csv",
+      "sha256": "f60b07256e7b64ea2f3197c7f428c999857666ae8cb04558971f8269092c7168",
+      "reference_protocol": "benchmark-reference-v2",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc"
+    },
+    {
+      "path": "benchmark_output_contract_counts.csv",
+      "sha256": "83c911df9c51878df891b3ab7ca635f3a6e1822fede8caab09e51013cd756c65",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "benchmark-reference-v2",
+  "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:54+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Fixed-domain post-hoc utility for DDPG and NSGA-II across the three scalarization scenarios.",
+    "Equal-size-20 HV with 5–95% intervals under benchmark-reference-v2.",
+    "Equal-size-20 IGD with 5–95% intervals under benchmark-reference-v2.",
+    "Output-contract asymmetry across retained rows, unique objective tuples, and unique feasible blocks."
+  ],
+  "claim_boundary": "Equal-size metrics are canonical only under benchmark-reference-v2 and must stay separate from asymmetric full-archive diagnostics.",
+  "extra": {
+    "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+    "reference_protocol": "benchmark-reference-v2"
+  },
+  "visual_qa": {
+    "figure_id": "M4",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/benchmark_fairness.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/benchmark_fairness.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:54 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       488.942 x 315.181 pts\nPage rot:        0\nFile size:       58988 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     26  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     33  0\n",
+    "width_px": 1223,
+    "height_px": 788,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "figure_id": "M5",
+  "semantic_name": "feasible_projection",
+  "planned_location": "Main Fig. 8 candidate",
+  "source_files": [
+    {
+      "path": "feasible_projection_summary.csv",
+      "sha256": "16f00a0bdf86e0a5e726af8826cbce84445959d8635b1a52e7ebf8b2a0b7e9bd",
+      "reference_protocol": "benchmark-reference-v2",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc"
+    },
+    {
+      "path": "feasible_projection_metrics.csv",
+      "sha256": "1132a919d3db4aae0454a314b4a981f6045762acf5b8c48a111426ab4f99b75b",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "benchmark-reference-v2",
+  "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:55+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Projection-distance distribution from descriptor candidates to feasible blocks.",
+    "Duplicate-collapse rate with unique feasible-block counts.",
+    "HV before and after projection under benchmark-reference-v2.",
+    "IGD before and after projection under benchmark-reference-v2."
+  ],
+  "claim_boundary": "Projection panels are representation-sensitivity diagnostics rather than physical validation.",
+  "extra": {
+    "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+    "reference_protocol": "benchmark-reference-v2"
+  },
+  "visual_qa": {
+    "figure_id": "M5",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/feasible_projection.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/feasible_projection.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:55 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       492.846 x 309.626 pts\nPage rot:        0\nFile size:       81684 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     36  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     43  0\n",
+    "width_px": 1233,
+    "height_px": 775,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

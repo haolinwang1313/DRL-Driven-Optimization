@@ -1,0 +1,53 @@
+{
+  "figure_id": "M3",
+  "semantic_name": "ddpg_training_dynamics",
+  "planned_location": "Main Fig. 6 candidate",
+  "source_files": [
+    {
+      "path": "ddpg_training_curves_summary.csv",
+      "sha256": "563e9c7b4738aab80c6e24ac9671eb8955e031cae015f776c96a037cd6242c03",
+      "reference_protocol": "",
+      "reference_hash": ""
+    },
+    {
+      "path": "ddpg_seed_diagnostics.csv",
+      "sha256": "ceace85452fba6a4f6b3169870626bd0830ef359db49c24750af607744af202f",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:53+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Episode cumulative reward across 20 seeds.",
+    "Episode-end EUIt across 20 seeds.",
+    "Episode-end EG across 20 seeds.",
+    "Episode-end H across 20 seeds."
+  ],
+  "claim_boundary": "Training dynamics describe serialized surrogate-query search only.",
+  "extra": {
+    "episode_horizon": 600,
+    "queries_per_episode": 40
+  },
+  "visual_qa": {
+    "figure_id": "M3",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/ddpg_training_dynamics.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/ddpg_training_dynamics.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:52 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.947 x 315.508 pts\nPage rot:        0\nFile size:       224897 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
+    "width_px": 1235,
+    "height_px": 789,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

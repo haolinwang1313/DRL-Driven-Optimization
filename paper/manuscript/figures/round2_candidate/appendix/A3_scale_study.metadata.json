@@ -1,0 +1,44 @@
+{
+  "figure_id": "A3",
+  "semantic_name": "A3_scale_study",
+  "planned_location": "Appendix Fig. A3 candidate",
+  "source_files": [
+    {
+      "path": "scale_study.csv",
+      "sha256": "87120cdcbdb9cdd09560f4778f0351398933affa460de2884913fdb6554e9bf7",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:59+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Mean target nMAE across dataset scales.",
+    "Mean tail nMAE across dataset scales.",
+    "Mean R² across dataset scales.",
+    "Selection objective across dataset scales."
+  ],
+  "claim_boundary": "Scale-study rows support the surrogate-selection rationale only.",
+  "extra": {},
+  "visual_qa": {
+    "figure_id": "A3",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A3_scale_study.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/A3_scale_study.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:58 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       490.404 x 303.902 pts\nPage rot:        0\nFile size:       44127 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     19  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     26  0\n",
+    "width_px": 1227,
+    "height_px": 760,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

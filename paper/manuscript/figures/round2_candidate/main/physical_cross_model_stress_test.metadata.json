@@ -1,0 +1,84 @@
+{
+  "figure_id": "M6",
+  "semantic_name": "physical_cross_model_stress_test",
+  "planned_location": "Main Fig. 9 candidate",
+  "source_files": [
+    {
+      "path": "physical_direct_cases.csv",
+      "sha256": "0403f94ea9bd6d4d089b930723e08f860cdf3da726f99dcaaee038fa6b7f39d3",
+      "reference_protocol": "",
+      "reference_hash": ""
+    },
+    {
+      "path": "physical_stress_metrics.csv",
+      "sha256": "cf9ec8e791d55efe5edafe4a1f1cd779523801e0d6bce8bbbdcadd03bd7f4303",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:56+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "EUIt parity for the 18 direct feasible cases.",
+    "Simplified rooftop-PV proxy parity for the 18 direct feasible cases.",
+    "January 20 windowsill direct-sun-hours parity for the 18 direct feasible cases."
+  ],
+  "claim_boundary": "This figure is limited to the direct-case physics-based cross-model stress test and does not support optimizer-superiority claims.",
+  "extra": {
+    "parity_axes": {
+      "EUIt": {
+        "xlim": [
+          65.66525145630195,
+          77.49303333363312
+        ],
+        "ylim": [
+          65.66525145630195,
+          77.49303333363312
+        ]
+      },
+      "EG_GHI_proxy": {
+        "xlim": [
+          1.539582974880001,
+          2.98648923312
+        ],
+        "ylim": [
+          1.539582974880001,
+          2.98648923312
+        ]
+      },
+      "H": {
+        "xlim": [
+          4.864,
+          8.786000000000001
+        ],
+        "ylim": [
+          4.864,
+          8.786000000000001
+        ]
+      }
+    },
+    "direct_case_count": 18,
+    "stress_test_label": "limited physics-based cross-model stress test"
+  },
+  "visual_qa": {
+    "figure_id": "M6",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/physical_cross_model_stress_test.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:55 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.891 x 147.964 pts\nPage rot:        0\nFile size:       53397 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\n",
+    "width_px": 1235,
+    "height_px": 370,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

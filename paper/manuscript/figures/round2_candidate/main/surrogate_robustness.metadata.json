@@ -1,0 +1,42 @@
+{
+  "figure_id": "M2",
+  "semantic_name": "surrogate_robustness",
+  "planned_location": "Main Fig. 5 candidate",
+  "source_files": [
+    {
+      "path": "surrogate_validation_regimes.csv",
+      "sha256": "4a35f8c39487082357292a0d50ae4b7f4061b284a820e5ac298598e89528b016",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:52+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "nMAE heatmap across repeated CV, leave-one-OSLI-out, outer-shell, and feature-tail regimes.",
+    "Spearman heatmap across the same surrogate-validation regimes."
+  ],
+  "claim_boundary": "All panels remain analytic-target surrogate-validation evidence, not physical validation.",
+  "extra": {},
+  "visual_qa": {
+    "figure_id": "M2",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/surrogate_robustness.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/surrogate_robustness.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:52 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.168 x 145.285 pts\nPage rot:        0\nFile size:       63951 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     19  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     26  0\n",
+    "width_px": 1241,
+    "height_px": 364,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

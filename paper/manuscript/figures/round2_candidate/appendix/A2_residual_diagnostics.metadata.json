@@ -1,0 +1,43 @@
+{
+  "figure_id": "A2",
+  "semantic_name": "A2_residual_diagnostics",
+  "planned_location": "Appendix Fig. A2 candidate",
+  "source_files": [
+    {
+      "path": "surrogate_parity_mean_predictions.csv",
+      "sha256": "5837b986d33d904cf641a57584e85718cbc64d64bffdb762665adf8886fe8c07",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:58+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "EUIt residual distribution.",
+    "EG residual distribution.",
+    "H residual distribution."
+  ],
+  "claim_boundary": "Residual diagnostics describe analytic-target surrogate error only.",
+  "extra": {},
+  "visual_qa": {
+    "figure_id": "A2",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A2_residual_diagnostics.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/A2_residual_diagnostics.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:57 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.929 x 139.46 pts\nPage rot:        0\nFile size:       42949 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
+    "width_px": 1235,
+    "height_px": 349,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "figure_id": "A1",
+  "semantic_name": "A1_descriptor_distributions",
+  "planned_location": "Appendix Fig. A1 candidate",
+  "source_files": [
+    {
+      "path": "descriptor_coverage.csv",
+      "sha256": "c9c77a2738ec0cb359d6a6801b67689b8d2c4e46c632d7e21cfbe4fefbfe8897",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:03:57+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Descriptor interquartile summaries for the 12 morphology descriptors.",
+    "OSLI frequency distribution.",
+    "Normalized nearest-neighbor distance distribution."
+  ],
+  "claim_boundary": "Descriptive coverage diagnostics only.",
+  "extra": {},
+  "visual_qa": {
+    "figure_id": "A1",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A1_descriptor_distributions.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/A1_descriptor_distributions.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:03:57 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.57 x 148.044 pts\nPage rot:        0\nFile size:       50937 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     18  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     25  0\n",
+    "width_px": 1234,
+    "height_px": 371,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "figure_id": "B5",
+  "semantic_name": "B5_nonlinear_response_profiles",
+  "planned_location": "Appendix Fig. B5 candidate",
+  "source_files": [
+    {
+      "path": "scale_study.csv",
+      "sha256": "87120cdcbdb9cdd09560f4778f0351398933affa460de2884913fdb6554e9bf7",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:04:03+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "OSR → EUIt surrogate response profile.",
+    "FAR → EG surrogate response profile.",
+    "SVF → H surrogate response profile.",
+    "θ → H surrogate response profile."
+  ],
+  "claim_boundary": "Selected surrogate response profiles illustrate local trends only.",
+  "extra": {
+    "profile_pairs": [
+      [
+        "OSR",
+        "EUIt"
+      ],
+      [
+        "FAR",
+        "EG"
+      ],
+      [
+        "SVF",
+        "H"
+      ],
+      [
+        "theta",
+        "H"
+      ]
+    ]
+  },
+  "visual_qa": {
+    "figure_id": "B5",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B5_nonlinear_response_profiles.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/B5_nonlinear_response_profiles.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:03 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       497.376 x 292.531 pts\nPage rot:        0\nFile size:       48710 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
+    "width_px": 1244,
+    "height_px": 732,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}

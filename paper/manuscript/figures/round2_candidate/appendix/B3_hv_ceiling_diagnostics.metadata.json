@@ -1,0 +1,47 @@
+{
+  "figure_id": "B3",
+  "semantic_name": "B3_hv_ceiling_diagnostics",
+  "planned_location": "Appendix Fig. B3 candidate",
+  "source_files": [
+    {
+      "path": "benchmark_hv_ceiling.csv",
+      "sha256": "fa862502f1966a89702ac730992db9f642cf304b3a6949d879a9207b370c4f4a",
+      "reference_protocol": "benchmark-reference-v2",
+      "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc"
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "benchmark-reference-v2",
+  "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+  "script_commit": "b4d20e3291f16ab0c0ee167b05e4d7f544c653e4",
+  "timestamp": "2026-06-25T08:04:01+00:00",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "HV fraction of the theoretical ceiling.",
+    "Clipped-utopia fraction.",
+    "Unique objective tuple count.",
+    "Unique non-dominated tuple count."
+  ],
+  "claim_boundary": "HV ceiling panels explain saturation and duplicate collapse only.",
+  "extra": {
+    "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+    "reference_protocol": "benchmark-reference-v2"
+  },
+  "visual_qa": {
+    "figure_id": "B3",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B3_hv_ceiling_diagnostics.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/B3_hv_ceiling_diagnostics.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 16:04:00 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       488.854 x 303.938 pts\nPage rot:        0\nFile size:       53843 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBYJABP+TimesNewRomanPSMT             CID TrueType      Identity-H       yes yes yes     15  0\nBYJABP+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes     22  0\n",
+    "width_px": 1223,
+    "height_px": 760,
+    "type3_fonts": false,
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "unresolved_visual_concerns": []
+  }
+}
