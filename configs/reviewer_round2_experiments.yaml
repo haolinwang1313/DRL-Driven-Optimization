@@ -1,0 +1,213 @@
+project:
+  name: paper02_round2_experiments
+  random_seed: 20260625
+  artifact_root: artifacts/reviewer_round_02
+  benchmark_dataset: data/external/benchmark/dataset.xlsx
+
+runtime:
+  device: auto
+
+weather:
+  download: true
+  output_dir: artifacts/reviewer_round_02/shared/weather
+  preferred_station: Dongtai
+  fallback_station: Jianhu
+  stations:
+    Dongtai:
+      label: "Dongtai, Jiangsu"
+      wmo: "582510"
+      climate_bucket: "baseline"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Dongtai.582510_TMYx.2009-2023.zip"
+    Jianhu:
+      label: "Jianhu, Jiangsu"
+      wmo: "581500"
+      climate_bucket: "baseline_fallback"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Jianhu.581500_TMYx.2009-2023.zip"
+    Harbin:
+      label: "Harbin, Heilongjiang"
+      wmo: "509530"
+      climate_bucket: "severe_cold"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_HL_Harbin.509530_TMYx.2009-2023.zip"
+    Beijing:
+      label: "Beijing"
+      wmo: "545110"
+      climate_bucket: "cold"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_BJ_Beijing.545110_TMYx.2009-2023.zip"
+    Guangzhou:
+      label: "Guangzhou, Guangdong"
+      wmo: "592870"
+      climate_bucket: "hot_summer_warm_winter"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_GD_Guangzhou.592870_TMYx.2009-2023.zip"
+
+dnn:
+  n_trials: 50
+  epochs: 160
+  batch_size: 32
+  folds: 5
+  patience: 20
+  hidden_layers_min: 1
+  hidden_layers_max: 4
+  units_min: 16
+  units_max: 128
+  units_step: 16
+  dropout_min: 0.1
+  dropout_max: 0.5
+  learning_rate_min: 0.0001
+  learning_rate_max: 0.01
+  retrain_epochs: 220
+  anchor_architecture:
+    hidden_layers: [64, 32]
+    dropout: 0.2
+    learning_rate: 0.001
+    optimizer: Adam
+    activation: ReLU
+
+optimization:
+  ddpg:
+    actor_hidden: [64, 32]
+    critic_hidden: [64, 32]
+    gamma: 0.999
+    actor_lr: 0.001
+    critic_lr: 0.002
+    tau: 0.001
+    batch_size: 128
+    replay_buffer_size: 1000000
+    max_episodes: 600
+    max_steps_per_episode: 40
+    initial_noise_std: 1.0
+    noise_decay: 0.9998
+    seeds_per_scenario: 20
+    store_all_seed_logs: true
+    scenarios:
+      Balanced_Performance: [0.3333333333, 0.3333333333, 0.3333333333]
+      Energy_Saving_Focus: [0.6, 0.2, 0.2]
+      Energy_Generation_Focus: [0.2, 0.6, 0.2]
+  nsga2:
+    mode: fair_budget
+    pop_size: 100
+    seeds_per_run: 20
+    evaluation_budget: 24000
+    sbx_eta: 20
+    pm_eta: 30
+    mutation_prob: 0.0833333333
+    seed: 20260310
+  cmaes:
+    evaluation_budget: 24000
+    seeds_per_scenario: 20
+    sigma0: 0.2
+    popsize: 16
+    archive_keep: 100
+  random_search:
+    evaluation_budget: 24000
+    seeds_per_scenario: 20
+    batch_size: 2048
+    archive_keep: 100
+  utility_weights:
+    Balanced_Performance: [0.3333333333, 0.3333333333, 0.3333333333]
+    Energy_Saving_Focus: [0.6, 0.2, 0.2]
+    Energy_Generation_Focus: [0.2, 0.6, 0.2]
+
+surrogate_selection:
+  enabled: true
+  original_scale: 500
+  scale_tolerance_pct: 0.05
+  low_quantile: 0.1
+  high_quantile: 0.9
+  tail_weight: 0.25
+  candidate_presets:
+    - anchor_minmax
+    - tuned_minmax
+    - tuned_standard
+    - tuned_standard_huber
+
+publication:
+  require_imported_results: false
+  require_physical_results: false
+  allow_fallback_override: true
+  imported_results_root: artifacts/reviewer_round_02/shared/imported
+  diagnostics_dir: artifacts/reviewer_round_02/shared/diagnostics
+  reevaluation_dir: artifacts/reviewer_round_02/shared/reevaluation
+  tracker_path: paper/response/round-01/tracker/revision-tracker.json
+
+report:
+  figures_dir: artifacts/reviewer_round_02/shared/figures
+  models_dir: artifacts/reviewer_round_02/shared/models
+  data_dir: artifacts/reviewer_round_02/shared/data
+  optimization_dir: artifacts/reviewer_round_02/shared/optimization
+  bootstrap_dir: artifacts/reviewer_round_02/shared/bootstrap
+  reports_dir: artifacts/reviewer_round_02/shared/reports
+
+round2:
+  protocol_version: reviewer-round2-experimental-closure-v1
+  master_seed: 20260625
+  canonical_dataset: artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_samples.csv
+  canonical_blocks: artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_blocks.jsonl
+  canonical_dataset_meta: artifacts/server_runs/20260405_highest_precision_2000_compare/data/simulated_samples.meta.json
+  canonical_surrogate: artifacts/server_runs/20260405_highest_precision_2000_compare/models/surrogate.pt
+  canonical_selected_surrogate: artifacts/server_runs/20260405_highest_precision_2000_compare/models/selected_surrogate.json
+  canonical_cv_predictions: artifacts/server_runs/20260405_highest_precision_2000_compare/models/cv_predictions.csv
+  baseline_compare_root: artifacts/server_runs/20260405_highest_precision_2000_compare
+  surrogate_selection_root: artifacts/server_runs/20260405_surrogate_rebenchmark
+  research_root: research/reviewer-round-02
+  surrogate_validation:
+    repeated_kfold_repeats: 5
+    repeated_kfold_splits: 5
+    leave_one_osli_out_folds: 9
+    outer_shell_test_fraction: 0.2
+    feature_tail_inner_quantiles: [0.1, 0.9]
+    feature_tail_fallback_quantiles: [0.05, 0.95]
+    bootstrap_iterations: 500
+    calibration_bins: 10
+  fairness_analysis:
+    equal_size_archive_sizes: [20, 40, 60, 100]
+    equal_size_repetitions: 2000
+    non_dominated_archive_keep: 100
+  feasibility_projection:
+    projection_reference: canonical_dataset
+    osli_bounds: [0, 8]
+  baseline_runs:
+    ddpg_results: artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_results.csv
+    nsga2_results: artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/nsga2_results.csv
+    optimization_results: artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/optimization_results.csv
+  physical_validation:
+    max_cases: 24
+    direct_feasible_cases: 18
+    optimizer_linked_cases: 6
+    maximin_cases: 8
+    objective_tail_cases_per_target: 2
+    interior_random_cases: 4
+    annual_irradiance_required: true
+    baseline_weather_candidates: [Dongtai, Jianhu]
+    preflight_case_count: 1
+    pilot_case_count: 4
+    max_case_retries: 2
+    timeout_seconds:
+      cleanup: 60
+      energy_simulate: 1800
+      energy_result: 180
+      radiance_translate: 180
+      radiance_sunpath: 120
+      radiance_sky: 120
+      radiance_octree: 180
+      radiance_point_in_time: 180
+      radiance_scontrib: 180
+  climate_sensitivity:
+    representative_cases: 4
+    additional_climates: [Harbin, Beijing, Guangzhou]
+    max_case_weather_combinations: 36
+  runtime_audit:
+    repetitions: 5
+    ddpg_runtime_scenario: Balanced_Performance
+    cmaes_runtime_scenario: Balanced_Performance
+    random_runtime_scenario: Balanced_Performance
+  weather_manifest:
+    require_download_verification: true
+    allowed_url_domains:
+      - climate.onebuilding.org
+  output_naming:
+    default_run_id: reviewer_round2
+    research_root: research/reviewer-round-02
+  retry_limits:
+    remote_collect_attempts: 3
+    physical_case_retries: 2
+  maximum_physical_case_budget: 36

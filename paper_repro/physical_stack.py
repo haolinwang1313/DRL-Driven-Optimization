@@ -766,6 +766,7 @@ def _prepare_probe_job(
     limit: int,
     server_cfg: dict[str, Any],
     output_suffix: str,
+    request_overrides: dict[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, Path, Path, str, str, Path]:
     dataset_path = Path(config["report"]["data_dir"]) / "simulated_samples.csv"
     blocks_path = Path(config["report"]["data_dir"]) / "simulated_blocks.jsonl"
@@ -792,6 +793,11 @@ def _prepare_probe_job(
         },
         "cases": [],
     }
+    if request_overrides:
+        for key, value in request_overrides.items():
+            if key == "cases":
+                continue
+            payload[key] = value
     for row in projected.to_dict(orient="records"):
         sample_id = int(row["matched_sample_id"])
         payload["cases"].append(
@@ -970,6 +976,7 @@ def physical_stack_candidate_probe(
     async_mode: bool = False,
     wait_seconds: int = 0,
     job_id: str | None = None,
+    request_overrides: dict[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     server_cfg = load_server_config(server_cfg_path)
     if server_cfg is None:
@@ -990,6 +997,7 @@ def physical_stack_candidate_probe(
         limit=limit,
         server_cfg=server_cfg,
         output_suffix=output_suffix,
+        request_overrides=request_overrides,
     )
 
     if async_mode:
@@ -1016,13 +1024,14 @@ def physical_stack_candidate_probe(
     sftp = client.open_sftp()
     try:
         remote_request_parent = str(Path(remote_request).parent).replace("\\", "/")
+        remote_status = f"{remote_request_parent}/probe_{Path(remote_request).stem.replace('request_', '')}.status.json"
         mkdir_cmd = f"mkdir -p {remote_request_parent}"
         stdin, stdout, stderr = client.exec_command(mkdir_cmd, timeout=120)
         stderr_text = stderr.read().decode("utf-8", errors="replace")
         if stderr_text.strip():
             raise RuntimeError(stderr_text)
         sftp.put(str(local_request), remote_request)
-        python_code = _remote_python_payload(remote_request, remote_result)
+        python_code = _remote_python_payload(remote_request, remote_result, remote_status)
         cmd = f"cd {server_cfg['remote_project_root']} && . .venv/bin/activate && python - <<'PY'\n{python_code}\nPY"
         stdin, stdout, stderr = client.exec_command(cmd, timeout=7200)
         _stdout_text = stdout.read().decode("utf-8", errors="replace")
@@ -1050,6 +1059,7 @@ def physical_stack_candidate_probe(
         "csv_path": str(csv_path),
         "count": int(len(merged)),
         "limit": int(limit),
+        "request_overrides": request_overrides or {},
     }
     write_json(summary, reevaluation_dir / f"physical_stack_candidate_probe_summary{suffix}.json")
     return merged, summary
