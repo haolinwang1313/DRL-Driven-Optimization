@@ -42,6 +42,7 @@
 - Source files: `climate_case_results.csv` (f624253730cdf63ce60f4e774516b4854f0c3dc6a33c4b2580a02b5df4bc3536), `climate_summary.csv` (7a03bcf3714f398a72ad99f172320caac79dc865bc8989fc65d53a8262feb1e6), `climate_rank_stability.csv` (ebd3f1d2ec549a98ab0173e104910fbcdf88df91a899446f8466dc6de30680dc)
 - Claim boundary: This figure is a limited four-block cross-climate physical sensitivity analysis only.
 - Revision note: Kept the same climate data while switching to the muted climate palette and a zero-centered low-saturation heatmap.
+- Palette note: Beijing `#539F97`, Guangzhou `#6C7AAD`, Harbin `#BE7A7A`.
 - Unresolved visual concerns: None
 
 ## Part II - Supplementary Information candidates

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+from hashlib import sha256
 from pathlib import Path
 
 import pandas as pd
@@ -33,6 +34,20 @@ def _pdf_text(path: Path) -> str:
     return completed.stdout
 
 
+def _head_bytes(path: str) -> bytes:
+    completed = subprocess.run(
+        ["git", "show", f"HEAD:{path}"],
+        check=True,
+        capture_output=True,
+        cwd=REPO_ROOT,
+    )
+    return completed.stdout
+
+
+def _sha256_bytes(payload: bytes) -> str:
+    return sha256(payload).hexdigest()
+
+
 @pytest.fixture(scope="session")
 def built_round2_assets() -> dict:
     build_round2_figure_data_package(DATA_ROOT, repo_root=REPO_ROOT, strict=True)
@@ -41,8 +56,8 @@ def built_round2_assets() -> dict:
         OUTPUT_ROOT,
         build_gallery=True,
         strict=True,
-        overwrite=True,
         repo_root=REPO_ROOT,
+        figure_ids=("M7",),
     )
 
 
@@ -213,8 +228,44 @@ def test_m6_statistics_font_stays_below_axis_label_font(built_round2_assets: dic
 def test_m7_palette_is_muted_and_heatmap_zero_centered(built_round2_assets: dict) -> None:
     metadata = _metadata("main/cross_climate_sensitivity.metadata.json")
     saturation = metadata["extra"]["palette_saturation"]
+    assert metadata["extra"]["climate_palette"] == {
+        "Beijing": "#539F97",
+        "Guangzhou": "#6C7AAD",
+        "Harbin": "#BE7A7A",
+    }
+    assert metadata["extra"]["heatmap_anchor_colors"] == {
+        "negative": "#6C7AAD",
+        "center": "#F5F4F0",
+        "positive": "#BE7A7A",
+    }
     assert max(saturation.values()) <= 0.36
     assert metadata["extra"]["heatmap_center"] == 0.0
+
+
+def test_m7_axis_ranges_and_source_sha_remain_unchanged(built_round2_assets: dict) -> None:
+    metadata = _metadata("main/cross_climate_sensitivity.metadata.json")
+    head_metadata = json.loads(_head_bytes("paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.metadata.json").decode("utf-8"))
+    assert metadata["source_files"] == head_metadata["source_files"]
+    expected_limits = {
+        "a": {"xlim": [-0.54, 2.5400000000000005], "ylim": [-8.66269999999999, 61.158699999999996]},
+        "b": {"xlim": [-0.54, 2.5400000000000005], "ylim": [-0.08581965839999979, 0.18471756239999998]},
+        "c": {"xlim": [-0.54, 2.5400000000000005], "ylim": [-1.0899999999999996, 0.3400000000000003]},
+        "d": {"xlim": [-0.5, 2.5], "ylim": [2.5, -0.5]},
+    }
+    for panel, expected in expected_limits.items():
+        assert metadata["extra"]["axis_limits"][panel]["xlim"] == pytest.approx(expected["xlim"])
+        assert metadata["extra"]["axis_limits"][panel]["ylim"] == pytest.approx(expected["ylim"])
+
+
+def test_other_15_candidate_pdf_hashes_do_not_change(built_round2_assets: dict) -> None:
+    m7_pdf = OUTPUT_ROOT / "main" / "cross_climate_sensitivity.pdf"
+    for pdf_path in OUTPUT_ROOT.rglob("*.pdf"):
+        if pdf_path == m7_pdf:
+            continue
+        rel = pdf_path.relative_to(REPO_ROOT).as_posix()
+        current_hash = _sha256_path(pdf_path)
+        head_hash = _sha256_bytes(_head_bytes(rel))
+        assert current_hash == head_hash, rel
 
 
 def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:

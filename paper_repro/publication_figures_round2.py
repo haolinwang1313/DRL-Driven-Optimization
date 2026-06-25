@@ -69,10 +69,18 @@ MUTED_COLORS = {
     "light_gray": "#CDD3D8",
     "off_white": "#F5F2EB",
 }
+REFERENCE_PALETTE = {
+    "teal": "#539F97",
+    "slate_blue": "#6C7AAD",
+    "dusty_rose": "#BE7A7A",
+    "dark": "#252525",
+    "grid": "#E7EBEF",
+    "off_white": "#F5F4F0",
+}
 CLIMATE_PALETTE = {
-    "Beijing": "#66788A",
-    "Guangzhou": "#5F8274",
-    "Harbin": "#A86F52",
+    "Beijing": "#539F97",
+    "Guangzhou": "#6C7AAD",
+    "Harbin": "#BE7A7A",
 }
 TARGET_LABELS = {
     "EUIt": "EUIt (kWh/m²/y)",
@@ -228,6 +236,15 @@ def _hex_saturation(color: str) -> float:
     red, green, blue = to_rgb(color)
     _, lightness, saturation = colorsys.rgb_to_hls(red, green, blue)
     return float(saturation)
+
+
+def _darken_hex(color: str, amount: float = 0.18) -> str:
+    red, green, blue = to_rgb(color)
+    return "#{:02X}{:02X}{:02X}".format(
+        max(0, min(255, round(red * (1 - amount) * 255))),
+        max(0, min(255, round(green * (1 - amount) * 255))),
+        max(0, min(255, round(blue * (1 - amount) * 255))),
+    )
 
 
 def _sparsest_corner_anchor(x: np.ndarray, y: np.ndarray) -> tuple[float, float, str, str]:
@@ -1125,6 +1142,16 @@ def build_round2_figure_data_package(data_root: str | Path, *, repo_root: str | 
     root = _repo_root(repo_root)
     data_root_path = (root / Path(data_root)).resolve()
     data_root_path.mkdir(parents=True, exist_ok=True)
+    manifest_path = data_root_path / "manifest.json"
+    if manifest_path.exists():
+        existing_manifest = _read_json(manifest_path)
+        existing_entries = existing_manifest.get("files", [])
+        existing_files = [data_root_path / entry["file_name"] for entry in existing_entries]
+        if existing_files and all(path.exists() for path in existing_files) and all(
+            _sha256_path(path) == entry.get("sha256", "")
+            for path, entry in zip(existing_files, existing_entries, strict=True)
+        ):
+            return existing_manifest
     config = Config.from_yaml(root / "configs" / "reviewer_round2_experiments.yaml")
     registry = _load_registry(root)
     _validate_registry_sources(root, registry)
@@ -1174,7 +1201,18 @@ def build_round2_figure_data_package(data_root: str | Path, *, repo_root: str | 
         ],
         "files": manifest_entries,
     }
-    manifest_path = data_root_path / "manifest.json"
+    if manifest_path.exists():
+        existing_manifest = _read_json(manifest_path)
+        existing_core = {
+            "canonical_reference_hash": existing_manifest.get("canonical_reference_hash", ""),
+            "files": existing_manifest.get("files", []),
+        }
+        new_core = {
+            "canonical_reference_hash": manifest["canonical_reference_hash"],
+            "files": manifest["files"],
+        }
+        if existing_core == new_core:
+            return existing_manifest
     _json_dump(manifest, manifest_path)
     readme_lines = [
         "# Round 2 Figure Data Package",
@@ -2246,6 +2284,7 @@ def build_round2_revision_figures(
     overwrite: bool = False,
     strict: bool = False,
     repo_root: str | Path | None = None,
+    figure_ids: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     root = _repo_root(repo_root)
     data_root_path = (root / Path(data_root)).resolve()
@@ -2266,36 +2305,50 @@ def build_round2_revision_figures(
         }
 
     _set_publication_style()
+    selected_ids = {item.strip() for item in figure_ids if item.strip()}
+    invalid_ids = sorted(selected_ids.difference(spec.figure_id for spec in specs))
+    if invalid_ids:
+        raise RuntimeError(f"unknown figure ids: {', '.join(invalid_ids)}")
+    qa_path = output_root / "visual_qa_summary.json"
+    existing_qa_map: dict[str, dict[str, Any]] = {}
+    if qa_path.exists():
+        existing_qa_map = {entry["figure_id"]: entry for entry in _read_json(qa_path).get("figures", [])}
     built_figures = []
+    changed_ids: set[str] = set()
     for spec in specs:
         category_dir = output_root / spec.category
         category_dir.mkdir(parents=True, exist_ok=True)
         base_path = category_dir / spec.semantic_name
-        if not overwrite and base_path.with_suffix(".pdf").exists():
-            pass
-        figure, extra = spec.builder(frames, package_manifest)
-        outputs = _save_figure_outputs(figure, base_path, formats=formats, dpi=dpi)
-        source_entries = [_package_entry(package_manifest, name) for name in spec.source_files]
-        metadata = {
-            "figure_id": spec.figure_id,
-            "semantic_name": spec.semantic_name,
-            "planned_location": spec.planned_location,
-            "source_files": [
-                {"path": entry["file_name"], "sha256": entry["sha256"], "reference_protocol": entry["reference_protocol"], "reference_hash": entry["reference_hash"]}
-                for entry in source_entries
-            ],
-            "filters": {},
-            "reference_protocol": next((entry["reference_protocol"] for entry in source_entries if entry["reference_protocol"]), ""),
-            "reference_hash": next((entry["reference_hash"] for entry in source_entries if entry["reference_hash"]), ""),
-            "script_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root).decode().strip(),
-            "timestamp": _utc_now(),
-            "units": [label for label in TARGET_LABELS.values()],
-            "panel_descriptions": list(spec.panel_descriptions),
-            "claim_boundary": spec.claim_boundary,
-            "extra": extra,
-        }
         metadata_path = _metadata_path(base_path)
-        _json_dump(metadata, metadata_path)
+        expected_outputs = {fmt: base_path.with_suffix(f".{fmt}") for fmt in formats}
+        has_existing = metadata_path.exists() and all(path.exists() for path in expected_outputs.values())
+        should_rebuild = overwrite or not has_existing or (bool(selected_ids) and spec.figure_id in selected_ids)
+        if should_rebuild:
+            figure, extra = spec.builder(frames, package_manifest)
+            outputs = _save_figure_outputs(figure, base_path, formats=formats, dpi=dpi)
+            source_entries = [_package_entry(package_manifest, name) for name in spec.source_files]
+            metadata = {
+                "figure_id": spec.figure_id,
+                "semantic_name": spec.semantic_name,
+                "planned_location": spec.planned_location,
+                "source_files": [
+                    {"path": entry["file_name"], "sha256": entry["sha256"], "reference_protocol": entry["reference_protocol"], "reference_hash": entry["reference_hash"]}
+                    for entry in source_entries
+                ],
+                "filters": {},
+                "reference_protocol": next((entry["reference_protocol"] for entry in source_entries if entry["reference_protocol"]), ""),
+                "reference_hash": next((entry["reference_hash"] for entry in source_entries if entry["reference_hash"]), ""),
+                "script_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root).decode().strip(),
+                "timestamp": _utc_now(),
+                "units": [label for label in TARGET_LABELS.values()],
+                "panel_descriptions": list(spec.panel_descriptions),
+                "claim_boundary": spec.claim_boundary,
+                "extra": extra,
+            }
+            _json_dump(metadata, metadata_path)
+            changed_ids.add(spec.figure_id)
+        else:
+            outputs = {fmt: str(path) for fmt, path in expected_outputs.items()}
         built_figures.append(
             {
                 "figure_id": spec.figure_id,
@@ -2307,8 +2360,19 @@ def build_round2_revision_figures(
         )
 
     render_dir = root / "paper" / "manuscript" / "build" / "round2_candidate_render"
-    qa = _visual_qa(built_figures, repo_root=root, render_dir=render_dir, strict=strict)
-    qa_path = output_root / "visual_qa_summary.json"
+    if changed_ids:
+        qa_rows = []
+        for item in built_figures:
+            if item["figure_id"] in changed_ids or item["figure_id"] not in existing_qa_map:
+                qa_entry = _visual_qa([item], repo_root=root, render_dir=render_dir, strict=strict)["figures"][0]
+            else:
+                qa_entry = existing_qa_map[item["figure_id"]]
+            qa_rows.append(qa_entry)
+        qa = {"generated_at": _utc_now(), "figures": qa_rows}
+    elif qa_path.exists():
+        qa = _read_json(qa_path)
+    else:
+        qa = _visual_qa(built_figures, repo_root=root, render_dir=render_dir, strict=strict)
     _json_dump(qa, qa_path)
     gallery = _write_gallery(built_figures, qa, repo_root=root, output_dir=output_root) if build_gallery else {}
     visio_docs = _write_visio_docs(root)
@@ -2323,6 +2387,7 @@ def build_round2_revision_figures(
         "gallery": gallery,
         "visio_docs": visio_docs,
         "plan_docs": plan_docs,
+        "rebuilt_figure_ids": sorted(changed_ids),
     }
 
 
@@ -2591,22 +2656,39 @@ def _build_main_m7(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[
     palette = [CLIMATE_PALETTE[station] for station in stations]
     x = np.arange(len(stations))
     summary_index = summary.set_index("station").reindex(stations)
+    axis_limits: dict[str, dict[str, list[float]]] = {}
     for ax, (case_column, summary_column, ylabel, label) in zip(axes.flatten()[:3], metrics, strict=True):
         grouped = cases.groupby("station")[case_column]
         means = summary_index[summary_column].to_numpy(dtype=float)
         lowers = np.asarray([float(grouped.min().loc[station]) for station in stations], dtype=float)
         uppers = np.asarray([float(grouped.max().loc[station]) for station in stations], dtype=float)
-        ax.axhline(0.0, color=MUTED_COLORS["light_gray"], linewidth=0.8, zorder=0)
-        ax.bar(x, means, color=palette, alpha=0.92, edgecolor=MUTED_COLORS["slate"], linewidth=0.4, zorder=2)
-        ax.errorbar(x, means, yerr=[means - lowers, uppers - means], fmt="none", ecolor=MUTED_COLORS["dark"], linewidth=0.85, capsize=2.0, zorder=3)
+        ax.set_axisbelow(True)
+        ax.grid(axis="y", color=REFERENCE_PALETTE["grid"], linewidth=0.6, zorder=0)
+        ax.axhline(0.0, color="#8A8A8A", linewidth=0.7, zorder=1)
+        ax.bar(
+            x,
+            means,
+            color=palette,
+            alpha=0.94,
+            edgecolor=[_darken_hex(color, amount=0.2) for color in palette],
+            linewidth=0.7,
+            zorder=2,
+        )
+        ax.errorbar(x, means, yerr=[means - lowers, uppers - means], fmt="none", ecolor=REFERENCE_PALETTE["dark"], linewidth=0.8, capsize=2.0, zorder=3)
         _style_axis(ax)
         _panel_label(ax, label)
         ax.set_xticks(x)
         ax.set_xticklabels(stations)
         ax.set_ylabel(f"Mean Δ relative to Dongtai {ylabel}")
+        axis_limits[label] = {"xlim": list(ax.get_xlim()), "ylim": list(ax.get_ylim())}
     ax = axes[1, 1]
     pivot = stability.pivot(index="station", columns="rank_metric", values="spearman").reindex(index=stations, columns=["EUIt", "EG", "H"])
-    cmap = LinearSegmentedColormap.from_list("round2_muted_diverging", [MUTED_COLORS["rust"], MUTED_COLORS["off_white"], MUTED_COLORS["teal"]])
+    heatmap_anchor_colors = {
+        "negative": REFERENCE_PALETTE["slate_blue"],
+        "center": REFERENCE_PALETTE["off_white"],
+        "positive": REFERENCE_PALETTE["dusty_rose"],
+    }
+    cmap = LinearSegmentedColormap.from_list("round2_reference_diverging", [heatmap_anchor_colors["negative"], heatmap_anchor_colors["center"], heatmap_anchor_colors["positive"]])
     norm = TwoSlopeNorm(vmin=-1.0, vcenter=0.0, vmax=1.0)
     im = ax.imshow(pivot.to_numpy(dtype=float), cmap=cmap, norm=norm, aspect="auto")
     for i in range(pivot.shape[0]):
@@ -2619,9 +2701,11 @@ def _build_main_m7(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[
     ax.set_xticklabels(["EUIt", "EG", "H"])
     ax.set_yticks(np.arange(len(stations)))
     ax.set_yticklabels(stations)
-    cbar = figure.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
+    axis_limits["d"] = {"xlim": list(ax.get_xlim()), "ylim": list(ax.get_ylim())}
+    cbar = figure.colorbar(im, ax=ax, fraction=0.028, pad=0.018)
     cbar.ax.tick_params(labelsize=6.4)
     cbar.set_label("Spearman rank stability", fontsize=6.4)
+    cbar.outline.set_linewidth(0.4)
     figure.tight_layout(pad=0.35, w_pad=0.8, h_pad=0.8)
     return figure, {
         "direct_blocks": 4,
@@ -2630,6 +2714,8 @@ def _build_main_m7(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[
         "climate_palette": CLIMATE_PALETTE,
         "palette_saturation": {key: _hex_saturation(value) for key, value in CLIMATE_PALETTE.items()},
         "heatmap_center": 0.0,
+        "heatmap_anchor_colors": heatmap_anchor_colors,
+        "axis_limits": axis_limits,
     }
 
 
@@ -2900,6 +2986,14 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
                 qa_entry = qa_map[figure["figure_id"]]
                 metadata = _read_json(Path(figure["metadata_path"]))
                 revision_note = _default_revision_note(figure["figure_id"], figure["category"])
+                palette_note = ""
+                if figure["figure_id"] == "M7":
+                    palette = metadata["extra"].get("climate_palette", {})
+                    palette_note = (
+                        f"- Palette note: Beijing `{palette.get('Beijing', '')}`, "
+                        f"Guangzhou `{palette.get('Guangzhou', '')}`, "
+                        f"Harbin `{palette.get('Harbin', '')}`."
+                    )
                 source_lines = ", ".join(f"`{source['path']}` ({source['sha256']})" for source in metadata["source_files"])
                 md_lines.extend(
                     [
@@ -2907,6 +3001,7 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
                         f"- Source files: {source_lines}",
                         f"- Claim boundary: {metadata['claim_boundary']}",
                         f"- Revision note: {revision_note}",
+                        *( [palette_note] if palette_note else [] ),
                         f"- Unresolved visual concerns: {', '.join(qa_entry['unresolved_visual_concerns']) if qa_entry['unresolved_visual_concerns'] else 'None'}",
                         "",
                     ]
@@ -2928,6 +3023,17 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
                         f"Source SHA: {source_hashes}",
                         f"Claim boundary: {metadata['claim_boundary']}",
                         f"Revision note: {revision_note}",
+                        *(
+                            [
+                                "Palette note: "
+                                + ", ".join(
+                                    f"{name} {value}"
+                                    for name, value in metadata["extra"].get("climate_palette", {}).items()
+                                )
+                            ]
+                            if figure["figure_id"] == "M7"
+                            else []
+                        ),
                         f"Unresolved concerns: {', '.join(qa_entry['unresolved_visual_concerns']) if qa_entry['unresolved_visual_concerns'] else 'None'}",
                     ]
                 )

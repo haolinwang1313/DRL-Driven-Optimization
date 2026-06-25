@@ -16,6 +16,7 @@ def main() -> None:
     parser.add_argument("--dpi", type=int, default=600)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--strict", action="store_true")
+    parser.add_argument("--figure-ids", default="", help="Comma-separated subset of figure IDs to rebuild, for example M7 or M4,S6.")
     args = parser.parse_args()
 
     payload = build_round2_revision_figures(
@@ -27,6 +28,7 @@ def main() -> None:
         dpi=args.dpi,
         overwrite=args.overwrite,
         strict=args.strict,
+        figure_ids=tuple(item.strip() for item in args.figure_ids.split(",") if item.strip()),
     )
     print(json.dumps(payload, indent=2, ensure_ascii=False))
 
