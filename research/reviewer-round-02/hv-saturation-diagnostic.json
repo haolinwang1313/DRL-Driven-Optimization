@@ -1,0 +1,146 @@
+{
+  "theoretical_max_hv": 1.3310000000000004,
+  "reference_point": [
+    1.1,
+    1.1,
+    1.1
+  ],
+  "reference_front_rows": 6213,
+  "groups": [
+    {
+      "group": "CMA-ES::Balanced_Performance",
+      "full_archive_hv": 1.3310000000000004,
+      "full_archive_igd": 0.004945527872144732,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": true,
+      "clipped_utopia_count": 1998,
+      "unique_objective_tuple_count": 2,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "CMA-ES::Energy_Generation_Focus",
+      "full_archive_hv": 1.3310000000000004,
+      "full_archive_igd": 0.004945527872144732,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": true,
+      "clipped_utopia_count": 1999,
+      "unique_objective_tuple_count": 2,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "CMA-ES::Energy_Saving_Focus",
+      "full_archive_hv": 1.3310000000000004,
+      "full_archive_igd": 0.004945527872144732,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": true,
+      "clipped_utopia_count": 2000,
+      "unique_objective_tuple_count": 1,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "DDPG::Balanced_Performance",
+      "full_archive_hv": 0.6619116495196865,
+      "full_archive_igd": 0.4655221291497715,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 20,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "DDPG::Energy_Generation_Focus",
+      "full_archive_hv": 1.170428454760511,
+      "full_archive_igd": 0.09755078330519362,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 20,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "DDPG::Energy_Saving_Focus",
+      "full_archive_hv": 1.0027567279907523,
+      "full_archive_igd": 0.2765292996900539,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 20,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "FeasiblePoolRandom::Balanced_Performance",
+      "full_archive_hv": 1.3072437602883311,
+      "full_archive_igd": 0.02396305065011755,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 1,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "FeasiblePoolRandom::Energy_Generation_Focus",
+      "full_archive_hv": 1.3072437602883311,
+      "full_archive_igd": 0.02396305065011755,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 1,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "FeasiblePoolRandom::Energy_Saving_Focus",
+      "full_archive_hv": 1.3072437602883311,
+      "full_archive_igd": 0.02396305065011755,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 1,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "NSGA-II",
+      "full_archive_hv": 1.330999428637336,
+      "full_archive_igd": 0.00494667854246997,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": true,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 1761,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "RandomSearch::Balanced_Performance",
+      "full_archive_hv": 1.200068146545457,
+      "full_archive_igd": 0.21929699988767584,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 2000,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "RandomSearch::Energy_Generation_Focus",
+      "full_archive_hv": 1.1924431333761996,
+      "full_archive_igd": 0.23839496523821213,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 2000,
+      "clip_flag_any_count": 0
+    },
+    {
+      "group": "RandomSearch::Energy_Saving_Focus",
+      "full_archive_hv": 1.1079543049679008,
+      "full_archive_igd": 0.32084144219249866,
+      "theoretical_max_hv": 1.3310000000000004,
+      "hits_theoretical_max": false,
+      "clipped_utopia_count": 0,
+      "unique_objective_tuple_count": 2000,
+      "clip_flag_any_count": 0
+    }
+  ],
+  "answers": {
+    "theoretical_max_source": "reference_point_product",
+    "nsga_igd_source": "distance to fixed clipped reference front built from canonical union",
+    "archive_diversity_warning": "full-archive HV alone does not describe descriptor or feasible-space diversity when many rows collapse to duplicated clipped objective tuples"
+  }
+}

@@ -944,9 +944,14 @@ def _collect_async_probe(config: Config, *, server_cfg: dict[str, Any], job_id: 
     projected = pd.read_csv(job_payload["local_projected"])
     result_payload = json.loads(Path(job_payload["local_result"]).read_text(encoding="utf-8"))
     result_frame = pd.DataFrame(result_payload)
+    merge_keys = [
+        column
+        for column in ["candidate_index", "matched_sample_id", "projection_distance", "method", "scenario", "seed"]
+        if column in projected.columns and column in result_frame.columns
+    ]
     merged = projected.merge(
         result_frame,
-        on=["candidate_index", "matched_sample_id", "projection_distance", "method", "scenario", "seed"],
+        on=merge_keys,
         how="left",
     )
     suffix = f"_{job_payload['output_suffix']}" if job_payload["output_suffix"] else ""
@@ -1045,9 +1050,14 @@ def physical_stack_candidate_probe(
 
     result_payload = json.loads(local_result.read_text(encoding="utf-8"))
     result_frame = pd.DataFrame(result_payload)
+    merge_keys = [
+        column
+        for column in ["candidate_index", "matched_sample_id", "projection_distance", "method", "scenario", "seed"]
+        if column in projected.columns and column in result_frame.columns
+    ]
     merged = projected.merge(
         result_frame,
-        on=["candidate_index", "matched_sample_id", "projection_distance", "method", "scenario", "seed"],
+        on=merge_keys,
         how="left",
     )
     suffix = f"_{output_suffix}" if output_suffix else ""

@@ -13,11 +13,21 @@ def main() -> None:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--output-dir", default=None)
+    parser.add_argument("--validate-weather-only", action="store_true")
+    parser.add_argument("--download-only", action="store_true")
+    parser.add_argument("--wait-seconds", type=int, default=0)
     args = parser.parse_args()
     if args.dry_run:
         payload = {"status": "dry_run", "config": args.config, "run_id": args.run_id, "output_dir": args.output_dir}
     else:
-        payload = run_climate_sensitivity(args.config, run_id=args.run_id, output_dir=args.output_dir)
+        payload = run_climate_sensitivity(
+            args.config,
+            run_id=args.run_id,
+            output_dir=args.output_dir,
+            validate_weather_only=args.validate_weather_only,
+            download_only=args.download_only,
+            wait_seconds=args.wait_seconds,
+        )
     print(json.dumps(payload, indent=2, ensure_ascii=False))
 
 

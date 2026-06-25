@@ -1,17 +1,21 @@
 from __future__ import annotations
 
 import copy
+import ast
 import hashlib
 import json
 import math
 import shutil
+import ssl
 import statistics
 import time
 import urllib.request
+import urllib.error
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable
+from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
@@ -27,8 +31,8 @@ from paper_repro.config import Config
 from paper_repro.constants import MORPHOLOGY_FEATURES, PERFORMANCE_TARGETS, PROTOTYPES
 from paper_repro.contracts import OPTIMIZATION_RESULT_COLUMNS, write_csv, write_json
 from paper_repro.metrics import normalized_benefit_frame
-from paper_repro.optimizers import run_cmaes, run_ddpg, run_random_search
-from paper_repro.physical_stack import load_block_records, physical_stack_candidate_probe, project_candidates_to_nearest_blocks
+from paper_repro.optimizers import OptimizationEnvironment, run_cmaes, run_ddpg, run_random_search
+from paper_repro.physical_stack import _connect_server, load_block_records, physical_stack_candidate_probe, project_candidates_to_nearest_blocks
 from paper_repro.publication import load_server_config
 from paper_repro.surrogate import _make_scaler, _train_single_model, load_surrogate
 
@@ -258,6 +262,92 @@ def evaluate_archive_metrics(groups: dict[str, pd.DataFrame], reference: dict[st
     return pd.DataFrame(rows)
 
 
+def theoretical_max_hv(reference_point: Iterable[float]) -> float:
+    ref = np.asarray(list(reference_point), dtype=float)
+    return float(np.prod(ref))
+
+
+def dedupe_objective_tuples(frame: pd.DataFrame, *, decimals: int = 12) -> pd.DataFrame:
+    deduped = frame.copy()
+    deduped["_objective_tuple_key"] = deduped.apply(
+        lambda row: "|".join(
+            [
+                f"{round(float(row['EUIt']), decimals):.{decimals}f}",
+                f"{round(float(row['EG']), decimals):.{decimals}f}",
+                f"{round(float(row['H']), decimals):.{decimals}f}",
+            ]
+        ),
+        axis=1,
+    )
+    deduped = deduped.drop_duplicates(subset=["_objective_tuple_key"], keep="first").drop(columns="_objective_tuple_key")
+    return deduped.reset_index(drop=True)
+
+
+def _guardrail_decomposition_frame(
+    frame: pd.DataFrame,
+    env: OptimizationEnvironment,
+    target_bounds: dict[str, tuple[float, float]],
+    *,
+    group_name: str,
+    tuple_decimals: int = 12,
+) -> pd.DataFrame:
+    actual_actions = frame[ROUND2_FEATURES].to_numpy(dtype=np.float32)
+    lower = env.feature_min
+    upper = env.feature_max
+    normalized_actions = (actual_actions - lower[None, :]) / np.maximum(upper[None, :] - lower[None, :], 1e-8)
+    raw_outputs = env.surrogate.predict(frame[ROUND2_FEATURES], clip=False).to_numpy(dtype=np.float32)
+    distance = np.linalg.norm(env.feature_reference[None, :, :] - normalized_actions[:, None, :], axis=2).min(axis=1)
+    feature_penalty = np.maximum(distance - env.feasible_radius, 0.0).astype(np.float32)
+    below = np.maximum(env.target_min[None, :] - raw_outputs, 0.0) / env.target_range[None, :]
+    above = np.maximum(raw_outputs - env.target_max[None, :], 0.0) / env.target_range[None, :]
+    extrapolation_penalty = (below + above).sum(axis=1).astype(np.float32)
+    adjusted = raw_outputs.copy()
+    adjusted[:, 0] += env.feature_penalty_scale[0] * feature_penalty
+    adjusted[:, 1] -= env.feature_penalty_scale[1] * feature_penalty
+    adjusted[:, 2] -= env.feature_penalty_scale[2] * feature_penalty
+    adjusted[:, 0] += env.target_range[0] * env.extrapolation_penalty_scale * extrapolation_penalty
+    adjusted[:, 1] -= env.target_range[1] * env.extrapolation_penalty_scale * extrapolation_penalty
+    adjusted[:, 2] -= env.target_range[2] * env.extrapolation_penalty_scale * extrapolation_penalty
+    clipped = adjusted.copy()
+    clipped[:, 0] = np.clip(clipped[:, 0], env.target_min[0], env.target_max[0])
+    clipped[:, 1] = np.clip(clipped[:, 1], env.target_min[1], env.target_max[1])
+    clipped[:, 2] = np.clip(clipped[:, 2], env.target_min[2], env.target_max[2])
+    tuple_keys = [
+        "|".join(
+            [
+                f"{round(float(values[0]), tuple_decimals):.{tuple_decimals}f}",
+                f"{round(float(values[1]), tuple_decimals):.{tuple_decimals}f}",
+                f"{round(float(values[2]), tuple_decimals):.{tuple_decimals}f}",
+            ]
+        )
+        for values in clipped
+    ]
+    result = frame[["method", "scenario", "seed", *ROUND2_FEATURES]].copy()
+    result["group"] = group_name
+    result["raw_EUIt"] = raw_outputs[:, 0]
+    result["raw_EG"] = raw_outputs[:, 1]
+    result["raw_H"] = raw_outputs[:, 2]
+    result["adjusted_EUIt"] = adjusted[:, 0]
+    result["adjusted_EG"] = adjusted[:, 1]
+    result["adjusted_H"] = adjusted[:, 2]
+    result["EUIt"] = clipped[:, 0]
+    result["EG"] = clipped[:, 1]
+    result["H"] = clipped[:, 2]
+    result["feature_manifold_distance"] = distance
+    result["feature_penalty"] = feature_penalty
+    result["extrapolation_penalty"] = extrapolation_penalty
+    result["clip_flag_EUIt"] = np.abs(clipped[:, 0] - adjusted[:, 0]) > 1e-8
+    result["clip_flag_EG"] = np.abs(clipped[:, 1] - adjusted[:, 1]) > 1e-8
+    result["clip_flag_H"] = np.abs(clipped[:, 2] - adjusted[:, 2]) > 1e-8
+    result["is_exact_utopian_tuple"] = (
+        (np.abs(clipped[:, 0] - target_bounds["EUIt"][0]) <= 1e-8)
+        & (np.abs(clipped[:, 1] - target_bounds["EG"][1]) <= 1e-8)
+        & (np.abs(clipped[:, 2] - target_bounds["H"][1]) <= 1e-8)
+    )
+    result["duplicate_objective_tuple_id"] = tuple_keys
+    return result.reset_index(drop=True)
+
+
 def _normalized_feature_frame(frame: pd.DataFrame) -> pd.DataFrame:
     feature_frame = frame[ROUND2_FEATURES].astype(float)
     return (feature_frame - feature_frame.min()) / np.maximum(feature_frame.max() - feature_frame.min(), 1e-8)
@@ -338,31 +428,103 @@ def _read_epw_location(epw_path: Path) -> dict[str, Any]:
         "wmo": parts[5] if len(parts) > 5 else "",
         "latitude": float(parts[6]) if len(parts) > 6 else math.nan,
         "longitude": float(parts[7]) if len(parts) > 7 else math.nan,
+        "timezone": float(parts[8]) if len(parts) > 8 else math.nan,
+        "elevation_m": float(parts[9]) if len(parts) > 9 else math.nan,
     }
 
 
-def download_weather_station(station_name: str, station_cfg: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+def _weather_url_has_province_directory(url: str) -> bool:
+    parsed = urlparse(url)
+    parts = [part for part in parsed.path.split("/") if part]
+    try:
+        idx = parts.index("CHN_China")
+    except ValueError:
+        return False
+    return len(parts) >= idx + 3
+
+
+def _epw_hourly_record_count(epw_path: Path) -> int:
+    lines = epw_path.read_text(encoding="utf-8", errors="replace").splitlines()
+    return max(len(lines) - 8, 0)
+
+
+def validate_weather_station(station_name: str, station_cfg: dict[str, Any], output_dir: Path, *, download: bool = True) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
-    archive_name = station_cfg["url"].rstrip("/").split("/")[-1]
+    url = str(station_cfg["url"])
+    archive_name = url.rstrip("/").split("/")[-1]
     archive_path = output_dir / archive_name
-    with urllib.request.urlopen(station_cfg["url"], timeout=120) as response:
-        archive_path.write_bytes(response.read())
     extract_dir = output_dir / station_name
+    required_period = str(station_cfg.get("period", "TMYx.2009-2023"))
+    existing_candidates = sorted(extract_dir.rglob("*.epw")) if extract_dir.exists() else []
+    if archive_path.exists() and existing_candidates:
+        epw_path = existing_candidates[0]
+        hourly_records = _epw_hourly_record_count(epw_path)
+        if hourly_records >= 8760 and required_period in archive_name:
+            location = _read_epw_location(epw_path)
+            return {
+                "station": station_name,
+                "label": station_cfg.get("label", station_name),
+                "wmo": station_cfg.get("wmo", location.get("wmo", "")),
+                "source": location.get("source", ""),
+                "period": archive_name.replace(".zip", ""),
+                "url": url,
+                "url_category": "validated_cached_download",
+                "archive_path": str(archive_path),
+                "epw_path": str(epw_path),
+                "epw_sha256": sha256_path(epw_path),
+                "archive_sha256": sha256_path(archive_path),
+                "latitude": location.get("latitude"),
+                "longitude": location.get("longitude"),
+                "timezone": location.get("timezone"),
+                "elevation_m": location.get("elevation_m"),
+                "hourly_records": hourly_records,
+                "province_directory_present": True,
+            }
+    if urlparse(url).netloc not in {"climate.onebuilding.org"}:
+        raise ValueError(f"invalid_weather_domain: {urlparse(url).netloc}")
+    if not _weather_url_has_province_directory(url):
+        raise ValueError(f"missing_province_directory: {url}")
+    try:
+        with urllib.request.urlopen(url, timeout=120) as response:
+            body = response.read() if download else response.read(1)
+            status = getattr(response, "status", 200)
+        if status != 200:
+            raise RuntimeError(f"http_status_{status}")
+        if download:
+            archive_path.write_bytes(body)
+    except urllib.error.HTTPError as exc:
+        raise RuntimeError(f"bad_url_http_{exc.code}") from exc
+    except urllib.error.URLError as exc:
+        reason = getattr(exc, "reason", exc)
+        raise RuntimeError(f"dns_or_network_error: {reason}") from exc
+    except ssl.SSLError as exc:
+        raise RuntimeError(f"tls_error: {exc}") from exc
+
+    if extract_dir.exists():
+        shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(archive_path) as zf:
-        zf.extractall(extract_dir)
+    try:
+        with zipfile.ZipFile(archive_path) as zf:
+            zf.extractall(extract_dir)
+    except zipfile.BadZipFile as exc:
+        raise RuntimeError(f"corrupt_zip: {archive_path}") from exc
     epw_candidates = sorted(extract_dir.rglob("*.epw"))
     if not epw_candidates:
-        raise FileNotFoundError(f"No EPW extracted for {station_name}")
+        raise RuntimeError(f"missing_epw: {station_name}")
     epw_path = epw_candidates[0]
+    hourly_records = _epw_hourly_record_count(epw_path)
+    if hourly_records < 8760:
+        raise RuntimeError(f"invalid_epw_record_count: {hourly_records}")
     location = _read_epw_location(epw_path)
+    if required_period not in archive_name:
+        raise RuntimeError(f"unexpected_period: {archive_name}")
     return {
         "station": station_name,
         "label": station_cfg.get("label", station_name),
         "wmo": station_cfg.get("wmo", location.get("wmo", "")),
         "source": location.get("source", ""),
         "period": archive_name.replace(".zip", ""),
-        "url": station_cfg["url"],
+        "url": url,
         "url_category": "verified_download",
         "archive_path": str(archive_path),
         "epw_path": str(epw_path),
@@ -370,7 +532,38 @@ def download_weather_station(station_name: str, station_cfg: dict[str, Any], out
         "archive_sha256": sha256_path(archive_path),
         "latitude": location.get("latitude"),
         "longitude": location.get("longitude"),
+        "timezone": location.get("timezone"),
+        "elevation_m": location.get("elevation_m"),
+        "hourly_records": hourly_records,
+        "province_directory_present": True,
     }
+
+
+def download_weather_station(station_name: str, station_cfg: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+    return validate_weather_station(station_name, station_cfg, output_dir, download=True)
+
+
+def ensure_remote_epw(server_cfg: dict[str, Any], local_epw_path: str | Path, station_name: str) -> str:
+    local_path = Path(local_epw_path)
+    remote_relpath = f"artifacts/weather/{station_name}/{local_path.name}"
+    remote_abspath = f"{server_cfg['remote_project_root'].rstrip('/')}/{remote_relpath}"
+    client = _connect_server(server_cfg)
+    sftp = client.open_sftp()
+    try:
+        remote_dir = str(Path(remote_abspath).parent).replace("\\", "/")
+        stdin, stdout, stderr = client.exec_command(f"mkdir -p {remote_dir}", timeout=30)
+        stderr_text = stderr.read().decode("utf-8", errors="replace").strip()
+        stdout.read()
+        stdin.close()
+        stdout.close()
+        stderr.close()
+        if stderr_text:
+            raise RuntimeError(f"remote_mkdir_failed: {stderr_text}")
+        sftp.put(str(local_path), remote_abspath)
+    finally:
+        sftp.close()
+        client.close()
+    return remote_relpath
 
 
 def _infer_selected_candidate(base_config: Config) -> dict[str, Any]:
@@ -746,6 +939,54 @@ def _bootstrap_ci(values: np.ndarray, fn: Callable[[np.ndarray], float], iterati
     return float(np.quantile(estimates, 0.025)), float(np.quantile(estimates, 0.975))
 
 
+def _pairwise_rank_preservation(truth: np.ndarray, pred: np.ndarray) -> float:
+    truth = np.asarray(truth, dtype=float)
+    pred = np.asarray(pred, dtype=float)
+    if len(truth) < 2:
+        return 1.0
+    total = 0
+    preserved = 0
+    for left in range(len(truth)):
+        for right in range(left + 1, len(truth)):
+            truth_diff = truth[left] - truth[right]
+            pred_diff = pred[left] - pred[right]
+            if abs(truth_diff) <= 1e-12:
+                continue
+            total += 1
+            if truth_diff == 0 or pred_diff == 0 or np.sign(truth_diff) == np.sign(pred_diff):
+                preserved += 1
+    return preserved / max(total, 1)
+
+
+def _target_stat_row(target_name: str, truth: np.ndarray, pred: np.ndarray, *, bootstrap_iterations: int, seed: int, normalized_range: float, status: str) -> dict[str, Any]:
+    residual = pred - truth
+    if len(truth) >= 2 and np.std(truth) > 1e-12 and np.std(pred) > 1e-12:
+        try:
+            slope, intercept = np.polyfit(truth, pred, deg=1)
+        except np.linalg.LinAlgError:
+            slope, intercept = (np.nan, np.nan)
+    else:
+        slope, intercept = (np.nan, np.nan)
+    return {
+        "target": target_name,
+        "status": status,
+        "count": int(len(truth)),
+        "bias": float(np.mean(residual)),
+        "MAE": float(np.mean(np.abs(residual))),
+        "RMSE": float(np.sqrt(np.mean(residual**2))),
+        "nMAE": float(np.mean(np.abs(residual)) / max(normalized_range, 1e-8)),
+        "nRMSE": float(np.sqrt(np.mean(residual**2)) / max(normalized_range, 1e-8)),
+        "Pearson_r": float(pd.Series(truth).corr(pd.Series(pred), method="pearson")) if len(truth) >= 2 else np.nan,
+        "Spearman_rho": float(pd.Series(truth).corr(pd.Series(pred), method="spearman")) if len(truth) >= 2 else np.nan,
+        "Kendall_tau": float(pd.Series(truth).corr(pd.Series(pred), method="kendall")) if len(truth) >= 2 else np.nan,
+        "slope": float(slope),
+        "intercept": float(intercept),
+        "MAE_ci_low": _bootstrap_ci(np.abs(residual), np.mean, bootstrap_iterations, seed)[0],
+        "MAE_ci_high": _bootstrap_ci(np.abs(residual), np.mean, bootstrap_iterations, seed)[1],
+        "rank_preservation": float(_pairwise_rank_preservation(truth, pred)),
+    }
+
+
 def run_surrogate_validation(config_path: str | Path, *, run_id: str | None = None, output_dir: str | Path | None = None) -> dict[str, Any]:
     base_config, _, paths = prepare_round2_workspace(config_path, run_id=run_id, output_dir=output_dir)
     dataset = _load_round2_dataset(base_config)
@@ -1054,6 +1295,8 @@ def run_benchmark_fairness(config_path: str | Path, *, run_id: str | None = None
     base_config, run_config, paths = prepare_round2_workspace(config_path, run_id=run_id, output_dir=output_dir)
     dataset = _load_round2_dataset(base_config)
     target_bounds = {target: (float(dataset[target].min()), float(dataset[target].max())) for target in ROUND2_TARGETS}
+    surrogate = load_surrogate(paths.models_dir / "surrogate.pt")
+    env = OptimizationEnvironment(surrogate=surrogate, guardrail_cfg=base_config["optimization"].get("surrogate_guardrail"))
     ddpg_baseline, nsga_baseline, baseline_combined = _load_baseline_optimization(base_config)
     utility_weights = base_config["optimization"]["utility_weights"]
 
@@ -1110,9 +1353,35 @@ def run_benchmark_fairness(config_path: str | Path, *, run_id: str | None = None
         group_archives[f"RandomSearch::{scenario_name}"] = random_archive.loc[random_archive["scenario"] == scenario_name].copy()
         group_archives[f"FeasiblePoolRandom::{scenario_name}"] = feasible_pool_random.loc[feasible_pool_random["scenario"] == scenario_name].copy()
     group_archives["NSGA-II"] = nsga_baseline.copy()
+
+    decomposition_rows = []
+    for group_name, frame in group_archives.items():
+        decomposition_rows.append(_guardrail_decomposition_frame(frame, env, target_bounds, group_name=group_name))
+    decomposition_frame = pd.concat(decomposition_rows, ignore_index=True)
+    write_csv(decomposition_frame, paths.optimization_dir / "optimizer_guardrail_decomposition.csv")
+
     reference = build_fixed_reference(group_archives)
     full_archive = evaluate_archive_metrics(group_archives, reference)
     write_csv(full_archive, paths.optimization_dir / "benchmark_full_archive.csv")
+
+    unique_objective_groups = {}
+    for group_name, group in decomposition_frame.groupby("group", sort=True):
+        unique_frame = group[["method", "scenario", "seed", *ROUND2_FEATURES, "EUIt", "EG", "H"]].copy()
+        unique_frame["reward"] = np.nan
+        unique_objective_groups[group_name] = dedupe_objective_tuples(unique_frame)
+    unique_objective_metrics = evaluate_archive_metrics(unique_objective_groups, reference)
+
+    projected_groups: dict[str, pd.DataFrame] = {}
+    for group_name, frame in group_archives.items():
+        projected = project_candidates_to_nearest_blocks(frame, dataset)
+        projected = projected.drop_duplicates(subset=["matched_sample_id"], keep="first")
+        projected_metrics_frame = dataset.loc[dataset["sample_id"].isin(projected["matched_sample_id"].astype(int))].copy()
+        projected_metrics_frame["method"] = frame["method"].iloc[0]
+        projected_metrics_frame["scenario"] = frame["scenario"].iloc[0]
+        projected_metrics_frame["seed"] = frame["seed"].iloc[0]
+        projected_metrics_frame["reward"] = np.nan
+        projected_groups[group_name] = projected_metrics_frame[OPTIMIZATION_RESULT_COLUMNS]
+    projected_metrics = evaluate_archive_metrics(projected_groups, reference)
 
     sizes = list(base_config["round2"]["fairness_analysis"]["equal_size_archive_sizes"])
     repetitions = int(base_config["round2"]["fairness_analysis"]["equal_size_repetitions"])
@@ -1167,6 +1436,105 @@ def run_benchmark_fairness(config_path: str | Path, *, run_id: str | None = None
         )
     )
     write_csv(summary_frame, paths.optimization_dir / "benchmark_equal_size_summary.csv")
+
+    metric_audit_rows = []
+    for _, row in full_archive.iterrows():
+        metric_audit_rows.append(
+            {
+                "metric_definition": "current_clipped_full_archive",
+                "group": row["group"],
+                "requested_size": row["rows"],
+                "rows": row["rows"],
+                "non_dominated_rows": row["non_dominated_rows"],
+                "HV": row["HV"],
+                "IGD": row["IGD"],
+            }
+        )
+    for _, row in unique_objective_metrics.iterrows():
+        metric_audit_rows.append(
+            {
+                "metric_definition": "unique_clipped_objective_tuples",
+                "group": row["group"],
+                "requested_size": row["rows"],
+                "rows": row["rows"],
+                "non_dominated_rows": row["non_dominated_rows"],
+                "HV": row["HV"],
+                "IGD": row["IGD"],
+            }
+        )
+    for _, row in summary_frame.iterrows():
+        metric_audit_rows.append(
+            {
+                "metric_definition": f"equal_size_archive_{int(row['requested_size'])}",
+                "group": row["group"],
+                "requested_size": int(row["requested_size"]),
+                "rows": int(row["actual_size"]),
+                "non_dominated_rows": np.nan,
+                "HV": row["HV_mean"],
+                "IGD": row["IGD_mean"],
+            }
+        )
+    for _, row in projected_metrics.iterrows():
+        metric_audit_rows.append(
+            {
+                "metric_definition": "projected_feasible_block_archive",
+                "group": row["group"],
+                "requested_size": row["rows"],
+                "rows": row["rows"],
+                "non_dominated_rows": row["non_dominated_rows"],
+                "HV": row["HV"],
+                "IGD": row["IGD"],
+            }
+        )
+    metric_audit_frame = pd.DataFrame(metric_audit_rows)
+    write_csv(metric_audit_frame, paths.optimization_dir / "benchmark_metric_definition_audit.csv")
+
+    max_hv = theoretical_max_hv(reference["reference_point"])
+    hv_diag_groups = []
+    for group_name, group in decomposition_frame.groupby("group", sort=True):
+        full_row = full_archive.loc[full_archive["group"] == group_name].iloc[0]
+        unique_count = int(group["duplicate_objective_tuple_id"].nunique())
+        hv_diag_groups.append(
+            {
+                "group": group_name,
+                "full_archive_hv": float(full_row["HV"]),
+                "full_archive_igd": float(full_row["IGD"]),
+                "theoretical_max_hv": max_hv,
+                "hits_theoretical_max": bool(abs(float(full_row["HV"]) - max_hv) <= 1e-6),
+                "clipped_utopia_count": int(group["is_exact_utopian_tuple"].sum()),
+                "unique_objective_tuple_count": unique_count,
+                "clip_flag_any_count": int((group[["clip_flag_EUIt", "clip_flag_EG", "clip_flag_H"]].any(axis=1)).sum()),
+            }
+        )
+    hv_diag_payload = {
+        "theoretical_max_hv": max_hv,
+        "reference_point": reference["reference_point"].tolist(),
+        "reference_front_rows": int(len(reference["reference_front"])),
+        "groups": hv_diag_groups,
+        "answers": {
+            "theoretical_max_source": "reference_point_product",
+            "nsga_igd_source": "distance to fixed clipped reference front built from canonical union",
+            "archive_diversity_warning": "full-archive HV alone does not describe descriptor or feasible-space diversity when many rows collapse to duplicated clipped objective tuples",
+        },
+    }
+    write_json(hv_diag_payload, paths.optimization_dir / "hv_saturation_diagnostic.json")
+    audit_md_lines = [
+        "# Benchmark Metric Definition Audit",
+        "",
+        f"- Fixed reference point: `{reference['reference_point'].tolist()}`.",
+        f"- Theoretical maximum HV: `{max_hv:.6f}`.",
+        "- All metric families below share the same ideal, nadir, reference front, and reference point.",
+        "",
+        "## Definitions",
+        "- A: current clipped full archive.",
+        "- B: unique clipped objective tuples.",
+        "- C: equal-size archive downsampling.",
+        "- D: projected feasible block archive.",
+        "",
+        "## Saturation note",
+        "- HV values near 1.331 indicate saturation against the fixed reference point rather than rich archive diversity by themselves.",
+    ]
+    (paths.optimization_dir / "benchmark_metric_definition_audit.md").write_text("\n".join(audit_md_lines), encoding="utf-8")
 
     seed_rows = []
     for seed_value, seed_frame in nsga_baseline.groupby("seed"):
@@ -1246,6 +1614,7 @@ def run_benchmark_fairness(config_path: str | Path, *, run_id: str | None = None
         "baseline_optimization_sha256": sha256_path(base_config["round2"]["baseline_runs"]["optimization_results"]),
         "cmaes_summary": json.loads((paths.optimization_dir / "cmaes_summary_round2.json").read_text(encoding="utf-8")),
         "random_search_summary": json.loads((paths.optimization_dir / "random_search_summary_round2.json").read_text(encoding="utf-8")),
+        "theoretical_max_hv": max_hv,
     }
     write_json(metadata_payload, paths.optimization_dir / "optimizer_run_metadata.json")
     return metadata_payload
@@ -1296,20 +1665,37 @@ def run_feasibility_audit(config_path: str | Path, *, run_id: str | None = None,
         projection_mapping["physical_EUIt"] = np.nan
     write_csv(projection_mapping, paths.optimization_dir / "optimizer_projection_mapping.csv")
 
+    projected_archive_groups: dict[str, pd.DataFrame] = {}
+    for (method, scenario), group in feasibility_frame.groupby(["method", "scenario"], sort=True):
+        projected_rows = dataset.loc[dataset["sample_id"].isin(group["matched_sample_id"].astype(int))].copy()
+        projected_rows["method"] = method
+        projected_rows["scenario"] = scenario
+        projected_rows["seed"] = -1
+        projected_rows["reward"] = np.nan
+        projected_archive_groups[f"{method}::{scenario}"] = projected_rows[OPTIMIZATION_RESULT_COLUMNS]
+    projected_reference = build_fixed_reference(projected_archive_groups)
+    projected_metric_frame = evaluate_archive_metrics(projected_archive_groups, projected_reference)
+
     summary_rows = []
     for (method, scenario), group in feasibility_frame.groupby(["method", "scenario"], sort=True):
         duplicate_collapse = 1.0 - group["matched_sample_id"].nunique() / max(len(group), 1)
+        projected_metric = projected_metric_frame.loc[projected_metric_frame["group"] == f"{method}::{scenario}"].iloc[0]
         summary_rows.append(
             {
                 "method": method,
                 "scenario": scenario,
                 "rows": int(len(group)),
+                "unique_matched_sample_count": int(group["matched_sample_id"].nunique()),
                 "far_residual_rate_gt_1e-8": float((group["far_minus_bd_af"] > 1e-8).mean()),
                 "osr_residual_rate_gt_1e-8": float((group["osr_minus_density_far"] > 1e-8).mean()),
                 "osli_non_integer_rate": float((~group["is_integer"]).mean()),
                 "projection_distance_mean": float(group["projection_distance"].mean()),
+                "projection_distance_median": float(group["projection_distance"].median()),
                 "projection_distance_q95": float(group["projection_distance"].quantile(0.95)),
                 "duplicate_collapse_rate": float(duplicate_collapse),
+                "projected_non_dominated_rows": int(projected_metric["non_dominated_rows"]),
+                "projected_HV": float(projected_metric["HV"]),
+                "projected_IGD": float(projected_metric["IGD"]),
             }
         )
     summary_frame = pd.DataFrame(summary_rows)
@@ -1626,24 +2012,143 @@ def run_physical_validation(
         return summary
 
     parsed = parse_physical_results_frame(probe_frame)
-    write_csv(parsed, paths.physical_dir / "physical_validation_results.csv")
-    write_csv(case_frame, paths.physical_dir / "physical_validation_cases.csv")
-    failures = parsed.loc[~parsed["energyplus_ok"] | ~parsed["radiance_ok"]].copy()
+    locked_frame = pd.DataFrame(locked["cases"])
+    locked_frame["sample_id"] = locked_frame["sample_id"].astype(int)
+    if "descriptor_values" in locked_frame.columns:
+        descriptor_frame = pd.json_normalize(locked_frame["descriptor_values"]).add_prefix("locked_")
+        analytic_frame = pd.json_normalize(locked_frame["analytic_targets"]).add_prefix("analytic_")
+        locked_frame = pd.concat([locked_frame.drop(columns=["descriptor_values", "analytic_targets"]), descriptor_frame, analytic_frame], axis=1)
+    case_results = parsed.merge(locked_frame, left_on="matched_sample_id", right_on="sample_id", how="left")
+    for column in ["scenario", "optimizer_source", "selection_stratum", "projection_distance", "original_candidate_row"]:
+        left_name = f"{column}_x"
+        right_name = f"{column}_y"
+        if left_name in case_results.columns or right_name in case_results.columns:
+            case_results[column] = case_results.get(right_name)
+            if case_results[column] is None:
+                case_results[column] = case_results.get(left_name)
+            elif left_name in case_results.columns:
+                case_results[column] = case_results[column].fillna(case_results.get(left_name))
+            if left_name in case_results.columns:
+                case_results = case_results.drop(columns=[left_name])
+            if right_name in case_results.columns:
+                case_results = case_results.drop(columns=[right_name])
+    if "physical_generation_summary" in case_results.columns:
+        case_results["physical_generation_summary"] = case_results["physical_generation_summary"].apply(
+            lambda value: ast.literal_eval(value) if isinstance(value, str) and value.startswith("{") else value
+        )
+        case_results["EG_GHI_proxy"] = case_results["physical_generation_summary"].apply(
+            lambda payload: payload.get("total_production") if isinstance(payload, dict) else np.nan
+        )
+    else:
+        case_results["EG_GHI_proxy"] = np.nan
+    write_csv(case_results, paths.physical_dir / "physical_validation_results.csv")
+    write_csv(locked_frame, paths.physical_dir / "physical_validation_cases.csv")
+    failures = case_results.loc[~case_results["energyplus_ok"] | ~case_results["radiance_ok"]].copy()
     write_csv(failures, paths.physical_dir / "physical_validation_failures.csv")
 
-    direct_rows = []
-    for _, row in parsed.iterrows():
-        direct_rows.append(
+    direct_cases = case_results.loc[case_results["selection_stratum"] != "optimizer_linked"].copy()
+    optimizer_cases = case_results.loc[case_results["selection_stratum"] == "optimizer_linked"].copy()
+    bootstrap_iterations = int(base_config["round2"]["surrogate_validation"]["bootstrap_iterations"])
+    metrics_rows = []
+    for target_name, truth_column, physical_column in [
+        ("EUIt", "EUIt", "physical_EUIt"),
+        ("EG_GHI_proxy", "EG", "physical_EG_total_production"),
+        ("EG_roof_irradiance", "EG", None),
+        ("H", "H", "physical_H_proxy"),
+    ]:
+        if physical_column is None or physical_column not in direct_cases.columns:
+            metrics_rows.append(
+                {
+                    "target": target_name,
+                    "status": "unavailable",
+                    "count": 0,
+                    "bias": np.nan,
+                    "MAE": np.nan,
+                    "RMSE": np.nan,
+                    "nMAE": np.nan,
+                    "nRMSE": np.nan,
+                    "Pearson_r": np.nan,
+                    "Spearman_rho": np.nan,
+                    "Kendall_tau": np.nan,
+                    "slope": np.nan,
+                    "intercept": np.nan,
+                    "MAE_ci_low": np.nan,
+                    "MAE_ci_high": np.nan,
+                    "rank_preservation": np.nan,
+                }
+            )
+            continue
+        truth = direct_cases[truth_column].to_numpy(dtype=float)
+        pred = direct_cases[physical_column].to_numpy(dtype=float)
+        target_range = float(direct_cases[truth_column].max() - direct_cases[truth_column].min())
+        metrics_rows.append(
+            _target_stat_row(
+                target_name,
+                truth,
+                pred,
+                bootstrap_iterations=bootstrap_iterations,
+                seed=int(base_config["round2"]["master_seed"]) + len(metrics_rows),
+                normalized_range=target_range,
+                status="available",
+            )
+        )
+    metrics_frame = pd.DataFrame(metrics_rows)
+    write_csv(metrics_frame, paths.physical_dir / "physical_validation_metrics.csv")
+
+    ddpg_baseline, nsga_baseline, baseline_combined = _load_baseline_optimization(base_config)
+    target_bounds = {target: (float(dataset[target].min()), float(dataset[target].max())) for target in ROUND2_TARGETS}
+    utility_weights = base_config["optimization"]["utility_weights"]
+    optimizer_mapping_rows = []
+    for _, row in optimizer_cases.iterrows():
+        source = str(row["optimizer_source"])
+        scenario_name = str(row["scenario"])
+        rank_index = int(row["original_candidate_row"])
+        if source == "DDPG":
+            source_frame = _append_utilities(ddpg_baseline.loc[ddpg_baseline["scenario"] == scenario_name].copy(), baseline_combined, target_bounds, utility_weights)
+            source_frame = source_frame.sort_values(f"legacy_utility_{scenario_name}", ascending=False).reset_index(drop=True)
+        else:
+            source_frame = _append_utilities(nsga_baseline.copy(), baseline_combined, target_bounds, utility_weights)
+            source_frame = source_frame.sort_values(f"legacy_utility_{scenario_name}", ascending=False).reset_index(drop=True)
+        source_row = source_frame.iloc[max(rank_index - 1, 0)]
+        analytic_legacy = apply_weighted_utility(
+            compute_fixed_domain_utility(pd.DataFrame([row[["analytic_EUIt", "analytic_EG", "analytic_H"]].rename({"analytic_EUIt": "EUIt", "analytic_EG": "EG", "analytic_H": "H"})]), target_bounds),
+            utility_weights[scenario_name],
+        ).iloc[0]
+        physical_legacy = apply_weighted_utility(
+            compute_fixed_domain_utility(pd.DataFrame([{"EUIt": row["physical_EUIt"], "EG": row["physical_EG_total_production"], "H": row["physical_H_proxy"]}]), target_bounds),
+            utility_weights[scenario_name],
+        ).iloc[0]
+        optimizer_mapping_rows.append(
             {
-                "sample_id": int(row["matched_sample_id"]),
-                "EUIt_bias": float(row["physical_EUIt"] - row["EUIt"]) if pd.notna(row["physical_EUIt"]) else np.nan,
-                "EG_proxy_bias": float(row["physical_EG_total_production"] - row["EG"]) if pd.notna(row.get("physical_EG_total_production")) else np.nan,
-                "H_bias": float(row["physical_H_proxy"] - row["H"]) if pd.notna(row["physical_H_proxy"]) else np.nan,
+                "optimizer_source": source,
+                "scenario": scenario_name,
+                "matched_sample_id": int(row["matched_sample_id"]),
+                "candidate_rank": rank_index,
+                "projection_distance": float(row.get("projection_distance", np.nan)),
+                "surrogate_candidate_EUIt": float(source_row["EUIt"]),
+                "surrogate_candidate_EG": float(source_row["EG"]),
+                "surrogate_candidate_H": float(source_row["H"]),
+                "analytic_block_EUIt": float(row["analytic_EUIt"]),
+                "analytic_block_EG": float(row["analytic_EG"]),
+                "analytic_block_H": float(row["analytic_H"]),
+                "physical_EUIt": float(row["physical_EUIt"]),
+                "physical_EG": float(row["physical_EG_total_production"]),
+                "physical_H": float(row["physical_H_proxy"]),
+                "projection_gap_EUIt": float(row["analytic_EUIt"] - source_row["EUIt"]),
+                "projection_gap_EG": float(row["analytic_EG"] - source_row["EG"]),
+                "projection_gap_H": float(row["analytic_H"] - source_row["H"]),
+                "analytic_to_physical_gap_EUIt": float(row["physical_EUIt"] - row["analytic_EUIt"]),
+                "analytic_to_physical_gap_EG": float(row["physical_EG_total_production"] - row["analytic_EG"]),
+                "analytic_to_physical_gap_H": float(row["physical_H_proxy"] - row["analytic_H"]),
+                "total_gap_EUIt": float(row["physical_EUIt"] - source_row["EUIt"]),
+                "total_gap_EG": float(row["physical_EG_total_production"] - source_row["EG"]),
+                "total_gap_H": float(row["physical_H_proxy"] - source_row["H"]),
+                "legacy_utility_surrogate": float(source_row[f"legacy_utility_{scenario_name}"]),
+                "fixed_utility_analytic": float(analytic_legacy),
+                "fixed_utility_physical": float(physical_legacy),
             }
         )
-    metrics_frame = pd.DataFrame(direct_rows)
-    write_csv(metrics_frame, paths.physical_dir / "physical_validation_metrics.csv")
-    optimizer_mapping = parsed.loc[parsed["method"].isin(["DDPG", "NSGA-II"])].copy()
+    optimizer_mapping = pd.DataFrame(optimizer_mapping_rows)
     write_csv(optimizer_mapping, paths.physical_dir / "physical_validation_optimizer_mapping.csv")
     summary = {
         "protocol_path": str(protocol_path),
@@ -1651,7 +2156,15 @@ def run_physical_validation(
         "results_csv": str(paths.physical_dir / "physical_validation_results.csv"),
         "baseline_weather": sanitize_weather_manifest([selected_weather])[0],
         "status": "completed",
+        "job_id": probe_summary.get("job_id"),
         "annual_irradiance_status": "unavailable",
+        "locked_case_count": int(len(locked["cases"])),
+        "completed_case_count": int(len(case_results)),
+        "failed_case_count": int(len(failures)),
+        "energyplus_success_count": int(case_results["energyplus_ok"].sum()),
+        "radiance_success_count": int(case_results["radiance_ok"].sum()),
+        "protocol_sha": json.loads(Path(protocol_path).read_text(encoding="utf-8"))["protocol_sha"],
+        "weather_epw_sha256": selected_weather["epw_sha256"],
     }
     write_json(summary, paths.physical_dir / "physical_validation_summary.json")
     return summary
@@ -1662,20 +2175,47 @@ def run_climate_sensitivity(
     *,
     run_id: str | None = None,
     output_dir: str | Path | None = None,
+    validate_weather_only: bool = False,
+    download_only: bool = False,
+    wait_seconds: int = 0,
 ) -> dict[str, Any]:
-    base_config, _, paths = prepare_round2_workspace(config_path, run_id=run_id, output_dir=output_dir)
+    base_config, run_config, paths = prepare_round2_workspace(config_path, run_id=run_id, output_dir=output_dir)
+    weather_output = Path(base_config["weather"]["output_dir"])
     weather_manifest_rows = []
-    for station in base_config["round2"]["climate_sensitivity"]["additional_climates"]:
+    validate_stations = list(base_config["round2"]["climate_sensitivity"].get("validate_stations", []))
+    if not validate_stations:
+        validate_stations = [base_config["weather"]["preferred_station"], *base_config["round2"]["climate_sensitivity"]["additional_climates"]]
+    for station in validate_stations:
         station_cfg = base_config["weather"]["stations"][station]
         try:
-            weather_manifest_rows.append(download_weather_station(station, station_cfg, Path(base_config["weather"]["output_dir"])))
+            weather_manifest_rows.append(validate_weather_station(station, station_cfg, weather_output, download=True))
         except Exception as exc:  # noqa: BLE001
             weather_manifest_rows.append({"station": station, "status": f"failed: {type(exc).__name__}: {exc}"})
+    weather_manifest_rows.append(
+        {
+            "station": "Jianhu_case_mapping",
+            "represented_by_station": "Dongtai",
+            "note": str(base_config["round2"]["climate_sensitivity"].get("baseline_representation_note", "")),
+        }
+    )
     weather_manifest_path = paths.climate_dir / "climate_weather_manifest.json"
     write_json({"records": sanitize_weather_manifest(weather_manifest_rows)}, weather_manifest_path)
     result_path = paths.climate_dir / "climate_sensitivity_results.csv"
     write_csv(pd.DataFrame(columns=["sample_id", "station", "status"]), result_path)
     summary_path = paths.climate_dir / "climate_sensitivity_summary.csv"
+    all_valid = all(record.get("hourly_records", 0) >= 8760 for record in weather_manifest_rows if record.get("station") in validate_stations)
+    if validate_weather_only or download_only:
+        status = "ready" if all_valid else "blocked"
+        reason = "all climate weather files validated" if all_valid else "one or more weather files failed validation"
+        write_csv(pd.DataFrame([{"status": status, "reason": reason}]), summary_path)
+        rank_path = paths.climate_dir / "climate_rank_stability.csv"
+        write_csv(pd.DataFrame(columns=["station", "rank_metric", "value"]), rank_path)
+        return {
+            "weather_manifest": str(weather_manifest_path),
+            "results_csv": str(result_path),
+            "status": status,
+            "mode": "validate_weather_only" if validate_weather_only else "download_only",
+        }
     if not (paths.physical_dir / "physical_validation_results.csv").exists():
         write_csv(pd.DataFrame([{"status": "blocked", "reason": "baseline physical validation results not yet collected"}]), summary_path)
         rank_path = paths.climate_dir / "climate_rank_stability.csv"
@@ -1683,19 +2223,116 @@ def run_climate_sensitivity(
         return {"weather_manifest": str(weather_manifest_path), "results_csv": str(result_path), "status": "blocked"}
 
     physical_results = pd.read_csv(paths.physical_dir / "physical_validation_results.csv")
+    direct_pool = physical_results.loc[physical_results["selection_stratum"] != "optimizer_linked"].copy()
     dataset = _load_round2_dataset(base_config)
+    direct_dataset = dataset.loc[dataset["sample_id"].isin(direct_pool["matched_sample_id"].astype(int))].copy()
     representative_ids = []
-    representative_ids.append(int(select_maximin_space_filling(dataset, 1)["sample_id"].iloc[0]))
-    representative_ids.append(int(dataset.sort_values("EUIt", ascending=True).iloc[0]["sample_id"]))
-    representative_ids.append(int(dataset.sort_values("EG", ascending=False).iloc[0]["sample_id"]))
-    representative_ids.append(int(dataset.sort_values("H", ascending=False).iloc[0]["sample_id"]))
+    representative_ids.append(int(select_maximin_space_filling(direct_dataset, 1)["sample_id"].iloc[0]))
+    representative_ids.append(int(direct_dataset.sort_values("EUIt", ascending=True).iloc[0]["sample_id"]))
+    representative_ids.append(int(direct_dataset.sort_values("EG", ascending=False).iloc[0]["sample_id"]))
+    representative_ids.append(int(direct_dataset.sort_values("H", ascending=False).iloc[0]["sample_id"]))
     representative_ids = list(dict.fromkeys(representative_ids))
     while len(representative_ids) < 4:
-        representative_ids.append(int(dataset.loc[~dataset["sample_id"].isin(representative_ids)].iloc[0]["sample_id"]))
-    write_csv(pd.DataFrame([{"status": "blocked", "reason": "cross-climate physical execution not yet collected in this run"}]), summary_path)
+        representative_ids.append(int(direct_dataset.loc[~direct_dataset["sample_id"].isin(representative_ids)].iloc[0]["sample_id"]))
+
+    candidate_frame = dataset.loc[dataset["sample_id"].isin(representative_ids)].copy()
+    candidate_frame = candidate_frame.sort_values("sample_id", kind="mergesort").reset_index(drop=True)
+    server_cfg = load_server_config()
+    if server_cfg is None:
+        write_csv(pd.DataFrame([{"status": "blocked", "reason": "remote server config unavailable for climate execution"}]), summary_path)
+        rank_path = paths.climate_dir / "climate_rank_stability.csv"
+        write_csv(pd.DataFrame(columns=["station", "rank_metric", "value"]), rank_path)
+        return {"weather_manifest": str(weather_manifest_path), "results_csv": str(result_path), "status": "blocked"}
+
+    station_records = {record["station"]: record for record in weather_manifest_rows if record.get("station") in base_config["round2"]["climate_sensitivity"]["additional_climates"] and record.get("hourly_records", 0) >= 8760}
+    climate_rows = []
+    for station in base_config["round2"]["climate_sensitivity"]["additional_climates"]:
+        station_job_path = paths.climate_dir / f"{station.lower()}_job.json"
+        station_output_suffix = f"{paths.run_id}_{station.lower()}"
+        station_csv_path = run_config["publication"]["reevaluation_dir"] if isinstance(run_config, dict) else None
+        record = station_records.get(station)
+        if record is None:
+            write_csv(pd.DataFrame([{"status": "blocked", "reason": f"weather_validation_missing_for_{station}"}]), summary_path)
+            rank_path = paths.climate_dir / "climate_rank_stability.csv"
+            write_csv(pd.DataFrame(columns=["station", "rank_metric", "value"]), rank_path)
+            return {"weather_manifest": str(weather_manifest_path), "results_csv": str(result_path), "status": "blocked"}
+
+        remote_relpath = ensure_remote_epw(server_cfg, record["epw_path"], station)
+        request_overrides = {
+            "epw_relpath": remote_relpath,
+            "radiance_sky": {"latitude": record["latitude"], "longitude": record["longitude"], "sky_type": 4},
+            "timeouts": base_config["round2"]["physical_validation"]["timeout_seconds"],
+        }
+        existing_job_id = None
+        if station_job_path.exists():
+            existing_job_id = json.loads(station_job_path.read_text(encoding="utf-8")).get("job_id")
+        probe_frame, probe_summary = physical_stack_candidate_probe(
+            run_config,
+            candidate_frame,
+            limit=len(candidate_frame),
+            output_suffix=station_output_suffix,
+            async_mode=True,
+            wait_seconds=wait_seconds,
+            job_id=existing_job_id,
+            request_overrides=request_overrides,
+        )
+        if probe_summary.get("job_id"):
+            write_json(probe_summary, station_job_path)
+        if probe_summary.get("status") and probe_summary["status"] != "completed":
+            write_csv(pd.DataFrame([{"status": probe_summary["status"], "reason": f"climate batch {station} still running"}]), summary_path)
+            rank_path = paths.climate_dir / "climate_rank_stability.csv"
+            write_csv(pd.DataFrame(columns=["station", "rank_metric", "value"]), rank_path)
+            return {"weather_manifest": str(weather_manifest_path), "results_csv": str(result_path), "status": probe_summary["status"], "station": station}
+        probe_frame = parse_physical_results_frame(probe_frame)
+        probe_frame["station"] = station
+        probe_frame["climate_bucket"] = base_config["weather"]["stations"][station]["climate_bucket"]
+        climate_rows.append(probe_frame)
+
+    climate_frame = pd.concat(climate_rows, ignore_index=True)
+    baseline_subset = physical_results.loc[physical_results["matched_sample_id"].isin(representative_ids), ["matched_sample_id", "physical_EUIt", "physical_EG_total_production", "physical_H_proxy"]].copy()
+    baseline_subset = baseline_subset.rename(
+        columns={
+            "physical_EUIt": "baseline_physical_EUIt",
+            "physical_EG_total_production": "baseline_physical_EG",
+            "physical_H_proxy": "baseline_physical_H",
+        }
+    )
+    climate_frame = climate_frame.merge(baseline_subset, on="matched_sample_id", how="left")
+    climate_frame["delta_EUIt_vs_baseline"] = climate_frame["physical_EUIt"] - climate_frame["baseline_physical_EUIt"]
+    climate_frame["delta_EG_vs_baseline"] = climate_frame["physical_EG_total_production"] - climate_frame["baseline_physical_EG"]
+    climate_frame["delta_H_vs_baseline"] = climate_frame["physical_H_proxy"] - climate_frame["baseline_physical_H"]
+    write_csv(climate_frame, result_path)
+    summary_rows = (
+        climate_frame.groupby("station", as_index=False)
+        .agg(
+            mean_delta_EUIt=("delta_EUIt_vs_baseline", "mean"),
+            mean_delta_EG=("delta_EG_vs_baseline", "mean"),
+            mean_delta_H=("delta_H_vs_baseline", "mean"),
+            energyplus_success_count=("energyplus_ok", "sum"),
+            radiance_success_count=("radiance_ok", "sum"),
+        )
+    )
+    write_csv(summary_rows, summary_path)
+    rank_rows = []
+    for metric_name, column in [("EUIt", "physical_EUIt"), ("EG", "physical_EG_total_production"), ("H", "physical_H_proxy")]:
+        baseline_rank = baseline_subset.sort_values(
+            {"EUIt": "baseline_physical_EUIt", "EG": "baseline_physical_EG", "H": "baseline_physical_H"}[metric_name],
+            ascending=(metric_name == "EUIt"),
+            kind="mergesort",
+        )["matched_sample_id"].tolist()
+        for station, station_frame in climate_frame.groupby("station", sort=True):
+            station_rank = station_frame.sort_values(column, ascending=(metric_name == "EUIt"), kind="mergesort")["matched_sample_id"].tolist()
+            rank_rows.append(
+                {
+                    "station": station,
+                    "rank_metric": metric_name,
+                    "spearman": float(pd.Series(baseline_rank).corr(pd.Series(station_rank), method="spearman")),
+                    "kendall": float(pd.Series(baseline_rank).corr(pd.Series(station_rank), method="kendall")),
+                }
+            )
     rank_path = paths.climate_dir / "climate_rank_stability.csv"
-    write_csv(pd.DataFrame(columns=["station", "rank_metric", "value"]), rank_path)
-    return {"weather_manifest": str(weather_manifest_path), "results_csv": str(result_path)}
+    write_csv(pd.DataFrame(rank_rows), rank_path)
+    return {"weather_manifest": str(weather_manifest_path), "results_csv": str(result_path), "status": "completed"}
 
 
 def summarize_round2_results(config_path: str | Path, *, run_id: str | None = None, output_dir: str | Path | None = None) -> dict[str, Any]:
@@ -1705,6 +2342,11 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
     benchmark_full = pd.read_csv(paths.optimization_dir / "benchmark_full_archive.csv") if (paths.optimization_dir / "benchmark_full_archive.csv").exists() else pd.DataFrame()
     benchmark_equal = pd.read_csv(paths.optimization_dir / "benchmark_equal_size_summary.csv") if (paths.optimization_dir / "benchmark_equal_size_summary.csv").exists() else pd.DataFrame()
     projection_summary = pd.read_csv(paths.optimization_dir / "optimizer_projection_summary.csv") if (paths.optimization_dir / "optimizer_projection_summary.csv").exists() else pd.DataFrame()
+    hv_saturation = (
+        json.loads((paths.optimization_dir / "hv_saturation_diagnostic.json").read_text(encoding="utf-8"))
+        if (paths.optimization_dir / "hv_saturation_diagnostic.json").exists()
+        else {}
+    )
     physical_summary = (
         json.loads((paths.physical_dir / "physical_validation_summary.json").read_text(encoding="utf-8"))
         if (paths.physical_dir / "physical_validation_summary.json").exists()
@@ -1715,6 +2357,17 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
         if (paths.climate_dir / "climate_sensitivity_summary.csv").exists()
         else pd.DataFrame([{"status": "missing", "reason": "not generated"}])
     )
+    climate_weather_manifest = (
+        json.loads((paths.climate_dir / "climate_weather_manifest.json").read_text(encoding="utf-8"))
+        if (paths.climate_dir / "climate_weather_manifest.json").exists()
+        else {"records": []}
+    )
+    if "status" in climate_summary.columns:
+        climate_status = str(climate_summary.iloc[0]["status"])
+        climate_reason = str(climate_summary.iloc[0].get("reason", ""))
+    else:
+        climate_status = "completed"
+        climate_reason = "station-level climate summary available"
     artifacts = {
         "sampling": paths.data_dir / "sampling_coverage_summary.csv",
         "surrogate_validation": paths.models_dir / "surrogate_validation_summary.csv",
@@ -1763,12 +2416,15 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
         nsga_proj = projection_summary.loc[projection_summary["method"] == "NSGA-II"].iloc[0]
         ddpg_proj = projection_summary.loc[(projection_summary["method"] == "DDPG") & (projection_summary["scenario"] == "Balanced_Performance")].iloc[0]
         top_results.append(f"NSGA-II candidate projection collapse rate = {nsga_proj.duplicate_collapse_rate:.4f}.")
+        top_results.append(f"NSGA-II unique matched feasible blocks = {int(nsga_proj.unique_matched_sample_count)}.")
         top_results.append(f"Balanced DDPG mean projection distance = {ddpg_proj.projection_distance_mean:.4f}.")
         top_results.append("All optimizer families violate exact descriptor algebra when emitted as continuous candidates before projection.")
+    if hv_saturation:
+        top_results.append(f"Fixed reference point implies a theoretical maximum HV of {hv_saturation.get('theoretical_max_hv', float('nan')):.6f}.")
     if physical_summary:
         top_results.append(f"Physical validation status = {physical_summary.get('status', 'missing')}.")
     if not climate_summary.empty:
-        top_results.append(f"Climate sensitivity status = {climate_summary.iloc[0]['status']}.")
+        top_results.append(f"Climate sensitivity status = {climate_status}.")
 
     experiment_lines = [
         "# Round 2 Experiment Results",
@@ -1793,8 +2449,9 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
             f"- Physical validation status: `{physical_summary.get('status', 'missing')}`.",
             f"- Physical job id: `{physical_summary.get('job_id', 'n/a')}`.",
             f"- Annual irradiance status: `{physical_summary.get('annual_irradiance_status', 'missing')}`.",
-            f"- Climate sensitivity status: `{climate_summary.iloc[0]['status']}`.",
-            f"- Climate blocker or note: `{climate_summary.iloc[0].get('reason', '')}`.",
+            f"- Climate sensitivity status: `{climate_status}`.",
+            f"- Climate blocker or note: `{climate_reason}`.",
+            f"- Climate weather manifest: `{paths.climate_dir / 'climate_weather_manifest.json'}`.",
             "",
             "## Data coverage results",
             f"- Sampling method summary: `{paths.data_dir / 'sampling_method_summary.json'}`.",
@@ -1819,7 +2476,8 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
             "",
             "## Impact on manuscript conclusions",
             "- The current evidence remains bounded to surrogate-conditioned benchmarking and descriptor-space design support.",
-            "- Physical validation is still in progress, so no new physical-certification claim is supported yet.",
+            "- Physical validation completed, but its large EUIt/H error and weak rank preservation still do not support a strong physical-certification claim.",
+            "- HV saturation near 1.331 must be described as reference-point saturation, not as archive richness by itself.",
             "",
             "## Old tables or figures that must be retired or revised",
             "- Any reward equation using `10^6 - d_weighted` must be replaced.",
@@ -1833,19 +2491,20 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
             "- Descriptor projection-sensitivity limitations.",
             "",
             "## Results that should stay in appendix or remain pending",
-            "- Physical validation statistics until the remote batch finishes.",
-            "- Cross-climate sensitivity until baseline physical results and verified EPWs are both available.",
+            "- Detailed physical per-case diagnostics and optimizer-linked gap decomposition are better suited to appendix tables.",
+            "- Climate sensitivity should remain framed as limited cross-climate physical sensitivity analysis, not as a generalization proof.",
             "",
             "## Conclusions that must be removed or kept bounded",
             "- Broad DRL-superiority wording.",
-            "- Any claim of physical-stack closure before the current remote batch completes.",
+            "- Any claim that physical validation establishes optimizer superiority or broad climate transfer.",
             "",
             "## Next-phase exact figure data sources",
             f"- Coverage: `{paths.data_dir / 'sampling_coverage_summary.csv'}` and `{paths.data_dir / 'descriptor_dependencies.csv'}`.",
             f"- Fairness: `{paths.optimization_dir / 'benchmark_full_archive.csv'}` and `{paths.optimization_dir / 'benchmark_equal_size_summary.csv'}`.",
+            f"- HV saturation: `{paths.optimization_dir / 'hv_saturation_diagnostic.json'}` and `{paths.optimization_dir / 'benchmark_metric_definition_audit.csv'}`.",
             f"- Feasibility: `{paths.optimization_dir / 'optimizer_projection_summary.csv'}` and `{paths.optimization_dir / 'projected_utility_comparison.csv'}`.",
             f"- Physical: `{paths.physical_dir / 'physical_validation_summary.json'}` for current run state, then result CSVs after completion.",
-            f"- Climate: `{paths.climate_dir / 'climate_sensitivity_summary.csv'}` for the current blocked state.",
+            f"- Climate: `{paths.climate_dir / 'climate_sensitivity_summary.csv'}` and `{paths.climate_dir / 'climate_rank_stability.csv'}`.",
         ]
     )
     (paths.research_root / "experiment-results.md").write_text("\n".join(experiment_lines), encoding="utf-8")
@@ -1880,13 +2539,27 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
             for row in benchmark_full.itertuples()
         ],
         "",
+        "## HV saturation",
+        (
+            f"- Theoretical maximum HV under the fixed reference point is {hv_saturation.get('theoretical_max_hv', float('nan')):.6f}."
+            if hv_saturation
+            else "- HV saturation diagnostic pending."
+        ),
+        (
+            "- Saturation must be interpreted with the clipped/unique/projected metric audit."
+            if hv_saturation
+            else ""
+        ),
+        "",
         "## Climate sensitivity status",
-        f"- Current status: `{climate_summary.iloc[0]['status']}` ({climate_summary.iloc[0].get('reason', '')}).",
+        f"- Current status: `{climate_status}` ({climate_reason}).",
+        f"- Weather manifest: `{paths.climate_dir / 'climate_weather_manifest.json'}`.",
         "",
         "## Terminology",
         "- Use `morphology descriptors` or `surrogate input descriptors` for the 12 inputs.",
         "- Distinguish training reward from post-hoc utility.",
         "- Keep claims bounded to surrogate reliability, archive fairness, and the current physical-validation status.",
+        "- Do not describe CMA-ES as providing a richer Pareto archive when HV saturation is caused by clipped corner occupancy.",
     ]
     (paths.research_root / "manuscript-change-input.md").write_text("\n".join(manuscript_lines), encoding="utf-8")
 
@@ -1900,8 +2573,10 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
         "- Post-Fig. 4 rebuild should source data from the round-2 artifact CSVs, not hand-copied tables.",
         f"- Coverage figures should use `{paths.data_dir / 'sampling_coverage_summary.csv'}` and `{paths.data_dir / 'descriptor_dependencies.csv'}`.",
         f"- Fairness figures should use `{paths.optimization_dir / 'benchmark_full_archive.csv'}` and `{paths.optimization_dir / 'benchmark_equal_size_summary.csv'}`.",
+        f"- HV saturation panels should use `{paths.optimization_dir / 'hv_saturation_diagnostic.json'}` and `{paths.optimization_dir / 'benchmark_metric_definition_audit.csv'}`.",
         f"- Feasibility figures should use `{paths.optimization_dir / 'optimizer_projection_summary.csv'}` and `{paths.optimization_dir / 'projected_utility_comparison.csv'}`.",
-        f"- Physical-validation figures should wait for completion of job `{physical_summary.get('job_id', 'n/a')}`.",
+        f"- Physical-validation figures should use the completed batch from job `{physical_summary.get('job_id', 'n/a')}`.",
+        f"- Climate figures should use `{paths.climate_dir / 'climate_sensitivity_results.csv'}` and `{paths.climate_dir / 'climate_rank_stability.csv'}`.",
         "- Do not generate or commit formal figure PDFs in this stage.",
     ]
     (paths.research_root / "figure-change-input.md").write_text("\n".join(figure_lines), encoding="utf-8")

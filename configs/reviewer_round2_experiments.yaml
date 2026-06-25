@@ -11,33 +11,33 @@ weather:
   download: true
   output_dir: artifacts/reviewer_round_02/shared/weather
   preferred_station: Dongtai
-  fallback_station: Jianhu
+  fallback_station: Nanjing
   stations:
     Dongtai:
       label: "Dongtai, Jiangsu"
       wmo: "582510"
       climate_bucket: "baseline"
-      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Dongtai.582510_TMYx.2009-2023.zip"
-    Jianhu:
-      label: "Jianhu, Jiangsu"
-      wmo: "581500"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/JS_Jiangsu/CHN_JS_Dongtai.582510_TMYx.2009-2023.zip"
+    Nanjing:
+      label: "Nanjing, Jiangsu"
+      wmo: "582380"
       climate_bucket: "baseline_fallback"
-      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_JS_Jianhu.581500_TMYx.2009-2023.zip"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/JS_Jiangsu/CHN_JS_Nanjing.582380_TMYx.2009-2023.zip"
     Harbin:
       label: "Harbin, Heilongjiang"
-      wmo: "509530"
+      wmo: "541611"
       climate_bucket: "severe_cold"
-      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_HL_Harbin.509530_TMYx.2009-2023.zip"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/HL_Heilongjiang/CHN_HL_Harbin-Taiping.AP.541611_TMYx.2009-2023.zip"
     Beijing:
       label: "Beijing"
       wmo: "545110"
       climate_bucket: "cold"
-      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_BJ_Beijing.545110_TMYx.2009-2023.zip"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/BJ_Beijing/CHN_BJ_Beijing-Capital.Intl.AP.545110_TMYx.2009-2023.zip"
     Guangzhou:
       label: "Guangzhou, Guangdong"
       wmo: "592870"
       climate_bucket: "hot_summer_warm_winter"
-      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/CHN_GD_Guangzhou.592870_TMYx.2009-2023.zip"
+      url: "https://climate.onebuilding.org/WMO_Region_2_Asia/CHN_China/GD_Guangdong/CHN_GD_Guangzhou.592870_TMYx.2009-2023.zip"
 
 dnn:
   n_trials: 50
@@ -177,7 +177,7 @@ round2:
     objective_tail_cases_per_target: 2
     interior_random_cases: 4
     annual_irradiance_required: true
-    baseline_weather_candidates: [Dongtai, Jianhu]
+    baseline_weather_candidates: [Dongtai, Nanjing]
     preflight_case_count: 1
     pilot_case_count: 4
     max_case_retries: 2
@@ -193,6 +193,8 @@ round2:
       radiance_scontrib: 180
   climate_sensitivity:
     representative_cases: 4
+    baseline_representation_note: "Jianhu case represented by Dongtai station weather."
+    validate_stations: [Dongtai, Harbin, Beijing, Guangzhou]
     additional_climates: [Harbin, Beijing, Guangzhou]
     max_case_weather_combinations: 36
   runtime_audit:
@@ -202,6 +204,7 @@ round2:
     random_runtime_scenario: Balanced_Performance
   weather_manifest:
     require_download_verification: true
+    require_same_tmy_period: "2009-2023"
     allowed_url_domains:
       - climate.onebuilding.org
   output_naming:
