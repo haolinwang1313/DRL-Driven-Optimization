@@ -1,0 +1,13 @@
+criterion_name,level,direction,candidate_universe,normalization,associated_manuscript_term,may_be_called_best,recommended_exact_wording
+highest training reward,point,maximize,per-method optimizer candidates,DDPG reward scale,best-reward DDPG candidate,no,highest training reward
+highest legacy utility,point,maximize,optimizer output rows,post-hoc utility on current comparison bounds,best candidate,only if criterion is named,highest legacy utility
+highest fixed-domain utility,point,maximize,optimizer output rows,training-dataset target bounds,best candidate,only if criterion is named,highest fixed-domain utility
+lowest mean EUIt,scenario,minimize,scenario-level point set,none,lowest energy use,no,lowest mean EUIt
+highest mean EG,scenario,maximize,scenario-level point set,none,highest generation,no,highest mean EG
+highest mean H,scenario,maximize,scenario-level point set,none,highest solar-hours,no,highest mean H
+largest HV,archive,maximize,archive groups,fixed reference front,best front quality,no,largest fixed-reference HV
+smallest IGD,archive,minimize,archive groups,fixed reference front,closest to reference front,no,smallest fixed-reference IGD
+selected highest-accuracy surrogate,surrogate,minimize,surrogate candidates,selection objective,selected surrogate,no,selected highest-accuracy surrogate
+direct feasible medoid,point,minimize,canonical feasible dataset,descriptor-space distance to median,representative case,no,descriptor-space medoid
+physical-validation representative,point,bounded,locked physical cases,selection stratum,representative physical case,no,physical-validation representative
+climate-sensitivity representative,point,bounded,locked climate cases,selection stratum,representative climate case,no,climate-sensitivity representative
