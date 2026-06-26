@@ -76,7 +76,7 @@
 
 \begin{frontmatter}
 
-\title{Surrogate-conditioned optimizer ranking in block-scale urban energy design: a comparison of policy learning and Pareto search}
+\title{Surrogate-conditioned optimizer ranking in block-scale urban energy design: A comparison of policy learning and Pareto search}
 
 \author[label1]{Haolin Wang}
 \author[label1]{Zhi Wu\corref{cor1}}
@@ -109,7 +109,7 @@
             country={China}}
 
 \begin{abstract}
-Block-scale urban energy design requires methods that relate urban morphology to energy demand, rooftop photovoltaic potential, and winter sunlight access while limiting the cost of simulation-based search. \rev{This study evaluates surrogate-conditioned optimizer ranking in a shared block morphology workflow. Feasible block morphologies are first generated and converted into 12 morphology descriptors. Energy Use Intensity, EUIt, Energy Generation, EG, and sunlight hours, H, are then assigned through an analytic demand-generation-sunlight response generator.} The selected DNN surrogate is trained on the 2000-sample regime identified from a nested 500/1000/1500/2000-sample scale study and used as the common environment for DDPG and NSGA-II. Repeated five-fold validation gives mean nMAE values of 0.0176, 0.0265, and 0.0145 for EUIt, EG, and H. \rev{In descriptor space, NSGA-II reaches near-ceiling HV under the fixed benchmark reference, while DDPG remains scenario dependent. Projection to generated feasible blocks compresses the NSGA-II archive from 2000 descriptor candidates to 51 unique feasible blocks and changes the interpretation of archive diversity.} \rev{A 24-case physics-based cross-model stress test shows weak metric agreement and unsupported ranking transfer, while a four-block cross-climate sensitivity analysis shows stable EG ordering but unstable H ordering and severe-cold EUIt ordering.} These findings indicate that surrogate-conditioned optimizer rankings are meaningful only when interpreted in relation to evaluation mode, projection distance, and climate sensitivity, rather than as direct feasible-space or physics-based superiority.
+\rev{Block-scale urban energy design requires methods that relate urban morphology to energy demand, rooftop photovoltaic potential, and winter sunlight access while limiting the cost of simulation-based search. This study evaluates surrogate-conditioned optimizer ranking in a shared block morphology workflow. Feasible block morphologies are first generated and converted into 12 morphology descriptors. Energy Use Intensity, denoted EUIt, Energy Generation, denoted EG, and sunlight hours, denoted H, are then assigned through an analytic demand-generation-sunlight response generator. The selected DNN surrogate is trained on the 2000-sample regime identified from a nested 500/1000/1500/2000-sample scale study and used as the common environment for DDPG and NSGA-II. Repeated five-fold validation gives mean nMAE values of 0.0176, 0.0265, and 0.0145 for EUIt, EG, and H. In descriptor space, NSGA-II reaches near-ceiling HV under the fixed benchmark reference, while DDPG remains scenario dependent. Projection to generated feasible blocks compresses the NSGA-II archive from 2000 descriptor candidates to 51 unique generated feasible blocks and changes the interpretation of archive diversity. A 24-case physics-based cross-model stress test indicates limited metric and rank consistency across the tested outputs, while a four-block cross-climate sensitivity analysis shows stable EG ordering but climate-dependent H and severe-cold EUIt ordering. These findings position the workflow as an early-stage design-support procedure in which optimizer ranking is conditioned by descriptor representation, feasible-block projection, cross-model agreement, and climate setting.}
 \end{abstract}
 
 
@@ -152,45 +152,51 @@ OSLI & open-space location index \\
 \section{Introduction}
 \label{sec:introduction}
 
+\begin{revblock}
 \subsection{Motivation}
 
-Urban energy planning increasingly requires early-stage design methods that connect block morphology with building demand, rooftop photovoltaic potential, and winter sunlight access. Morphology decisions made at the block scale constrain later energy-system choices because floor area, density, openness, roof exposure, and street-canyon geometry affect both demand-side and supply-side performance. This relationship is especially relevant in Chinese urban districts, where rapid renewal, distributed photovoltaic deployment, and climate-resilient planning must be considered before detailed building-system design \cite{ref1,ref2}.
+Urban energy planning is increasingly constrained by the need to reduce building-sector emissions while maintaining reliable urban energy services. At the district and block scales, morphology determines floor area, envelope exposure, roof availability, outdoor obstruction, and solar access, thereby linking spatial planning decisions with both demand-side and supply-side energy performance \cite{ref1,ref2}. This link is especially important for Chinese urban districts, where renewal, distributed photovoltaic deployment, and climate-resilient planning often need to be evaluated before detailed engineering design is available \cite{ref6,ref7}.
 
-Simulation-based urban energy modelling has made this connection more explicit, but full physical simulation remains expensive when thousands of candidate morphologies and repeated optimizer runs are required \cite{ref6,ref7}. Surrogate-assisted workflows are therefore useful as screening tools, provided that the surrogate data source, input representation, and evaluation mode are stated clearly. In the present study, the optimizer benchmark is not based on direct annual EnergyPlus and Radiance execution for all 2000 samples. The benchmark instead uses a controlled analytic demand-generation-sunlight response surface and then checks selected generated blocks through a limited physics-based cross-model stress test and a limited cross-climate sensitivity analysis.
+Block morphology affects energy performance through several coupled mechanisms. Density and building height alter heating and cooling demand through envelope exposure and mutual shading, while roof area and sky exposure influence photovoltaic generation potential \cite{ref3,ref4}. Urban morphology indicators also determine solar radiation access and daylight conditions, which are essential for evaluating winter sunlight availability in residential blocks \cite{ref5,ref41}. Recent large-scale studies further show that urban spatial structure can explain important variation in building energy demand across broad urban areas and under extreme climate events, which makes morphology-sensitive energy design relevant beyond single-building optimization \cite{wang2026unlocking,wang2026climateResilient}.
 
-The methodological problem is therefore not only whether the surrogate has low average prediction error. Once DDPG and NSGA-II search the same surrogate response surface, optimizer ranking can depend on descriptor coverage, output clipping, retained-output contracts, and the mapping from continuous descriptor outputs to generated feasible blocks. Consequently, a high descriptor-space score should not be read directly as feasible-block superiority or physics-based superiority. This study addresses that interpretation problem in a block-scale urban energy design setting.
+The computational challenge is that morphology-sensitive energy analysis is expensive when thousands of candidate blocks, multiple optimizer seeds, and different preference settings need to be compared. Simulation-based urban form generation and building-performance optimization provide a strong methodological basis for this task, but full physical simulation remains costly in repeated search loops \cite{ref8,ref18}. Surrogate-assisted optimization offers a practical screening layer for early-stage design because it can replace repeated expensive evaluations with a trained response model during search. However, the use of a surrogate also changes the scientific question: once the optimizer searches a surrogate response surface, method ranking becomes conditioned by the sampled descriptor domain, the surrogate checkpoint, the output contract, and the representation in which candidate solutions are interpreted.
+
+This study addresses that representation problem for block-scale urban energy design. The benchmark is conducted on a controlled analytic demand-generation-sunlight response surface and then examined through feasible-block projection, a physics-based cross-model stress test, and a limited cross-climate sensitivity analysis. The purpose is to clarify how policy learning and Pareto search behave when they share the same surrogate environment, and how their descriptor-space outputs should be interpreted before design conclusions are drawn.
 
 \subsection{Literature review}
 
-Urban building energy modelling provides the physical and computational basis for connecting morphology with energy performance. Bottom-up urban building energy models and geospatial building-energy frameworks have improved the representation of urban-scale demand, while recent reviews have clarified the assumptions and data requirements of these tools \cite{ref8,ref18}. At the same time, large-scale urban morphology studies have shown that spatial structure can explain important variation in building energy demand across cities and under extreme climate conditions \cite{wang2026unlocking,wang2026climateResilient}.
+Simulation-based optimization has been widely used to connect energy performance with design variables in building and urban studies. General reviews establish the role of optimization algorithms in building performance analysis and highlight the dependence of results on simulation assumptions, objective definition, and search protocol \cite{ref14,ref15}. Surrogate modelling has further expanded this field by reducing evaluation cost and enabling larger design sweeps, while recent coordinated surrogate studies show its value for coupled building and microclimate problems \cite{ref19,ref20}. These studies provide the computational basis for the present work, but they leave open how optimizer rankings should be interpreted when the benchmark itself is surrogate-conditioned.
 
-Optimization has also become a common method for early-stage energy-oriented urban design. NSGA-II and related evolutionary algorithms are widely used because they generate explicit trade-off archives for objectives such as energy demand, photovoltaic potential, and daylight access \cite{ref11,ref12}. However, a Pareto archive alone does not resolve how optimizer conclusions should be interpreted when the evaluation surface is a surrogate, nor does it show whether a retained descriptor-space archive remains diverse after projection to generated feasible morphologies \cite{ref13,ref22}.
+Parametric design studies have also shown that geometry generation can support energy- and daylight-oriented design exploration. Work on parametric daylighting and cost-optimal low-energy design demonstrates that early-stage geometry and envelope choices can be formalized as searchable design spaces \cite{ref9,ref10}. Evolutionary multi-objective optimization remains especially common because it provides explicit trade-off archives for conflicting objectives. NSGA-II and related schemes have been applied to envelope design, photovoltaic-oriented inverse urban design, urban blocks with daylight and energy objectives, and shading configurations \cite{ref11,ref12}. Other recent urban energy optimization studies extend this logic to urban heat-island effects and residential retrofitting \cite{ref16,ref17}. Cross-building optimization, adaptive BIPV shading, and shape-envelope design further show the breadth of multi-objective building-energy search \cite{ref23,ref24}. These studies show that Pareto archives are useful for design exploration, while archive size and objective-space coverage require further interpretation when the optimizer operates in a continuous descriptor space \cite{ref13,ref22}. This interpretation is also relevant to shape-envelope optimization, where search outputs must still be connected to physically meaningful building forms \cite{ref25}.
 
-Policy-learning methods offer a different way to search a continuous surrogate environment. DDPG can encode reward preferences and produce repeated descriptor queries, but this formulation should not be treated as a natural physical-time control problem in the present morphology setting \cite{ref26,ref32}. The environment serializes static surrogate queries: each action is an absolute normalized descriptor vector, and each episode is a fixed sequence of surrogate interactions. This distinction is central for comparing DDPG with direct continuous and Pareto-based optimizers.
+Deep reinforcement learning provides another family of search methods, but its role in morphology design requires careful framing. General DRL reviews and foundational DQN/DDPG studies establish policy learning for sequential decision problems and continuous control \cite{ref26,ref31}. Continuous-control applications in robotics, games, visual captioning, and autonomous driving illustrate the breadth of actor-critic and reinforcement-learning methods beyond energy design \cite{ref27,ref28}. Related work in video captioning and human-machine cooperative driving further shows that reinforcement-learning formulations can be useful even when the task structure differs from building operation \cite{ref29,ref30}. The DDPG reference used here is therefore treated as a continuous-control policy-learning comparator, with the original algorithmic basis drawn from Lillicrap et al. \cite{ref32}.
 
-Existing studies therefore leave a specific gap. Urban energy optimization has been widely studied, surrogate modelling has been widely used, and reinforcement learning has been widely applied in operational energy control. What remains less clear is how optimizer ranking should be interpreted when policy learning and Pareto search are compared on the same surrogate-conditioned morphology workflow, especially after feasible-block projection and limited physics-based sensitivity checks.
+In the energy domain, DRL has been adopted for HVAC control, building operation, distribution-network control, and renewable-building operation \cite{ref33,ref34}. These applications are primarily operational control problems in which states evolve through time. Static urban morphology optimization differs from that setting because each query is an absolute candidate description evaluated by a surrogate response surface. Recent studies on distribution-network control and active distribution networks further show that energy-system optimization may include grid constraints beyond the block morphology objectives considered here \cite{ref35,ref36}. Experimental HVAC-control studies and automated DRL scheduling frameworks examine stronger or more adaptive actor-critic alternatives under operational objectives \cite{ref37,ref38}. Derivative-free and hybrid energy-system methods remain important neighbouring baselines because renewable-building operation and photovoltaic-hydrogen sizing can require continuous search without a learned policy \cite{ref39,ref40}. The present work therefore treats DDPG as a policy-learning comparator and leaves broader continuous-optimizer coverage to future benchmark extensions.
+
+The remaining gap is methodological and representation-oriented. Existing urban energy optimization has established the value of morphology-aware design, surrogate modelling has reduced the cost of repeated evaluation, and reinforcement learning has proved useful in several energy-operation settings. What remains less clear is how policy learning and Pareto search should be compared when both operate on a shared surrogate response surface, when the surrogate inputs are morphology descriptors derived from generated blocks, and when continuous outputs require projection before they can be interpreted as feasible urban morphologies. This gap is central to early-stage design support because an optimizer can appear strong in descriptor space while mapping to a small number of generated feasible blocks or showing limited rank agreement under physics-based and climate-sensitive calculations.
 
 \subsection{Contributions and paper organization}
 
-This study provides a bounded comparison of policy learning and Pareto search for surrogate-assisted block-scale urban energy design. The contributions are threefold.
+This study develops a surrogate-assisted benchmark workflow for block-scale urban energy design and uses it to compare policy learning with Pareto search under a shared response surface. Its contributions are threefold.
 
 \begin{enumerate}[leftmargin=1.6em]
-\item It constructs a feasible-morphology workflow in which generated block geometries are converted into 12 morphology descriptors and assigned EUIt, EG, and H values through an analytic demand-generation-sunlight response surface.
-\item It compares DDPG and NSGA-II in the same guarded DNN surrogate environment under matched query budgets, while separating descriptor-space archives, equal-size retained outputs, and projected feasible-block representations.
-\item It uses a 24-case physics-based cross-model stress test and a four-block cross-climate sensitivity analysis to delimit how surrogate-conditioned optimizer rankings should be interpreted for early-stage design support.
+\item The study establishes a morphology-to-response workflow in which feasible residential block layouts are generated before 12 morphology descriptors are calculated, and in which EUIt, EG, and H are assigned by a controlled analytic demand-generation-sunlight response surface.
+\item The study compares DDPG and NSGA-II under the same selected DNN surrogate and matched query budget, while separating full descriptor archives, equal-size retained outputs, and nearest-feasible-block projections.
+\item The study defines the interpretation boundary of surrogate-conditioned optimizer ranking through repeated surrogate assessment, feasible-block projection, a 24-case physics-based cross-model stress test, and a four-block cross-climate sensitivity analysis.
 \end{enumerate}
 
-The remainder of the paper is organized as follows. Section~2 describes morphology generation, analytic response generation, surrogate modelling, DDPG, benchmark protocol, feasible projection, and sensitivity analysis. Section~3 presents the surrogate, optimizer, projection, physics-based, and climate results. Section~4 discusses the implications and limitations. Section~5 concludes the paper. Supplementary Information provides case settings, response equations, validation details, optimizer analyses, physical case results, and climate case results.
+The remainder of the paper is organized as follows. Section~2 presents the morphology generation, analytic response assignment, surrogate model, optimizer protocol, feasible projection, and sensitivity analyses. Section~3 summarizes the surrogate, optimizer, projection, cross-model, and climate results. Section~4 discusses implications and limitations. Section~5 concludes the paper. Detailed equations, additional optimizer results, case-level physical outputs, and climate tables are provided in the Supplementary Information.
+\end{revblock}
 
 \section{Methodology}
 \label{sec:methodology}
 
-\rev{This section describes the workflow in the order required for reproduction. The procedure first generates feasible block morphologies and derives morphology descriptors. It then assigns analytic EUIt, EG, and H targets, trains the selected DNN surrogate, compares DDPG and NSGA-II within the shared surrogate environment, and maps optimizer outputs back to generated feasible blocks for physical and climate sensitivity analysis. This ordering is important because the optimizer operates in descriptor space, whereas the post-optimization analyses operate on generated block geometries. Figure~\ref{fig:workflow} summarizes the resulting information flow.}
+\rev{The methodology links morphology generation, analytic target assignment, surrogate-assisted optimization, and post-optimization assessment within one block-scale design workflow. The workflow distinguishes three representations: generated feasible block geometries, 12 morphology descriptors used by the surrogate and optimizers, and locked block cases examined through physics-based and climate-sensitive calculations. This distinction is essential because the optimizer operates in descriptor space, whereas design interpretation ultimately depends on generated block geometries. Figure~\ref{fig:workflow} summarizes the computational sequence.}
 
 \begin{figure}[H]
 \centering
 \stdfigure{fig1.pdf}
-\caption{Overview of the surrogate-assisted block-scale urban energy design workflow. Feasible block morphologies are generated first and converted into 12 morphology descriptors. An analytic response generator then assigns EUIt, EG, and H targets for the nested 500/1000/1500/2000-sample regimes, from which the selected DNN surrogate is trained. DDPG and NSGA-II are compared in the shared descriptor-space surrogate environment. Optimizer candidates are subsequently mapped to generated feasible morphologies and examined through a limited physics-based cross-model stress test and a four-block cross-climate sensitivity analysis.}
+\caption{Workflow linking feasible morphology generation, analytic response assignment, surrogate-assisted optimization, feasible-block projection, and sensitivity analysis.}
 \label{fig:workflow}
 \end{figure}
 
@@ -198,7 +204,7 @@ The remainder of the paper is organized as follows. Section~2 describes morpholo
 
 The morphology generator first constructs feasible block layouts and only then calculates descriptor values. Each block is represented as a 240~m $\times$ 240~m square divided into a $3\times3$ grid of 80~m $\times$ 80~m land units. One cell is assigned as open space, and the remaining eight cells are populated with residential prototypes. For each generated block, the generator samples the open-space position, building prototype, number of floors, and orientation angle. The orientation angle is sampled within -45~deg to 45~deg. The resulting block is therefore a generated feasible morphology, while the 12 input quantities used by the surrogate are descriptors derived from that morphology.
 
-The descriptor set includes FAR, SD, AF, AR\_ew, AR\_ns, SVF, BD, OSR, SC, PAR, theta, and OSLI. These quantities are not 12 independent design variables. For example, FAR, BD, AF, and OSR are linked through the same footprint and gross-floor-area quantities, while OSLI is an integer descriptor of open-space position. Consequently, optimization results are reported as descriptor-space candidates until they are projected back to generated feasible blocks.
+The descriptor set in Table~\ref{tab:descriptors} includes FAR, SD, AF, AR\_ew, AR\_ns, SVF, BD, OSR, SC, PAR, theta, and OSLI. These quantities are not 12 independent design variables. For example, FAR, BD, AF, and OSR are linked through the same footprint and gross-floor-area quantities, while OSLI is an integer descriptor of open-space position. Consequently, optimizer outputs are first interpreted in descriptor space and then mapped to generated feasible blocks before morphology-level conclusions are drawn.
 
 \begin{table}[H]
 \begin{revblock}
@@ -230,10 +236,11 @@ OSLI & OSLI & integer & $0$--$8$ & open-space cell \\
 
 \subsection{Analytic response generation}
 
-The target values in the optimizer benchmark come from an analytic response generator rather than from direct annual EnergyPlus and Radiance execution.
-The analytic mapping converts the 12 morphology descriptors to EUIt, EG, and H through explicit demand, rooftop-generation, and sunlight-access functions. These functions preserve the intended directional interpretation of the original physics-based workflow: lower EUIt is preferred, while higher EG and H are preferred. The active 2000-sample regime is a nested prefix of the maximum generated morphology pool and uses simulation\_mode = fallback\_analytic.
+\rev{In this study, the analytic response generator is the target-assignment module that maps a generated morphology descriptor vector, denoted $\mathbf{x}$, to three target responses, denoted $\mathbf{y}^{ana}=[\mathrm{EUIt},\mathrm{EG},H]^\mathsf{T}$. The mapping uses explicit formulas that combine density, openness, aspect-ratio, sky-view, orientation, and open-space-position terms to represent demand, rooftop-generation, and sunlight-access responses. A small stochastic term is added during dataset construction, and the resulting target values are clipped to the training-domain ranges used by the surrogate.}
 
-This choice makes the benchmark reproducible and computationally stable, but it also defines the main interpretation boundary of the paper. The surrogate and optimizer comparison assess behaviour on a controlled analytic response surface. They do not replace full annual physical simulation of every generated morphology. The Dongtai station has zero fallback bias in the analytic generator, while non-Dongtai fallback bias is not used for the main benchmark. Supplementary Section S1 gives the full equations, station-bias convention, Gaussian-noise terms, and clipping ranges of 66.0--96.0 for EUIt, 1.2--2.85 for EG, and 6.0--7.85 for H.
+\rev{This module provides a controlled response surface for optimizer comparison. It makes the 500/1000/1500/2000-sample scale study deterministic and reproducible under the recorded seed and morphology-generation protocol. The physics-based case calculations are then used on locked generated blocks to assess how the analytic response ranking relates to EnergyPlus- and Radiance-component outputs in selected cases.}
+
+\rev{The response directions follow the design objectives: lower EUIt is preferred, while higher EG and H are preferred. The active 2000-sample regime is a nested prefix of the maximum generated morphology pool and uses the recorded \texttt{simulation\_mode = fallback\_analytic}. The full equations, station-bias convention, stochastic terms, and clipping ranges are given in Supplementary Section S1. Table~\ref{tab:evaluation-modes} distinguishes the analytic response generator from surrogate prediction, projection, and the two post-optimization sensitivity checks.}
 
 \begin{table}[H]
 \begin{revblock}
@@ -264,21 +271,27 @@ The selected DNN comes from the 2000-sample regime of the nested scale study. Th
 
 \begin{table}[H]
 
-\caption{Surrogate robustness summary across analytic-target validation regimes.}
+\caption{Surrogate robustness across analytic-target validation regimes.}
 \label{tab:surrogate-robustness}
 \centering
-\scriptsize
+\small
+\setlength{\tabcolsep}{4.5pt}
+\renewcommand{\arraystretch}{1.08}
 \begin{threeparttable}
-\begin{tabularx}{\linewidth}{@{}p{0.23\linewidth}rrrrrr@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccccc@{}}
 \toprule
-Regime & EUIt nMAE & EG nMAE & H nMAE & EUIt Spearman & EG Spearman & H Spearman \\
+Validation regime &
+\multicolumn{3}{c}{nMAE} &
+\multicolumn{3}{c}{Spearman $\rho$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+& EUIt & EG & H & EUIt & EG & H \\
 \midrule
 Repeated 5$\times$5 CV & 0.0176 & 0.0265 & 0.0145 & 0.991 & 0.984 & 0.995 \\
 Leave-one-OSLI-out & 0.0185 & 0.0342 & 0.0185 & 0.990 & 0.972 & 0.992 \\
 Outer-shell holdout & 0.0278 & 0.0335 & 0.0208 & 0.985 & 0.975 & 0.994 \\
 Feature-tail holdout & 0.0230 & 0.0287 & 0.0198 & 0.986 & 0.983 & 0.992 \\
 \bottomrule
-\end{tabularx}
+\end{tabular*}
 \begin{tablenotes}[flushleft]
 \footnotesize
 \item Values are computed against analytic target responses from the active response-generation regime.
@@ -289,12 +302,12 @@ Feature-tail holdout & 0.0230 & 0.0287 & 0.0198 & 0.986 & 0.983 & 0.992 \\
 
 \subsection{DDPG as serialized static black-box search}
 
-The DDPG environment serializes repeated queries to a static guarded surrogate. At the beginning of each episode, a random descriptor query is evaluated to construct the initial normalized three-target state. At each subsequent step, the actor outputs an absolute 12-dimensional normalized descriptor action. This action is not an incremental modification of the preceding block. The action is denormalized to descriptor bounds, evaluated by the guarded surrogate, and converted to the next normalized target state and scalar reward. Thus, the 40-step horizon represents a sequence of policy-training queries rather than physical time evolution.
+The DDPG environment serializes repeated queries to a static guarded surrogate. At the beginning of each episode, a random descriptor query is evaluated to construct the initial normalized three-target state. At each subsequent step, the actor outputs an absolute 12-dimensional normalized descriptor action. This action is not an incremental modification of the preceding block. The action is denormalized to descriptor bounds, evaluated by the guarded surrogate, and converted to the next normalized target state and scalar reward. The 40-step horizon therefore functions as a fixed sequence of policy-training queries on a static surrogate response surface. Figure~\ref{fig:ddpg-workflow} summarizes this serialized query structure.
 
 \begin{figure}[H]
 \centering
 \stdfigure{fig2.pdf}
-\caption{Workflow of DDPG as serialized static black-box search on a guarded surrogate. The process initializes a preference scenario, starts each episode from a random descriptor query, and then repeats absolute descriptor actions, guarded surrogate calls, state updates, and reward computation until the fixed query horizon is reached. The diagram describes a sequence of surrogate queries rather than physical time evolution or incremental morphology editing.}
+\caption{Serialized DDPG surrogate-query workflow. Each episode contains 40 absolute descriptor queries to the guarded surrogate environment.}
 \label{fig:ddpg-workflow}
 \end{figure}
 
@@ -337,18 +350,18 @@ R = 1 - d_w .
 \end{equation}
 
 
-This reward is separate from the fixed-domain post-hoc utility used later for benchmark comparison. The fixed-domain utility is a reporting metric, while $R$ is the scalar signal used during serialized DDPG training.
+This reward is separate from the fixed-domain post-hoc utility used later for benchmark comparison. The fixed-domain utility is used for post-hoc comparison, while $R$ is the scalar signal used during serialized DDPG training. Figure~\ref{fig:ddpg-architecture} summarizes the actor-critic and target-network structure used for these surrogate-query updates.
 
 \begin{figure}[H]
 \centering
 \stdfigure{fig3.pdf}
-\caption{DDPG actor-critic architecture used in the surrogate-assisted optimizer comparison. Solid arrows denote data flow among the guarded surrogate environment, experience replay buffer, online actor, and online critic. Dashed arrows denote target-network updates. The symbols $s_t$, $a_t$, $r_t$, and $s_{t+1}$ denote the state, action, reward, and next state stored in replay, while $\theta^\mu$, $\theta^Q$, $\theta^{\mu'}$, and $\theta^{Q'}$ denote online actor, online critic, target actor, and target critic parameters.}
+\caption{DDPG actor-critic architecture and target-network update structure used in the surrogate-query environment.}
 \label{fig:ddpg-architecture}
 \end{figure}
 
 \subsection{Optimizer comparison protocol}
 
-DDPG, NSGA-II, CMA-ES, RandomSearch, and FeasiblePoolRandom are represented through a retained-output contract before metrics are compared. The main manuscript emphasizes DDPG and NSGA-II because they define the policy-learning versus Pareto-search comparison. CMA-ES, RandomSearch, and FeasiblePoolRandom are retained as secondary Supplementary Information references for interpreting corner exploitation, uninformed search, and feasible-pool baselines.
+DDPG, NSGA-II, CMA-ES, RandomSearch, and FeasiblePoolRandom are represented through the retained-output contract in Table~\ref{tab:optimizer-contract} before metrics are compared. The main manuscript emphasizes DDPG and NSGA-II because they define the policy-learning versus Pareto-search comparison. CMA-ES, RandomSearch, and FeasiblePoolRandom are retained as secondary Supplementary Information references for interpreting corner exploitation, uninformed search, and feasible-pool baselines.
 
 All optimizer families use 20 seeds or runs and 24,000 surrogate queries per seed or run. DDPG retains one best scalarized candidate per seed, while NSGA-II retains a final population of 100 candidates per run. Equal-size HV and IGD are therefore reported at retained size 20 under benchmark-reference-v2, which avoids comparing a 20-candidate DDPG archive directly with a 2000-candidate NSGA-II archive. Oversized equal-size requests are labelled not applicable when the source archive is smaller than the requested retained size.
 
@@ -374,7 +387,7 @@ RandomSearch & 20 runs & 24,000 & queried archive & 2000 & SI baseline \\
 
 \subsection{Feasible projection, physics-based cross-model stress test, and cross-climate sensitivity}
 
-Descriptor-space optimizer outputs are not assumed to be feasible blocks. Each retained descriptor-space candidate is therefore mapped to the nearest generated feasible block in normalized descriptor space. This mapping quantifies projection distance, duplicate collapse, and changes in HV and IGD under the fixed benchmark reference. The projection step is a representation check; it is not a physical simulation.
+Descriptor-space optimizer outputs are treated first as candidate descriptors. Each retained descriptor-space candidate is therefore mapped to the nearest generated feasible block in normalized descriptor space. This mapping quantifies projection distance, duplicate collapse, and changes in HV and IGD under the fixed benchmark reference. The projection step is a representation check that precedes morphology-level interpretation.
 
 The limited physics-based cross-model stress test uses 24 locked cases. Eighteen direct feasible cases compare analytic response-generator values with physics-based outputs without optimizer projection, while six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated feasible block and then to physics-based result. The direct and optimizer-linked subsets answer different questions and are not merged into a single parity plot. The cross-climate sensitivity set then evaluates the same four block morphologies under Harbin, Beijing, and Guangzhou weather. The surrogate is not retrained, and the morphology set is not reselected after observing climate results.
 
@@ -382,38 +395,38 @@ The limited physics-based cross-model stress test uses 24 locked cases. Eighteen
 
 \subsection{Sampling coverage and surrogate robustness}
 
-The generated 2000-row morphology pool covers a structured descriptor space rather than an unconstrained 12-dimensional design space. Principal component analysis shows that six components explain 95\% of descriptor variance. Descriptor-dependency checks further confirm that FAR equals BD times AF to numerical precision, OSR is linked to footprint and gross floor area, and OSLI remains integer-valued. These results justify reporting optimization outputs as descriptor-space candidates before feasible projection.
+The generated 2000-row morphology pool covers a structured descriptor space. Principal component analysis shows that six components explain 95\% of descriptor variance. Descriptor-dependency checks further confirm that FAR equals BD times AF to numerical precision, OSR is linked to footprint and gross floor area, and OSLI remains integer-valued. Figure~\ref{fig:data-surrogate} shows the descriptor coverage and repeated cross-validated surrogate parity, while Table~\ref{tab:surrogate-robustness} summarizes the validation regimes that bound the selected DNN surrogate.
 
 \begin{figure}[H]
 \centering
 \stdfigure{data_and_surrogate_validation.pdf}
-\caption{Morphology sampling coverage and cross-validated surrogate predictions. Panel a reports the cumulative explained variance of principal components computed from the 12 morphology descriptors. Panels b--d compare analytic target values with repeated cross-validated surrogate predictions for EUIt, EG, and H. The axes use identical limits within each parity panel, and the dashed line denotes one-to-one agreement.}
+\caption{Morphology descriptor coverage and cross-validated DNN surrogate predictions for EUIt, EG, and H.}
 \label{fig:data-surrogate}
 \end{figure}
 
-The repeated validation and holdout results indicate low surrogate error within the analytic response-generation regime. The strongest performance is observed in repeated cross-validation, while the outer-shell and feature-tail holdouts show moderate error increases near descriptor-domain boundaries. These checks support use of the selected DNN as a controlled optimizer environment, but they do not remove the need to report projection and physical sensitivity.
+The repeated validation and holdout results indicate low surrogate error within the analytic response-generation regime. The strongest performance is observed in repeated cross-validation, while the outer-shell and feature-tail holdouts show moderate error increases near descriptor-domain boundaries. Figure~\ref{fig:surrogate-robustness} compares these regimes and defines the surrogate reliability context for the optimizer benchmark.
 
 \begin{figure}[H]
 \centering
 \stdfigure{surrogate_robustness.pdf}
-\caption{Surrogate robustness under four validation regimes. Panels report nMAE and Spearman correlation for repeated five-fold cross-validation, leave-one-OSLI-out validation, outer-shell holdout, and feature-tail holdout. These assessments quantify surrogate behaviour within the analytic response-generation regime and do not replace physics-based simulation.}
+\caption{Surrogate robustness across repeated cross-validation, leave-one-OSLI-out validation, outer-shell holdout, and feature-tail holdout.}
 \label{fig:surrogate-robustness}
 \end{figure}
 
 \subsection{DDPG training behaviour under serialized surrogate queries}
 
-Across the three preference scenarios, DDPG reaches high-reward regions but does not behave as a monotonic physical improvement process. Each episode contains 40 surrogate interactions, and each scenario is trained for 600 episodes across 20 seeds. The best-to-final gap remains visible in the training summaries, which is consistent with a policy-training search process over a static response surface. The curves therefore describe optimizer behaviour under repeated surrogate calls rather than physical evolution of an urban block.
+Across the three preference scenarios, DDPG reaches high-reward regions within the guarded surrogate environment. Each episode contains 40 surrogate interactions, and each scenario is trained for 600 episodes across 20 seeds. The best-to-final gap remains visible in the training summaries, which is consistent with a policy-training search process over a static response surface. Figure~\ref{fig:ddpg-training} shows these trajectories and separates policy-training behaviour from morphology-level interpretation.
 
 \begin{figure}[H]
 \centering
 \stdfigure{ddpg_training_dynamics.pdf}
-\caption{DDPG training behaviour under serialized surrogate queries. Each episode contains 40 surrogate interactions, and each scenario is trained for 600 episodes across 20 seeds. Solid lines show mean trajectories, and shaded bands show one standard deviation. The curves describe policy-training behaviour on the guarded surrogate rather than physical evolution of an urban block.}
+\caption{DDPG training trajectories across 600 episodes and 20 seeds for the three preference scenarios.}
 \label{fig:ddpg-training}
 \end{figure}
 
 \subsection{Canonical DDPG and NSGA-II comparison}
 
-The canonical benchmark uses benchmark-reference-v2 with reference hash a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc. In descriptor space, the full NSGA-II archive reaches HV = 1.330999 and IGD = 0.004947. At equal retained size 20, NSGA-II remains near the theoretical HV ceiling, with HV = 1.330995 and IGD = 0.004710. The three DDPG scenarios remain scenario dependent: Balanced DDPG gives HV = 0.661912 and IGD = 0.465522, Energy Saving DDPG gives HV = 1.002757 and IGD = 0.276529, and Energy Generation DDPG gives HV = 1.170428 and IGD = 0.097551.
+The canonical benchmark uses benchmark-reference-v2 with reference hash a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc. Table~\ref{tab:canonical-benchmark} gives the retained-size and full-archive summary. In descriptor space, the full NSGA-II archive reaches HV = 1.330999 and IGD = 0.004947. At equal retained size 20, NSGA-II remains near the theoretical HV ceiling, with HV = 1.330995 and IGD = 0.004710. The three DDPG scenarios remain scenario dependent: Balanced DDPG gives HV = 0.661912 and IGD = 0.465522, Energy Saving DDPG gives HV = 1.002757 and IGD = 0.276529, and Energy Generation DDPG gives HV = 1.170428 and IGD = 0.097551.
 
 \begin{table}[H]
 
@@ -444,37 +457,37 @@ NSGA-II & full descriptor archive, 2000 rows & 1.330999 & 0.004947 & primary Par
 \begin{figure}[H]
 \centering
 \stdfigure{benchmark_fairness.pdf}
-\caption{Canonical DDPG and NSGA-II comparison under matched retained size. Panel a reports fixed-domain post-hoc utility across the three DDPG preference scenarios and the corresponding NSGA-II selections. Panels b and c report equal-size HV and IGD at retained size 20 under benchmark-reference-v2. HV values are interpreted relative to the theoretical ceiling defined by the fixed reference point.}
+\caption{Canonical DDPG and NSGA-II comparison under matched retained size and benchmark-reference-v2.}
 \label{fig:canonical-benchmark}
 \end{figure}
 
-The descriptor-space result should be read with the HV ceiling in mind. NSGA-II covers the fixed reference volume almost completely, but this near-ceiling value does not by itself establish feasible-morphology diversity or physical ranking transfer. The retained-output contract and feasible projection results are therefore necessary before drawing design-support conclusions from the descriptor archive.
+Figure~\ref{fig:canonical-benchmark} shows the matched retained-size comparison and the fixed-domain post-hoc utility. The descriptor-space result should be read with the HV ceiling in mind. NSGA-II covers the fixed reference volume almost completely, but this near-ceiling value requires feasible-block projection before feasible-morphology diversity or physical ordering is inferred from the descriptor archive.
 
 \subsection{Feasible morphology projection}
 
-Feasible projection changes the representation of optimizer outputs. The NSGA-II descriptor archive contains 2000 retained candidates, but nearest-neighbour projection maps them to 51 unique generated feasible blocks, corresponding to a duplicate-collapse rate of 0.9745. Under the fixed benchmark reference, the NSGA-II archive changes from descriptor HV = 1.330999 and IGD = 0.004947 to projected feasible HV = 1.229611 and IGD = 0.156912. Balanced DDPG changes from descriptor HV = 0.661912 and IGD = 0.465522 to projected feasible HV = 0.990990 and IGD = 0.215410. These changes show that descriptor-space ranking and projected feasible ranking are not interchangeable.
+Feasible projection changes the representation of optimizer outputs. The NSGA-II descriptor archive contains 2000 retained candidates, but nearest-neighbour projection maps them to 51 unique generated feasible blocks, corresponding to a duplicate-collapse rate of 0.9745. Under the fixed benchmark reference, the NSGA-II archive changes from descriptor HV = 1.330999 and IGD = 0.004947 to projected feasible HV = 1.229611 and IGD = 0.156912. Balanced DDPG changes from descriptor HV = 0.661912 and IGD = 0.465522 to projected feasible HV = 0.990990 and IGD = 0.215410. Figure~\ref{fig:projection} shows why descriptor-space ranking and projected feasible ranking are interpreted as separate quantities.
 
 \begin{figure}[H]
 \centering
 \stdfigure{feasible_projection.pdf}
-\caption{Compression of descriptor-space outputs after projection to generated feasible morphologies. Panel a compares retained descriptor candidates with unique projected feasible blocks. Panel b reports normalized projection-distance distributions. Projection is a nearest-neighbour mapping to generated blocks and should not be interpreted as physics-based simulation.}
+\caption{Compression of descriptor-space optimizer outputs after nearest-feasible-block projection.}
 \label{fig:projection}
 \end{figure}
 
 \subsection{Physics-based cross-model stress test}
 
-The physics-based cross-model stress test completed 24 locked cases. The 18 direct feasible cases are used for the main parity comparison because they compare analytic response-generator values with physics-based outputs without optimizer projection. For these direct cases, EUIt has nMAE = 0.340 and Spearman rho = -0.404, the GHI-based rooftop-PV proxy for EG has nMAE = 0.405 and Spearman rho = -0.023, and January 20 windowsill direct-sun hours for H has nMAE = 0.601 and Spearman rho = -0.043. Metric agreement is therefore weak, and ranking transfer is unsupported.
+The physics-based cross-model stress test completed 24 locked cases. The 18 direct feasible cases are used for the main parity comparison because they compare analytic response-generator values with physics-based outputs without optimizer projection. For these direct cases, EUIt has nMAE = 0.340 and Spearman rho = -0.404, the GHI-based rooftop-PV proxy for EG has nMAE = 0.405 and Spearman rho = -0.023, and January 20 windowsill direct-sun hours for H has nMAE = 0.601 and Spearman rho = -0.043. The direct-case comparison therefore indicates weak metric agreement and limited rank consistency across the tested outputs. Figure~\ref{fig:physical-stress} presents this cross-model stress test.
 
 \begin{figure}[H]
 \centering
 \stdfigure{physical_cross_model_stress_test.pdf}
-\caption{Limited physics-based cross-model stress test for 18 direct feasible blocks. The x-axis reports analytic response-generator values, and the y-axis reports physics-based stress-test values for EUIt, the GHI-based rooftop-PV proxy for EG, and January 20 windowsill direct-sun hours for H. The statistics quantify cross-model agreement and ranking transfer rather than optimizer superiority.}
+\caption{Physics-based cross-model stress test for 18 direct generated feasible blocks.}
 \label{fig:physical-stress}
 \end{figure}
 
 \subsection{Cross-climate sensitivity}
 
-The limited four-block cross-climate physical sensitivity analysis evaluates selected morphologies under Harbin, Beijing, and Guangzhou weather relative to the Dongtai baseline. Harbin increases EUIt by a mean of 55.68~kWh/m$^2$/y, Beijing increases EUIt by 13.47~kWh/m$^2$/y, and Guangzhou decreases EUIt by 2.97~kWh/m$^2$/y. EG ordering remains stable across the three additional climates, with Spearman rho = 1.0 for all three stations. H ordering is unstable, with Spearman rho values of 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. Severe-cold EUIt ordering is also unstable, with Harbin Spearman rho = 0.2.
+The limited four-block cross-climate physical sensitivity analysis evaluates selected morphologies under Harbin, Beijing, and Guangzhou weather relative to the Dongtai baseline. Harbin increases EUIt by a mean of 55.68~kWh/m$^2$/y, Beijing increases EUIt by 13.47~kWh/m$^2$/y, and Guangzhou decreases EUIt by 2.97~kWh/m$^2$/y. EG ordering remains stable across the three additional climates, with Spearman rho = 1.0 for all three stations. H ordering is unstable, with Spearman rho values of 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. Severe-cold EUIt ordering is also unstable, with Harbin Spearman rho = 0.2. Table~\ref{tab:physical-climate} and Fig.~\ref{fig:climate} summarize the physical and climate sensitivity boundary used for the final interpretation.
 
 \begin{table}[H]
 \begin{revblock}
@@ -501,7 +514,7 @@ Climate sensitivity & 12 & H Spearman & 0.2--0.4 & unstable ordering \\
 \begin{figure}[H]
 \centering
 \stdfigure{cross_climate_sensitivity.pdf}
-\caption{Limited four-block cross-climate physical sensitivity analysis. Panels a--c report mean changes in EUIt, EG, and H relative to Dongtai station weather for Harbin, Beijing, and Guangzhou. Panel d reports rank stability across the four selected blocks. The surrogate is not retrained, so the figure shows physical sensitivity of selected morphologies rather than cross-climate surrogate generalization.}
+\caption{Four-block cross-climate sensitivity under Beijing, Guangzhou, and Harbin weather relative to Dongtai.}
 \label{fig:climate}
 \end{figure}
 
@@ -510,31 +523,31 @@ Climate sensitivity & 12 & H Spearman & 0.2--0.4 & unstable ordering \\
 
 \subsection{Descriptor-space ranking and feasible morphology interpretation}
 
-\rev{The descriptor-space comparison shows that NSGA-II is stronger than the three equal-size DDPG scenarios under benchmark-reference-v2, while the Generation-focused DDPG setting is the strongest of the three DDPG variants. This result is meaningful as a comparison of search behaviour in the selected surrogate environment. It should not be read as a direct ranking of feasible urban blocks, because the optimizer outputs first exist as continuous descriptor-space candidates.}
+\rev{The descriptor-space comparison shows that NSGA-II is stronger than the three equal-size DDPG scenarios under benchmark-reference-v2, while the Generation-focused DDPG setting is the strongest of the three DDPG variants. This result is most informative as a comparison of search behaviour in the selected surrogate environment. Feasible-block interpretation requires the subsequent projection step because the optimizer outputs first exist as continuous descriptor-space candidates.}
 
 \rev{The projection analysis changes that interpretation. NSGA-II retains 2000 descriptor candidates, but these candidates map to 51 unique generated feasible blocks after nearest-neighbour projection. This compression shows that descriptor archive size and feasible-morphology diversity are different quantities. Projection distance and duplicate collapse are therefore necessary for interpreting continuous optimizer outputs in a morphology-generation workflow.}
 
 \subsection{Physical and climate sensitivity boundaries}
 
-\rev{The physics-based cross-model stress test completed all 24 locked cases, but the agreement between analytic target values and physics-based outputs is weak. For the 18 direct feasible cases, Spearman correlation is negative or near zero for EUIt, the EG proxy, and H. These results do not support transferring descriptor-space optimizer ranking to physics-based ranking. They instead define the degree of mismatch between the analytic response surface and the tested physical workflows.}
+\rev{The physics-based cross-model stress test completed all 24 locked cases, but the agreement between analytic target values and physics-based outputs is weak. For the 18 direct feasible cases, Spearman correlation is negative or near zero for EUIt, the EG proxy, and H. These results indicate that descriptor-space ranking and physics-based ordering can diverge in the tested case set. They define the degree of mismatch between the analytic response surface and the tested physical workflows.}
 
-\rev{The cross-climate sensitivity analysis provides a limited view of weather dependence. EG ordering remains stable across Harbin, Beijing, and Guangzhou for the four selected blocks, whereas H ordering is unstable and EUIt ordering becomes unstable in the severe-cold Harbin case. The surrogate is not retrained across climates, so these results should be interpreted as physical sensitivity of selected morphologies rather than as cross-climate surrogate generalization.}
+\rev{The cross-climate sensitivity analysis provides a limited view of weather dependence. EG ordering remains stable across Harbin, Beijing, and Guangzhou for the four selected blocks, whereas H ordering is unstable and EUIt ordering becomes unstable in the severe-cold Harbin case. The surrogate is kept fixed across climates, so these results define physical sensitivity for selected morphologies within the tested weather set.}
 
 \subsection{Implications, limitations, and future work}
 
 For early-stage urban energy design, the workflow is useful because it separates fast descriptor-space screening from feasible-block projection and physical sensitivity analysis. This separation is important for design practice. A surrogate optimizer can identify promising descriptor regions, but generated feasible blocks and physics-based checks remain necessary before drawing design conclusions.
 
-Several limitations remain. The optimizer benchmark is conducted on an analytic response-generation dataset rather than on direct annual physical simulation for all generated morphologies. The 12 surrogate inputs are descriptors derived from generated blocks and do not form an independent unconstrained design space. The DDPG environment serializes queries to a static surrogate and should not be interpreted as a physical-time control problem. The physics-based cross-model stress test shows weak ranking transfer, and the climate analysis covers only four blocks and three additional climates. Future work should connect the optimizer to a feasible morphology decoder, expand the physical simulation set, incorporate storage, EV charging, and distributed-energy interactions, and retrain surrogates across multiple climate regions.
+Several limitations remain. The optimizer benchmark is conducted on an analytic response-generation dataset, while direct annual physical calculations are available for the locked stress-test cases. The 12 surrogate inputs are descriptors derived from generated blocks and form a structured morphology-derived descriptor space. The DDPG environment serializes queries to a static surrogate, so its horizon is best understood as a policy-training query sequence. The physics-based cross-model stress test indicates limited rank consistency in the tested case set, and the climate analysis covers only four blocks and three additional climates. Future work should connect the optimizer to a feasible morphology decoder, expand the physical simulation set, incorporate storage, EV charging, and distributed-energy interactions, and retrain surrogates across multiple climate regions.
 
 \section{Conclusions}
 
 This study examined policy learning and Pareto search in a surrogate-assisted workflow for block-scale urban energy design. The workflow first generates feasible block morphologies, converts them into 12 morphology descriptors, assigns analytic EUIt, EG, and H targets, and trains a selected DNN surrogate from the 2000-sample regime of a nested scale study.
 
-The first conclusion is that the surrogate is accurate within the analytic response-generation regime but remains tied to the sampled descriptor domain. Repeated cross-validation gives low nMAE for all three targets, while holdout assessments and descriptor-dependency checks show that the input space is a structured morphology-derived descriptor space rather than an independent continuous design space.
+The first conclusion is that the surrogate is accurate within the analytic response-generation regime but remains tied to the sampled descriptor domain. Repeated cross-validation gives low nMAE for all three targets, while holdout assessments and descriptor-dependency checks show that the input space is a structured morphology-derived descriptor space.
 
 The second conclusion is that optimizer ranking changes when descriptor-space candidates are projected to generated feasible morphologies. NSGA-II reaches near-ceiling descriptor-space HV under the fixed benchmark reference, but its 2000 descriptor candidates contract to 51 unique feasible blocks after projection. This projection result prevents descriptor-space archive size from being interpreted as feasible-morphology diversity.
 
-The third conclusion is that physical and climate sensitivity analyses restrict the scope of interpretation. The 24-case physics-based cross-model stress test completed without failed cases, but metric agreement and ranking transfer are weak. The four-block cross-climate sensitivity analysis shows stable EG ordering but unstable H ordering and severe-cold EUIt ordering. These results support explicit reporting of projection distance, model agreement, and climate sensitivity whenever surrogate-conditioned optimizer rankings are used for early-stage urban energy design.
+The third conclusion is that physical and climate sensitivity analyses restrict the scope of interpretation. The 24-case physics-based cross-model stress test completed without failed cases, but metric agreement and rank consistency are limited in the tested case set. The four-block cross-climate sensitivity analysis shows stable EG ordering but climate-dependent H and severe-cold EUIt ordering. These results show why projection distance, model agreement, and climate sensitivity should accompany surrogate-conditioned optimizer rankings in early-stage urban energy design.
 
 \section*{Data and code availability}
 
@@ -548,6 +561,7 @@ The authors declare that they have no known competing financial interests or per
 
 This work was supported in part by the Outstanding Youth Fund of Jiangsu Province under Grant No.~BK20240076, and in part by the Excellent Young Scientists Fund, China, under Grant No.~52522704.
 
-\input{references}
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
 
 \end{document}
