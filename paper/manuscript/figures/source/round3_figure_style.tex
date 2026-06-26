@@ -1,0 +1,98 @@
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{Arial}
+\setsansfont{Arial}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{amsmath,amssymb,bm}
+\usepackage[italic]{mathastext}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,fit,positioning,shapes.geometric}
+
+\definecolor{FigBlue}{HTML}{2C78D0}
+\definecolor{FigGreen}{HTML}{2E8B57}
+\definecolor{FigOrange}{HTML}{C96A00}
+\definecolor{FigRed}{HTML}{C74A44}
+\definecolor{FigDark}{HTML}{202020}
+\definecolor{FigGrid}{HTML}{D9D9D9}
+\definecolor{FigLight}{HTML}{F4F4F4}
+\definecolor{FigActorFill}{HTML}{F6F9FC}
+\definecolor{FigFormulaFill}{HTML}{FCF8F6}
+
+\newcommand{\RThreeTitle}{\fontsize{8.9}{9.8}\selectfont\bfseries}
+\newcommand{\RThreeText}{\fontsize{7.35}{8.0}\selectfont}
+\newcommand{\RThreeSmall}{\fontsize{6.75}{7.35}\selectfont}
+\newcommand{\RThreeTiny}{\fontsize{6.25}{6.9}\selectfont}
+\newcommand{\RThreeFormula}{\fontsize{6.85}{7.45}\selectfont}
+\newcommand{\RThreeTerminal}{\fontsize{8.1}{8.9}\selectfont\bfseries}
+
+\tikzset{
+  r3base/.style={
+    draw=FigDark,
+    fill=FigLight,
+    line width=0.9pt,
+    align=center,
+    inner sep=2.2pt,
+    text=FigDark,
+    font=\RThreeText
+  },
+  flowbox/.style={r3base, rectangle, draw=FigBlue, font=\RThreeTiny},
+  stepbox/.style={r3base, rectangle, draw=FigGreen, fill=white},
+  neutralbox/.style={r3base, rectangle, draw=FigGrid, fill=white},
+  actorbox/.style={r3base, rectangle, draw=FigBlue, fill=FigActorFill},
+  targetbox/.style={actorbox, dashed, line width=0.9pt},
+  formulabox/.style={r3base, rectangle, draw=FigOrange, fill=FigFormulaFill},
+  terminalbox/.style={
+    r3base,
+    ellipse,
+    draw=FigBlue,
+    fill=white,
+    line width=1.0pt,
+    font=\RThreeTerminal
+  },
+  decisionbox/.style={
+    r3base,
+    diamond,
+    aspect=2.25,
+    draw=FigOrange,
+    fill=white,
+    line width=1.0pt,
+    inner sep=0.8pt,
+    font=\RThreeTiny
+  },
+  outercallout/.style={
+    draw=FigRed,
+    dashed,
+    line width=0.9pt,
+    rounded corners=1pt,
+    fill=none
+  },
+  mainarrow/.style={
+    -{Latex[length=1.55mm,width=0.95mm]},
+    draw=FigDark,
+    line width=1.0pt,
+    shorten >=4.0pt,
+    shorten <=2.0pt
+  },
+  subarrow/.style={
+    -{Latex[length=1.45mm,width=0.90mm]},
+    draw=FigDark,
+    line width=0.85pt,
+    shorten >=3.5pt,
+    shorten <=2.0pt
+  },
+  softarrow/.style={
+    -{Latex[length=1.45mm,width=0.90mm]},
+    draw=FigDark,
+    dashed,
+    line width=0.85pt,
+    shorten >=3.5pt,
+    shorten <=2.0pt
+  },
+  arrowlabel/.style={
+    fill=white,
+    inner sep=1.0pt,
+    text=FigDark,
+    font=\RThreeTiny
+  }
+}

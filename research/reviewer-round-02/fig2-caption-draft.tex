@@ -1,9 +1,8 @@
-Figure 2. Serialized surrogate-query process used in the DDPG
-benchmark. The normalized three-target state is mapped by the actor to
-an absolute 12-dimensional descriptor query. After Gaussian exploration
-and clipping, the query is evaluated by the guarded DNN surrogate,
-which returns the next state and normalized-distance reward. Each
-episode begins from a random descriptor query and terminates after 40
-surrogate interactions. The sequence represents repeated black-box
-queries rather than physical time evolution; the actor--critic learning
-mechanics are shown in Fig. 3.
+Figure 2. Workflow of the DDPG-based surrogate search. The optimization
+starts by initializing the surrogate-based environment and selecting one
+preference scenario. Each episode begins from a random descriptor query
+and then proceeds through repeated surrogate-query steps, in which the
+actor produces an absolute descriptor query and the guarded surrogate
+returns the next state and reward. The episode terminates after a fixed
+query horizon, and the process continues until all episodes and seeds are
+completed.
