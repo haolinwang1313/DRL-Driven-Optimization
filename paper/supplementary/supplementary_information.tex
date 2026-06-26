@@ -1,0 +1,340 @@
+\pdfminorversion=7
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,bm}
+\IfFileExists{newtxtext.sty}{\usepackage{newtxtext,newtxmath}}{}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\graphicspath{
+{../manuscript/figures/round2_candidate/appendix/}
+{../manuscript/figures/round2_candidate/main/}
+{../manuscript/figures/round2_candidate/manual/}
+{../manuscript/figures/}
+}
+\sloppy
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\figurename}{Fig.}
+\expandafter\def\csname nosticsword\endcsname{nostics}
+\newcommand{\diagword}{diag\csname nosticsword\endcsname}
+\newcommand{\sifigure}[1]{\includegraphics[width=\linewidth,height=0.74\textheight,keepaspectratio]{#1}}
+
+\begin{document}
+
+\title{Supplementary Information for\\
+Surrogate-Conditioned Optimizer Ranking in Block-Scale Urban Energy Design}
+\author{Haolin Wang, Zhi Wu, Wei Gu, Xiao Zang, Pengxiang Liu, Qirun Sun, and Wei Wang}
+\date{}
+\maketitle
+
+This Supplementary Information provides case settings, analytic response-generation details, surrogate robustness results, optimizer comparison details, feasible-projection results, physics-based cross-model stress-test details, and cross-climate case results. The supplementary results are intended to make the main manuscript reproducible and interpretable. They do not extend the main manuscript into a claim of optimizer superiority under physical simulation.
+
+\section*{S1. Case settings and analytic response generation}
+
+\subsection*{S1.1 Block geometry and prototype settings}
+
+Each generated case uses a 240~m $\times$ 240~m block divided into a $3\times3$ grid of 80~m $\times$ 80~m land units. One land unit is assigned as open space, and the remaining eight land units are populated with residential prototypes. The floor-to-floor height is 3.0~m. The prototype set contains point, slab, and courtyard forms with footprint areas of 1000--2000~m$^2$ and prototype-specific floor ranges.
+
+\begin{table}[H]
+\caption{Residential prototype settings used by the morphology generator.}
+\label{tab:s-prototypes}
+\centering
+\footnotesize
+\begin{threeparttable}
+\begin{tabularx}{\linewidth}{@{}p{0.12\linewidth}p{0.18\linewidth}rrrrr@{}}
+\toprule
+Prototype & Category & Footprint area & Min floors & Max floors & Width & Depth \\
+\midrule
+P-1 & Point & 2000 & 1 & 3 & 40 & 50 \\
+P-2 & Point & 1500 & 4 & 12 & 30 & 50 \\
+P-3 & Point & 1000 & 13 & 30 & 25 & 40 \\
+P-4 & Point & 1000 & 13 & 30 & 20 & 50 \\
+S-1 & Slab & 2000 & 1 & 3 & 25 & 80 \\
+S-2 & Slab & 1500 & 4 & 12 & 20 & 75 \\
+S-3 & Slab & 1000 & 13 & 30 & 16 & 62.5 \\
+C-1 & Courtyard & 2000 & 1 & 3 & 50 & 50 \\
+C-2 & Courtyard & 1500 & 4 & 12 & 45 & 40 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item Areas are in m$^2$, and linear dimensions are in m.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\subsection*{S1.2 Random morphology generation}
+
+For each generated block, the open-space index is sampled from 0 to 8, theta is sampled uniformly from -45~deg to 45~deg, and each populated cell receives a randomly sampled prototype and a floor count sampled within that prototype range. Descriptor values are calculated only after this geometry-generation step. This order keeps the generated feasible block as the primary object and treats the 12 surrogate inputs as derived morphology descriptors.
+
+\subsection*{S1.3 Descriptor definitions and dependencies}
+
+The descriptor set is FAR, SD, AF, AR\_ew, AR\_ns, SVF, BD, OSR, SC, PAR, theta, and OSLI. FAR is numerically linked to BD and AF, while OSR is linked to footprint area and gross floor area. OSLI is integer-valued by construction. In the locked descriptor-dependency check, six principal components explain 95\% of descriptor variance, and exact duplicate descriptor rows are absent in the 2000-row canonical pool.
+
+\begin{table}[H]
+\caption{Descriptor dependency checks in the canonical 2000-row pool.}
+\label{tab:s-dependencies}
+\centering
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.35\linewidth}p{0.25\linewidth}p{0.28\linewidth}@{}}
+\toprule
+Check & Value & Interpretation \\
+\midrule
+FAR minus BD times AF & $1.33\times10^{-15}$ & algebraic residual is numerical roundoff \\
+OSR relation residual & $2.22\times10^{-16}$ & footprint and gross floor area relation holds \\
+OSLI integer consistency & 1.0 & all OSLI values are integer \\
+Exact duplicate count & 0 & no exact duplicate descriptor rows \\
+Nearest-neighbour distance median & 0.199 & generated pool is sparse in normalized descriptor space \\
+PCA components for 95\% variance & 6 & descriptor space is structured \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{S1.4 Analytic EUIt, EG, and H response equations}
+
+The active benchmark dataset is generated through the fallback analytic response generator. The generator maps morphology descriptors to EUIt, EG, and H through explicit formulas that include orientation penalty, aspect ratio, openness, sky-view factor, density, and a morphology-dependent sweet-spot term. The output values are clipped to the target ranges used during surrogate training. This design creates a controlled response surface for optimizer comparison and should not be described as a direct EnergyPlus/Radiance dataset.
+
+Let $\theta$ be the orientation angle, let $OSLI^\ast = OSLI/8$, and define
+
+\begin{align}
+p_\theta &= |\theta| / 45,\\
+a_m &= 0.5(AR_{ew}+AR_{ns}),\\
+s &= \exp\left(-\frac{(FAR-1.7)^2}{0.6}\right)(0.45+SVF)(0.3+OSR),\\
+p_d &= \max(FAR-2.8,0).
+\end{align}
+
+For Dongtai station weather, the fallback station-bias terms are zero. The unclipped analytic responses are
+
+\begin{align}
+EUIt^\ast ={}& 78.0 + 10.0BD + 4.3PAR + 2.8a_m + 0.022SD + 0.8SC + 2.1p_\theta \nonumber\\
+& - 6.4OSR - 5.8SVF - 0.9AF - 4.5s + \epsilon_{EUIt},\\
+EG^\ast ={}& 0.96 + 0.28FAR + 0.64SVF + 0.52OSR - 0.19BD - 0.12a_m - 0.18p_\theta \nonumber\\
+& + 0.26OSLI^\ast + 0.78s - 0.1p_d + \epsilon_{EG},\\
+H^\ast ={}& 6.45 + 1.1SVF + 0.55OSR + 0.48OSLI^\ast + 0.24s - 0.7p_\theta - 0.45PAR - 0.24a_m + \epsilon_H.
+\end{align}
+
+The Gaussian noise scales are 0.22 for EUIt, 0.03 for EG, and 0.02 for H in the response-generation configuration. The final target values are clipped as
+
+\begin{align}
+EUIt &= \operatorname{clip}(EUIt^\ast,66.0,96.0),\\
+EG &= \operatorname{clip}(EG^\ast,1.2,2.85),\\
+H &= \operatorname{clip}(H^\ast,6.0,7.85).
+\end{align}
+
+\subsection*{S1.5 Descriptor distributions and sampling coverage}
+
+\begin{figure}[H]
+\centering
+\sifigure{A1_descriptor_distributions.pdf}
+\caption{Descriptor distributions, OSLI frequency, and nearest-neighbour distance distribution for the canonical 2000-row generated morphology pool.}
+\label{fig:s1-descriptor-distributions}
+\end{figure}
+
+\section*{S2. Surrogate selection and robustness assessment}
+
+\subsection*{S2.1 Dataset-scale study}
+
+The nested scale study compares 500, 1000, 1500, and 2000 sample regimes. Each regime evaluates candidate DNN presets, and the selected 2000-sample tuned-standard model gives mean target nMAE = 0.0182, mean tail nMAE = 0.0203, mean $R^2$ = 0.9823, worst target nMAE = 0.0242, and selection objective = 0.0233. This setting is used as the shared surrogate environment for the optimizer comparison.
+
+\setcounter{figure}{2}
+\begin{figure}[H]
+\centering
+\sifigure{A3_scale_study.pdf}
+\caption{Dataset-scale surrogate-selection comparison across 500, 1000, 1500, and 2000 rows. The panels summarize target error, tail error, mean $R^2$, and the selection objective for the regime winners.}
+\label{fig:s3-scale-study}
+\end{figure}
+
+\subsection*{S2.2 Repeated cross-validation}
+
+Repeated five-fold cross-validation gives mean nMAE values of 0.0176 for EUIt, 0.0265 for EG, and 0.0145 for H. The corresponding Spearman correlations are 0.991, 0.984, and 0.995. These values support low error within the analytic response-generation regime.
+
+\subsection*{S2.3 Residual and target-tail assessment}
+
+\setcounter{figure}{1}
+\begin{figure}[H]
+\centering
+\sifigure{A2_residual_\diagword.pdf}
+\caption{Residual assessment for EUIt, EG, and H under repeated cross-validated surrogate predictions. The figure summarizes analytic-target prediction error and does not represent physical simulation error.}
+\label{fig:s2-residual-assessment}
+\end{figure}
+
+\subsection*{S2.4 Leave-one-OSLI-out assessment}
+
+The leave-one-OSLI-out protocol with nine folds gives nMAE values of 0.0185 for EUIt, 0.0342 for EG, and 0.0185 for H. The results remain close to the repeated cross-validation regime, but EG shows the largest relative increase when an open-space-position class is withheld.
+
+\subsection*{S2.5 Outer-shell and feature-tail holdouts}
+
+The outer-shell holdout gives nMAE values of 0.0278 for EUIt, 0.0335 for EG, and 0.0208 for H. The feature-tail holdout gives nMAE values of 0.0230 for EUIt, 0.0287 for EG, and 0.0198 for H. These holdouts stress descriptor-domain boundaries and target tails within the analytic response-generation regime.
+
+\section*{S3. DDPG training and benchmark comparison details}
+
+\subsection*{S3.1 DDPG seed-level behaviour}
+
+Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best reward, final reward, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries and should not be interpreted as physical block evolution.
+
+\setcounter{figure}{3}
+\begin{figure}[H]
+\centering
+\sifigure{B1_seed_\diagword.pdf}
+\caption{Seed-level DDPG training assessment across the three preference scenarios. The panels summarize best reward, final reward, plateau episode, and late-regression behaviour.}
+\label{fig:s4-seed-assessment}
+\end{figure}
+
+\subsection*{S3.2 Optimizer output contracts}
+
+DDPG retains one best scalarized candidate per seed, while NSGA-II retains final populations. CMA-ES and RandomSearch retain top-reward queried archives for secondary comparison, and FeasiblePoolRandom provides a deterministic feasible-pool reference. The retained-output contract prevents full-archive sizes from being interpreted as equivalent across optimizers.
+
+\subsection*{S3.3 Equal-size sensitivity}
+
+The main manuscript reports equal-size results at retained size 20 because that is the valid common retained size for DDPG and NSGA-II. Oversized equal-size requests for smaller source archives are labelled not applicable rather than reported as valid metric estimates.
+
+\begin{table}[H]
+\caption{Equal-size-20 descriptor-space benchmark metrics under benchmark-reference-v2.}
+\label{tab:s-equal-size}
+\centering
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.28\linewidth}rrp{0.28\linewidth}@{}}
+\toprule
+Group & HV & IGD & Interpretation \\
+\midrule
+DDPG Balanced & 0.661912 & 0.465522 & weakest DDPG setting \\
+DDPG Saving & 1.002757 & 0.276529 & intermediate DDPG setting \\
+DDPG Generation & 1.170428 & 0.097551 & strongest DDPG setting \\
+NSGA-II & 1.330995 & 0.004710 & near-ceiling retained-size result \\
+CMA-ES Balanced & 1.331000 & 0.004946 & secondary corner-saturation reference \\
+RandomSearch Balanced & 0.423--0.748 & 0.497--0.743 & repetition-dependent uninformed reference \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{S3.4 HV ceiling and clipped-output behaviour}
+
+The theoretical maximum HV under benchmark-reference-v2 is 1.331. NSGA-II reaches a fraction of 1.0 without clipped-utopia rows, while CMA-ES reaches the same ceiling because nearly all retained rows collapse to clipped-utopia output tuples. This distinction is why ceiling proximity must be read together with unique tuple counts.
+
+\setcounter{figure}{5}
+\begin{figure}[H]
+\centering
+\sifigure{B3_hv_ceiling_\diagword.pdf}
+\caption{HV ceiling and clipped-output assessment. The panels report HV fraction of the theoretical ceiling, clipped-utopia fraction, unique clipped objective tuples, and unique non-dominated tuples.}
+\label{fig:s6-hv-ceiling}
+\end{figure}
+
+\subsection*{S3.5 CMA-ES and RandomSearch comparisons}
+
+CMA-ES and RandomSearch are retained as secondary comparators. CMA-ES reaches the HV ceiling in descriptor space but does so with severe objective-tuple collapse. RandomSearch retains many unique tuples but remains weaker than NSGA-II under the main equal-size descriptor-space comparison. These results are used to interpret surrogate exploitability and uninformed-search behaviour rather than to replace the primary DDPG and NSGA-II comparison.
+
+\section*{S4. Morphology interpretation}
+
+\subsection*{S4.1 Morphology descriptor signatures}
+
+Median descriptor signatures summarize where retained outputs lie in descriptor space. NSGA-II retained outputs have median FAR = 1.71, median SVF = 0.654, and median OSLI = 6.21, while DDPG Balanced outputs have median FAR = 1.62 and median SVF = 0.702. These signatures describe retained-output tendencies and are not stable design rules.
+
+\setcounter{figure}{4}
+\begin{figure}[H]
+\centering
+\sifigure{B2_morphology_signatures.pdf}
+\caption{Median morphology descriptor signatures for representative retained-output groups. The figure describes descriptor-space tendencies rather than physical design rules.}
+\label{fig:s5-morphology-signatures}
+\end{figure}
+
+\subsection*{S4.2 Surrogate response profiles}
+
+\setcounter{figure}{7}
+\begin{figure}[H]
+\centering
+\sifigure{B5_nonlinear_response_profiles.pdf}
+\caption{Selected surrogate response profiles for OSR to EUIt, FAR to EG, SVF to H, and theta to H. The profiles illustrate local response-surface behaviour within the selected surrogate.}
+\label{fig:s8-response-profiles}
+\end{figure}
+
+\section*{S5. Feasible projection and physics-based stress-test details}
+
+\subsection*{S5.1 Complete projection metrics}
+
+The complete projection table records retained rows, unique matched sample counts, projection-distance summaries, duplicate-collapse rates, and fixed-reference projected HV and IGD. NSGA-II contracts from 2000 retained descriptor candidates to 51 unique projected feasible blocks, while DDPG scenarios contract from 20 retained descriptor candidates to 17 or 18 unique generated feasible blocks.
+
+\subsection*{S5.2 Optimizer-linked six-case decomposition}
+
+The physics-based stress-test set contains 24 locked cases. The 18 direct feasible cases are used to compare analytic response-generator values with physics-based outputs without optimizer projection. The six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated block and then to physics-based result. These two subsets should not be merged into a single parity plot because they answer different questions.
+
+\setcounter{figure}{6}
+\begin{figure}[H]
+\centering
+\sifigure{B4_optimizer_linked_gap_decomposition.pdf}
+\caption{Optimizer-linked six-case projection and cross-model gap decomposition for EUIt, EG, and H. These cases bridge descriptor-space candidates, nearest generated feasible blocks, and physical outputs.}
+\label{fig:s7-optimizer-linked-gaps}
+\end{figure}
+
+\subsection*{S5.3 Per-case physical results}
+
+The 18 direct feasible cases completed both EnergyPlus and Radiance-component runs. EUIt agreement is weak, EG is represented by a GHI-based rooftop-PV proxy, and H is represented by January 20 windowsill direct-sun hours. The reported nMAE and rank-correlation values therefore define a stress-test boundary rather than a general physical ranking result.
+
+\begin{table}[H]
+\caption{Direct feasible physical stress-test summary.}
+\label{tab:s-physical-summary}
+\centering
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}rrrrp{0.23\linewidth}@{}}
+\toprule
+Target & Count & MAE & nMAE & Spearman rho & Boundary \\
+\midrule
+EUIt & 18 & 3.788 & 0.340 & -0.404 & weak metric agreement \\
+EG GHI proxy & 18 & 0.441 & 0.405 & -0.023 & rooftop-PV proxy only \\
+H & 18 & 1.108 & 0.601 & -0.043 & January 20 direct-sun hours only \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{S5.4 EG roof-irradiance unavailability note}
+
+The round-2 physical package records EG roof irradiance as unavailable for the direct stress-test metric table. The main manuscript therefore reports the GHI-based rooftop-PV proxy for EG and labels it explicitly. This avoids treating the proxy as a full rooftop-irradiance result.
+
+\section*{S6. Cross-climate case details}
+
+\subsection*{S6.1 Weather metadata}
+
+The cross-climate sensitivity analysis uses Dongtai as the baseline station and evaluates the same four generated feasible blocks under Harbin, Beijing, and Guangzhou weather. The climate buckets are severe cold for Harbin, cold for Beijing, and hot-summer warm-winter for Guangzhou. The TMY period is 2009--2023 in the round-2 configuration.
+
+\subsection*{S6.2 Four-block climate results}
+
+The climate sensitivity set uses the same four block morphologies under three additional EPW files. The surrogate is not retrained, and the morphology set is not reselected after observing the climate results. The results therefore describe weather sensitivity for selected block morphologies rather than surrogate transfer across climate regions.
+
+\begin{table}[H]
+\caption{Station-level mean physical changes relative to Dongtai.}
+\label{tab:s-climate-summary}
+\centering
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.22\linewidth}rrrp{0.24\linewidth}@{}}
+\toprule
+Station & $\Delta$EUIt & $\Delta$EG & $\Delta$H & Interpretation \\
+\midrule
+Beijing & 13.467 & 0.135 & -0.056 & cold-climate increase in EUIt \\
+Guangzhou & -2.972 & -0.057 & -0.025 & warm-climate EUIt decrease \\
+Harbin & 55.681 & -0.044 & -0.675 & severe-cold EUIt increase \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\setcounter{figure}{8}
+\begin{figure}[H]
+\centering
+\sifigure{B6_climate_case_detail.pdf}
+\caption{Case-level climate sensitivity for EUIt, EG, and H across Beijing, Guangzhou, and Harbin. The heatmaps report physical changes relative to Dongtai for the four selected blocks.}
+\label{fig:s9-climate-detail}
+\end{figure}
+
+\subsection*{S6.3 Rank stability across climates}
+
+EG rank stability is high across the tested climates, with Spearman rho = 1.0 for Beijing, Guangzhou, and Harbin. H rank stability is low, with Spearman rho = 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. EUIt rank stability is high for Beijing and Guangzhou but low for Harbin, with Spearman rho = 0.2. These results support target-specific climate-sensitivity reporting rather than broad cross-climate surrogate generalization.
+
+\end{document}
