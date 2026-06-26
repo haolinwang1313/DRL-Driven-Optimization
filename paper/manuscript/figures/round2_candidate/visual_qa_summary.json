@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-26T03:55:26+00:00",
+  "generated_at": "2026-06-26T12:47:35+00:00",
   "figures": [
     {
       "figure_id": "Fig1",
       "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
       "render_png": "paper/manuscript/build/round2_candidate_render/fig1.png",
-      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Thu Jun 25 22:43:10 2026 �й���׼ʱ��\nModDate:         Thu Jun 25 22:43:10 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       1015.56 x 653.28 pts\nPage rot:        0\nFile size:       126774 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:21:49 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:21:49 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       1015.56 x 653.28 pts\nPage rot:        0\nFile size:       126676 bytes\nOptimized:       no\nPDF version:     1.7\n",
       "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nTimesNewRomanPSMT                    TrueType          WinAnsi          no  no  no       7  0\nArialMT                              TrueType          WinAnsi          no  no  no       9  0\nArialMT                              CID TrueType      Identity-H       yes no  yes     11  0\nArial-BoldMT                         TrueType          WinAnsi          no  no  no      16  0\nArialMT                              CID TrueType      Identity-H       yes no  yes     18  0\nTimesNewRomanPS-ItalicMT             TrueType          WinAnsi          no  no  no      26  0\nSymbolMT                             CID TrueType      Identity-H       yes no  yes     28  0\n",
       "width_px": 2539,
       "height_px": 1634,
@@ -18,7 +18,7 @@
         "TimesNewRoman",
         "Times"
       ],
-      "font_policy": "manual_preserve",
+      "font_policy": "manual_preserve_with_embedded_symbol_fonts",
       "forbidden_text_hits": [],
       "empty_render": false,
       "checks": [
@@ -47,12 +47,12 @@
     },
     {
       "figure_id": "Fig2",
-      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2_workflow_round3.pdf",
-      "render_png": "paper/manuscript/build/round2_candidate_render/fig2_workflow_round3.png",
-      "pdfinfo": "Creator:          XeTeX output 2026.06.26:1150\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Fri Jun 26 11:50:35 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 249.45 pts\nPage rot:        0\nFile size:       45203 bytes\nOptimized:       no\nPDF version:     1.5\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nVEPVRU+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nKKIEUO+ArialMT                       CID TrueType      Identity-H       yes yes yes      7  0\n",
-      "width_px": 1241,
-      "height_px": 624,
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig2.png",
+      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:23:53 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:23:53 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       504.72 x 576 pts\nPage rot:        0\nFile size:       52207 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nArialMT                              TrueType          WinAnsi          no  no  no       7  0\nArialMT                              CID TrueType      Identity-H       yes no  yes      9  0\n",
+      "width_px": 1262,
+      "height_px": 1440,
       "type3_fonts": false,
       "arial_font_hits": [
         "Arial",
@@ -89,9 +89,9 @@
           "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
         },
         {
-          "name": "Fig2 is the preferred round3 workflow candidate",
+          "name": "Fig2 is the preferred manual workflow candidate",
           "passed": true,
-          "detail": "Gallery should use the round3 Fig. 2 workflow candidate."
+          "detail": "Gallery should use the final manual Fig. 2 workflow PDF."
         },
         {
           "name": "Fig2 includes required decision nodes",
@@ -108,19 +108,22 @@
     },
     {
       "figure_id": "Fig3",
-      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig3_ddpg_architecture_round3.pdf",
-      "render_png": "paper/manuscript/build/round2_candidate_render/fig3_ddpg_architecture_round3.png",
-      "pdfinfo": "Creator:          XeTeX output 2026.06.26:1152\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Fri Jun 26 11:52:17 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 221.1 pts\nPage rot:        0\nFile size:       59448 bytes\nOptimized:       no\nPDF version:     1.5\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBEBZGI+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nNAGRUH+ArialMT                       CID TrueType      Identity-H       yes yes yes      7  0\nTYRVIN+CMR7                          Type 1C           Builtin          yes yes yes      9  0\nJTVLEV+Arial-ItalicMT                CID TrueType      Identity-H       yes yes yes     10  0\nYJMLEQ+CMR6                          Type 1C           Builtin          yes yes yes     12  0\nLRLLBV+CMSY7                         Type 1C           Builtin          yes yes yes     13  0\nWHELBH+CMMI6                         Type 1C           Builtin          yes yes yes     14  0\nTCSOSI+CMMI7                         Type 1C           Builtin          yes yes yes     15  0\nLTYSIC+CMSY6                         Type 1C           Builtin          yes yes yes     16  0\nAPJJIO+CMSY5                         Type 1C           Builtin          yes yes yes     17  0\nGWLPZQ+CMR5                          Type 1C           Builtin          yes yes yes     18  0\n",
-      "width_px": 1241,
-      "height_px": 553,
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig3.png",
+      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:27:56 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:27:56 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       683.64 x 297.24 pts\nPage rot:        0\nFile size:       70088 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nArialMT                              TrueType          WinAnsi          no  no  no       7  0\nArial-BoldMT                         TrueType          WinAnsi          no  no  no       9  0\nBCDEEE+SimSun                        CID TrueType      Identity-H       yes yes yes     11  0\nArial-ItalicMT                       TrueType          WinAnsi          no  no  no      16  0\nArial-ItalicMT                       CID TrueType      Identity-H       yes no  yes     30  0\nArial-ItalicMT                       CID TrueType      Identity-H       yes no  yes     35  0\nSymbolMT                             CID TrueType      Identity-H       yes no  yes     19  0\nTimesNewRomanPSMT                    TrueType          WinAnsi          no  no  no      24  0\nTimesNewRomanPS-ItalicMT             TrueType          WinAnsi          no  no  no      26  0\n",
+      "width_px": 1710,
+      "height_px": 744,
       "type3_fonts": false,
       "arial_font_hits": [
         "Arial",
         "ArialMT"
       ],
-      "forbidden_font_hits": [],
-      "font_policy": "strict_arial",
+      "forbidden_font_hits": [
+        "TimesNewRoman",
+        "Times"
+      ],
+      "font_policy": "manual_preserve_with_embedded_symbol_fonts",
       "forbidden_text_hits": [],
       "empty_render": false,
       "checks": [
@@ -145,14 +148,9 @@
           "detail": "Rasterized QA output should produce a non-empty page."
         },
         {
-          "name": "No Times or NewTX fonts",
+          "name": "Fig3 is the preferred manual architecture candidate",
           "passed": true,
-          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
-        },
-        {
-          "name": "Fig3 is the preferred round3 architecture candidate",
-          "passed": true,
-          "detail": "Gallery should use the round3 Fig. 3 architecture candidate."
+          "detail": "Gallery should use the final manual Fig. 3 architecture PDF."
         },
         {
           "name": "Fig3 includes DDPG architecture blocks",

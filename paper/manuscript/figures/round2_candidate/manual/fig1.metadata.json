@@ -5,7 +5,7 @@
   "source_files": [
     {
       "path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
-      "sha256": "c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332",
+      "sha256": "ba37052f7cdbc98bf1353e064d9e5d4172c139dbb1bec138a14e29b2fd9c9d69",
       "reference_protocol": "manual-candidate",
       "reference_hash": ""
     }
@@ -14,9 +14,9 @@
   "reference_protocol": "manual-candidate",
   "reference_hash": "",
   "figure_style_version": "round2-arial-v1",
-  "font_policy": "manual_preserve",
-  "candidate_status": "manual_preserve",
-  "timestamp": "2026-06-26T03:55:25+00:00",
+  "font_policy": "manual_preserve_with_embedded_symbol_fonts",
+  "candidate_status": "preferred_manual_candidate",
+  "timestamp": "2026-06-26T12:47:34+00:00",
   "panel_descriptions": [
     "User-supplied manual overview of morphology generation, surrogate modeling, descriptor-space optimization, and assessment flow."
   ],
@@ -25,18 +25,20 @@
   "outputs": {
     "pdf": {
       "path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
-      "sha256": "c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332"
+      "sha256": "ba37052f7cdbc98bf1353e064d9e5d4172c139dbb1bec138a14e29b2fd9c9d69"
     }
   },
   "extra": {
     "manual_asset": true,
-    "automatic_editing_allowed": false
+    "final_preferred": true,
+    "automatic_editing_allowed": false,
+    "source_format": "Visio-exported PDF"
   },
   "visual_qa": {
     "figure_id": "Fig1",
     "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/fig1.png",
-    "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Thu Jun 25 22:43:10 2026 �й���׼ʱ��\nModDate:         Thu Jun 25 22:43:10 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       1015.56 x 653.28 pts\nPage rot:        0\nFile size:       126774 bytes\nOptimized:       no\nPDF version:     1.7\n",
+    "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:21:49 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:21:49 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       1015.56 x 653.28 pts\nPage rot:        0\nFile size:       126676 bytes\nOptimized:       no\nPDF version:     1.7\n",
     "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nTimesNewRomanPSMT                    TrueType          WinAnsi          no  no  no       7  0\nArialMT                              TrueType          WinAnsi          no  no  no       9  0\nArialMT                              CID TrueType      Identity-H       yes no  yes     11  0\nArial-BoldMT                         TrueType          WinAnsi          no  no  no      16  0\nArialMT                              CID TrueType      Identity-H       yes no  yes     18  0\nTimesNewRomanPS-ItalicMT             TrueType          WinAnsi          no  no  no      26  0\nSymbolMT                             CID TrueType      Identity-H       yes no  yes     28  0\n",
     "width_px": 2539,
     "height_px": 1634,
@@ -49,7 +51,7 @@
       "TimesNewRoman",
       "Times"
     ],
-    "font_policy": "manual_preserve",
+    "font_policy": "manual_preserve_with_embedded_symbol_fonts",
     "forbidden_text_hits": [],
     "empty_render": false,
     "checks": [

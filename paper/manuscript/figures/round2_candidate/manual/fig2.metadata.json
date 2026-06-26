@@ -1,17 +1,11 @@
 {
   "figure_id": "Fig2",
-  "semantic_name": "workflow_round3",
-  "planned_location": "Fig. 2 workflow round3 candidate",
+  "semantic_name": "manual_fig2_workflow",
+  "planned_location": "Fig. 2 manual workflow candidate",
   "source_files": [
     {
-      "path": "paper/manuscript/figures/source/fig2_workflow_round3.tex",
-      "sha256": "df242198a7afb94eba77de93491bd9c064d41996a8efd64ebe4219a276e28698",
-      "reference_protocol": "manual-candidate",
-      "reference_hash": ""
-    },
-    {
-      "path": "paper/manuscript/figures/source/round3_figure_style.tex",
-      "sha256": "2cd4fcbcb91773c7c1a824c083453fb328e6398b0513639612c1332d16632d18",
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+      "sha256": "c97bdb378e046a3e8c618350b91b717a55b056f88930642c3c36a7f25d88b8e9",
       "reference_protocol": "manual-candidate",
       "reference_hash": ""
     }
@@ -19,10 +13,10 @@
   "filters": {},
   "reference_protocol": "manual-candidate",
   "reference_hash": "",
-  "figure_style_version": "round3-arial-v1",
+  "figure_style_version": "manual-visio-arial-v1",
   "font_policy": "strict_arial",
-  "candidate_status": "preferred_candidate",
-  "timestamp": "2026-06-26T03:55:25+00:00",
+  "candidate_status": "preferred_manual_candidate",
+  "timestamp": "2026-06-26T12:47:34+00:00",
   "panel_descriptions": [
     "Left-side workflow from initialization to retained candidates.",
     "Right-side explanation of one surrogate-query step."
@@ -31,25 +25,22 @@
   "caption": "Figure 2. Workflow of the DDPG-based surrogate search. The optimization starts by initializing the surrogate-based environment and selecting one preference scenario. Each episode begins from a random descriptor query and then proceeds through repeated surrogate-query steps, in which the actor produces an absolute descriptor query and the guarded surrogate returns the next state and reward. The episode terminates after a fixed query horizon, and the process continues until all episodes and seeds are completed.",
   "outputs": {
     "pdf": {
-      "path": "paper/manuscript/figures/round2_candidate/manual/fig2_workflow_round3.pdf",
-      "sha256": "33f4994db73dcae8ad39e67f96d710dc5b8e95a91fce512cb3aaed736ddaf0a4"
-    },
-    "png": {
-      "path": "paper/manuscript/figures/round2_candidate/manual/fig2_workflow_round3.png",
-      "sha256": "d492d5f79daa3db4f0b69d79795bc218e8e20f8cfa8c08285cc89eb74cbed995"
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+      "sha256": "c97bdb378e046a3e8c618350b91b717a55b056f88930642c3c36a7f25d88b8e9"
     }
   },
   "extra": {
-    "candidate_status": "preferred_candidate",
+    "candidate_status": "preferred_manual_candidate",
+    "manual_asset": true,
+    "final_preferred": true,
+    "automatic_editing_allowed": false,
+    "source_format": "Visio-exported PDF",
     "main_nodes": [
       "Start",
       "Initialize surrogate-based optimization environment",
-      "Select one preference scenario",
+      "Select preference scenario",
       "Reset episode with a random descriptor query",
-      "Move to the next query step",
-      "Generate an absolute descriptor query with the actor",
-      "Evaluate the query using the guarded surrogate and obtain the next state and reward",
-      "Store the transition and update the policy",
+      "Run one surrogate-query step",
       "Query horizon reached?",
       "All episodes / seeds completed?",
       "Output retained candidates",
@@ -66,7 +57,6 @@
       "solid",
       "orthogonal-loop"
     ],
-    "supersedes": "fig2_serialized_search_round2",
     "excluded_visible_content": [
       "Target actor",
       "Target critic",
@@ -78,12 +68,12 @@
   },
   "visual_qa": {
     "figure_id": "Fig2",
-    "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2_workflow_round3.pdf",
-    "render_png": "paper/manuscript/build/round2_candidate_render/fig2_workflow_round3.png",
-    "pdfinfo": "Creator:          XeTeX output 2026.06.26:1150\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Fri Jun 26 11:50:35 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 249.45 pts\nPage rot:        0\nFile size:       45203 bytes\nOptimized:       no\nPDF version:     1.5\n",
-    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nVEPVRU+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nKKIEUO+ArialMT                       CID TrueType      Identity-H       yes yes yes      7  0\n",
-    "width_px": 1241,
-    "height_px": 624,
+    "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/fig2.png",
+    "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:23:53 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:23:53 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       504.72 x 576 pts\nPage rot:        0\nFile size:       52207 bytes\nOptimized:       no\nPDF version:     1.7\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nArialMT                              TrueType          WinAnsi          no  no  no       7  0\nArialMT                              CID TrueType      Identity-H       yes no  yes      9  0\n",
+    "width_px": 1262,
+    "height_px": 1440,
     "type3_fonts": false,
     "arial_font_hits": [
       "Arial",
@@ -120,9 +110,9 @@
         "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
       },
       {
-        "name": "Fig2 is the preferred round3 workflow candidate",
+        "name": "Fig2 is the preferred manual workflow candidate",
         "passed": true,
-        "detail": "Gallery should use the round3 Fig. 2 workflow candidate."
+        "detail": "Gallery should use the final manual Fig. 2 workflow PDF."
       },
       {
         "name": "Fig2 includes required decision nodes",

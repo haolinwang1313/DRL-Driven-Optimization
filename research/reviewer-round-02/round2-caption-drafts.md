@@ -4,15 +4,15 @@
 
 ### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
 This candidate figure summarizes User-supplied manual overview of morphology generation, surrogate modeling, descriptor-space optimization, and assessment flow.. It uses paper/manuscript/figures/round2_candidate/manual/fig1.pdf and should be interpreted within the following boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it..
-Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
+Revision note: Final user-supplied manual Fig. 1 PDF; included for gallery and QA only, with no automatic edits.
 
-### Fig. 2 workflow round3 candidate (Fig2 workflow_round3)
+### Fig. 2 manual workflow candidate (Fig2 manual_fig2_workflow)
 Figure 2. Workflow of the DDPG-based surrogate search. The optimization starts by initializing the surrogate-based environment and selecting one preference scenario. Each episode begins from a random descriptor query and then proceeds through repeated surrogate-query steps, in which the actor produces an absolute descriptor query and the guarded surrogate returns the next state and reward. The episode terminates after a fixed query horizon, and the process continues until all episodes and seeds are completed.
-Revision note: Redrawn as a round3 workflow flowchart with a separate single-query callout.
+Revision note: Final user-supplied manual Fig. 2 workflow PDF; TeX round2/round3 candidates are no longer preferred.
 
-### Fig. 3 DDPG architecture round3 candidate (Fig3 ddpg_architecture_round3)
+### Fig. 3 manual DDPG architecture candidate (Fig3 manual_fig3_ddpg_architecture)
 Figure 3. DDPG learning architecture used in the surrogate-assisted optimization. The environment provides state transitions that are stored in the experience replay buffer. The online actor generates actions, the online critic evaluates state--action pairs, and the target networks provide the temporal-difference target for critic training. The lower equation blocks summarize the temporal-difference target, critic loss, actor objective, and soft target-network update.
-Revision note: Redrawn as a round3 DDPG architecture diagram with interaction, replay, online, target, and update blocks.
+Revision note: Final user-supplied manual Fig. 3 DDPG architecture PDF; TeX round2/round3 candidates are no longer preferred.
 
 ### Main Fig. 4 (M1 data_and_surrogate_validation)
 This candidate figure summarizes PCA cumulative explained variance for the 12 morphology descriptors.; EUIt repeated-CV parity using sample-level mean out-of-fold predictions.; EG repeated-CV parity using sample-level mean out-of-fold predictions.; H repeated-CV parity using sample-level mean out-of-fold predictions.. It uses descriptor_coverage.csv, surrogate_parity_mean_predictions.csv and should be interpreted within the following boundary: Supports descriptor-space coverage and analytic-target surrogate fidelity only..

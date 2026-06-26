@@ -2,8 +2,8 @@
 
 ## Main manuscript figures
 - Manual Fig. 1: user-supplied overview candidate; included for gallery/QA only.
-- Fig. 2: round3 workflow flowchart candidate.
-- Fig. 3: round3 DDPG learning architecture candidate.
+- Fig. 2: final manual workflow PDF candidate.
+- Fig. 3: final manual DDPG learning architecture PDF candidate.
 - Fig. 4: M1 data and surrogate validation.
 - Fig. 5: M2 surrogate robustness.
 - Fig. 6: M3 DDPG training dynamics.
@@ -25,8 +25,8 @@
 
 ## Candidate figure coverage
 - Candidate figure slots covered here: 19 (Manual Fig. 1, Fig. 2, Fig. 3, Main Fig. 4-10, and Supplementary Fig. S1-S9).
-- Manual Fig. 1 stays outside automatic editing; preferred Fig. 2 and Fig. 3 are round3 TikZ manual candidates that share `round3_figure_style.tex`.
-- Superseded round2 Fig. 2 and Fig. 3 candidates remain available as traceability artifacts only.
+- Manual Fig. 1, Fig. 2, and Fig. 3 stay outside automatic editing and use the final user-supplied PDFs under `paper/manuscript/figures/round2_candidate/manual/`.
+- Old TeX-based Fig. 2 and Fig. 3 candidates are removed from the preferred candidate set.
 
 ## Table split
 - Main manuscript retains morphology descriptors, evaluation modes, surrogate robustness, optimizer budget and output contract, the canonical DDPG-NSGA-II benchmark, and a compact physical-climate evidence summary.

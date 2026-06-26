@@ -1,26 +1,26 @@
 # Round 2 Figure Plan
 
 ## Main manuscript lock
-- Manual Fig. 1 is user supplied and is included for gallery/QA only; the automated workflow must not edit or re-export it.
-- Fig. 2 is the round3 workflow flowchart candidate.
-- Fig. 3 is the round3 DDPG learning architecture candidate.
-- Superseded round2 manual candidates remain on disk for audit but are not preferred gallery entries.
+- Fig. 1 is the final user-supplied manual PDF and is included for gallery/QA only; the automated workflow must not edit or re-export it.
+- Fig. 2 is the final user-supplied manual workflow PDF.
+- Fig. 3 is the final user-supplied manual DDPG learning architecture PDF.
+- Old TeX-based Fig. 2/Fig. 3 candidates are intentionally not regenerated.
 - Main Fig. 4-10 and Supplementary Fig. S1-S9 are rebuilt through the round-2 figure builder.
 
 ### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
 - Source files: paper/manuscript/figures/round2_candidate/manual/fig1.pdf
 - Claim boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.
-- Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
+- Revision note: Final user-supplied manual Fig. 1 PDF; included for gallery and QA only, with no automatic edits.
 
-### Fig. 2 workflow round3 candidate (Fig2 workflow_round3)
-- Source files: paper/manuscript/figures/source/fig2_workflow_round3.tex, paper/manuscript/figures/source/round3_figure_style.tex
+### Fig. 2 manual workflow candidate (Fig2 manual_fig2_workflow)
+- Source files: paper/manuscript/figures/round2_candidate/manual/fig2.pdf
 - Claim boundary: The figure describes the DDPG-based surrogate-search workflow and single-query surrogate interaction; actor-critic learning mechanics are reserved for Fig. 3.
-- Revision note: Redrawn as a round3 workflow flowchart with a separate single-query callout.
+- Revision note: Final user-supplied manual Fig. 2 workflow PDF; TeX round2/round3 candidates are no longer preferred.
 
-### Fig. 3 DDPG architecture round3 candidate (Fig3 ddpg_architecture_round3)
-- Source files: paper/manuscript/figures/source/fig3_ddpg_architecture_round3.tex, paper/manuscript/figures/source/round3_figure_style.tex
+### Fig. 3 manual DDPG architecture candidate (Fig3 manual_fig3_ddpg_architecture)
+- Source files: paper/manuscript/figures/round2_candidate/manual/fig3.pdf
 - Claim boundary: The figure documents the DDPG learning architecture used in surrogate-assisted optimization and does not describe workflow termination or episode sequencing.
-- Revision note: Redrawn as a round3 DDPG architecture diagram with interaction, replay, online, target, and update blocks.
+- Revision note: Final user-supplied manual Fig. 3 DDPG architecture PDF; TeX round2/round3 candidates are no longer preferred.
 
 ### Main Fig. 4 (M1 data_and_surrogate_validation)
 - Source files: descriptor_coverage.csv, surrogate_parity_mean_predictions.csv

@@ -2,25 +2,25 @@
 
 ## Part I - Main manuscript candidates
 
-- Preferred manual order: Fig. 1 manual candidate, Fig. 2 workflow round3, Fig. 3 DDPG architecture round3.
-- Superseded manual candidates retained for audit: `fig2_serialized_search_round2` and `fig3_actor_critic_round2`.
+- Preferred manual order: `manual/fig1.pdf`, `manual/fig2.pdf`, and `manual/fig3.pdf`.
+- Old TeX-based Fig. 2/Fig. 3 candidates are intentionally not regenerated.
 
 ### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
-- Source files: `paper/manuscript/figures/round2_candidate/manual/fig1.pdf` (c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332)
+- Source files: `paper/manuscript/figures/round2_candidate/manual/fig1.pdf` (ba37052f7cdbc98bf1353e064d9e5d4172c139dbb1bec138a14e29b2fd9c9d69)
 - Claim boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.
-- Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
+- Revision note: Final user-supplied manual Fig. 1 PDF; included for gallery and QA only, with no automatic edits.
 - Unresolved visual concerns: None
 
-### Fig. 2 workflow round3 candidate (Fig2 workflow_round3)
-- Source files: `paper/manuscript/figures/source/fig2_workflow_round3.tex` (df242198a7afb94eba77de93491bd9c064d41996a8efd64ebe4219a276e28698), `paper/manuscript/figures/source/round3_figure_style.tex` (2cd4fcbcb91773c7c1a824c083453fb328e6398b0513639612c1332d16632d18)
+### Fig. 2 manual workflow candidate (Fig2 manual_fig2_workflow)
+- Source files: `paper/manuscript/figures/round2_candidate/manual/fig2.pdf` (c97bdb378e046a3e8c618350b91b717a55b056f88930642c3c36a7f25d88b8e9)
 - Claim boundary: The figure describes the DDPG-based surrogate-search workflow and single-query surrogate interaction; actor-critic learning mechanics are reserved for Fig. 3.
-- Revision note: Redrawn as a round3 workflow flowchart with a separate single-query callout.
+- Revision note: Final user-supplied manual Fig. 2 workflow PDF; TeX round2/round3 candidates are no longer preferred.
 - Unresolved visual concerns: None
 
-### Fig. 3 DDPG architecture round3 candidate (Fig3 ddpg_architecture_round3)
-- Source files: `paper/manuscript/figures/source/fig3_ddpg_architecture_round3.tex` (d7e269b6c9556063e8d0fe46f4a5a4251b77b7a84ede26760641caff372c3cac), `paper/manuscript/figures/source/round3_figure_style.tex` (2cd4fcbcb91773c7c1a824c083453fb328e6398b0513639612c1332d16632d18)
+### Fig. 3 manual DDPG architecture candidate (Fig3 manual_fig3_ddpg_architecture)
+- Source files: `paper/manuscript/figures/round2_candidate/manual/fig3.pdf` (83b9f65099deb1bbbc6f69414fdf416ecc28d12aba19d024aae398f2895eab76)
 - Claim boundary: The figure documents the DDPG learning architecture used in surrogate-assisted optimization and does not describe workflow termination or episode sequencing.
-- Revision note: Redrawn as a round3 DDPG architecture diagram with interaction, replay, online, target, and update blocks.
+- Revision note: Final user-supplied manual Fig. 3 DDPG architecture PDF; TeX round2/round3 candidates are no longer preferred.
 - Unresolved visual concerns: None
 
 ### Main Fig. 4 (M1 data_and_surrogate_validation)

@@ -183,7 +183,7 @@ def test_visual_qa_rejects_type3_and_forbidden_phrases(built_round2_assets: dict
     assert all(not item["type3_fonts"] for item in qa["figures"])
     assert all(not item["forbidden_text_hits"] for item in qa["figures"])
     assert all(item["arial_font_hits"] for item in qa["figures"])
-    assert all(not item["forbidden_font_hits"] for item in qa["figures"] if item["font_policy"] != "manual_preserve")
+    assert all(not item["forbidden_font_hits"] for item in qa["figures"] if item["font_policy"] == "strict_arial")
 
 
 def _metadata(relative_path: str) -> dict:
@@ -277,28 +277,39 @@ def test_all_auto_candidate_pdfs_use_arial_without_times_or_type3(built_round2_a
         assert "NewTX" not in fonts, pdf_path
 
 
-def test_manual_fig1_hash_is_preserved_and_record_only(built_round2_assets: dict) -> None:
+def test_manual_method_figure_hashes_are_preserved_and_record_only(built_round2_assets: dict) -> None:
     metadata = _metadata("manual/fig1.metadata.json")
     assert metadata["figure_id"] == "Fig1"
-    assert metadata["font_policy"] == "manual_preserve"
-    assert metadata["candidate_status"] == "manual_preserve"
+    assert metadata["font_policy"] == "manual_preserve_with_embedded_symbol_fonts"
+    assert metadata["candidate_status"] == "preferred_manual_candidate"
     assert metadata["outputs"]["pdf"]["sha256"] == _sha256_path(OUTPUT_ROOT / "manual" / "fig1.pdf")
 
+    for figure_name in ("fig2", "fig3"):
+        metadata = _metadata(f"manual/{figure_name}.metadata.json")
+        assert metadata["candidate_status"] == "preferred_manual_candidate"
+        assert metadata["extra"]["manual_asset"] is True
+        assert metadata["extra"]["final_preferred"] is True
+        assert metadata["extra"]["automatic_editing_allowed"] is False
+        assert metadata["outputs"]["pdf"]["sha256"] == _sha256_path(OUTPUT_ROOT / "manual" / f"{figure_name}.pdf")
 
-def test_round3_manual_candidates_are_preferred_and_round2_candidates_superseded(built_round2_assets: dict) -> None:
-    fig2 = _metadata("manual/fig2_workflow_round3.metadata.json")
-    fig3 = _metadata("manual/fig3_ddpg_architecture_round3.metadata.json")
-    old_fig2 = _metadata("manual/fig2_serialized_search_round2.metadata.json")
-    old_fig3 = _metadata("manual/fig3_actor_critic_round2.metadata.json")
 
-    assert fig2["semantic_name"] == "workflow_round3"
-    assert fig2["candidate_status"] == "preferred_candidate"
-    assert fig3["semantic_name"] == "ddpg_architecture_round3"
-    assert fig3["candidate_status"] == "preferred_candidate"
-    assert old_fig2["candidate_status"] == "superseded_candidate"
-    assert old_fig2["extra"]["superseded_by"] == "fig2_workflow_round3"
-    assert old_fig3["candidate_status"] == "superseded_candidate"
-    assert old_fig3["extra"]["superseded_by"] == "fig3_ddpg_architecture_round3"
+def test_final_manual_candidates_replace_tex_round2_round3_candidates(built_round2_assets: dict) -> None:
+    fig2 = _metadata("manual/fig2.metadata.json")
+    fig3 = _metadata("manual/fig3.metadata.json")
+
+    assert fig2["semantic_name"] == "manual_fig2_workflow"
+    assert fig2["source_files"][0]["path"].endswith("manual/fig2.pdf")
+    assert fig2["font_policy"] == "strict_arial"
+    assert fig3["semantic_name"] == "manual_fig3_ddpg_architecture"
+    assert fig3["source_files"][0]["path"].endswith("manual/fig3.pdf")
+    assert fig3["font_policy"] == "manual_preserve_with_embedded_symbol_fonts"
+    for obsolete in (
+        "fig2_serialized_search_round2.metadata.json",
+        "fig2_workflow_round3.metadata.json",
+        "fig3_actor_critic_round2.metadata.json",
+        "fig3_ddpg_architecture_round3.metadata.json",
+    ):
+        assert not (OUTPUT_ROOT / "manual" / obsolete).exists()
 
 
 def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
@@ -324,9 +335,9 @@ def test_gallery_separates_main_and_supplementary_sections(built_round2_assets: 
     assert "## Part I - Main manuscript candidates" in gallery_text
     assert "## Part II - Supplementary Information candidates" in gallery_text
     assert "Manual Fig. 1 candidate" in gallery_text
-    assert "Fig. 2 workflow round3 candidate" in gallery_text
-    assert "Fig. 3 DDPG architecture round3 candidate" in gallery_text
-    assert "Superseded manual candidates retained for audit" in gallery_text
+    assert "Fig. 2 manual workflow candidate" in gallery_text
+    assert "Fig. 3 manual DDPG architecture candidate" in gallery_text
+    assert "Old TeX-based Fig. 2/Fig. 3 candidates are intentionally not regenerated." in gallery_text
 
 
 def test_supplementary_figure_ids_are_unique(built_round2_assets: dict) -> None:
@@ -346,3 +357,13 @@ def test_main_vs_supplement_map_covers_all_19_candidate_figures(built_round2_ass
         assert label in text
     for label in ["Fig. S1", "Fig. S2", "Fig. S3", "Fig. S4", "Fig. S5", "Fig. S6", "Fig. S7", "Fig. S8", "Fig. S9"]:
         assert label in text
+
+
+def test_manual_finalization_docs_are_written(built_round2_assets: dict) -> None:
+    root = REPO_ROOT / "research" / "reviewer-round-02"
+    finalization = (root / "manual-figures-finalization.md").read_text(encoding="utf-8")
+    closure = (root / "visualization-closure.md").read_text(encoding="utf-8")
+    assert "manual/fig1.pdf" in finalization
+    assert "manual/fig2.pdf" in finalization
+    assert "manual/fig3.pdf" in finalization
+    assert "Manuscript, appendix, and response-letter sources are unchanged" in closure
