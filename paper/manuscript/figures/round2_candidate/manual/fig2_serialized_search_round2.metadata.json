@@ -1,7 +1,7 @@
 {
   "figure_id": "Fig2",
   "semantic_name": "serialized_surrogate_query_process",
-  "planned_location": "Fig. 2 simplified candidate",
+  "planned_location": "Fig. 2 superseded round2 candidate",
   "source_files": [
     {
       "path": "paper/manuscript/figures/source/fig2_serialized_search_round2.tex",
@@ -21,13 +21,13 @@
   "reference_hash": "",
   "figure_style_version": "round2-arial-v1",
   "font_policy": "strict_arial",
-  "timestamp": "2026-06-25T15:11:53+00:00",
+  "candidate_status": "superseded_candidate",
+  "timestamp": "2026-06-26T03:55:25+00:00",
   "panel_descriptions": [
-    "Four-node serialized surrogate-query process.",
-    "Compact 40-query episode strip."
+    "Superseded round2 manual candidate retained for traceability."
   ],
-  "claim_boundary": "The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.",
-  "caption": "Figure 2. Serialized surrogate-query process used in the DDPG benchmark. The normalized three-target state is mapped by the actor to an absolute 12-dimensional descriptor query. After Gaussian exploration and clipping, the query is evaluated by the guarded DNN surrogate, which returns the next state and normalized-distance reward. Each episode begins from a random descriptor query and terminates after 40 surrogate interactions. The sequence represents repeated black-box queries rather than physical time evolution; the actor--critic learning mechanics are shown in Fig. 3.",
+  "claim_boundary": "Superseded manual candidate retained for audit; the preferred Fig. 2 candidate is fig2_workflow_round3.",
+  "caption": "Superseded by the Fig. 2 round3 workflow candidate.",
   "outputs": {
     "pdf": {
       "path": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
@@ -39,25 +39,8 @@
     }
   },
   "extra": {
-    "main_nodes": [
-      "Current state",
-      "Actor query",
-      "Guarded surrogate",
-      "Next state and reward"
-    ],
-    "episode_length": 40,
-    "episodes_per_seed": 600,
-    "seeds_per_scenario": 20,
-    "arrow_line_styles": [
-      "solid"
-    ],
-    "excluded_visible_content": [
-      "Replay buffer",
-      "Actor--critic update",
-      "Critic loss",
-      "Target actor",
-      "scenario weight values",
-      "full d_w equation"
-    ]
+    "candidate_status": "superseded_candidate",
+    "superseded_by": "fig2_workflow_round3",
+    "retained_for_audit": true
   }
 }

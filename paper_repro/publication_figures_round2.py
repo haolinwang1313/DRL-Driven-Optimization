@@ -280,8 +280,8 @@ def _default_revision_note(figure_id: str, category: str) -> str:
     if figure_id in {"Fig1", "Fig2", "Fig3"}:
         return {
             "Fig1": "User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.",
-            "Fig2": "Simplified the serialized surrogate-query episode into four process nodes plus a compact episode strip.",
-            "Fig3": "Simplified the actor-critic diagram into network architecture and four learning-equation groups.",
+            "Fig2": "Redrawn as a round3 workflow flowchart with a separate single-query callout.",
+            "Fig3": "Redrawn as a round3 DDPG architecture diagram with interaction, replay, online, target, and update blocks.",
         }[figure_id]
     if figure_id in {"M4", "M5", "M6", "M7", "S6", "S7"}:
         return {
@@ -2084,8 +2084,23 @@ def _metadata_path(base_path: Path) -> Path:
 
 
 def _run_command(command: list[str], cwd: Path) -> str:
-    completed = subprocess.run(command, cwd=cwd, check=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    return completed.stdout
+    candidates = [command]
+    if command and command[0] in {"pdfinfo", "pdftoppm", "pdftotext"}:
+        fallbacks = [
+            Path(f"C:/texlive/2024/bin/windows/{command[0]}.exe"),
+            Path(f"C:/CTEX/MiKTeX/miktex/bin/x64/{command[0]}.exe"),
+        ]
+        candidates = [[str(path), *command[1:]] for path in fallbacks if path.exists()] + candidates
+    last_error: subprocess.CalledProcessError | FileNotFoundError | None = None
+    for candidate in candidates:
+        try:
+            completed = subprocess.run(candidate, cwd=cwd, check=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
+            return completed.stdout
+        except (subprocess.CalledProcessError, FileNotFoundError) as error:
+            last_error = error
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("empty command")
 
 
 def _render_pdf_png(pdf_path: Path, render_dir: Path) -> Path:
@@ -2094,14 +2109,7 @@ def _render_pdf_png(pdf_path: Path, render_dir: Path) -> Path:
     png_path = prefix.with_suffix(".png")
     if png_path.exists():
         png_path.unlink()
-    subprocess.run(
-        ["pdftoppm", "-singlefile", "-png", "-r", "180", str(pdf_path), str(prefix)],
-        check=True,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-    )
+    _run_command(["pdftoppm", "-singlefile", "-png", "-r", "180", str(pdf_path), str(prefix)], render_dir)
     return png_path
 
 
@@ -2116,7 +2124,9 @@ def _manual_source_entry(path: Path, repo_root: Path) -> dict[str, str]:
 
 def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[str, Any]]:
     manual_dir = output_root / "manual"
-    style_path = repo_root / "paper" / "manuscript" / "figures" / "source" / "round2_figure_style.tex"
+    source_dir = repo_root / "paper" / "manuscript" / "figures" / "source"
+    round2_style_path = source_dir / "round2_figure_style.tex"
+    round3_style_path = source_dir / "round3_figure_style.tex"
     specs = [
         {
             "figure_id": "Fig1",
@@ -2130,6 +2140,7 @@ def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[s
             ),
             "claim_boundary": "Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.",
             "font_policy": MANUAL_PRESERVE_FONT_POLICY,
+            "candidate_status": "manual_preserve",
             "extra": {
                 "manual_asset": True,
                 "automatic_editing_allowed": False,
@@ -2137,78 +2148,105 @@ def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[s
         },
         {
             "figure_id": "Fig2",
-            "semantic_name": "serialized_surrogate_query_process",
-            "planned_location": "Fig. 2 simplified candidate",
-            "pdf": manual_dir / "fig2_serialized_search_round2.pdf",
-            "png": manual_dir / "fig2_serialized_search_round2.png",
-            "metadata": manual_dir / "fig2_serialized_search_round2.metadata.json",
+            "semantic_name": "workflow_round3",
+            "planned_location": "Fig. 2 workflow round3 candidate",
+            "pdf": manual_dir / "fig2_workflow_round3.pdf",
+            "png": manual_dir / "fig2_workflow_round3.png",
+            "metadata": manual_dir / "fig2_workflow_round3.metadata.json",
             "source_files": [
-                repo_root / "paper" / "manuscript" / "figures" / "source" / "fig2_serialized_search_round2.tex",
-                style_path,
+                source_dir / "fig2_workflow_round3.tex",
+                round3_style_path,
             ],
             "panel_descriptions": (
-                "Four-node serialized surrogate-query process.",
-                "Compact 40-query episode strip.",
+                "Left-side workflow from initialization to retained candidates.",
+                "Right-side explanation of one surrogate-query step.",
             ),
-            "claim_boundary": "The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.",
+            "claim_boundary": "The figure describes the DDPG-based surrogate-search workflow and single-query surrogate interaction; actor-critic learning mechanics are reserved for Fig. 3.",
             "font_policy": STRICT_FONT_POLICY,
+            "candidate_status": "preferred_candidate",
+            "style_version": "round3-arial-v1",
             "caption": (
-                "Figure 2. Serialized surrogate-query process used in the DDPG benchmark. "
-                "The normalized three-target state is mapped by the actor to an absolute 12-dimensional descriptor query. "
-                "After Gaussian exploration and clipping, the query is evaluated by the guarded DNN surrogate, "
-                "which returns the next state and normalized-distance reward. Each episode begins from a random descriptor "
-                "query and terminates after 40 surrogate interactions. The sequence represents repeated black-box queries "
-                "rather than physical time evolution; the actor--critic learning mechanics are shown in Fig. 3."
+                "Figure 2. Workflow of the DDPG-based surrogate search. The optimization starts by initializing the "
+                "surrogate-based environment and selecting one preference scenario. Each episode begins from a random "
+                "descriptor query and then proceeds through repeated surrogate-query steps, in which the actor produces "
+                "an absolute descriptor query and the guarded surrogate returns the next state and reward. The episode "
+                "terminates after a fixed query horizon, and the process continues until all episodes and seeds are completed."
             ),
             "extra": {
-                "main_nodes": ["Current state", "Actor query", "Guarded surrogate", "Next state and reward"],
+                "candidate_status": "preferred_candidate",
+                "main_nodes": [
+                    "Start",
+                    "Initialize surrogate-based optimization environment",
+                    "Select one preference scenario",
+                    "Reset episode with a random descriptor query",
+                    "Move to the next query step",
+                    "Generate an absolute descriptor query with the actor",
+                    "Evaluate the query using the guarded surrogate and obtain the next state and reward",
+                    "Store the transition and update the policy",
+                    "Query horizon reached?",
+                    "All episodes / seeds completed?",
+                    "Output retained candidates",
+                    "End",
+                ],
+                "single_query_nodes": ["Current state", "Actor query", "Guarded surrogate evaluation", "Next state and reward"],
                 "episode_length": 40,
-                "episodes_per_seed": 600,
-                "seeds_per_scenario": 20,
-                "arrow_line_styles": ["solid"],
+                "arrow_line_styles": ["solid", "orthogonal-loop"],
+                "supersedes": "fig2_serialized_search_round2",
                 "excluded_visible_content": [
-                    "Replay buffer",
-                    "Actor--critic update",
-                    "Critic loss",
                     "Target actor",
-                    "scenario weight values",
-                    "full d_w equation",
+                    "Target critic",
+                    "Critic loss",
+                    "Actor update",
+                    "TD target",
+                    "Query 1 / Query 2 / Query 40 timeline",
                 ],
             },
         },
         {
             "figure_id": "Fig3",
-            "semantic_name": "actor_critic_architecture_and_learning",
-            "planned_location": "Fig. 3 simplified candidate",
-            "pdf": manual_dir / "fig3_actor_critic_round2.pdf",
-            "png": manual_dir / "fig3_actor_critic_round2.png",
-            "metadata": manual_dir / "fig3_actor_critic_round2.metadata.json",
+            "semantic_name": "ddpg_architecture_round3",
+            "planned_location": "Fig. 3 DDPG architecture round3 candidate",
+            "pdf": manual_dir / "fig3_ddpg_architecture_round3.pdf",
+            "png": manual_dir / "fig3_ddpg_architecture_round3.png",
+            "metadata": manual_dir / "fig3_ddpg_architecture_round3.metadata.json",
             "source_files": [
-                repo_root / "paper" / "manuscript" / "figures" / "source" / "fig3_actor_critic_round2.tex",
-                style_path,
+                source_dir / "fig3_ddpg_architecture_round3.tex",
+                round3_style_path,
             ],
             "panel_descriptions": (
-                "Online and target actor-critic network architecture.",
-                "TD target, critic loss, actor objective, and soft-update equations.",
+                "Interaction and storage blocks for environment and replay buffer.",
+                "DDPG online, target, and update blocks.",
             ),
-            "claim_boundary": "The figure documents DDPG learning mechanics only and does not describe the surrogate environment or episode sequence.",
+            "claim_boundary": "The figure documents the DDPG learning architecture used in surrogate-assisted optimization and does not describe workflow termination or episode sequencing.",
             "font_policy": STRICT_FONT_POLICY,
+            "candidate_status": "preferred_candidate",
+            "style_version": "round3-arial-v1",
             "caption": (
-                "Figure 3. Actor--critic architecture and learning equations used in the DDPG implementation. "
-                "The online actor maps the three-dimensional state to a 12-dimensional normalized descriptor action, "
-                "and the online critic evaluates the resulting state--action pair. Target copies provide the temporal-difference "
-                "target and are updated softly using factor \\(\\tau\\). The right panel summarizes the temporal-difference target, "
-                "critic loss, actor objective, and target-network updates. Here, \\(\\mu\\) denotes the actor policy, \\(Q\\) the "
-                "action-value function, primed symbols the target networks, \\(d_i\\) the terminal indicator, and \\(N\\) the mini-batch size."
+                "Figure 3. DDPG learning architecture used in the surrogate-assisted optimization. The environment provides "
+                "state transitions that are stored in the experience replay buffer. The online actor generates actions, the "
+                "online critic evaluates state--action pairs, and the target networks provide the temporal-difference target "
+                "for critic training. The lower equation blocks summarize the temporal-difference target, critic loss, actor "
+                "objective, and soft target-network update."
             ),
             "extra": {
-                "equation_groups": ["TD target", "Critic loss", "Actor objective", "Soft updates"],
+                "candidate_status": "preferred_candidate",
+                "core_blocks": [
+                    "Environment",
+                    "Experience replay buffer",
+                    "Online actor",
+                    "Online critic",
+                    "Target actor",
+                    "Target critic",
+                    "TD target",
+                    "Critic loss",
+                    "Actor update",
+                    "Soft update",
+                ],
+                "equation_groups": ["TD target", "Critic loss", "Actor objective", "Soft update"],
                 "arrow_line_styles": ["solid", "dashed"],
                 "actor_architecture": {"input_dim": 3, "hidden_layers": [64, 32], "output_dim": 12, "output_activation": "Sigmoid"},
                 "critic_architecture": {"input_dim": 15, "hidden_layers": [64, 32], "output_dim": 1},
-                "batch_size": 128,
-                "gamma": 0.999,
-                "tau": 0.001,
+                "supersedes": "fig3_actor_critic_round2",
             },
         },
     ]
@@ -2230,8 +2268,9 @@ def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[s
             "filters": {},
             "reference_protocol": "manual-candidate",
             "reference_hash": "",
-            "figure_style_version": FIGURE_STYLE_VERSION,
+            "figure_style_version": spec.get("style_version", FIGURE_STYLE_VERSION),
             "font_policy": spec["font_policy"],
+            "candidate_status": spec["candidate_status"],
             "timestamp": _utc_now(),
             "panel_descriptions": list(spec["panel_descriptions"]),
             "claim_boundary": spec["claim_boundary"],
@@ -2256,12 +2295,82 @@ def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[s
                 "metadata_path": str(spec["metadata"]),
             }
         )
+    _write_superseded_manual_metadata(repo_root, manual_dir, round2_style_path)
     return figures
+
+
+def _write_superseded_manual_metadata(repo_root: Path, manual_dir: Path, style_path: Path) -> None:
+    source_dir = repo_root / "paper" / "manuscript" / "figures" / "source"
+    specs = [
+        {
+            "figure_id": "Fig2",
+            "semantic_name": "serialized_surrogate_query_process",
+            "planned_location": "Fig. 2 superseded round2 candidate",
+            "pdf": manual_dir / "fig2_serialized_search_round2.pdf",
+            "png": manual_dir / "fig2_serialized_search_round2.png",
+            "metadata": manual_dir / "fig2_serialized_search_round2.metadata.json",
+            "source_files": [source_dir / "fig2_serialized_search_round2.tex", style_path],
+            "claim_boundary": "Superseded manual candidate retained for audit; the preferred Fig. 2 candidate is fig2_workflow_round3.",
+            "caption": "Superseded by the Fig. 2 round3 workflow candidate.",
+            "extra": {
+                "candidate_status": "superseded_candidate",
+                "superseded_by": "fig2_workflow_round3",
+                "retained_for_audit": True,
+            },
+        },
+        {
+            "figure_id": "Fig3",
+            "semantic_name": "actor_critic_architecture_and_learning",
+            "planned_location": "Fig. 3 superseded round2 candidate",
+            "pdf": manual_dir / "fig3_actor_critic_round2.pdf",
+            "png": manual_dir / "fig3_actor_critic_round2.png",
+            "metadata": manual_dir / "fig3_actor_critic_round2.metadata.json",
+            "source_files": [source_dir / "fig3_actor_critic_round2.tex", style_path],
+            "claim_boundary": "Superseded manual candidate retained for audit; the preferred Fig. 3 candidate is fig3_ddpg_architecture_round3.",
+            "caption": "Superseded by the Fig. 3 round3 DDPG architecture candidate.",
+            "extra": {
+                "candidate_status": "superseded_candidate",
+                "superseded_by": "fig3_ddpg_architecture_round3",
+                "retained_for_audit": True,
+            },
+        },
+    ]
+    for spec in specs:
+        pdf_path = spec["pdf"]
+        if not pdf_path.exists():
+            continue
+        png_path = spec["png"]
+        metadata = {
+            "figure_id": spec["figure_id"],
+            "semantic_name": spec["semantic_name"],
+            "planned_location": spec["planned_location"],
+            "source_files": [_manual_source_entry(path, repo_root) for path in spec["source_files"] if path.exists()],
+            "filters": {},
+            "reference_protocol": "manual-candidate",
+            "reference_hash": "",
+            "figure_style_version": FIGURE_STYLE_VERSION,
+            "font_policy": STRICT_FONT_POLICY,
+            "candidate_status": "superseded_candidate",
+            "timestamp": _utc_now(),
+            "panel_descriptions": ["Superseded round2 manual candidate retained for traceability."],
+            "claim_boundary": spec["claim_boundary"],
+            "caption": spec["caption"],
+            "outputs": {
+                name: {
+                    "path": _relative_path(path, repo_root),
+                    "sha256": _sha256_path(path),
+                }
+                for name, path in {"pdf": pdf_path, "png": png_path}.items()
+                if path.exists()
+            },
+            "extra": spec["extra"],
+        }
+        _json_dump(metadata, spec["metadata"])
 
 
 def _extract_pdf_text(pdf_path: Path, render_dir: Path) -> str:
     txt_path = render_dir / f"{pdf_path.stem}.txt"
-    subprocess.run(["pdftotext", str(pdf_path), str(txt_path)], check=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    _run_command(["pdftotext", str(pdf_path), str(txt_path)], render_dir)
     return txt_path.read_text(encoding="utf-8", errors="replace")
 
 
@@ -2531,10 +2640,11 @@ def build_round2_revision_figures(
     render_dir = root / "paper" / "manuscript" / "build" / "round2_candidate_render"
     expected_qa_ids = {item["figure_id"] for item in gallery_figures}
     missing_qa_ids = expected_qa_ids.difference(existing_qa_map)
-    if changed_ids or missing_qa_ids:
+    manual_qa_ids = {item["figure_id"] for item in gallery_figures if item["figure_id"] in {"Fig1", "Fig2", "Fig3"}}
+    if changed_ids or missing_qa_ids or manual_qa_ids:
         qa_rows = []
         for item in gallery_figures:
-            if item["figure_id"] in changed_ids or item["figure_id"] not in existing_qa_map:
+            if item["figure_id"] in changed_ids or item["figure_id"] in manual_qa_ids or item["figure_id"] not in existing_qa_map:
                 qa_entry = _visual_qa([item], repo_root=root, render_dir=render_dir, strict=strict)["figures"][0]
             else:
                 qa_entry = existing_qa_map[item["figure_id"]]
@@ -3005,8 +3115,33 @@ def _font_hits(fonts: str, tokens: tuple[str, ...]) -> list[str]:
 def _figure_specific_visual_checks(metadata: dict[str, Any], text: str) -> list[dict[str, Any]]:
     figure_id = metadata["figure_id"]
     extra = metadata["extra"]
+    normalized_text = re.sub(r"\s+", " ", text)
     checks: list[dict[str, Any]] = []
-    if figure_id == "M4":
+    if figure_id == "Fig2":
+        checks.extend(
+            [
+                _bool_check("Fig2 is the preferred round3 workflow candidate", metadata.get("candidate_status") == "preferred_candidate", "Gallery should use the round3 Fig. 2 workflow candidate."),
+                _bool_check("Fig2 includes required decision nodes", all(token in normalized_text for token in ("Query horizon reached", "All episodes / seeds completed")), "The workflow must include both termination decisions."),
+                _bool_check(
+                    "Fig2 excludes DDPG learning blocks",
+                    not any(token in normalized_text for token in ("Target actor", "Target critic", "Critic loss", "Actor update", "TD target")),
+                    "Fig. 2 should not duplicate the DDPG learning architecture.",
+                ),
+            ]
+        )
+    elif figure_id == "Fig3":
+        checks.extend(
+            [
+                _bool_check("Fig3 is the preferred round3 architecture candidate", metadata.get("candidate_status") == "preferred_candidate", "Gallery should use the round3 Fig. 3 architecture candidate."),
+                _bool_check("Fig3 includes DDPG architecture blocks", all(token in normalized_text for token in ("Environment", "Experience replay", "Online actor", "Target critic", "Soft update")), "The architecture diagram must include interaction, replay, online, target, and update blocks."),
+                _bool_check(
+                    "Fig3 excludes workflow decisions",
+                    not any(token in normalized_text for token in ("Start", "End", "Query horizon reached", "All episodes / seeds completed")),
+                    "Fig. 3 should not duplicate the workflow figure.",
+                ),
+            ]
+        )
+    elif figure_id == "M4":
         checks.extend(
             [
                 _bool_check("M4 keeps only three panels", len(metadata["panel_descriptions"]) == 3, "The main benchmark figure should contain utility, HV, and IGD only."),
@@ -3161,11 +3296,14 @@ def _write_gallery(figures: list[dict[str, Any]], qa: dict[str, Any], *, repo_ro
         "",
         "## Part I - Main manuscript candidates",
         "",
+        "- Preferred manual order: Fig. 1 manual candidate, Fig. 2 workflow round3, Fig. 3 DDPG architecture round3.",
+        "- Superseded manual candidates retained for audit: `fig2_serialized_search_round2` and `fig3_actor_critic_round2`.",
+        "",
     ]
     pdf_path = snapshot_dir / "round2-figure-gallery.pdf"
     generated_pdf_path = snapshot_dir / "round2-figure-gallery.generated.pdf"
     with PdfPages(generated_pdf_path) as pdf:
-        _write_gallery_section_page(pdf, "Part I - Main manuscript candidates", "Manual Fig. 1-3 plus locked candidate Main Fig. 4-10.")
+        _write_gallery_section_page(pdf, "Part I - Main manuscript candidates", "Manual Fig. 1, round3 Fig. 2-3, and locked candidate Main Fig. 4-10.")
         for index, (section_key, section_title) in enumerate(
             [("main", "Part I - Main manuscript candidates"), ("appendix", "Part II - Supplementary Information candidates")],
             start=1,
@@ -3253,8 +3391,9 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "",
         "## Main manuscript lock",
         "- Manual Fig. 1 is user supplied and is included for gallery/QA only; the automated workflow must not edit or re-export it.",
-        "- Fig. 2 is the simplified serialized surrogate-query process candidate.",
-        "- Fig. 3 is the simplified actor-critic architecture and learning-equation candidate.",
+        "- Fig. 2 is the round3 workflow flowchart candidate.",
+        "- Fig. 3 is the round3 DDPG learning architecture candidate.",
+        "- Superseded round2 manual candidates remain on disk for audit but are not preferred gallery entries.",
         "- Main Fig. 4-10 and Supplementary Fig. S1-S9 are rebuilt through the round-2 figure builder.",
         "",
     ]
@@ -3318,8 +3457,8 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "",
         "## Main manuscript figures",
         "- Manual Fig. 1: user-supplied overview candidate; included for gallery/QA only.",
-        "- Fig. 2: simplified serialized surrogate-query process candidate.",
-        "- Fig. 3: simplified actor-critic architecture and learning-equation candidate.",
+        "- Fig. 2: round3 workflow flowchart candidate.",
+        "- Fig. 3: round3 DDPG learning architecture candidate.",
         "- Fig. 4: M1 data and surrogate validation.",
         "- Fig. 5: M2 surrogate robustness.",
         "- Fig. 6: M3 DDPG training dynamics.",
@@ -3341,7 +3480,8 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "",
         "## Candidate figure coverage",
         "- Candidate figure slots covered here: 19 (Manual Fig. 1, Fig. 2, Fig. 3, Main Fig. 4-10, and Supplementary Fig. S1-S9).",
-        "- Manual Fig. 1 stays outside automatic editing; Fig. 2 and Fig. 3 are TikZ manual candidates that share `round2_figure_style.tex`.",
+        "- Manual Fig. 1 stays outside automatic editing; preferred Fig. 2 and Fig. 3 are round3 TikZ manual candidates that share `round3_figure_style.tex`.",
+        "- Superseded round2 Fig. 2 and Fig. 3 candidates remain available as traceability artifacts only.",
         "",
         "## Table split",
         "- Main manuscript retains morphology descriptors, evaluation modes, surrogate robustness, optimizer budget and output contract, the canonical DDPG-NSGA-II benchmark, and a compact physical-climate evidence summary.",

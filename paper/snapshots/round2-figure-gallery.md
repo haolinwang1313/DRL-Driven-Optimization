@@ -2,22 +2,25 @@
 
 ## Part I - Main manuscript candidates
 
+- Preferred manual order: Fig. 1 manual candidate, Fig. 2 workflow round3, Fig. 3 DDPG architecture round3.
+- Superseded manual candidates retained for audit: `fig2_serialized_search_round2` and `fig3_actor_critic_round2`.
+
 ### Manual Fig. 1 candidate (Fig1 manual_fig1_candidate)
 - Source files: `paper/manuscript/figures/round2_candidate/manual/fig1.pdf` (c46c7c3c2eaffcd316843e5eda70cc28ec03b64acb2919ab70054c74f26a2332)
 - Claim boundary: Manual Fig. 1 is included for visual QA and gallery context only; the automated workflow must not edit or re-export it.
 - Revision note: User-supplied manual Fig. 1 candidate; included for gallery and QA only, with no automatic edits.
 - Unresolved visual concerns: None
 
-### Fig. 2 simplified candidate (Fig2 serialized_surrogate_query_process)
-- Source files: `paper/manuscript/figures/source/fig2_serialized_search_round2.tex` (6d002851d50b588fb8d22b33d72f5b4c013fb18469d9576c00b9985e846ad4dc), `paper/manuscript/figures/source/round2_figure_style.tex` (396b9da979eef3e79363bc0d12277e8af916ab4905ebba39c2e6c65eb2148354)
-- Claim boundary: The sequence represents repeated black-box queries to a static guarded surrogate and not physical-time evolution.
-- Revision note: Simplified the serialized surrogate-query episode into four process nodes plus a compact episode strip.
+### Fig. 2 workflow round3 candidate (Fig2 workflow_round3)
+- Source files: `paper/manuscript/figures/source/fig2_workflow_round3.tex` (df242198a7afb94eba77de93491bd9c064d41996a8efd64ebe4219a276e28698), `paper/manuscript/figures/source/round3_figure_style.tex` (2cd4fcbcb91773c7c1a824c083453fb328e6398b0513639612c1332d16632d18)
+- Claim boundary: The figure describes the DDPG-based surrogate-search workflow and single-query surrogate interaction; actor-critic learning mechanics are reserved for Fig. 3.
+- Revision note: Redrawn as a round3 workflow flowchart with a separate single-query callout.
 - Unresolved visual concerns: None
 
-### Fig. 3 simplified candidate (Fig3 actor_critic_architecture_and_learning)
-- Source files: `paper/manuscript/figures/source/fig3_actor_critic_round2.tex` (4996867a2238c06475686b04a8c938b834b6ddff344912aa4ebcade633a55911), `paper/manuscript/figures/source/round2_figure_style.tex` (396b9da979eef3e79363bc0d12277e8af916ab4905ebba39c2e6c65eb2148354)
-- Claim boundary: The figure documents DDPG learning mechanics only and does not describe the surrogate environment or episode sequence.
-- Revision note: Simplified the actor-critic diagram into network architecture and four learning-equation groups.
+### Fig. 3 DDPG architecture round3 candidate (Fig3 ddpg_architecture_round3)
+- Source files: `paper/manuscript/figures/source/fig3_ddpg_architecture_round3.tex` (d7e269b6c9556063e8d0fe46f4a5a4251b77b7a84ede26760641caff372c3cac), `paper/manuscript/figures/source/round3_figure_style.tex` (2cd4fcbcb91773c7c1a824c083453fb328e6398b0513639612c1332d16632d18)
+- Claim boundary: The figure documents the DDPG learning architecture used in surrogate-assisted optimization and does not describe workflow termination or episode sequencing.
+- Revision note: Redrawn as a round3 DDPG architecture diagram with interaction, replay, online, target, and update blocks.
 - Unresolved visual concerns: None
 
 ### Main Fig. 4 (M1 data_and_surrogate_validation)

@@ -1,7 +1,7 @@
 {
   "figure_id": "Fig3",
   "semantic_name": "actor_critic_architecture_and_learning",
-  "planned_location": "Fig. 3 simplified candidate",
+  "planned_location": "Fig. 3 superseded round2 candidate",
   "source_files": [
     {
       "path": "paper/manuscript/figures/source/fig3_actor_critic_round2.tex",
@@ -21,13 +21,13 @@
   "reference_hash": "",
   "figure_style_version": "round2-arial-v1",
   "font_policy": "strict_arial",
-  "timestamp": "2026-06-25T15:11:53+00:00",
+  "candidate_status": "superseded_candidate",
+  "timestamp": "2026-06-26T03:55:25+00:00",
   "panel_descriptions": [
-    "Online and target actor-critic network architecture.",
-    "TD target, critic loss, actor objective, and soft-update equations."
+    "Superseded round2 manual candidate retained for traceability."
   ],
-  "claim_boundary": "The figure documents DDPG learning mechanics only and does not describe the surrogate environment or episode sequence.",
-  "caption": "Figure 3. Actor--critic architecture and learning equations used in the DDPG implementation. The online actor maps the three-dimensional state to a 12-dimensional normalized descriptor action, and the online critic evaluates the resulting state--action pair. Target copies provide the temporal-difference target and are updated softly using factor \\(\\tau\\). The right panel summarizes the temporal-difference target, critic loss, actor objective, and target-network updates. Here, \\(\\mu\\) denotes the actor policy, \\(Q\\) the action-value function, primed symbols the target networks, \\(d_i\\) the terminal indicator, and \\(N\\) the mini-batch size.",
+  "claim_boundary": "Superseded manual candidate retained for audit; the preferred Fig. 3 candidate is fig3_ddpg_architecture_round3.",
+  "caption": "Superseded by the Fig. 3 round3 DDPG architecture candidate.",
   "outputs": {
     "pdf": {
       "path": "paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf",
@@ -39,35 +39,8 @@
     }
   },
   "extra": {
-    "equation_groups": [
-      "TD target",
-      "Critic loss",
-      "Actor objective",
-      "Soft updates"
-    ],
-    "arrow_line_styles": [
-      "solid",
-      "dashed"
-    ],
-    "actor_architecture": {
-      "input_dim": 3,
-      "hidden_layers": [
-        64,
-        32
-      ],
-      "output_dim": 12,
-      "output_activation": "Sigmoid"
-    },
-    "critic_architecture": {
-      "input_dim": 15,
-      "hidden_layers": [
-        64,
-        32
-      ],
-      "output_dim": 1
-    },
-    "batch_size": 128,
-    "gamma": 0.999,
-    "tau": 0.001
+    "candidate_status": "superseded_candidate",
+    "superseded_by": "fig3_ddpg_architecture_round3",
+    "retained_for_audit": true
   }
 }

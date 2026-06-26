@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T15:11:16+00:00",
+  "generated_at": "2026-06-26T03:55:26+00:00",
   "figures": [
     {
       "figure_id": "Fig1",
@@ -47,12 +47,12 @@
     },
     {
       "figure_id": "Fig2",
-      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2_serialized_search_round2.pdf",
-      "render_png": "paper/manuscript/build/round2_candidate_render/fig2_serialized_search_round2.png",
-      "pdfinfo": "Creator:          XeTeX output 2026.06.25:2307\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Thu Jun 25 23:07:57 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 175.75 pts\nPage rot:        0\nFile size:       76802 bytes\nOptimized:       no\nPDF version:     1.5\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nYODGBD+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nKPLMSS+Arial-BoldItalicMT            CID TrueType      Identity-H       yes yes yes      7  0\nRJRVWS+Arial-ItalicMT                CID TrueType      Identity-H       yes yes yes      9  0\nIMJWQF+CMR7                          Type 1C           Builtin          yes yes yes     11  0\nRNZDYH+ArialMT                       CID TrueType      Identity-H       yes yes yes     12  0\nSRUWRS+CMSY7                         Type 1C           Builtin          yes yes yes     14  0\nNOGSPY+MSBM7                         Type 1C           Builtin          yes yes yes     15  0\nCFVSZG+CMR6                          Type 1C           Builtin          yes yes yes     16  0\nCNBAZP+CMEX7                         Type 1C           Builtin          yes yes no      17  0\nFILUAX+CMMI7                         Type 1C           Builtin          yes yes yes     18  0\nYVQRYW+CMMIB7                        Type 1C           Builtin          yes yes yes     19  0\nVKDFUC+CMSY6                         Type 1C           Builtin          yes yes yes     20  0\nZHBDIA+CMSY8                         Type 1C           Builtin          yes yes yes     21  0\n",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2_workflow_round3.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig2_workflow_round3.png",
+      "pdfinfo": "Creator:          XeTeX output 2026.06.26:1150\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Fri Jun 26 11:50:35 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 249.45 pts\nPage rot:        0\nFile size:       45203 bytes\nOptimized:       no\nPDF version:     1.5\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nVEPVRU+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nKKIEUO+ArialMT                       CID TrueType      Identity-H       yes yes yes      7  0\n",
       "width_px": 1241,
-      "height_px": 440,
+      "height_px": 624,
       "type3_fonts": false,
       "arial_font_hits": [
         "Arial",
@@ -87,18 +87,33 @@
           "name": "No Times or NewTX fonts",
           "passed": true,
           "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "Fig2 is the preferred round3 workflow candidate",
+          "passed": true,
+          "detail": "Gallery should use the round3 Fig. 2 workflow candidate."
+        },
+        {
+          "name": "Fig2 includes required decision nodes",
+          "passed": true,
+          "detail": "The workflow must include both termination decisions."
+        },
+        {
+          "name": "Fig2 excludes DDPG learning blocks",
+          "passed": true,
+          "detail": "Fig. 2 should not duplicate the DDPG learning architecture."
         }
       ],
       "unresolved_visual_concerns": []
     },
     {
       "figure_id": "Fig3",
-      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig3_actor_critic_round2.pdf",
-      "render_png": "paper/manuscript/build/round2_candidate_render/fig3_actor_critic_round2.png",
-      "pdfinfo": "Creator:          XeTeX output 2026.06.25:2310\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Thu Jun 25 23:10:06 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 187.09 pts\nPage rot:        0\nFile size:       71054 bytes\nOptimized:       no\nPDF version:     1.5\n",
-      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nHKAMVN+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nNADHGI+CMSY7                         Type 1C           Builtin          yes yes yes      7  0\nPRCVWK+CMR7                          Type 1C           Builtin          yes yes yes      8  0\nZSKQVS+ArialMT                       CID TrueType      Identity-H       yes yes yes      9  0\nYQTNIR+Arial-BoldItalicMT            CID TrueType      Identity-H       yes yes yes     11  0\nTRAULL+Arial-ItalicMT                CID TrueType      Identity-H       yes yes yes     13  0\nUZLZMR+CMR6                          Type 1C           Builtin          yes yes yes     15  0\nBSHUQD+CMSY6                         Type 1C           Builtin          yes yes yes     16  0\nIIRHXD+CMMI6                         Type 1C           Builtin          yes yes yes     17  0\nTGYCGE+CMMI7                         Type 1C           Builtin          yes yes yes     18  0\nWDACCN+CMEX7                         Type 1C           Builtin          yes yes yes     19  0\nEIJGMQ+CMSY5                         Type 1C           Builtin          yes yes yes     20  0\n",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig3_ddpg_architecture_round3.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig3_ddpg_architecture_round3.png",
+      "pdfinfo": "Creator:          XeTeX output 2026.06.26:1152\nProducer:        xdvipdfmx (20240305)\nCreationDate:    Fri Jun 26 11:52:17 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.06 x 221.1 pts\nPage rot:        0\nFile size:       59448 bytes\nOptimized:       no\nPDF version:     1.5\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nBEBZGI+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes      5  0\nNAGRUH+ArialMT                       CID TrueType      Identity-H       yes yes yes      7  0\nTYRVIN+CMR7                          Type 1C           Builtin          yes yes yes      9  0\nJTVLEV+Arial-ItalicMT                CID TrueType      Identity-H       yes yes yes     10  0\nYJMLEQ+CMR6                          Type 1C           Builtin          yes yes yes     12  0\nLRLLBV+CMSY7                         Type 1C           Builtin          yes yes yes     13  0\nWHELBH+CMMI6                         Type 1C           Builtin          yes yes yes     14  0\nTCSOSI+CMMI7                         Type 1C           Builtin          yes yes yes     15  0\nLTYSIC+CMSY6                         Type 1C           Builtin          yes yes yes     16  0\nAPJJIO+CMSY5                         Type 1C           Builtin          yes yes yes     17  0\nGWLPZQ+CMR5                          Type 1C           Builtin          yes yes yes     18  0\n",
       "width_px": 1241,
-      "height_px": 468,
+      "height_px": 553,
       "type3_fonts": false,
       "arial_font_hits": [
         "Arial",
@@ -133,6 +148,21 @@
           "name": "No Times or NewTX fonts",
           "passed": true,
           "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "Fig3 is the preferred round3 architecture candidate",
+          "passed": true,
+          "detail": "Gallery should use the round3 Fig. 3 architecture candidate."
+        },
+        {
+          "name": "Fig3 includes DDPG architecture blocks",
+          "passed": true,
+          "detail": "The architecture diagram must include interaction, replay, online, target, and update blocks."
+        },
+        {
+          "name": "Fig3 excludes workflow decisions",
+          "passed": true,
+          "detail": "Fig. 3 should not duplicate the workflow figure."
         }
       ],
       "unresolved_visual_concerns": []

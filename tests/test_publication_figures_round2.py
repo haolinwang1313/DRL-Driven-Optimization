@@ -281,7 +281,24 @@ def test_manual_fig1_hash_is_preserved_and_record_only(built_round2_assets: dict
     metadata = _metadata("manual/fig1.metadata.json")
     assert metadata["figure_id"] == "Fig1"
     assert metadata["font_policy"] == "manual_preserve"
+    assert metadata["candidate_status"] == "manual_preserve"
     assert metadata["outputs"]["pdf"]["sha256"] == _sha256_path(OUTPUT_ROOT / "manual" / "fig1.pdf")
+
+
+def test_round3_manual_candidates_are_preferred_and_round2_candidates_superseded(built_round2_assets: dict) -> None:
+    fig2 = _metadata("manual/fig2_workflow_round3.metadata.json")
+    fig3 = _metadata("manual/fig3_ddpg_architecture_round3.metadata.json")
+    old_fig2 = _metadata("manual/fig2_serialized_search_round2.metadata.json")
+    old_fig3 = _metadata("manual/fig3_actor_critic_round2.metadata.json")
+
+    assert fig2["semantic_name"] == "workflow_round3"
+    assert fig2["candidate_status"] == "preferred_candidate"
+    assert fig3["semantic_name"] == "ddpg_architecture_round3"
+    assert fig3["candidate_status"] == "preferred_candidate"
+    assert old_fig2["candidate_status"] == "superseded_candidate"
+    assert old_fig2["extra"]["superseded_by"] == "fig2_workflow_round3"
+    assert old_fig3["candidate_status"] == "superseded_candidate"
+    assert old_fig3["extra"]["superseded_by"] == "fig3_ddpg_architecture_round3"
 
 
 def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
@@ -307,8 +324,9 @@ def test_gallery_separates_main_and_supplementary_sections(built_round2_assets: 
     assert "## Part I - Main manuscript candidates" in gallery_text
     assert "## Part II - Supplementary Information candidates" in gallery_text
     assert "Manual Fig. 1 candidate" in gallery_text
-    assert "Fig. 2 simplified candidate" in gallery_text
-    assert "Fig. 3 simplified candidate" in gallery_text
+    assert "Fig. 2 workflow round3 candidate" in gallery_text
+    assert "Fig. 3 DDPG architecture round3 candidate" in gallery_text
+    assert "Superseded manual candidates retained for audit" in gallery_text
 
 
 def test_supplementary_figure_ids_are_unique(built_round2_assets: dict) -> None:
