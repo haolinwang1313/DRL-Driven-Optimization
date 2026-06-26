@@ -1,10 +1,7 @@
-Figure 3. Actor--critic architecture and learning equations used in the
-DDPG implementation. The online actor maps the three-dimensional state
-to a 12-dimensional normalized descriptor action, and the online critic
-evaluates the resulting state--action pair. Target copies provide the
-temporal-difference target and are updated softly using factor
-\(\tau\). The right panel summarizes the temporal-difference target,
-critic loss, actor objective, and target-network updates. Here,
-\(\mu\) denotes the actor policy, \(Q\) the action-value function,
-primed symbols the target networks, \(d_i\) the terminal indicator, and
-\(N\) the mini-batch size.
+Figure 3. DDPG learning architecture used in the surrogate-assisted
+optimization. The environment provides state transitions that are stored
+in the experience replay buffer. The online actor generates actions, the
+online critic evaluates state--action pairs, and the target networks
+provide the temporal-difference target for critic training. The lower
+equation blocks summarize the temporal-difference target, critic loss,
+actor objective, and soft target-network update.

@@ -1,0 +1,64 @@
+\documentclass[tikz,border=0pt]{standalone}
+
+\input{round3_figure_style.tex}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\path[use as bounding box] (0,0) rectangle (17.5,7.8);
+
+\node[font=\RThreeTitle, text=FigDark, anchor=west] at (0.35,7.35) {Interaction and storage};
+\node[font=\RThreeTitle, text=FigDark, anchor=west] at (4.85,7.35) {DDPG learning core};
+\draw[FigGrid, line width=0.8pt] (4.55,0.55) -- (4.55,7.12);
+
+\node[neutralbox, minimum width=2.20cm, minimum height=1.18cm, text width=1.82cm] (env) at (2.00,5.35)
+  {Environment};
+\node[neutralbox, minimum width=3.15cm, minimum height=1.05cm, text width=2.72cm] (replay) at (2.00,2.25)
+  {Experience replay\\buffer\\[-1pt]{\RThreeSmall $(s_i,a_i,r_i,s_{i+1},d_i)$}};
+
+\node[actorbox, minimum width=3.00cm, minimum height=1.20cm, text width=2.68cm] (onlineactor) at (6.55,6.00)
+  {{\RThreeTitle Online actor}\\[1pt]
+  {\RThreeFormula $3\to64\to32\to12$}\\[-1pt]
+  {\RThreeSmall ReLU / ReLU / Sigmoid}};
+\node[actorbox, minimum width=3.00cm, minimum height=1.20cm, text width=2.68cm] (onlinecritic) at (6.55,4.08)
+  {{\RThreeTitle Online critic}\\[1pt]
+  {\RThreeFormula $15\to64\to32\to1$}\\[-1pt]
+  {\RThreeSmall ReLU / ReLU / Linear}};
+
+\node[targetbox, minimum width=3.00cm, minimum height=1.04cm, text width=2.68cm] (targetactor) at (10.40,6.00)
+  {{\RThreeTitle Target actor}\\[1pt]
+  {\RThreeSmall copy of online actor}};
+\node[targetbox, minimum width=3.00cm, minimum height=1.04cm, text width=2.68cm] (targetcritic) at (10.40,4.08)
+  {{\RThreeTitle Target critic}\\[1pt]
+  {\RThreeSmall copy of online critic}};
+
+\node[formulabox, minimum width=3.25cm, minimum height=1.18cm, text width=2.93cm] (actorupdate) at (6.55,1.55)
+  {{\RThreeTitle Actor update}\\[1pt]
+  {\RThreeFormula $L_\mu=-\mathrm{mean}\ Q(s_i,\mu(s_i))$}};
+\node[formulabox, minimum width=3.25cm, minimum height=1.18cm, text width=2.93cm] (tdtarget) at (10.40,1.55)
+  {{\RThreeTitle TD target}\\[1pt]
+  {\RThreeFormula $y_i=r_i+\gamma(1-d_i)$\\[-1pt]
+  $Q'(s_{i+1},\mu'(s_{i+1}))$}};
+\node[formulabox, minimum width=3.25cm, minimum height=1.18cm, text width=2.93cm] (criticloss) at (14.20,1.55)
+  {{\RThreeTitle Critic loss}\\[1pt]
+  {\RThreeFormula $L_Q=\mathrm{MSE}(Q(s_i,a_i),y_i)$}};
+\node[formulabox, minimum width=2.75cm, minimum height=0.82cm, text width=2.45cm] (softupdate) at (14.62,4.92)
+  {{\RThreeTitle Soft update}\\[-1pt]
+  {\RThreeFormula $\theta'\leftarrow\tau\theta+(1-\tau)\theta'$}};
+
+\draw[mainarrow] ([yshift=4pt]env.east) -- (3.35,5.72) |- node[arrowlabel, pos=0.70, above=1pt] {state} (onlineactor.west);
+\draw[mainarrow] ([yshift=-4pt]onlineactor.west) -- (3.35,5.40) -- node[arrowlabel, below=1pt] {action} ([yshift=-4pt]env.east);
+\draw[mainarrow] (env.south) -- node[arrowlabel, right=2pt] {transition} (replay.north);
+\draw[mainarrow] (replay.east) -- (3.75,2.25) |- node[arrowlabel, pos=0.62, below=1pt] {mini-batch} (onlinecritic.west);
+
+\draw[mainarrow] (onlineactor.south) -- node[arrowlabel, right=2pt] {$a_i$} (onlinecritic.north);
+\draw[softarrow] (onlineactor.east) -- node[arrowlabel, above=1pt] {soft update} (targetactor.west);
+\draw[softarrow] (onlinecritic.east) -- node[arrowlabel, below=1pt] {soft update} (targetcritic.west);
+\draw[mainarrow] (targetactor.south) -- node[arrowlabel, right=2pt] {$\mu'(s_{i+1})$} (targetcritic.north);
+
+\draw[mainarrow] (targetcritic.south) -- node[arrowlabel, right=2pt] {$Q'$} (tdtarget.north);
+\draw[mainarrow] (tdtarget.east) -- node[arrowlabel, above=1pt] {$y_i$} (criticloss.west);
+\draw[mainarrow] (onlinecritic.south) -- node[arrowlabel, left=1pt] {$Q(s_i,\mu(s_i))$} (actorupdate.north);
+\draw[mainarrow] (onlinecritic.east) -- ++(0.62,0) |- node[arrowlabel, pos=0.78, above=1pt] {$Q(s_i,a_i)$} (criticloss.north);
+
+\end{tikzpicture}
+\end{document}
