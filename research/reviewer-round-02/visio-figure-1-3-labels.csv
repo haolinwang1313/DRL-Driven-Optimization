@@ -1,0 +1,4 @@
+figure_id,element_type,original_text,replacement_text,note
+Fig1,asset,manual/fig1.pdf,manual/fig1.pdf,Preserve exactly; record-only QA.
+Fig2,asset,TeX-derived candidates,manual/fig2.pdf,Final preferred workflow candidate.
+Fig3,asset,TeX-derived candidates,manual/fig3.pdf,Final preferred DDPG architecture candidate.

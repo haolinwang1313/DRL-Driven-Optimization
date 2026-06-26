@@ -1,0 +1,14 @@
+group,method,scenario,HV,distance_to_hv_ceiling,fraction_of_theoretical_max,clipped_utopia_rows,total_rows,clipped_utopia_fraction,unique_objective_tuples,unique_non_dominated_tuples,reference_protocol,reference_hash,theoretical_max_hv
+DDPG::Balanced_Performance,DDPG,Balanced_Performance,0.661912,0.669088,0.497304,0,20,0.0,20,5,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+CMA-ES::Balanced_Performance,CMA-ES,Balanced_Performance,1.331,0.0,1.0,1998,2000,0.999,2,1,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+RandomSearch::Balanced_Performance,RandomSearch,Balanced_Performance,1.200068,0.130932,0.901629,0,2000,0.0,2000,11,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+FeasiblePoolRandom::Balanced_Performance,FeasiblePoolRandom,Balanced_Performance,1.307244,0.023756,0.982152,0,20,0.0,1,1,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+DDPG::Energy_Saving_Focus,DDPG,Energy_Saving_Focus,1.002757,0.328243,0.753386,0,20,0.0,20,8,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+CMA-ES::Energy_Saving_Focus,CMA-ES,Energy_Saving_Focus,1.331,0.0,1.0,2000,2000,1.0,1,1,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+RandomSearch::Energy_Saving_Focus,RandomSearch,Energy_Saving_Focus,1.107954,0.223046,0.832422,0,2000,0.0,2000,14,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+FeasiblePoolRandom::Energy_Saving_Focus,FeasiblePoolRandom,Energy_Saving_Focus,1.307244,0.023756,0.982152,0,20,0.0,1,1,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+DDPG::Energy_Generation_Focus,DDPG,Energy_Generation_Focus,1.170428,0.160572,0.87936,0,20,0.0,20,7,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+CMA-ES::Energy_Generation_Focus,CMA-ES,Energy_Generation_Focus,1.331,0.0,1.0,1999,2000,0.9995,2,1,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+RandomSearch::Energy_Generation_Focus,RandomSearch,Energy_Generation_Focus,1.192443,0.138557,0.8959,0,2000,0.0,2000,14,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+FeasiblePoolRandom::Energy_Generation_Focus,FeasiblePoolRandom,Energy_Generation_Focus,1.307244,0.023756,0.982152,0,20,0.0,1,1,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004
+NSGA-II,NSGA-II,NSGA-II,1.330999,1e-06,1.0,0,2000,0.0,1761,17,benchmark-reference-v2,a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc,1.3310000000000004

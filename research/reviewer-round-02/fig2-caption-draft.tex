@@ -1,0 +1,8 @@
+Figure 2. Workflow of the DDPG-based surrogate search. The optimization
+starts by initializing the surrogate-based environment and selecting one
+preference scenario. Each episode begins from a random descriptor query
+and then proceeds through repeated surrogate-query steps, in which the
+actor produces an absolute descriptor query and the guarded surrogate
+returns the next state and reward. The episode terminates after a fixed
+query horizon, and the process continues until all episodes and seeds are
+completed.

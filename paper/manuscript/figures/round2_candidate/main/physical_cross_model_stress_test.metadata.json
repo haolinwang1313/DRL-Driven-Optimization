@@ -1,0 +1,136 @@
+{
+  "figure_id": "M6",
+  "semantic_name": "physical_cross_model_stress_test",
+  "planned_location": "Main Fig. 9",
+  "source_files": [
+    {
+      "path": "physical_direct_cases.csv",
+      "sha256": "0403f94ea9bd6d4d089b930723e08f860cdf3da726f99dcaaee038fa6b7f39d3",
+      "reference_protocol": "",
+      "reference_hash": ""
+    },
+    {
+      "path": "physical_stress_metrics.csv",
+      "sha256": "cf9ec8e791d55efe5edafe4a1f1cd779523801e0d6bce8bbbdcadd03bd7f4303",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "8cc1945e652658999fdbfe2554685d0477156b90",
+  "timestamp": "2026-06-25T15:11:06+00:00",
+  "figure_style_version": "round2-arial-v1",
+  "font_policy": "strict_arial",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "EUIt parity for the 18 direct feasible cases.",
+    "GHI-based rooftop-PV proxy parity for the 18 direct feasible cases.",
+    "Direct-sun-hours parity for the 18 direct feasible cases."
+  ],
+  "claim_boundary": "This figure is limited to the direct-case physics-based cross-model stress test and does not support optimizer-superiority claims.",
+  "extra": {
+    "parity_axes": {
+      "EUIt": {
+        "xlim": [
+          65.66525145630195,
+          77.49303333363312
+        ],
+        "ylim": [
+          65.66525145630195,
+          77.49303333363312
+        ]
+      },
+      "EG_GHI_proxy": {
+        "xlim": [
+          1.539582974880001,
+          2.98648923312
+        ],
+        "ylim": [
+          1.539582974880001,
+          2.98648923312
+        ]
+      },
+      "H": {
+        "xlim": [
+          4.864,
+          8.786000000000001
+        ],
+        "ylim": [
+          4.864,
+          8.786000000000001
+        ]
+      }
+    },
+    "direct_case_count": 18,
+    "stress_test_label": "limited physics-based cross-model stress test",
+    "shared_axis_labels": [
+      "Analytic response-generator value",
+      "Physics-based stress-test value"
+    ],
+    "panel_title_fontsize": 8.2,
+    "axis_label_fontsize": 7.8,
+    "statistics_fontsize": 7.0
+  },
+  "visual_qa": {
+    "figure_id": "M6",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/physical_cross_model_stress_test.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:05 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       492.622 x 137.485 pts\nPage rot:        0\nFile size:       46688 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     18  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     25  0\n",
+    "width_px": 1232,
+    "height_px": 344,
+    "type3_fonts": false,
+    "arial_font_hits": [
+      "Arial",
+      "ArialMT"
+    ],
+    "forbidden_font_hits": [],
+    "font_policy": "strict_arial",
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "checks": [
+      {
+        "name": "No Type 3 fonts",
+        "passed": true,
+        "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "Arial font present",
+        "passed": true,
+        "detail": "Publication figures must resolve visible text to Arial."
+      },
+      {
+        "name": "No forbidden wording",
+        "passed": true,
+        "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+      },
+      {
+        "name": "Rendered page is non-empty",
+        "passed": true,
+        "detail": "Rasterized QA output should produce a non-empty page."
+      },
+      {
+        "name": "No Times or NewTX fonts",
+        "passed": true,
+        "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+      },
+      {
+        "name": "M6 statistics font does not exceed axis-label font",
+        "passed": true,
+        "detail": "Statistics text should remain smaller than the shared axis labels."
+      },
+      {
+        "name": "M6 direct-case count remains 18",
+        "passed": true,
+        "detail": "The revised figure must keep the same 18 direct feasible cases."
+      }
+    ],
+    "unresolved_visual_concerns": []
+  }
+}

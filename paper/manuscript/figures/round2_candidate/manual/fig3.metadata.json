@@ -1,0 +1,137 @@
+{
+  "figure_id": "Fig3",
+  "semantic_name": "manual_fig3_ddpg_architecture",
+  "planned_location": "Fig. 3 manual DDPG architecture candidate",
+  "source_files": [
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+      "sha256": "83b9f65099deb1bbbc6f69414fdf416ecc28d12aba19d024aae398f2895eab76",
+      "reference_protocol": "manual-candidate",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "manual-candidate",
+  "reference_hash": "",
+  "figure_style_version": "manual-visio-arial-v1",
+  "font_policy": "manual_preserve_with_embedded_symbol_fonts",
+  "candidate_status": "preferred_manual_candidate",
+  "timestamp": "2026-06-26T12:47:34+00:00",
+  "panel_descriptions": [
+    "Interaction and storage blocks for environment and replay buffer.",
+    "DDPG online, target, and update blocks."
+  ],
+  "claim_boundary": "The figure documents the DDPG learning architecture used in surrogate-assisted optimization and does not describe workflow termination or episode sequencing.",
+  "caption": "Figure 3. DDPG learning architecture used in the surrogate-assisted optimization. The environment provides state transitions that are stored in the experience replay buffer. The online actor generates actions, the online critic evaluates state--action pairs, and the target networks provide the temporal-difference target for critic training. The lower equation blocks summarize the temporal-difference target, critic loss, actor objective, and soft target-network update.",
+  "outputs": {
+    "pdf": {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+      "sha256": "83b9f65099deb1bbbc6f69414fdf416ecc28d12aba19d024aae398f2895eab76"
+    }
+  },
+  "extra": {
+    "candidate_status": "preferred_manual_candidate",
+    "manual_asset": true,
+    "final_preferred": true,
+    "automatic_editing_allowed": false,
+    "source_format": "Visio-exported PDF",
+    "core_blocks": [
+      "Surrogate environment",
+      "Experience replay buffer",
+      "Online actor",
+      "Online critic",
+      "Target actor",
+      "Target critic",
+      "TD target",
+      "Critic loss",
+      "Actor update",
+      "Soft update"
+    ],
+    "equation_groups": [
+      "TD target",
+      "Critic loss",
+      "Actor objective",
+      "Soft update"
+    ],
+    "arrow_line_styles": [
+      "solid",
+      "dashed"
+    ],
+    "actor_architecture": {
+      "input_dim": 3,
+      "hidden_layers": [
+        64,
+        32
+      ],
+      "output_dim": 12,
+      "output_activation": "Sigmoid"
+    },
+    "critic_architecture": {
+      "input_dim": 15,
+      "hidden_layers": [
+        64,
+        32
+      ],
+      "output_dim": 1
+    }
+  },
+  "visual_qa": {
+    "figure_id": "Fig3",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/fig3.png",
+    "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:27:56 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:27:56 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       683.64 x 297.24 pts\nPage rot:        0\nFile size:       70088 bytes\nOptimized:       no\nPDF version:     1.7\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nArialMT                              TrueType          WinAnsi          no  no  no       7  0\nArial-BoldMT                         TrueType          WinAnsi          no  no  no       9  0\nBCDEEE+SimSun                        CID TrueType      Identity-H       yes yes yes     11  0\nArial-ItalicMT                       TrueType          WinAnsi          no  no  no      16  0\nArial-ItalicMT                       CID TrueType      Identity-H       yes no  yes     30  0\nArial-ItalicMT                       CID TrueType      Identity-H       yes no  yes     35  0\nSymbolMT                             CID TrueType      Identity-H       yes no  yes     19  0\nTimesNewRomanPSMT                    TrueType          WinAnsi          no  no  no      24  0\nTimesNewRomanPS-ItalicMT             TrueType          WinAnsi          no  no  no      26  0\n",
+    "width_px": 1710,
+    "height_px": 744,
+    "type3_fonts": false,
+    "arial_font_hits": [
+      "Arial",
+      "ArialMT"
+    ],
+    "forbidden_font_hits": [
+      "TimesNewRoman",
+      "Times"
+    ],
+    "font_policy": "manual_preserve_with_embedded_symbol_fonts",
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "checks": [
+      {
+        "name": "No Type 3 fonts",
+        "passed": true,
+        "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "Arial font present",
+        "passed": true,
+        "detail": "Publication figures must resolve visible text to Arial."
+      },
+      {
+        "name": "No forbidden wording",
+        "passed": true,
+        "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+      },
+      {
+        "name": "Rendered page is non-empty",
+        "passed": true,
+        "detail": "Rasterized QA output should produce a non-empty page."
+      },
+      {
+        "name": "Fig3 is the preferred manual architecture candidate",
+        "passed": true,
+        "detail": "Gallery should use the final manual Fig. 3 architecture PDF."
+      },
+      {
+        "name": "Fig3 includes DDPG architecture blocks",
+        "passed": true,
+        "detail": "The architecture diagram must include interaction, replay, online, target, and update blocks."
+      },
+      {
+        "name": "Fig3 excludes workflow decisions",
+        "passed": true,
+        "detail": "Fig. 3 should not duplicate the workflow figure."
+      }
+    ],
+    "unresolved_visual_concerns": []
+  }
+}

@@ -1,0 +1,980 @@
+{
+  "generated_at": "2026-06-26T12:47:35+00:00",
+  "figures": [
+    {
+      "figure_id": "Fig1",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig1.png",
+      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:21:49 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:21:49 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       1015.56 x 653.28 pts\nPage rot:        0\nFile size:       126676 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nTimesNewRomanPSMT                    TrueType          WinAnsi          no  no  no       7  0\nArialMT                              TrueType          WinAnsi          no  no  no       9  0\nArialMT                              CID TrueType      Identity-H       yes no  yes     11  0\nArial-BoldMT                         TrueType          WinAnsi          no  no  no      16  0\nArialMT                              CID TrueType      Identity-H       yes no  yes     18  0\nTimesNewRomanPS-ItalicMT             TrueType          WinAnsi          no  no  no      26  0\nSymbolMT                             CID TrueType      Identity-H       yes no  yes     28  0\n",
+      "width_px": 2539,
+      "height_px": 1634,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [
+        "TimesNewRoman",
+        "Times"
+      ],
+      "font_policy": "manual_preserve_with_embedded_symbol_fonts",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "Fig2",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig2.png",
+      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:23:53 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:23:53 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       504.72 x 576 pts\nPage rot:        0\nFile size:       52207 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nArialMT                              TrueType          WinAnsi          no  no  no       7  0\nArialMT                              CID TrueType      Identity-H       yes no  yes      9  0\n",
+      "width_px": 1262,
+      "height_px": 1440,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "Fig2 is the preferred manual workflow candidate",
+          "passed": true,
+          "detail": "Gallery should use the final manual Fig. 2 workflow PDF."
+        },
+        {
+          "name": "Fig2 includes required decision nodes",
+          "passed": true,
+          "detail": "The workflow must include both termination decisions."
+        },
+        {
+          "name": "Fig2 excludes DDPG learning blocks",
+          "passed": true,
+          "detail": "Fig. 2 should not duplicate the DDPG learning architecture."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "Fig3",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/fig3.png",
+      "pdfinfo": "Creator:         Microsoft® Visio® LTSC\nProducer:        Microsoft® Visio® LTSC\nCreationDate:    Fri Jun 26 20:27:56 2026 �й���׼ʱ��\nModDate:         Fri Jun 26 20:27:56 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       683.64 x 297.24 pts\nPage rot:        0\nFile size:       70088 bytes\nOptimized:       no\nPDF version:     1.7\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nArialMT                              TrueType          WinAnsi          no  no  no       7  0\nArial-BoldMT                         TrueType          WinAnsi          no  no  no       9  0\nBCDEEE+SimSun                        CID TrueType      Identity-H       yes yes yes     11  0\nArial-ItalicMT                       TrueType          WinAnsi          no  no  no      16  0\nArial-ItalicMT                       CID TrueType      Identity-H       yes no  yes     30  0\nArial-ItalicMT                       CID TrueType      Identity-H       yes no  yes     35  0\nSymbolMT                             CID TrueType      Identity-H       yes no  yes     19  0\nTimesNewRomanPSMT                    TrueType          WinAnsi          no  no  no      24  0\nTimesNewRomanPS-ItalicMT             TrueType          WinAnsi          no  no  no      26  0\n",
+      "width_px": 1710,
+      "height_px": 744,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [
+        "TimesNewRoman",
+        "Times"
+      ],
+      "font_policy": "manual_preserve_with_embedded_symbol_fonts",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "Fig3 is the preferred manual architecture candidate",
+          "passed": true,
+          "detail": "Gallery should use the final manual Fig. 3 architecture PDF."
+        },
+        {
+          "name": "Fig3 includes DDPG architecture blocks",
+          "passed": true,
+          "detail": "The architecture diagram must include interaction, replay, online, target, and update blocks."
+        },
+        {
+          "name": "Fig3 excludes workflow decisions",
+          "passed": true,
+          "detail": "Fig. 3 should not duplicate the workflow figure."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M1",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/data_and_surrogate_validation.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/data_and_surrogate_validation.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:02 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.863 x 309.176 pts\nPage rot:        0\nFile size:       138663 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     19  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     26  0\n",
+      "width_px": 1235,
+      "height_px": 773,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M2",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/surrogate_robustness.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/surrogate_robustness.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:03 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       496.428 x 145.351 pts\nPage rot:        0\nFile size:       49528 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     19  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     26  0\n",
+      "width_px": 1242,
+      "height_px": 364,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M3",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/ddpg_training_dynamics.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/ddpg_training_dynamics.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:04 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.866 x 315.482 pts\nPage rot:        0\nFile size:       216560 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1235,
+      "height_px": 789,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M4",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/benchmark_fairness.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/benchmark_fairness.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:04 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       452.228 x 221.995 pts\nPage rot:        0\nFile size:       40608 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     17  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     24  0\n",
+      "width_px": 1131,
+      "height_px": 555,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "M4 keeps only three panels",
+          "passed": true,
+          "detail": "The main benchmark figure should contain utility, HV, and IGD only."
+        },
+        {
+          "name": "M4 removes the output-contract panel",
+          "passed": true,
+          "detail": "Output-contract counts should move out of the main figure."
+        },
+        {
+          "name": "M4 excludes CMA-ES, RandomSearch, and FeasiblePoolRandom labels",
+          "passed": true,
+          "detail": "The rendered PDF should not show diagnostic baseline labels."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M5",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/feasible_projection.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/feasible_projection.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:05 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.777 x 163.13 pts\nPage rot:        0\nFile size:       41431 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1237,
+      "height_px": 408,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "M5 keeps only two panels",
+          "passed": true,
+          "detail": "The main projection figure should contain compression and distance diagnostics only."
+        },
+        {
+          "name": "M5 avoids a secondary y-axis",
+          "passed": true,
+          "detail": "The revised layout must not use a twin axis."
+        },
+        {
+          "name": "M5 excludes CMA-ES, RandomSearch, and FeasiblePoolRandom labels",
+          "passed": true,
+          "detail": "Only DDPG and NSGA-II should remain in the main projection figure."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M6",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/physical_cross_model_stress_test.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:05 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       492.622 x 137.485 pts\nPage rot:        0\nFile size:       46688 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     18  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     25  0\n",
+      "width_px": 1232,
+      "height_px": 344,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "M6 statistics font does not exceed axis-label font",
+          "passed": true,
+          "detail": "Statistics text should remain smaller than the shared axis labels."
+        },
+        {
+          "name": "M6 direct-case count remains 18",
+          "passed": true,
+          "detail": "The revised figure must keep the same 18 direct feasible cases."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "M7",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/cross_climate_sensitivity.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:06 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.032 x 309.978 pts\nPage rot:        0\nFile size:       47260 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     17  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     24  0\n",
+      "width_px": 1236,
+      "height_px": 775,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "M7 uses a low-saturation climate palette",
+          "passed": true,
+          "detail": "Each climate bar color should remain muted rather than high-saturation."
+        },
+        {
+          "name": "M7 heatmap remains centered at zero",
+          "passed": true,
+          "detail": "The heatmap diverging palette should be centered at zero."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S1",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A1_descriptor_distributions.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/A1_descriptor_distributions.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:07 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.526 x 148.174 pts\nPage rot:        0\nFile size:       43966 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     18  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     25  0\n",
+      "width_px": 1234,
+      "height_px": 371,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S2",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A2_residual_diagnostics.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/A2_residual_diagnostics.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:07 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.873 x 139.474 pts\nPage rot:        0\nFile size:       36854 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1235,
+      "height_px": 349,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S3",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/A3_scale_study.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/A3_scale_study.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:08 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       489.94 x 303.876 pts\nPage rot:        0\nFile size:       38919 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     19  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     26  0\n",
+      "width_px": 1225,
+      "height_px": 760,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S4",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B1_seed_diagnostics.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/B1_seed_diagnostics.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:08 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.873 x 304.024 pts\nPage rot:        0\nFile size:       39391 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1235,
+      "height_px": 761,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S5",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B2_morphology_signatures.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/B2_morphology_signatures.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:09 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       490.931 x 134.168 pts\nPage rot:        0\nFile size:       54840 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     17  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     24  0\n",
+      "width_px": 1228,
+      "height_px": 336,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S6",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B3_hv_ceiling_diagnostics.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/B3_hv_ceiling_diagnostics.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:10 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.779 x 193.455 pts\nPage rot:        0\nFile size:       42738 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     19  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     26  0\n",
+      "width_px": 1237,
+      "height_px": 484,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "S6 uses a log scale for tuple counts",
+          "passed": true,
+          "detail": "The tuple-count panel should use a log-scaled x-axis."
+        },
+        {
+          "name": "S6 keeps only short labels",
+          "passed": true,
+          "detail": "Supplementary labels should stay compact and horizontal."
+        },
+        {
+          "name": "S6 avoids long scenario strings in rendered text",
+          "passed": true,
+          "detail": "The figure should not rely on long categorical axis labels."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S7",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B4_optimizer_linked_gap_decomposition.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/B4_optimizer_linked_gap_decomposition.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:10 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.786 x 196.938 pts\nPage rot:        0\nFile size:       38840 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1237,
+      "height_px": 493,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        },
+        {
+          "name": "S7 keeps the legend outside the plotting axes",
+          "passed": true,
+          "detail": "The legend should sit above the full figure."
+        },
+        {
+          "name": "S7 keeps six short case labels",
+          "passed": true,
+          "detail": "The bridge-diagnostic figure should contain six labeled cases."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S8",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B5_nonlinear_response_profiles.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/B5_nonlinear_response_profiles.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:12 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       497.744 x 292.545 pts\nPage rot:        0\nFile size:       42625 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
+      "width_px": 1245,
+      "height_px": 732,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    },
+    {
+      "figure_id": "S9",
+      "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B6_climate_case_detail.pdf",
+      "render_png": "paper/manuscript/build/round2_candidate_render/B6_climate_case_detail.png",
+      "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:12 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.841 x 145.36 pts\nPage rot:        0\nFile size:       54133 bytes\nOptimized:       no\nPDF version:     1.4\n",
+      "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     21  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     28  0\n",
+      "width_px": 1235,
+      "height_px": 364,
+      "type3_fonts": false,
+      "arial_font_hits": [
+        "Arial",
+        "ArialMT"
+      ],
+      "forbidden_font_hits": [],
+      "font_policy": "strict_arial",
+      "forbidden_text_hits": [],
+      "empty_render": false,
+      "checks": [
+        {
+          "name": "No Type 3 fonts",
+          "passed": true,
+          "detail": "Embedded fonts must remain vector TrueType or equivalent."
+        },
+        {
+          "name": "Arial font present",
+          "passed": true,
+          "detail": "Publication figures must resolve visible text to Arial."
+        },
+        {
+          "name": "No forbidden wording",
+          "passed": true,
+          "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+        },
+        {
+          "name": "Rendered page is non-empty",
+          "passed": true,
+          "detail": "Rasterized QA output should produce a non-empty page."
+        },
+        {
+          "name": "No Times or NewTX fonts",
+          "passed": true,
+          "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+        }
+      ],
+      "unresolved_visual_concerns": []
+    }
+  ]
+}

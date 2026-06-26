@@ -1,0 +1,78 @@
+{
+  "figure_id": "S9",
+  "semantic_name": "B6_climate_case_detail",
+  "planned_location": "Supplementary Fig. S9",
+  "source_files": [
+    {
+      "path": "climate_case_results.csv",
+      "sha256": "f624253730cdf63ce60f4e774516b4854f0c3dc6a33c4b2580a02b5df4bc3536",
+      "reference_protocol": "",
+      "reference_hash": ""
+    }
+  ],
+  "filters": {},
+  "reference_protocol": "",
+  "reference_hash": "",
+  "script_commit": "8cc1945e652658999fdbfe2554685d0477156b90",
+  "timestamp": "2026-06-25T15:11:13+00:00",
+  "figure_style_version": "round2-arial-v1",
+  "font_policy": "strict_arial",
+  "units": [
+    "EUIt (kWh/m²/y)",
+    "EG (10⁶ kWh/y)",
+    "H (h)"
+  ],
+  "panel_descriptions": [
+    "Per-block ΔEUIt heatmap across Beijing, Guangzhou, and Harbin.",
+    "Per-block ΔEG heatmap across Beijing, Guangzhou, and Harbin.",
+    "Per-block ΔH heatmap across Beijing, Guangzhou, and Harbin."
+  ],
+  "claim_boundary": "Case-level climate details remain limited to four blocks and three additional climates.",
+  "extra": {},
+  "visual_qa": {
+    "figure_id": "S9",
+    "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B6_climate_case_detail.pdf",
+    "render_png": "paper/manuscript/build/round2_candidate_render/B6_climate_case_detail.png",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:12 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.841 x 145.36 pts\nPage rot:        0\nFile size:       54133 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     21  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     28  0\n",
+    "width_px": 1235,
+    "height_px": 364,
+    "type3_fonts": false,
+    "arial_font_hits": [
+      "Arial",
+      "ArialMT"
+    ],
+    "forbidden_font_hits": [],
+    "font_policy": "strict_arial",
+    "forbidden_text_hits": [],
+    "empty_render": false,
+    "checks": [
+      {
+        "name": "No Type 3 fonts",
+        "passed": true,
+        "detail": "Embedded fonts must remain vector TrueType or equivalent."
+      },
+      {
+        "name": "Arial font present",
+        "passed": true,
+        "detail": "Publication figures must resolve visible text to Arial."
+      },
+      {
+        "name": "No forbidden wording",
+        "passed": true,
+        "detail": "Rendered PDF text must stay inside the manuscript claim boundary."
+      },
+      {
+        "name": "Rendered page is non-empty",
+        "passed": true,
+        "detail": "Rasterized QA output should produce a non-empty page."
+      },
+      {
+        "name": "No Times or NewTX fonts",
+        "passed": true,
+        "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
+      }
+    ],
+    "unresolved_visual_concerns": []
+  }
+}
