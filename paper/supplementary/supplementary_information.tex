@@ -13,7 +13,11 @@
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\definecolor{paperlinkblue}{RGB}{0,51,102}
+\definecolor{paperlinkred}{RGB}{150,24,24}
+\usepackage[colorlinks=true,linkcolor=paperlinkred,citecolor=paperlinkblue,urlcolor=paperlinkblue]{hyperref}
+\urlstyle{rm}
+\def\UrlFont{\rmfamily}
 
 \graphicspath{
 {../manuscript/figures/round2_candidate/appendix/}
@@ -32,8 +36,8 @@
 \begin{document}
 
 \title{Supplementary Information for\\
-Surrogate-Conditioned Optimizer Ranking in Block-Scale Urban Energy Design}
-\author{Haolin Wang, Zhi Wu, Wei Gu, Xiao Zang, Pengxiang Liu, Qirun Sun, and Wei Wang}
+Surrogate-conditioned optimizer ranking in block-scale urban energy design}
+\author{Haolin Wang, Zhi Wu, Wei Gu, Xiao Zhang, Pengxiang Liu, Qirun Sun, and Wei Wang}
 \date{}
 \maketitle
 

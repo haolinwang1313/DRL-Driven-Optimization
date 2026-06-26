@@ -7,10 +7,12 @@ import re
 
 
 SOURCE_PATHS = (
+    Path("paper/manuscript/manuscript_body.tex"),
     Path("paper/manuscript/manuscript_clean.tex"),
     Path("paper/manuscript/manuscript_highlighted.tex"),
-    Path("paper/manuscript/round2_manuscript_body.tex"),
+    Path("paper/manuscript/references.tex"),
     Path("paper/supplementary/supplementary_information.tex"),
+    Path("paper/highlights/highlights.tex"),
 )
 
 
@@ -37,7 +39,7 @@ CHECKS = (
     Check(
         "old data-source wording",
         re.compile(
-            r"EnergyPlus.*generated|Radiance.*generated|Grasshopper process|"
+            r"EnergyPlus-generated|Radiance-generated|Grasshopper process|"
             r"simulated morphologies|performance simulation",
             re.IGNORECASE,
         ),
@@ -45,6 +47,9 @@ CHECKS = (
     Check("old appendix input", re.compile(r"\\input\{appendix\}|Appendix~[AB]|Appendix [AB]")),
     Check("response-letter residue", re.compile(r"response letter|Response\.", re.IGNORECASE)),
 )
+
+CITE_GROUP = re.compile(r"\\cite\{([^}]*)\}")
+REV_COMMAND = re.compile(r"\\rev\{")
 
 
 REQUIRED_MAIN_FIGURES = (
@@ -81,6 +86,67 @@ def _line_hits(path: Path, check: Check) -> list[str]:
     return hits
 
 
+def _matching_brace(text: str, open_index: int) -> int:
+    depth = 0
+    i = open_index
+    while i < len(text):
+        if text[i] == "\\":
+            i += 2
+            continue
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    raise ValueError("unmatched brace in revision markup")
+
+
+def _revision_char_count(text: str) -> int:
+    count = 0
+    pos = 0
+    while True:
+        match = REV_COMMAND.search(text, pos)
+        if not match:
+            return count
+        start = match.end() - 1
+        end = _matching_brace(text, start)
+        count += end - start - 1
+        pos = end + 1
+
+
+def _extra_source_checks(root: Path) -> list[str]:
+    failures: list[str] = []
+    body_path = root / "paper/manuscript/manuscript_body.tex"
+    if not body_path.exists():
+        return failures
+
+    body = body_path.read_text(encoding="utf-8")
+    if r"\begin{highlights}" in body:
+        failures.append(f"{body_path}: main manuscript must not contain a highlights environment")
+
+    for line_no, line in enumerate(body.splitlines(), start=1):
+        for match in CITE_GROUP.finditer(line):
+            keys = [key.strip() for key in match.group(1).split(",") if key.strip()]
+            if len(keys) > 2:
+                failures.append(
+                    f"{body_path}:{line_no}: citation group has {len(keys)} keys: {match.group(0)}"
+                )
+
+    revision_chars = _revision_char_count(body)
+    if revision_chars > int(len(body) * 0.35):
+        failures.append(
+            f"{body_path}: revision markup is {revision_chars / max(len(body), 1):.1%} of source; limit is 35%"
+        )
+
+    manuscript_entry = root / "paper/manuscript/manuscript.tex"
+    if manuscript_entry.exists() and "manuscript_clean.tex" not in manuscript_entry.read_text(encoding="utf-8"):
+        failures.append(f"{manuscript_entry}: manuscript entry must input manuscript_clean.tex")
+
+    return failures
+
+
 def check_sources(root: Path) -> list[str]:
     failures: list[str] = []
     resolved_paths = [root / path for path in SOURCE_PATHS]
@@ -91,7 +157,9 @@ def check_sources(root: Path) -> list[str]:
         for check in CHECKS:
             failures.extend(_line_hits(path, check))
 
-    body_path = root / "paper/manuscript/round2_manuscript_body.tex"
+    failures.extend(_extra_source_checks(root))
+
+    body_path = root / "paper/manuscript/manuscript_body.tex"
     si_path = root / "paper/supplementary/supplementary_information.tex"
     if body_path.exists():
         body = body_path.read_text(encoding="utf-8")

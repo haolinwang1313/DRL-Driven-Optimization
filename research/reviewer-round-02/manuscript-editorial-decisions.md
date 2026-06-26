@@ -1,0 +1,13 @@
+# Round-2 Manuscript Editorial Decisions
+
+## Title scope
+
+Feasible-morphology projection is retained as a core method and result section, but it is not used in the title because the title should address the broader reader-facing question of optimizer ranking under surrogate conditioning. Projection is an interpretation boundary rather than the main topic advertised by the title.
+
+## Highlighting scope
+
+The highlighted manuscript uses revision markup for reviewer-checkable scientific changes rather than for ordinary copyediting. The marked content focuses on the abstract, data-source boundary, DDPG static-query formulation, reward correction, benchmark output contract, feasible projection, physical and climate sensitivity boundaries, compacted tables, and Data and code availability.
+
+## Standalone highlights
+
+Highlights are kept outside the manuscript front matter and compiled as a standalone Elsevier-style source. This prevents the main manuscript PDF from containing a Highlights page while preserving both source and PDF outputs for submission-system use.
