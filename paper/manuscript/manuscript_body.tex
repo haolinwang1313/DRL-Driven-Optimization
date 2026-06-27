@@ -18,6 +18,7 @@
 \usepackage{enumitem}
 
 \definecolor{paperlinkblue}{RGB}{0,51,102}
+\definecolor{sectionlinkblue}{RGB}{0,0,255}
 \definecolor{paperlinkred}{RGB}{150,24,24}
 \definecolor{revisionblue}{RGB}{64,128,191}
 \colorlet{correspondingred}{paperlinkred}
@@ -31,7 +32,7 @@
 \urlstyle{rm}
 \def\UrlFont{\rmfamily}
 \newcommand{\corremail}[1]{\href{mailto:#1}{\textcolor{correspondingred}{\rmfamily #1}}}
-\newcommand{\secref}[2]{\hyperref[#1]{\textcolor{paperlinkblue}{\rmfamily Section~#2}}}
+\newcommand{\secref}[2]{\hyperref[#1]{\textcolor{sectionlinkblue}{\rmfamily Section~#2}}}
 \newcommand{\maintablesetup}{%
   \small
   \setlength{\tabcolsep}{4.5pt}%
@@ -115,12 +116,12 @@
             country={China}}
 
 \begin{abstract}
-\rev{Block-scale urban energy design requires optimization methods that connect urban form with building energy demand, rooftop photovoltaic potential, and winter solar access during early-stage planning.} \rev{This study develops a surrogate-conditioned comparison framework for policy learning and Pareto search in residential-block morphology optimization.} \rev{Feasible block layouts are generated first and converted into 12 morphology descriptors.} \rev{An explicit morphology-to-performance response surface assigns Energy Use Intensity, denoted EUIt, Energy Generation, denoted EG, and sunlight hours, denoted H, to nested 500/1000/1500/2000-sample pools, from which a 2000-sample DNN surrogate is selected for optimization.} Repeated five-fold validation gives mean nMAE values of 0.0176, 0.0265, and 0.0145 for EUIt, EG, and H. \rev{Under the shared surrogate and matched query budget, NSGA-II attains near-ceiling descriptor-space HV, while DDPG shows scenario-dependent performance.} \rev{Projection to generated feasible blocks compresses the 2000-candidate NSGA-II archive to 51 unique feasible blocks, revealing that descriptor-space coverage and feasible-morphology diversity are distinct.} \rev{The 24-case cross-model stress test completes all locked cases and indicates limited metric and rank consistency between analytic and physics-based outputs, whereas the four-block cross-climate sensitivity analysis shows stable EG ordering but climate-dependent EUIt and H responses.} \rev{The resulting workflow contributes a transparent design-support protocol that couples surrogate search with feasible-block projection and sensitivity analysis, thereby improving the interpretability of optimizer comparisons for early-stage urban energy design.}
+Block-scale urban energy design requires optimization methods that connect urban form with building energy demand, rooftop photovoltaic potential, and winter solar access during early-stage planning. \rev{This study develops a surrogate-conditioned framework to compare policy learning and Pareto search for residential-block morphology optimization.} Feasible block layouts are generated first and converted into 12 morphology descriptors. \rev{A morphology-to-performance response surface then assigns three targets to each sample: Energy Use Intensity, Energy Generation, and winter sunlight hours.} \rev{These targets are denoted EUIt, EG, and H throughout the paper.} \rev{The 2000-sample DNN surrogate selected from nested 500/1000/1500/2000-sample pools provides the common environment for DDPG and NSGA-II.} Repeated five-fold validation gives mean nMAE values of 0.0176, 0.0265, and 0.0145 for EUIt, EG, and H. \rev{Under the shared surrogate and matched query budget, NSGA-II attains near-ceiling descriptor-space HV, while DDPG shows preference-dependent performance.} \rev{Projection to generated feasible blocks compresses the 2000-candidate NSGA-II archive to 51 unique feasible blocks, indicating that descriptor-space coverage and feasible-morphology diversity differ substantially.} \rev{A 24-case cross-model stress test completes all locked cases and shows limited metric and rank consistency between analytic and physics-based outputs.} \rev{A four-block cross-climate sensitivity analysis shows stable EG ordering but climate-dependent EUIt and H responses.} \rev{The study contributes a representation-aware urban design workflow that links surrogate search, feasible-block projection, and sensitivity analysis to improve the interpretability of optimizer comparisons for early-stage urban energy planning.}
 \end{abstract}
 
 
 \begin{keyword}
-Surrogate-assisted optimization \sep Urban morphology \sep Design-support workflow \sep Deep Deterministic Policy Gradient \sep NSGA-II
+Surrogate-assisted optimization \sep Urban design \sep Urban morphology \sep Deep reinforcement learning \sep Multi-objective optimization
 \end{keyword}
 
 \end{frontmatter}
@@ -400,16 +401,16 @@ RandomSearch & 20 runs & 24,000 & 2000 & supplementary archive \\
 
 Descriptor-space optimizer outputs are treated first as candidate descriptors. Each retained descriptor-space candidate is therefore mapped to the nearest generated feasible block in normalized descriptor space. This mapping quantifies projection distance, duplicate collapse, and changes in HV and IGD under the fixed normalized reference front. The projection step is a representation check that precedes morphology-level interpretation.
 
-The limited physics-based cross-model stress test uses 24 locked cases. Eighteen direct feasible cases compare analytic response-generator values with physics-based outputs without optimizer projection, while six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated feasible block and then to physics-based result. The direct and optimizer-linked subsets answer different questions and are not merged into a single parity plot. The baseline weather for the Jianhu case is represented by the Dongtai station file used in the physical workflow. The cross-climate sensitivity set then evaluates the same four block morphologies under Harbin, Beijing, and Guangzhou weather. The surrogate is not retrained, and the morphology set is not reselected after observing climate results.
+The limited physics-based cross-model stress test uses 24 locked cases. Eighteen direct feasible cases compare analytic response-generator values with physics-based outputs without optimizer projection, while six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated feasible block and then to physics-based result. The direct and optimizer-linked subsets answer different questions and are not merged into a single parity plot. The baseline weather file used in the physical workflow serves as the reference condition for the cross-climate sensitivity analysis. The cross-climate sensitivity set then evaluates the same four block morphologies under three additional weather files representing Harbin, Beijing, and Guangzhou. The surrogate is not retrained, and the morphology set is not reselected after observing climate results.
 
 \section{Results}
 \label{sec:results}
 
 \subsection{Descriptor coverage and surrogate assessment}
 
-The 2000 generated morphologies occupy a structured descriptor space rather than an unconstrained 12-dimensional hypercube. Six principal components are required to explain 95\% of descriptor variance, indicating that the sampled blocks retain substantial multi-dimensional variation while still reflecting geometric dependencies among descriptors. The dependency checks confirm that FAR, BD, and AF are linked to numerical precision, while OSR follows from the same footprint and gross-floor-area quantities. These results support the use of descriptor-space optimization only when the subsequent feasible-block projection is also examined.
+The 2000 generated morphologies occupy a structured descriptor space rather than an unconstrained 12-dimensional hypercube. The PCA curve in Fig.~\ref{fig:data-surrogate} shows that six components are required to explain 95\% of descriptor variance. This result indicates that the sample set preserves multi-dimensional variation while retaining geometric dependencies among descriptors. The dependency checks further show that FAR, BD, AF, and OSR are linked through the same footprint and gross-floor-area quantities. Consequently, descriptor-space search must be interpreted together with the feasible-block projection step.
 
-Figure~\ref{fig:data-surrogate} shows the descriptor coverage and cross-validated DNN predictions. The repeated five-fold validation gives low error for all three targets, with mean nMAE values of 0.0176 for EUIt, 0.0265 for EG, and 0.0145 for H. The parity panels therefore show that the selected DNN reproduces the analytic target surface accurately within the sampled regime. Table~\ref{tab:surrogate-robustness} extends this assessment to grouped and boundary-oriented holdouts. Figure~\ref{fig:surrogate-robustness} summarizes these validation regimes. The outer-shell and feature-tail results show moderate error increases near descriptor-domain boundaries, which is expected because optimization tends to query regions close to the limits of the sampled surface.
+The parity panels in Fig.~\ref{fig:data-surrogate} show that the selected DNN closely reproduces the analytic target surface within the sampled regime. Table~\ref{tab:surrogate-robustness} and Fig.~\ref{fig:surrogate-robustness} then extend this assessment beyond random folds by adding leave-one-OSLI-out, outer-shell, and feature-tail protocols. The grouped and boundary-oriented checks show modest error increases near the edges of the descriptor domain. This pattern is important for optimization because high-performing candidates tend to concentrate near target and descriptor limits, where average cross-validation accuracy alone is not sufficient to characterize surrogate behaviour.
 
 \begin{figure}[H]
 \centering
@@ -427,22 +428,22 @@ Figure~\ref{fig:data-surrogate} shows the descriptor coverage and cross-validate
 
 \subsection{DDPG training behaviour}
 
-The DDPG curves in Fig.~\ref{fig:ddpg-training} describe policy-training behaviour on the guarded surrogate. Across the three preference scenarios, the reward increases during early training and then enters a high-reward region with visible seed-to-seed variation. Each episode contains 40 surrogate interactions, and each scenario is trained for 600 episodes across 20 seeds. The trajectories therefore show how the actor learns to query the surrogate surface, not how one physical urban block evolves over time.
+Figure~\ref{fig:ddpg-training} describes how the DDPG agents interact with the guarded surrogate during training. Across the three preference scenarios, rewards increase rapidly during early training and then enter a high-reward region with visible seed-to-seed variability. Because each episode contains a fixed sequence of 40 surrogate queries, the trajectories represent policy-training behaviour on a static response surface. They should therefore be read as search trajectories over descriptor queries, not as the physical evolution of one block design.
 
-The best-to-final gap remains visible in the later episodes. This behaviour is consistent with a serialized static search process in which the actor can reach high-performing descriptor regions while still exhibiting late-stage regression. The training curves are therefore interpreted together with the retained candidate outputs and projection results rather than as a standalone convergence assessment.
+The later portions of the curves remain informative. The agents can repeatedly reach favourable surrogate regions, yet the best-to-final gap indicates that late-stage regression remains present. This behaviour is consistent with the retained-output strategy used in Table~\ref{tab:optimizer-contract}, where one best scalarized candidate is retained from each seed. The training figure therefore supports the use of DDPG as a preference-conditioned search comparator, while the final method comparison must still be evaluated through retained outputs and feasible-block projection.
 
 \begin{figure}[H]
 \centering
 \stdfigure{ddpg_training_dynamics.pdf}
-\caption{DDPG training trajectories across 600 episodes and 20 seeds for the three preference scenarios.}
+\caption{DDPG training trajectories across the three preference scenarios.}
 \label{fig:ddpg-training}
 \end{figure}
 
 \subsection{Descriptor-space optimizer comparison}
 
-The descriptor-space comparison uses a fixed normalized reference front for all HV and IGD calculations in Table~\ref{tab:canonical-benchmark}. Under this reference, the full NSGA-II archive reaches HV = 1.330999 and IGD = 0.004947. At retained size 20, NSGA-II remains near the theoretical HV ceiling, with HV = 1.330995 and IGD = 0.004710. The DDPG scenarios are more variable: Balanced DDPG gives HV = 0.661912 and IGD = 0.465522, Energy Saving DDPG gives HV = 1.002757 and IGD = 0.276529, and Energy Generation DDPG gives HV = 1.170428 and IGD = 0.097551.
+Table~\ref{tab:canonical-benchmark} summarizes descriptor-space performance under the fixed normalized reference front, while Fig.~\ref{fig:canonical-benchmark} separates fixed-domain utility from equal-size archive metrics. NSGA-II is close to the HV ceiling under the fixed reference and remains the strongest method in the equal-size HV and IGD comparison. Among the three DDPG settings, the Generation-focused scenario gives the strongest descriptor-space archive metrics, followed by the Energy Saving and Balanced settings.
 
-Figure~\ref{fig:canonical-benchmark} separates fixed-domain utility from equal-size archive metrics. The NSGA-II result reflects strong coverage of the fixed descriptor-space reference volume. At the same time, the near-ceiling HV value should be interpreted with the reference ceiling in mind. It describes objective-space coverage under the selected surrogate and retained-output structure; it does not by itself measure the diversity of generated feasible blocks.
+The comparison should be interpreted through the retained-output structure. DDPG contributes one best scalarized candidate from each seed, whereas NSGA-II contributes final populations from repeated runs. The equal-size summary reduces, but does not eliminate, this structural difference. Therefore, the descriptor-space result supports a method-comparison statement under the selected surrogate and fixed reference; it does not by itself describe feasible-block diversity. That question is addressed by the projection analysis in Fig.~\ref{fig:projection}.
 
 \begin{table}[!htbp]
 \centering
@@ -463,7 +464,7 @@ NSGA-II & all & 2000 rows & 1.330999 & 0.004947 & full retained archive \\
 \end{tabular*}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item All HV and IGD values use the same fixed normalized reference front. Detailed CMA-ES, RandomSearch, and feasible-pool references are provided in Supplementary Section S3.
+\item All HV and IGD values use the same fixed normalized reference front. Complete CMA-ES, RandomSearch, and feasible-pool references are provided in Supplementary Section S3.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -471,15 +472,15 @@ NSGA-II & all & 2000 rows & 1.330999 & 0.004947 & full retained archive \\
 \begin{figure}[H]
 \centering
 \stdfigure{benchmark_fairness.pdf}
-\caption{Descriptor-space DDPG and NSGA-II comparison under fixed-domain utility and equal-size retained output settings.}
+\caption{Descriptor-space DDPG and NSGA-II comparison under fixed-domain utility and equal-size retained outputs.}
 \label{fig:canonical-benchmark}
 \end{figure}
 
 \subsection{Projection to generated feasible morphologies}
 
-Projection substantially changes the interpretation of the optimizer outputs. The NSGA-II descriptor archive contains 2000 retained candidates, but nearest-neighbour projection maps these candidates to 51 unique generated feasible blocks. This compression corresponds to a duplicate-collapse rate of 0.9745. The projected NSGA-II archive therefore remains much smaller in feasible-block space than in descriptor space.
+The projection analysis shows that descriptor-space coverage and feasible-morphology diversity are distinct. NSGA-II retains 2000 descriptor candidates, yet nearest-neighbour projection maps them to 51 unique generated feasible blocks. This many-to-one mapping is the central result of Fig.~\ref{fig:projection}: a large descriptor archive can contract sharply when interpreted through the generated feasible morphology pool.
 
-The objective summaries also change after projection. Under the fixed normalized reference, NSGA-II changes from descriptor HV = 1.330999 and IGD = 0.004947 to projected feasible HV = 1.229611 and IGD = 0.156912. Balanced DDPG changes from descriptor HV = 0.661912 and IGD = 0.465522 to projected feasible HV = 0.990990 and IGD = 0.215410. Figure~\ref{fig:projection} shows the two key mechanisms: candidate compression and projection distance. These results indicate that descriptor-space coverage and feasible-morphology diversity are distinct quantities.
+Projection distance adds a second layer of interpretation. The DDPG scenarios retain fewer descriptor candidates than NSGA-II, but their projected candidates are generally farther from the generated feasible blocks. In contrast, NSGA-II shows stronger descriptor-space coverage and shorter projection distances, yet its candidates still collapse to a much smaller feasible-block set. These results indicate that optimizer comparison should distinguish descriptor-space outputs, projected feasible morphologies, and the smaller subset that is later examined through physics-based calculations.
 
 \begin{figure}[H]
 \centering
@@ -490,14 +491,14 @@ The objective summaries also change after projection. Under the fixed normalized
 
 \subsection{Cross-model and cross-climate sensitivity}
 
-The physics-based cross-model stress test completed all 24 locked cases, including 18 direct feasible blocks and six optimizer-linked projected blocks. The direct feasible cases are used for the parity comparison in Fig.~\ref{fig:physical-stress} because they compare analytic target values with physics-based outputs without the additional projection step. For these direct cases, EUIt has nMAE = 0.340 and Spearman $\rho = -0.404$, the GHI-based rooftop-PV proxy for EG has nMAE = 0.405 and Spearman $\rho = -0.023$, and January 20 windowsill direct-sun hours for H has nMAE = 0.601 and Spearman $\rho = -0.043$. The cross-model results therefore indicate limited metric and rank consistency across the tested outputs.
+The physics-based cross-model stress test completed all locked cases and provides a case-level comparison between analytic target values and physics-based outputs. Figure~\ref{fig:physical-stress} uses only the 18 direct feasible blocks, so the parity plots are not affected by optimizer projection. The three targets show limited metric and rank consistency in this case set, with the weakest ordering stability appearing in the sunlight-related and demand-related comparisons. This result does not diminish the value of the stress test; instead, it clarifies the degree to which the analytic response surface and the physics-based calculations differ for selected generated blocks.
 
-The climate analysis in Fig.~\ref{fig:climate} evaluates four selected blocks under three additional weather files relative to the baseline weather. Harbin increases mean EUIt by 55.68~kWh/m$^2$/y, Beijing increases mean EUIt by 13.47~kWh/m$^2$/y, and Guangzhou decreases mean EUIt by 2.97~kWh/m$^2$/y. EG ordering remains stable across the three additional climates, with Spearman $\rho = 1.0$ in all cases. H ordering is climate-dependent, with Spearman $\rho$ values of 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. EUIt ordering also changes under the severe-cold Harbin case, where Spearman $\rho = 0.2$. These results show that the same selected morphologies can exhibit different target-specific stability patterns under alternative weather conditions. Table~\ref{tab:physical-climate} summarizes this sensitivity boundary.
+The climate analysis in Fig.~\ref{fig:climate} evaluates four selected blocks under three additional weather files relative to the baseline weather. The demand response is strongly climate-dependent, especially under the severe-cold Harbin weather. EG ordering remains stable across the additional climates, suggesting that the rooftop-generation proxy is less sensitive to the weather substitution for this four-block set. H ordering is less stable, which is consistent with its dependence on solar geometry, obstruction, and weather-specific direct-sun conditions. Table~\ref{tab:physical-climate} summarizes these result boundaries and supports using the climate analysis as a limited sensitivity test rather than as a general cross-climate transfer claim.
 
 \begin{figure}[H]
 \centering
 \stdfigure{physical_cross_model_stress_test.pdf}
-\caption{Physics-based cross-model stress test for 18 direct generated feasible blocks.}
+\caption{Cross-model stress test for 18 direct generated feasible blocks.}
 \label{fig:physical-stress}
 \end{figure}
 
@@ -511,9 +512,9 @@ The climate analysis in Fig.~\ref{fig:climate} evaluates four selected blocks un
 \toprule
 Assessment & Target or output & Scope & Interpretation \\
 \midrule
-Cross-model stress test & EUIt & 18 direct cases & limited metric and rank consistency \\
-Cross-model stress test & EG proxy & 18 direct cases & limited metric and rank consistency \\
-Cross-model stress test & H & 18 direct cases & limited metric and rank consistency \\
+Cross-model stress test & EUIt & 18 direct cases & limited consistency \\
+Cross-model stress test & EG proxy & 18 direct cases & proxy-based output \\
+Cross-model stress test & H & 18 direct cases & target-dependent response \\
 Cross-climate sensitivity & EG ordering & four blocks, three climates & stable ordering \\
 Cross-climate sensitivity & H ordering & four blocks, three climates & climate-dependent ordering \\
 Cross-climate sensitivity & EUIt ordering & severe-cold Harbin case & climate-dependent ordering \\
@@ -529,7 +530,7 @@ Cross-climate sensitivity & EUIt ordering & severe-cold Harbin case & climate-de
 \begin{figure}[H]
 \centering
 \stdfigure{cross_climate_sensitivity.pdf}
-\caption{Four-block cross-climate sensitivity under Beijing, Guangzhou, and Harbin weather relative to the baseline weather.}
+\caption{Cross-climate sensitivity of four selected blocks relative to baseline weather.}
 \label{fig:climate}
 \end{figure}
 
@@ -559,7 +560,7 @@ Several limitations remain. The optimizer comparison is conducted on an analytic
 
 This study compared policy learning and Pareto search in a surrogate-assisted workflow for block-scale urban energy design. The workflow generates feasible residential block morphologies, converts them into 12 morphology descriptors, assigns EUIt, EG, and H through an explicit morphology-to-performance response surface, and trains a selected DNN surrogate from the 2000-sample regime of a nested scale study. Within this controlled descriptor-space setting, repeated validation shows low surrogate error, and NSGA-II reaches near-ceiling HV under the fixed normalized reference, while the three DDPG scenarios remain more dependent on preference setting and retained-output structure.
 
-The main contribution is the representation-aware interpretation of the optimizer comparison. Projection compresses the 2000 NSGA-II descriptor candidates to 51 unique generated feasible blocks, showing that descriptor-space coverage and feasible-morphology diversity are distinct. The 24-case cross-model stress test completes all locked cases but indicates limited metric and rank consistency between analytic and physics-based outputs. The four-block cross-climate sensitivity analysis shows stable EG ordering but climate-dependent EUIt and H responses. Together, these results support an early-stage design-support workflow in which surrogate search, feasible-block projection, and sensitivity analysis are considered jointly before optimizer comparisons are used to guide block-scale urban energy decisions.
+The main contribution is the representation-aware interpretation of the optimizer comparison. Projection compresses the 2000 NSGA-II descriptor candidates to 51 unique generated feasible blocks, showing that descriptor-space coverage and feasible-morphology diversity are distinct. The 24-case cross-model stress test completes all locked cases but indicates limited metric and rank consistency between analytic and physics-based outputs. The four-block cross-climate sensitivity analysis shows stable EG ordering but climate-dependent EUIt and H responses. Together, these results support an early-stage urban design workflow in which surrogate search, feasible-block projection, and sensitivity analysis are considered jointly before optimizer comparisons are used to guide block-scale urban energy decisions.
 
 \section*{Data and code availability}
 

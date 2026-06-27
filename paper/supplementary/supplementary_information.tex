@@ -117,7 +117,7 @@ s &= \exp\left(-\frac{(FAR-1.7)^2}{0.6}\right)(0.45+SVF)(0.3+OSR),\\
 p_d &= \max(FAR-2.8,0).
 \end{align}
 
-For Dongtai station weather, the fallback station-bias terms are zero. The unclipped analytic responses are
+For the baseline weather condition, the fallback station-bias terms are zero. The unclipped analytic responses are
 
 \begin{align}
 EUIt^\ast ={}& 78.0 + 10.0BD + 4.3PAR + 2.8a_m + 0.022SD + 0.8SC + 2.1p_\theta \nonumber\\
@@ -307,14 +307,14 @@ The round-2 physical package records EG roof irradiance as unavailable for the d
 
 \subsection*{S6.1 Weather metadata}
 
-The cross-climate sensitivity analysis uses Dongtai as the baseline station and evaluates the same four generated feasible blocks under Harbin, Beijing, and Guangzhou weather. The climate buckets are severe cold for Harbin, cold for Beijing, and hot-summer warm-winter for Guangzhou. The TMY period is 2009--2023 in the round-2 configuration.
+The baseline weather file corresponds to the station used for the case-study physical workflow. The cross-climate sensitivity analysis evaluates the same four generated feasible blocks under Harbin, Beijing, and Guangzhou weather. The climate buckets are severe cold for Harbin, cold for Beijing, and hot-summer warm-winter for Guangzhou. The TMY period is 2009--2023 in the round-2 configuration.
 
 \subsection*{S6.2 Four-block climate results}
 
 The climate sensitivity set uses the same four block morphologies under three additional EPW files. The surrogate remains fixed, and the morphology set is held constant after the climate results are computed. The results therefore describe weather sensitivity for selected block morphologies within the tested climate set.
 
 \begin{table}[H]
-\caption{Station-level mean physical changes relative to Dongtai.}
+\caption{Station-level mean physical changes relative to baseline weather.}
 \label{tab:s-climate-summary}
 \centering
 \footnotesize

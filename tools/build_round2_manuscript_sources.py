@@ -75,6 +75,11 @@ LABEL = re.compile(r"\\label\{((?:fig|tab):[^}]+)\}")
 REF = re.compile(r"\\(?:[A-Za-z]*ref)\{([^}]+)\}")
 CAPTION = re.compile(r"\\caption\{")
 COMMAND = re.compile(r"\\[A-Za-z]+(?:\[[^\]]*\])?(?:\{([^{}]*)\})?")
+LATEX_SECTION_REF = re.compile(r"Section~\\(?:[A-Za-z]*ref)\{")
+RESULTS_NUMERIC_LIST = re.compile(
+    r"HV\s*=|IGD\s*=|nMAE\s*=|Spearman\s*\\rho\s*=|gives HV|changes from descriptor HV",
+    re.IGNORECASE,
+)
 
 
 REQUIRED_MAIN_FIGURES = (
@@ -168,6 +173,26 @@ def _section_text(text: str, start_heading: str, end_heading: str) -> str:
     return text[start:] if end == -1 else text[start:end]
 
 
+def _environment_text(text: str, name: str) -> str:
+    match = re.search(
+        rf"\\begin\{{{re.escape(name)}\}}(?:\[[^\]]*\])?(.*?)\\end\{{{re.escape(name)}\}}",
+        text,
+        re.DOTALL,
+    )
+    return "" if match is None else match.group(1)
+
+
+def _without_environments(text: str, names: tuple[str, ...]) -> str:
+    for name in names:
+        text = re.sub(
+            rf"\\begin\{{{re.escape(name)}\}}(?:\[[^\]]*\])?.*?\\end\{{{re.escape(name)}\}}",
+            "",
+            text,
+            flags=re.DOTALL,
+        )
+    return text
+
+
 def _citation_keys(text: str) -> set[str]:
     keys: set[str] = set()
     for match in CITE_GROUP.finditer(text):
@@ -184,6 +209,43 @@ def _extra_source_checks(root: Path) -> list[str]:
     body = body_path.read_text(encoding="utf-8")
     if r"\begin{highlights}" in body:
         failures.append(f"{body_path}: main manuscript must not contain a highlights environment")
+
+    keywords = _environment_text(body, "keyword")
+    expected_keywords = (
+        r"Surrogate-assisted optimization \sep Urban design \sep Urban morphology "
+        r"\sep Deep reinforcement learning \sep Multi-objective optimization"
+    )
+    if expected_keywords not in keywords:
+        failures.append(f"{body_path}: keywords must use the fourth-pass keyword set")
+    if "Design-support workflow" in keywords:
+        failures.append(f"{body_path}: keywords must not contain Design-support workflow")
+
+    abstract = _environment_text(body, "abstract")
+    if re.search(
+        r"analytic demand-generation-sunlight response generator|These findings position the workflow|reported with|rather than",
+        abstract,
+        re.IGNORECASE,
+    ):
+        failures.append(f"{body_path}: abstract contains forbidden fourth-pass wording")
+
+    if r"\definecolor{sectionlinkblue}{RGB}{0,0,255}" not in body:
+        failures.append(f"{body_path}: sectionlinkblue must be RGB(0,0,255)")
+    if (
+        r"\newcommand{\secref}[2]{\hyperref[#1]{\textcolor{sectionlinkblue}{\rmfamily Section~#2}}}"
+        not in body
+    ):
+        failures.append(f"{body_path}: secref must use sectionlinkblue")
+    if LATEX_SECTION_REF.search(body):
+        failures.append(f"{body_path}: use \\secref for numbered Section hyperlinks")
+
+    if re.search(r"\bDongtai\b|\bJianhu\b|Dongtai station file", body, re.IGNORECASE):
+        failures.append(f"{body_path}: main narrative must use baseline-weather wording")
+
+    results = _section_text(body, r"\section{Results}", r"\section{Discussion}")
+    results_prose = _without_environments(results, ("table", "figure"))
+    for line_no, line in enumerate(results_prose.splitlines(), start=1):
+        if RESULTS_NUMERIC_LIST.search(line):
+            failures.append(f"{body_path}: Results prose contains numeric-list wording: {line.strip()}")
 
     for line_no, line in enumerate(body.splitlines(), start=1):
         for match in CITE_GROUP.finditer(line):
@@ -213,7 +275,11 @@ def _extra_source_checks(root: Path) -> list[str]:
                 failures.append(f"{body_path}: {label} caption has {word_count} words; limit is {limit}")
         elif label.startswith("tab:") and word_count > 20:
             failures.append(f"{body_path}: {label} caption has {word_count} words; limit is 20")
-        if re.search(r"rather than|unsupported|validation proof|superiority|reported with", caption_text, re.I):
+        if re.search(
+            r"rather than|unsupported|validation proof|superiority|reported with|benchmark-reference-v2",
+            caption_text,
+            re.I,
+        ):
             failures.append(f"{body_path}: {label or 'caption'} contains forbidden caption wording")
 
     labels = {match.group(1) for match in label_matches}

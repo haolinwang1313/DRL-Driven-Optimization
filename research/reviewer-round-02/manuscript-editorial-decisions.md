@@ -15,3 +15,7 @@ The highlighted manuscript uses revision markup for reviewer-checkable scientifi
 ## Standalone highlights
 
 Highlights are kept outside the manuscript front matter and compiled as a standalone Elsevier-style source. This prevents the main manuscript PDF from containing a Highlights page while preserving both source and PDF outputs for submission-system use.
+
+## Baseline weather wording
+
+The main manuscript uses baseline-weather wording for the cross-climate comparison to avoid abrupt station-name phrasing in the narrative. If existing figure-source labels still use station-specific wording, they can be harmonized in the next figure-export pass without changing the locked numerical results.
