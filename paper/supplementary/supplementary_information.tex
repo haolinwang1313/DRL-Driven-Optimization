@@ -32,6 +32,11 @@
 \expandafter\def\csname nosticsword\endcsname{nostics}
 \newcommand{\diagword}{diag\csname nosticsword\endcsname}
 \newcommand{\sifigure}[1]{\includegraphics[width=\linewidth,height=0.74\textheight,keepaspectratio]{#1}}
+\newcommand{\sitable}[0]{%
+  \small
+  \setlength{\tabcolsep}{5pt}%
+  \renewcommand{\arraystretch}{1.08}%
+}
 
 \begin{document}
 
@@ -53,11 +58,13 @@ Each generated case uses a 240~m $\times$ 240~m block divided into a $3\times3$ 
 \caption{Residential prototype settings used by the morphology generator.}
 \label{tab:s-prototypes}
 \centering
-\footnotesize
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.08}
 \begin{threeparttable}
-\begin{tabularx}{\linewidth}{@{}p{0.12\linewidth}p{0.18\linewidth}rrrrr@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}llrrrrr@{}}
 \toprule
-Prototype & Category & Footprint area & Min floors & Max floors & Width & Depth \\
+Prototype & Category & Footprint (m$^2$) & Min floors & Max floors & Width (m) & Depth (m) \\
 \midrule
 P-1 & Point & 2000 & 1 & 3 & 40 & 50 \\
 P-2 & Point & 1500 & 4 & 12 & 30 & 50 \\
@@ -69,10 +76,10 @@ S-3 & Slab & 1000 & 13 & 30 & 16 & 62.5 \\
 C-1 & Courtyard & 2000 & 1 & 3 & 50 & 50 \\
 C-2 & Courtyard & 1500 & 4 & 12 & 45 & 40 \\
 \bottomrule
-\end{tabularx}
+\end{tabular*}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item Areas are in m$^2$, and linear dimensions are in m.
+\item The footprint and linear dimensions define the prototype geometry assigned to populated land units before morphology descriptors are calculated.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -137,6 +144,8 @@ H &= \operatorname{clip}(H^\ast,6.0,7.85).
 
 \subsection*{S1.5 Descriptor distributions and sampling coverage}
 
+Figure~\ref{fig:s1-descriptor-distributions} summarizes the descriptor coverage of the generated morphology pool. The first panel shows the spread of the 12 morphology descriptors, while the OSLI histogram confirms that the open-space position categories are represented across the generated cases. The nearest-neighbour distance distribution provides a compact view of sparsity in normalized descriptor space, which is relevant because the optimizers later search a continuous descriptor domain.
+
 \begin{figure}[H]
 \centering
 \sifigure{A1_descriptor_distributions.pdf}
@@ -158,6 +167,8 @@ The nested scale study compares 500, 1000, 1500, and 2000 sample regimes. Each r
 \label{fig:s3-scale-study}
 \end{figure}
 
+The scale study shows gradual improvement as the sample pool increases from 500 to 2000 cases. The 2000-sample regime provides the lowest selection objective among the tested regimes and is therefore used for the shared surrogate environment in the main comparison. This selection should be interpreted within the analytic response-generation regime, since the target values are assigned by the morphology-to-performance response surface.
+
 \subsection*{S2.2 Repeated cross-validation}
 
 Repeated five-fold cross-validation gives mean nMAE values of 0.0176 for EUIt, 0.0265 for EG, and 0.0145 for H. The corresponding Spearman correlations are 0.991, 0.984, and 0.995. These values support low error within the analytic response-generation regime.
@@ -171,6 +182,8 @@ Repeated five-fold cross-validation gives mean nMAE values of 0.0176 for EUIt, 0
 \caption{Residual assessment for EUIt, EG, and H under repeated cross-validated surrogate predictions.}
 \label{fig:s2-residual-assessment}
 \end{figure}
+
+The residual distributions are centered near zero for all three targets, indicating that the selected surrogate does not show a systematic offset under repeated cross-validation. The EG residuals are wider relative to their target range than the EUIt and H residuals, which is consistent with the slightly higher nMAE reported for EG in the validation summaries.
 
 \subsection*{S2.4 Leave-one-OSLI-out assessment}
 
@@ -193,6 +206,8 @@ Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions pe
 \caption{Seed-level DDPG training assessment across the three preference scenarios.}
 \label{fig:s4-seed-assessment}
 \end{figure}
+
+Figure~\ref{fig:s4-seed-assessment} complements the training trajectories in the main manuscript by summarizing seed-level outcomes. The best reward and final reward panels distinguish the best point found during training from the final episode state. The plateau and best-to-final gap panels show that the DDPG runs can reach high-reward regions while still retaining late-stage variability across seeds.
 
 \subsection*{S3.2 Retained optimizer outputs}
 
@@ -221,6 +236,8 @@ RandomSearch Balanced & 0.423--0.748 & 0.497--0.743 & repetition-dependent uninf
 \end{tabularx}
 \end{table}
 
+The equal-size-20 comparison is the common retained-size setting available for the DDPG and NSGA-II main comparison. Larger requested sizes are not treated as comparable for methods that do not retain enough distinct candidates. For this reason, the full-archive metrics and equal-size metrics are interpreted separately in the main manuscript.
+
 \subsection*{S3.4 HV ceiling and clipped-output behaviour}
 
 The theoretical maximum HV under the fixed normalized reference front is 1.331. NSGA-II reaches a fraction of 1.0 without clipped-utopia rows, while CMA-ES reaches the same ceiling because nearly all retained rows collapse to clipped-utopia output tuples. This distinction is why ceiling proximity must be read together with unique tuple counts.
@@ -232,6 +249,8 @@ The theoretical maximum HV under the fixed normalized reference front is 1.331. 
 \caption{HV ceiling and clipped-output assessment for secondary optimizer archives.}
 \label{fig:s6-hv-ceiling}
 \end{figure}
+
+Figure~\ref{fig:s6-hv-ceiling} explains why near-ceiling HV values must be interpreted with objective-tuple diversity. CMA-ES can reach the theoretical HV ceiling because many retained rows collapse to clipped-utopia tuples, whereas NSGA-II approaches the same reference volume with many more distinct clipped objective tuples. The figure therefore separates reference-volume coverage from archive diversity.
 
 \subsection*{S3.5 CMA-ES and RandomSearch comparisons}
 
@@ -251,6 +270,8 @@ Median descriptor signatures summarize where retained outputs lie in descriptor 
 \label{fig:s5-morphology-signatures}
 \end{figure}
 
+The morphology signatures summarize retained-output tendencies rather than prescriptive design rules. They are useful for comparing where optimizers tend to place candidates in descriptor space, but they should be read together with the feasible-projection analysis because continuous descriptor outputs may map to repeated generated blocks.
+
 \subsection*{S4.2 Surrogate response profiles}
 
 \setcounter{figure}{7}
@@ -261,11 +282,15 @@ Median descriptor signatures summarize where retained outputs lie in descriptor 
 \label{fig:s8-response-profiles}
 \end{figure}
 
+The response profiles isolate one descriptor at a time around representative reference values. They provide a qualitative view of the local shape of the selected surrogate response surface and help interpret why certain descriptors are emphasized by the optimizer outputs. Since the profiles are surrogate-based, they are used for interpretation only and are not a replacement for physics-based calculation.
+
 \section*{S5. Feasible projection and physics-based stress-test details}
 
 \subsection*{S5.1 Complete projection metrics}
 
 The complete projection table records retained rows, unique matched sample counts, projection-distance summaries, duplicate-collapse rates, and fixed-reference projected HV and IGD. NSGA-II contracts from 2000 retained descriptor candidates to 51 unique projected feasible blocks, while DDPG scenarios contract from 20 retained descriptor candidates to 17 or 18 unique generated feasible blocks.
+
+Complete projection metrics are kept in the supplementary material because they depend on representation family, duplicate handling, and the fixed normalized reference front. The main manuscript focuses on the most interpretable projection outcomes: candidate compression and projection distance.
 
 \subsection*{S5.2 Optimizer-linked six-case decomposition}
 
@@ -278,6 +303,8 @@ The physics-based stress-test set contains 24 locked cases. The 18 direct feasib
 \caption{Optimizer-linked six-case projection and cross-model gap decomposition.}
 \label{fig:s7-optimizer-linked-gaps}
 \end{figure}
+
+Figure~\ref{fig:s7-optimizer-linked-gaps} separates the projection gap from the cross-model gap for the six optimizer-linked cases. This separation is important because an optimizer candidate is first mapped to a generated feasible block before the physics-based calculation is evaluated. The plotted gaps should therefore be interpreted as a bridge analysis between descriptor-space search and case-level physical outputs.
 
 \subsection*{S5.3 Per-case physical results}
 
@@ -299,15 +326,19 @@ H & 18 & 1.108 & 0.601 & -0.043 & January 20 direct-sun hours only \\
 \end{tabularx}
 \end{table}
 
+The physical stress-test summary shows that all direct feasible cases completed, but the agreement between analytic targets and physics-based outputs remains limited. These values define the cross-model comparison boundary used in the main manuscript. The optimizer-linked cases are not merged with this table because they include an additional projection step.
+
 \subsection*{S5.4 EG roof-irradiance unavailability note}
 
-The round-2 physical package records EG roof irradiance as unavailable for the direct stress-test metric table. The main manuscript therefore reports the GHI-based rooftop-PV proxy for EG and labels it explicitly. This avoids treating the proxy as a full rooftop-irradiance result.
+The locked physical workflow did not produce annual roof-plane irradiance outputs for the direct stress-test cases. The unavailable roof-irradiance pathway is therefore kept separate from the completed EUIt, EG proxy, and H calculations.
+
+EG is summarized with the GHI-based rooftop-PV proxy in the stress-test table. This proxy preserves a generation-related comparison across the locked cases, but it should be interpreted as a simplified rooftop-PV indicator rather than a full annual roof-irradiance result.
 
 \section*{S6. Cross-climate case details}
 
 \subsection*{S6.1 Weather metadata}
 
-The baseline weather file corresponds to the station used for the case-study physical workflow. The cross-climate sensitivity analysis evaluates the same four generated feasible blocks under Harbin, Beijing, and Guangzhou weather. The climate buckets are severe cold for Harbin, cold for Beijing, and hot-summer warm-winter for Guangzhou. The TMY period is 2009--2023 in the round-2 configuration.
+The baseline weather file corresponds to the station used for the case-study physical workflow. The cross-climate sensitivity analysis evaluates the same four generated feasible blocks under Harbin, Beijing, and Guangzhou weather. The climate buckets are severe cold for Harbin, cold for Beijing, and hot-summer warm-winter for Guangzhou. The TMY period is 2009--2023 for these weather files.
 
 \subsection*{S6.2 Four-block climate results}
 
@@ -317,17 +348,27 @@ The climate sensitivity set uses the same four block morphologies under three ad
 \caption{Station-level mean physical changes relative to baseline weather.}
 \label{tab:s-climate-summary}
 \centering
-\footnotesize
-\begin{tabularx}{\linewidth}{@{}p{0.22\linewidth}rrrp{0.24\linewidth}@{}}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{threeparttable}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrr>{\raggedright\arraybackslash}p{0.34\linewidth}@{}}
 \toprule
-Station & $\Delta$EUIt & $\Delta$EG & $\Delta$H & Interpretation \\
+Station & $\Delta$EUIt & $\Delta$EG & $\Delta$H & Main interpretation \\
 \midrule
-Beijing & 13.467 & 0.135 & -0.056 & cold-climate increase in EUIt \\
-Guangzhou & -2.972 & -0.057 & -0.025 & warm-climate EUIt decrease \\
-Harbin & 55.681 & -0.044 & -0.675 & severe-cold EUIt increase \\
+Beijing & 13.467 & 0.135 & -0.056 & higher demand under the cold-climate weather file \\
+Guangzhou & -2.972 & -0.057 & -0.025 & lower demand under the hot-summer warm-winter weather file \\
+Harbin & 55.681 & -0.044 & -0.675 & strong demand increase under the severe-cold weather file \\
 \bottomrule
-\end{tabularx}
+\end{tabular*}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item $\Delta$EUIt is in kWh m$^{-2}$ y$^{-1}$, $\Delta$EG is in $10^6$ kWh y$^{-1}$, and $\Delta$H is in h. Positive values denote increases relative to the baseline weather file.
+\end{tablenotes}
+\end{threeparttable}
 \end{table}
+
+Table~\ref{tab:s-climate-summary} reports mean target changes by weather file, while Fig.~\ref{fig:s9-climate-detail} shows the corresponding case-level variation across the four selected blocks. The results indicate that EUIt is strongly climate-sensitive, especially under the severe-cold weather file, whereas EG changes are smaller and preserve the ordering of the selected blocks.
 
 \setcounter{figure}{8}
 \begin{figure}[H]
@@ -339,6 +380,6 @@ Harbin & 55.681 & -0.044 & -0.675 & severe-cold EUIt increase \\
 
 \subsection*{S6.3 Rank stability across climates}
 
-EG rank stability is high across the tested climates, with Spearman rho = 1.0 for Beijing, Guangzhou, and Harbin. H rank stability is low, with Spearman rho = 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. EUIt rank stability is high for Beijing and Guangzhou but low for Harbin, with Spearman rho = 0.2. These results motivate target-specific climate-sensitivity interpretation for the selected block set.
+The rank-stability results indicate target-specific climate sensitivity. EG has stable ordering across the three additional climates, with Spearman $\rho$ equal to 1.0 in each case. H shows lower ordering stability, with Spearman $\rho$ values of 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. EUIt ordering remains stable for Beijing and Guangzhou but changes under Harbin, where Spearman $\rho$ is 0.2. These results support a limited climate-sensitivity interpretation for the selected four-block set.
 
 \end{document}

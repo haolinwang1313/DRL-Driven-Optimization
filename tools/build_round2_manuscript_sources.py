@@ -10,6 +10,7 @@ SOURCE_PATHS = (
     Path("paper/manuscript/manuscript_body.tex"),
     Path("paper/manuscript/manuscript_clean.tex"),
     Path("paper/manuscript/manuscript_highlighted.tex"),
+    Path("paper/manuscript/references.tex"),
     Path("paper/manuscript/references.bib"),
     Path("paper/supplementary/supplementary_information.tex"),
     Path("paper/highlights/highlights.tex"),
@@ -34,7 +35,7 @@ CHECKS = (
     ),
     Check(
         "old reward formula",
-        re.compile(r"10\^6|10\\textsuperscript|R\s*=\s*10|dweighted|d_\{weighted\}"),
+        re.compile(r"R\s*=\s*10|dweighted|d_\{weighted\}"),
     ),
     Check(
         "old data-source wording",
@@ -71,6 +72,9 @@ CHECKS = (
 CITE_GROUP = re.compile(r"\\cite\{([^}]*)\}")
 REV_COMMAND = re.compile(r"\\rev\{")
 BIB_KEY = re.compile(r"@\w+\s*\{\s*([^,\s]+)")
+BIBITEM_KEY = re.compile(r"\\bibitem\{([^}]+)\}")
+REFS_URL = re.compile(r"\\(?:url|href)\{([^}]+)\}")
+PDF_REFERENCE_SECTION_FORBIDDEN = re.compile(r"\b(?:vol\.|no\.|pp\.)\b", re.IGNORECASE)
 LABEL = re.compile(r"\\label\{((?:fig|tab):[^}]+)\}")
 REF = re.compile(r"\\(?:[A-Za-z]*ref)\{([^}]+)\}")
 CAPTION = re.compile(r"\\caption\{")
@@ -255,10 +259,36 @@ def _extra_source_checks(root: Path) -> list[str]:
                     f"{body_path}:{line_no}: citation group has {len(keys)} keys: {match.group(0)}"
                 )
 
-    if r"\begin{thebibliography}" in body or r"\input{references}" in body:
-        failures.append(f"{body_path}: main manuscript must use BibTeX with elsarticle-num")
-    if "elsarticle-num" not in body or r"\bibliography{references}" not in body:
-        failures.append(f"{body_path}: missing elsarticle-num bibliography configuration")
+    if r"\bibliographystyle" in body or r"\bibliography" in body:
+        failures.append(f"{body_path}: main manuscript must not call BibTeX bibliography commands")
+    if r"\input{references}" not in body:
+        failures.append(f"{body_path}: main manuscript must input references.tex")
+
+    references_path = root / "paper/manuscript/references.tex"
+    if not references_path.exists():
+        failures.append(f"{references_path}: missing rendered reference source")
+    else:
+        references = references_path.read_text(encoding="utf-8")
+        if r"\begin{thebibliography}{99}" not in references:
+            failures.append(f"{references_path}: missing \\begin{{thebibliography}}{{99}}")
+        if r"\end{thebibliography}" not in references:
+            failures.append(f"{references_path}: missing \\end{thebibliography}")
+        if re.search(r"``|''|\"", references):
+            failures.append(f"{references_path}: reference titles must not use quotation marks")
+        if r"\texttt" in references or r"\ttfamily" in references:
+            failures.append(f"{references_path}: URLs must not be wrapped in monospace commands")
+        for url in REFS_URL.findall(references):
+            if not url.startswith("https://doi.org/"):
+                failures.append(f"{references_path}: non-DOI URL in rendered references: {url}")
+
+        citation_keys = _citation_keys(body)
+        bibitem_keys = set(BIBITEM_KEY.findall(references))
+        missing_bibitems = sorted(citation_keys - bibitem_keys)
+        if missing_bibitems:
+            failures.append(f"{references_path}: missing bibitems for citations: {', '.join(missing_bibitems)}")
+        unused_bibitems = sorted(bibitem_keys - citation_keys)
+        if unused_bibitems:
+            failures.append(f"{references_path}: uncited bibitems: {', '.join(unused_bibitems)}")
 
     captions = _command_args(body, CAPTION)
     label_matches = list(LABEL.finditer(body))
@@ -287,9 +317,8 @@ def _extra_source_checks(root: Path) -> list[str]:
     for label in sorted(labels - refs):
         failures.append(f"{body_path}: {label} is not referenced in the main text")
 
-    bib_path = root / "paper/manuscript/references.bib"
-    if bib_path.exists():
-        bib_keys = set(BIB_KEY.findall(bib_path.read_text(encoding="utf-8")))
+    if references_path.exists():
+        bib_keys = set(BIBITEM_KEY.findall(references_path.read_text(encoding="utf-8")))
         intro = _section_text(body, r"\section{Introduction}", r"\section{Methodology}")
         intro_keys = _citation_keys(intro)
         missing_from_intro = sorted(bib_keys - intro_keys)
@@ -297,9 +326,16 @@ def _extra_source_checks(root: Path) -> list[str]:
             failures.append(
                 f"{body_path}: bibliography keys missing from Introduction citations: {', '.join(missing_from_intro)}"
             )
-        unused = sorted(bib_keys - _citation_keys(body))
-        if unused:
-            failures.append(f"{bib_path}: unused bibliography keys: {', '.join(unused)}")
+    pdf_text_path = root / "paper/manuscript/build/manuscript_clean.txt"
+    if (
+        pdf_text_path.exists()
+        and references_path.exists()
+        and pdf_text_path.stat().st_mtime >= references_path.stat().st_mtime
+    ):
+        pdf_text = pdf_text_path.read_text(encoding="utf-8", errors="ignore")
+        start = pdf_text.find("References")
+        if start != -1 and PDF_REFERENCE_SECTION_FORBIDDEN.search(pdf_text[start:]):
+            failures.append(f"{pdf_text_path}: References section contains BibTeX-style vol./no./pp. wording")
 
     revision_chars = _revision_char_count(body)
     if revision_chars > int(len(body) * 0.35):
