@@ -49,10 +49,20 @@ CHECKS = (
     Check(
         "round-2 over-strong wording",
         re.compile(
-            r"rather than|unsupported|not support|not assumed|not be interpreted|"
+            r"unsupported|not support|not assumed|not be interpreted|"
             r"do not replace|not optimizer|not physical|superiority|certification|"
             r"validation proof|generalization proof|reported as|reported with|"
             r"reporting metric|for reproduction|weak ranking transfer",
+            re.IGNORECASE,
+        ),
+    ),
+    Check(
+        "internal result-lock wording",
+        re.compile(
+            r"benchmark-reference-v2|reference hash|simulation(?:_|\\_)mode|"
+            r"round-2 assessment|retained-output contract|SI baseline|not_applicable|"
+            r"metadata_error|canonical registry|local-reference projected metrics|"
+            r"source_archive_size|effective_sample_size",
             re.IGNORECASE,
         ),
     ),

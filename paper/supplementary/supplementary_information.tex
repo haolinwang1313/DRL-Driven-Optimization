@@ -194,16 +194,16 @@ Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions pe
 \label{fig:s4-seed-assessment}
 \end{figure}
 
-\subsection*{S3.2 Optimizer output contracts}
+\subsection*{S3.2 Retained optimizer outputs}
 
-DDPG retains one best scalarized candidate per seed, while NSGA-II retains final populations. CMA-ES and RandomSearch retain top-reward queried archives for secondary comparison, and FeasiblePoolRandom provides a deterministic feasible-pool reference. The retained-output contract prevents full-archive sizes from being interpreted as equivalent across optimizers.
+DDPG retains one best scalarized candidate per seed, while NSGA-II retains final populations. CMA-ES and RandomSearch retain top-reward queried archives for secondary comparison, and FeasiblePoolRandom provides a deterministic feasible-pool reference. This retained-output structure prevents full-archive sizes from being interpreted as equivalent across optimizers.
 
 \subsection*{S3.3 Equal-size sensitivity}
 
 The main manuscript presents equal-size results at retained size 20 because that is the valid common retained size for DDPG and NSGA-II. Oversized equal-size requests for smaller source archives are labelled not applicable and excluded from metric interpretation.
 
 \begin{table}[H]
-\caption{Equal-size-20 descriptor-space benchmark metrics under benchmark-reference-v2.}
+\caption{Equal-size-20 descriptor-space metrics under the fixed normalized reference front.}
 \label{tab:s-equal-size}
 \centering
 \footnotesize
@@ -223,7 +223,7 @@ RandomSearch Balanced & 0.423--0.748 & 0.497--0.743 & repetition-dependent uninf
 
 \subsection*{S3.4 HV ceiling and clipped-output behaviour}
 
-The theoretical maximum HV under benchmark-reference-v2 is 1.331. NSGA-II reaches a fraction of 1.0 without clipped-utopia rows, while CMA-ES reaches the same ceiling because nearly all retained rows collapse to clipped-utopia output tuples. This distinction is why ceiling proximity must be read together with unique tuple counts.
+The theoretical maximum HV under the fixed normalized reference front is 1.331. NSGA-II reaches a fraction of 1.0 without clipped-utopia rows, while CMA-ES reaches the same ceiling because nearly all retained rows collapse to clipped-utopia output tuples. This distinction is why ceiling proximity must be read together with unique tuple counts.
 
 \setcounter{figure}{5}
 \begin{figure}[H]
@@ -292,7 +292,7 @@ The 18 direct feasible cases completed both EnergyPlus and Radiance-component ru
 \toprule
 Target & Count & MAE & nMAE & Spearman rho & Boundary \\
 \midrule
-EUIt & 18 & 3.788 & 0.340 & -0.404 & weak metric agreement \\
+EUIt & 18 & 3.788 & 0.340 & -0.404 & limited metric consistency \\
 EG GHI proxy & 18 & 0.441 & 0.405 & -0.023 & rooftop-PV proxy only \\
 H & 18 & 1.108 & 0.601 & -0.043 & January 20 direct-sun hours only \\
 \bottomrule
