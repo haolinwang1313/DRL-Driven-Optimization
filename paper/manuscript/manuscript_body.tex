@@ -356,6 +356,7 @@ The training reward is therefore
 R = 1 - d_w .
 \end{equation}
 
+\rev{The preference weights follow the target order [EUIt, EG, H]: Balanced uses $\bm w=[1/3,1/3,1/3]^\mathsf{T}$, Energy Saving uses $\bm w=[0.6,0.2,0.2]^\mathsf{T}$, and Energy Generation uses $\bm w=[0.2,0.6,0.2]^\mathsf{T}$.}
 
 This reward is separate from the fixed-domain post-hoc utility used later for benchmark comparison. The fixed-domain utility is used for post-hoc comparison, while $R$ is the scalar signal used during serialized DDPG training. Figure~\ref{fig:ddpg-architecture} summarizes the actor-critic and target-network structure used for these surrogate-query updates.
 
