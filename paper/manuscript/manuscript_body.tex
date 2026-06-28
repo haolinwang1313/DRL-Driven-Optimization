@@ -1,4 +1,6 @@
-\pdfminorversion=7
+\ifdefined\pdfminorversion
+  \pdfminorversion=7
+\fi
 \documentclass[final,3p,times,numbers,sort&compress]{elsarticle}
 
 \usepackage[T1]{fontenc}
@@ -126,35 +128,44 @@ Surrogate-assisted optimization \sep Urban design \sep Urban morphology \sep Dee
 
 \end{frontmatter}
 
+\begin{revblock}
 \begingroup
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{0.95}
-\noindent\textbf{Abbreviations}\par\vspace{2pt}
+\noindent\textbf{Nomenclature}\par\vspace{3pt}
 
-\begin{minipage}[t]{0.485\linewidth}
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}X@{}}
-EUIt & Energy Use Intensity \\
-EG & Energy Generation \\
-H & winter sunlight hours \\
-DNN & deep neural network \\
-DDPG & Deep Deterministic Policy Gradient \\
-NSGA-II & Non-dominated Sorting Genetic Algorithm II \\
+\noindent\textit{Abbreviations}\par\vspace{2pt}
+\begin{tabularx}{0.96\linewidth}{@{}p{0.14\linewidth}X p{0.13\linewidth}X@{}}
+EUIt & Energy Use Intensity & EG & Energy Generation \\
+H & winter sunlight hours & DNN & deep neural network \\
+DDPG & Deep Deterministic Policy Gradient & NSGA-II & Non-dominated Sorting Genetic Algorithm II \\
+CMA-ES & Covariance Matrix Adaptation Evolution Strategy & GHI & global horizontal irradiance \\
+HV & Hypervolume & IGD & Inverted Generational Distance \\
+nMAE & normalized mean absolute error & OSLI & open-space location index \\
 \end{tabularx}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.485\linewidth}
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}X@{}}
-CMA-ES & Covariance Matrix Adaptation Evolution Strategy \\
-GHI & global horizontal irradiance \\
-HV & Hypervolume \\
-IGD & Inverted Generational Distance \\
-nMAE & normalized mean absolute error \\
-OSLI & open-space location index \\
-\end{tabularx}
-\end{minipage}
 
+\par\vspace{5pt}
+\noindent\textit{Formula symbols}\par\vspace{2pt}
+\begin{tabularx}{0.96\linewidth}{@{}p{0.11\linewidth}X p{0.11\linewidth}X@{}}
+$\mathbf{x}$ & morphology descriptor vector & $\mathbf{y}^{ana}$ & analytic target vector \\
+$y_i$ & target value for objective $i$ & $z_i$ & normalized target coordinate \\
+$y_i^{\min}$ & lower target bound & $y_i^{\max}$ & upper target bound \\
+$\mathbf{u}$ & ideal vector $[0,1,1]^\mathsf{T}$ & $\mathbf{w}$ & axis-scaling coefficient vector \\
+$d_w$ & weighted normalized distance & $R$ & DDPG training reward \\
+$\theta$ & block orientation angle & $\epsilon$ & response-generation noise term \\
+$A_{gross}$ & gross floor area & $A_{block}$ & block area \\
+$A_{foot}$ & building footprint area & $A_{open}$ & open-space area \\
+$A_{env}$ & envelope area & $P_{sum}$ & summed footprint perimeter \\
+$\bar{h}$ & mean building height & $h_{\max}$ & maximum building height \\
+$W_{ew}$ & east-west canyon width & $W_{ns}$ & north-south canyon width \\
+\end{tabularx}
+
+\par\vspace{3pt}
+\noindent The morphology descriptor symbols FAR, SD, AF, AR$_{ew}$, AR$_{ns}$, SVF, BD, OSR, SC, PAR, $\theta$, and OSLI are defined in Table~\ref{tab:descriptors}.
 \par\vspace{6pt}
 \endgroup
+\end{revblock}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -211,7 +222,7 @@ The remainder of the paper is organized as follows. \secref{sec:methodology}{2} 
 
 The morphology generator first constructs feasible block layouts and only then calculates descriptor values. Each block is represented as a 240~m $\times$ 240~m square divided into a $3\times3$ grid of 80~m $\times$ 80~m land units. One cell is assigned as open space, and the remaining eight cells are populated with residential prototypes. For each generated block, the generator samples the open-space position, building prototype, number of floors, and orientation angle. The orientation angle is sampled within -45~deg to 45~deg. The resulting block is therefore a generated feasible morphology, while the 12 input quantities used by the surrogate are descriptors derived from that morphology.
 
-The descriptor set in Table~\ref{tab:descriptors} includes FAR, SD, AF, AR\_ew, AR\_ns, SVF, BD, OSR, SC, PAR, theta, and OSLI. These quantities are not 12 independent design variables. For example, FAR, BD, AF, and OSR are linked through the same footprint and gross-floor-area quantities, while OSLI is an integer descriptor of open-space position. Consequently, optimizer outputs are first interpreted in descriptor space and then mapped to generated feasible blocks before morphology-level conclusions are drawn.
+The descriptor set in Table~\ref{tab:descriptors} includes FAR, SD, AF, AR\_ew, AR\_ns, SVF, BD, OSR, SC, PAR, theta, and OSLI. These quantities are derived morphology descriptors rather than independently sampled design variables. For example, FAR, BD, AF, and OSR are linked through the same footprint and gross-floor-area quantities, while OSLI is an integer descriptor of open-space position. Consequently, optimizer outputs are first interpreted in descriptor space and then mapped to generated feasible blocks before morphology-level conclusions are drawn.
 
 \begin{table}[!htbp]
 \centering

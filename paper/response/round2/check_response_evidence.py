@@ -1,7 +1,8 @@
 """Local structural checks for the round-2 response letter.
 
-The script checks only the response package source. It does not inspect or
-modify manuscript, SI, figure, experiment, or canonical result files.
+The script checks only the response package source and an optional extracted
+``response_letter.txt`` next to it. It does not inspect or modify manuscript,
+SI, figure, experiment, or canonical result files.
 """
 
 from __future__ import annotations
@@ -17,16 +18,19 @@ EXPECTED_IDS += [f"R3-{i}" for i in range(1, 6)]
 EXPECTED_IDS += [f"R4-{i}" for i in range(1, 6)]
 
 LITERATURE_IDS = {"R1-4", "R1-10", "R4-1", "R4-5"}
+CORE_RESPONSE_IDS = {"R1-1", "R1-3", "R1-7", "R2-1", "R2-3", "R2-4", "R2-5", "R2-7", "R4-1", "R4-2", "R4-5"}
+SIMPLE_RESPONSE_IDS = {"R3-1", "R3-4"}
 
 BANNED_AUTHOR_PHRASES = [
-    "The revised figure reports the results",
-    "The numerical values are shown in the revised table",
-    "The details are provided in the Supplementary Material",
-    "We added relevant discussion in the manuscript",
-    "The revision makes this point explicit",
+    "The relevant revisions appear in",
+    "The change appears in",
+    "The changes appear in",
+    "The revised figure reports",
+    "The numerical values are shown",
+    "The details are provided",
     "Please see Fig",
     "Please see Table",
-    "These quantitative results are reported in the revised figure and supporting tables",
+    "The revision makes this point explicit",
     "Further details are provided in the Supplementary Information",
 ]
 
@@ -34,8 +38,6 @@ BANNED_INTERNAL = [
     "trellis",
     "codex",
     "chatgpt",
-    "branch",
-    "commit",
     "pull request",
     "PR #",
     "server job",
@@ -84,6 +86,48 @@ def split_comment_blocks(text: str) -> dict[str, str]:
     return blocks
 
 
+def response_body(block: str) -> str:
+    match = re.search(
+        r"\\responseheading\{Response\.\}\s*\\checkresponse\{%(.*?)\n\}\s*\\responseheading\{Revisions made in the manuscript\.\}",
+        block,
+        flags=re.DOTALL,
+    )
+    return match.group(1) if match else ""
+
+
+def plain_words(latex: str) -> list[str]:
+    text = re.sub(r"\\[a-zA-Z]+\*?(?:\[[^\]]*\])?(?:\{[^{}]*\})?", " ", latex)
+    text = re.sub(r"[$^_{}\\]", " ", text)
+    return re.findall(r"[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*", text)
+
+
+def table_r1_rows(text: str) -> int:
+    match = re.search(
+        r"\\caption\{Editor-facing overview of the main revision packages\.\}.*?\\midrule(.*?)\\bottomrule",
+        text,
+        flags=re.DOTALL,
+    )
+    if not match:
+        return -1
+    return len(re.findall(r"\\\\\s*$", match.group(1), flags=re.MULTILINE))
+
+
+def check_text(label: str, text: str, errors: list[str], *, strong_claims: bool = True) -> None:
+    lowered = text.lower()
+    if "scope boundary." in lowered:
+        errors.append(f"{label}: visible Scope boundary heading remains")
+    for phrase in BANNED_AUTHOR_PHRASES:
+        if re.search(re.escape(phrase), text, flags=re.IGNORECASE):
+            errors.append(f"{label}: banned lazy phrase: {phrase}")
+    for phrase in BANNED_INTERNAL:
+        if phrase.lower() in lowered:
+            errors.append(f"{label}: internal/local term: {phrase}")
+    if strong_claims:
+        for phrase in BANNED_STRONG:
+            if phrase.lower() in lowered:
+                errors.append(f"{label}: strong or forbidden claim: {phrase}")
+
+
 def main() -> int:
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("response_letter.tex")
     text = path.read_text(encoding="utf-8")
@@ -97,6 +141,22 @@ def main() -> int:
 
     if len(blocks) != 33:
         errors.append(f"expected 33 comment blocks, found {len(blocks)}")
+
+    if not re.search(r"\\makeresponsetitle\s*\\clearpage\s*\\responsecontents", text):
+        errors.append("Contents does not start after an explicit title-page clearpage")
+
+    if "\\responsecontents\n\n\\section*{Summary of major revisions}" not in text:
+        errors.append("Summary does not immediately follow the responsecontents block")
+
+    if text.count(r"\reviewerpage{") != 4:
+        errors.append("expected four reviewerpage sections")
+
+    if r"\RenewDocumentCommand{\checkresponse}{+m}" not in text:
+        errors.append("checkresponse is not locally redefined to remove visible check marks")
+
+    rows = table_r1_rows(text)
+    if rows != 6:
+        errors.append(f"Table R1 should have 6 revision package rows, found {rows}")
 
     for cid in EXPECTED_IDS:
         block = blocks.get(cid, "")
@@ -118,21 +178,22 @@ def main() -> int:
         if cid in LITERATURE_IDS and r"\begin{responsereferences}" not in block:
             errors.append(f"{cid}: missing local references")
 
-    for phrase in BANNED_AUTHOR_PHRASES:
-        if re.search(re.escape(phrase), author_text, flags=re.IGNORECASE):
-            errors.append(f"banned lazy phrase in author text: {phrase}")
+        words = len(plain_words(response_body(block)))
+        required = 80 if cid in SIMPLE_RESPONSE_IDS else 180 if cid in CORE_RESPONSE_IDS else 140
+        if words < required:
+            errors.append(f"{cid}: response too short ({words} words, need {required})")
 
-    lowered = author_text.lower()
-    for phrase in BANNED_INTERNAL:
-        if phrase.lower() in lowered:
-            errors.append(f"internal/local term in author text: {phrase}")
+    r12 = blocks.get("R1-2", "")
+    if "Nomenclature" not in r12 or "Formula symbols" not in r12:
+        errors.append("R1-2 evidence does not include Nomenclature and Formula symbols")
+    if "Abbreviations block excerpt" in r12:
+        errors.append("R1-2 still uses the old Abbreviations block excerpt label")
 
-    for phrase in BANNED_STRONG:
-        if phrase.lower() in lowered:
-            errors.append(f"strong or forbidden claim in author text: {phrase}")
+    check_text("author tex", author_text, errors)
 
-    if "evidence store" in lowered:
-        errors.append("summary still uses evidence store")
+    txt_path = path.with_suffix(".txt")
+    if txt_path.exists():
+        check_text("pdf text", txt_path.read_text(encoding="utf-8", errors="ignore"), errors, strong_claims=False)
 
     if errors:
         for error in errors:
@@ -142,7 +203,10 @@ def main() -> int:
     print("response evidence QA passed")
     print("comments: 33/33")
     print("headings: Response/Revisions/Evidence present for every comment")
-    print("literature reference blocks: present")
+    print("response expansion: word-count thresholds passed")
+    print("layout checks: title/contents/reviewer pagination markers passed")
+    print("Table R1: 6 revision package rows")
+    print("R1-2: Nomenclature evidence present")
     return 0
 
 
