@@ -1,128 +1,168 @@
 {
-  "manifest_version": "round2-response-detailed-v2",
-  "created_for": "Applied Energy second-round detailed rebuttal draft",
-  "template": {
-    "requested_paths_checked": [
-      {
-        "path": "D:\\Code\\Latex_Template4Writing\\resopnse-slu",
-        "exists": true
-      },
-      {
-        "path": "D:\\Code\\Latex_Template4Writing\\response-slu",
-        "exists": false
-      }
-    ],
-    "template_path_used": "D:\\Code\\Latex_Template4Writing\\resopnse-slu",
-    "copied_files": [
-      {
-        "source_path": "D:\\Code\\Latex_Template4Writing\\resopnse-slu\\response_slu.sty",
-        "target_path": "paper\\response\\round2\\template\\response_slu.sty",
-        "sha256": "88492ABAEBBA0FF8CF163FC39E9208C4A5D6057A13E9CBEC7899F0717F6481BF"
-      },
-      {
-        "source_path": "D:\\Code\\Latex_Template4Writing\\resopnse-slu\\RESPONSE_LETTER_CHECKLIST.md",
-        "target_path": "paper\\response\\round2\\template\\RESPONSE_LETTER_CHECKLIST.md",
-        "sha256": "1C0E2EEEA3BE0EEA163A6BBBDF400677566B0A72016FE08C351F62172583F7C0"
-      }
-    ]
-  },
+  "manifest_version": "round2-response-comment-level-v3",
+  "created_for": "Applied Energy second-round comment-level evidence-package response draft",
+  "status": "complete_draft_with_manual_line_numbers_pending",
+  "response_package_files": [
+    {
+      "path": "paper/response/round2/response_letter.tex",
+      "sha256": "46B8A7E9A1E6640EAAFE4915D6B65FCC57652F6160CAD21C6C4451AC80F51982"
+    },
+    {
+      "path": "paper/response/round2/response_letter.pdf",
+      "sha256": "64CDB06658FA03C125EDE8C956E1AA434B81A2802954C6BE04CABB5ADE7FAD0E",
+      "pages": 49,
+      "size_bytes": 1413794
+    },
+    {
+      "path": "paper/response/round2/response_matrix.csv",
+      "sha256": "D7E47D38567155268FCEF794CCE88CB8ADEC8F73D3906C3DF12911A122BB9CF8"
+    },
+    {
+      "path": "paper/response/round2/README.md",
+      "sha256": "1CD0A5201CA9624A3CF883971EED0937E9DF2DB782668305591FC0A1F3E3488C"
+    },
+    {
+      "path": "paper/response/round2/check_response_evidence.py",
+      "sha256": "B97C1511705EF0ED49D365F8A079FCAE2883B9AD174AE609671851C2E4890E29"
+    }
+  ],
   "review_inputs": [
     {
       "name": "Comments02.txt",
-      "path": "D:\\桌面\\Comments02.txt",
-      "status": "available",
-      "sha256": "01391DE0B6C43795D008797A4F826EFF6A4EBDA5C95BDCB1AA5AC5B813345E6E"
-    },
-    {
-      "name": "Paper02R101.md",
-      "path": "D:\\桌面\\Paper02R101.md",
-      "status": "available",
-      "sha256": "D87069C3E47A6773DBD1A3DFB31688F01E725D770002D09E298772FE878EA10E"
-    },
-    {
-      "name": "Paper02R102.md",
-      "path": "D:\\桌面\\Paper02R102.md",
-      "status": "available",
-      "sha256": "DEA18C3CCA11E79A19F8B275C64448C9C0B9A1639FA3E26C551ED22659984489"
-    },
-    {
-      "name": "manuscript_clean.pdf",
-      "path": null,
-      "status": "missing_manual_check",
-      "sha256": null,
-      "note": "No file with the requested name was found under the repository, desktop, or attachment roots during this draft. The TeX source below was used instead."
-    },
-    {
-      "name": "manuscript_highlighted.pdf",
-      "path": null,
-      "status": "missing_manual_check",
-      "sha256": null,
-      "note": "No file with the requested name was found under the repository, desktop, or attachment roots during this draft. The TeX source below was used instead."
-    },
-    {
-      "name": "supplementary_information.pdf",
-      "path": null,
-      "status": "missing_manual_check",
-      "sha256": null,
-      "note": "No file with the requested name was found under the repository, desktop, or attachment roots during this draft. The TeX source below was used instead."
+      "sha256": "01391DE0B6C43795D008797A4F826EFF6A4EBDA5C95BDCB1AA5AC5B813345E6E",
+      "status": "used_for_original_reviewer_comments"
     }
   ],
   "manuscript_sources_used": [
     {
-      "path": "paper\\manuscript\\manuscript_clean.tex",
+      "path": "paper/manuscript/manuscript_body.tex",
+      "sha256": "803926FC776F8A2F38AD20C0626FAB5B904CC82B48980ECC36E8D87CF7DC9BA7"
+    },
+    {
+      "path": "paper/manuscript/manuscript_clean.tex",
       "sha256": "D2A1B9662CFBC0256FD58BCBEC9ADCF16157000324E850FD1AD06334F33FEAFD"
     },
     {
-      "path": "paper\\manuscript\\manuscript_highlighted.tex",
+      "path": "paper/manuscript/manuscript_highlighted.tex",
       "sha256": "747E63BFC0D950931829F7FEB6A04B46D4119EBA2D0166A29E284BFA28736082"
     },
     {
-      "path": "paper\\supplementary\\supplementary_information.tex",
+      "path": "paper/supplementary/supplementary_information.tex",
       "sha256": "7744E733B5553E1FEE0E7BA52BEF1AB87DF10FB6AA88730D7814ED56CDC23857"
     }
   ],
-  "locked_result_sources_used": [
-    "research\\reviewer-round-02\\canonical-result-lock.md",
-    "research\\reviewer-round-02\\canonical-result-registry.json",
-    "research\\reviewer-round-02\\canonical-benchmark-reference.json",
-    "research\\reviewer-round-02\\manuscript-change-input.md",
-    "research\\reviewer-round-02\\figure-change-input.md",
-    "research\\reviewer-round-02\\round2-caption-drafts.md",
-    "research\\reviewer-round-02\\round2-table-plan.md"
+  "figure_assets_used": [
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
+      "sha256": "BA37052F7CDBC98BF1353E064D9E5D4172C139DBB1BEC138A14E29B2FD9C9D69"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+      "sha256": "C97BDB378E046A3E8C618350B91B717A55B056F88930642C3C36A7F25D88B8E9"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+      "sha256": "83B9F65099DEB1BBBC6F69414FDF416ECC28D12ABA19D024AAE398F2895EAB76"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/data_and_surrogate_validation.pdf",
+      "sha256": "74C35BF3DCAE8BE210F9E4D1C3819BFCA391A03F114379DDBCB1E9C45B266D87"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/surrogate_robustness.pdf",
+      "sha256": "72334767C298C60298A7DDDFE29BFC95BCBD9740681609BCE240D82519A8F8BC"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/ddpg_training_dynamics.pdf",
+      "sha256": "677B77BEDADEC89199158BD3EDC90C3ABD1BE6E3D232033229F22F9DFBF255FE"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/benchmark_fairness.pdf",
+      "sha256": "1F230F8B405D1038D252DFEF9DA1C483110932DDB9BA68F12D832138A1920B71"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/feasible_projection.pdf",
+      "sha256": "CCECEB1E867EAC509580ADAC247D9B144DB8793DC30E9EA47469807682BAC8BA"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
+      "sha256": "B4489BCE7ADD13F34A74A510DF11FDF88870D7CD87E4B948735EB42BA0B8092C"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
+      "sha256": "AABBB359F8DEAECE0D0D5576CC0F05CEC46761A3CE6A2D37C1E9A5E447F65CF5"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/appendix/A1_descriptor_distributions.pdf",
+      "sha256": "D0BA73A38D7E7F5E18ECC5CDF5AF57E1D982A3043C0BBC9889F2E9D4C72BA4DB"
+    }
   ],
   "coverage": {
     "reviewer_1_comments": 15,
     "reviewer_2_comments": 8,
     "reviewer_3_comments": 5,
     "reviewer_4_comments": 5,
-    "total_comments": 33
+    "total_comments": 33,
+    "evidence_package_status": "33/33 complete",
+    "response_matrix_rows": 33
   },
   "build": {
-    "working_directory": "paper\\response\\round2",
+    "working_directory": "paper/response/round2",
     "command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex",
-    "generated_pdf": "paper\\response\\round2\\response_letter.pdf",
-    "generated_pdf_sha256": "106835CAE21A3F8DC5AA8FC2778F9F2104FB6F92A5E6D707452B16B2D50CC95D",
     "status": "passed",
-    "page_count_before": 23,
-    "page_count_after": 25
+    "page_count_before": 25,
+    "page_count_after": 49,
+    "pdfinfo": {
+      "pages": 49,
+      "page_size": "A4",
+      "encrypted": false,
+      "pdf_version": "1.5"
+    }
   },
   "qa": {
-    "pdf_text_extracted": true,
-    "pdf_pages": 25,
-    "pdf_size_bytes": 196904,
-    "type3_fonts_found": false,
-    "reviewer_comment_ids": "33/33",
-    "response_headings": 33,
-    "revision_headings": 33,
-    "response_level_tables": "Table R1 and Table R2",
-    "si_sections_referenced": "S1-S6",
-    "forbidden_claim_scan": "passed",
-    "local_path_internal_text_scan": "passed",
-    "note": "TeX compile passed with expected locale/package and minor hbox warnings; no vbox truncation after longtable conversion."
+    "structure_script": {
+      "command": "uv run python check_response_evidence.py response_letter.tex",
+      "status": "passed",
+      "comment_ids": "33/33",
+      "response_headings": 33,
+      "revision_headings": 33,
+      "evidence_headings": 33,
+      "revisionbox_blocks": 33,
+      "literature_reference_blocks": "present"
+    },
+    "pdf_text_extraction": {
+      "command": "pdftotext -layout -enc UTF-8 .\\response_letter.pdf - | Out-File -LiteralPath .\\response_letter.txt -Encoding utf8",
+      "status": "passed"
+    },
+    "font_check": {
+      "command": "pdffonts .\\response_letter.pdf",
+      "type3_fonts_found": false,
+      "note": "Some included protected figure PDFs retain non-embedded TrueType fonts inherited from existing figure assets."
+    },
+    "forbidden_text_checks": {
+      "lazy_phrase_scan": "passed",
+      "internal_text_scan": "passed",
+      "strong_claim_scan": "only reviewer-original quoted text in comment boxes"
+    },
+    "csv_check": {
+      "command": "uv run python -c \"import csv; rows=list(csv.DictReader(open('paper/response/round2/response_matrix.csv', encoding='utf-8-sig'))); print(len(rows)); print(set(r['evidence_package_status'] for r in rows))\"",
+      "status": "passed",
+      "rows": 33,
+      "statuses": [
+        "complete"
+      ]
+    }
   },
   "manual_checks_remaining": [
-    "Add final line numbers after the final line-numbered manuscript PDF is generated if required by the journal.",
-    "Confirm the final clean manuscript, highlighted manuscript, and Supplementary Information PDF paths when those exact PDFs are exported.",
-    "Visually inspect response_letter.pdf before submission."
+    "Add final line numbers after final line-numbered manuscript and SI PDFs are generated if required by the journal.",
+    "Human visual review of response_letter.pdf is still needed before submission.",
+    "Confirm final synchronization after any human edits to manuscript, SI, or response letter."
+  ],
+  "scope_guard": [
+    "No manuscript source files were modified in this response-package update.",
+    "No SI source files were modified in this response-package update.",
+    "No figure assets were regenerated or modified.",
+    "No experiments, tools, paper_repro files, or canonical result files were modified.",
+    ".trellis/tasks remains local-only and untracked."
   ]
 }

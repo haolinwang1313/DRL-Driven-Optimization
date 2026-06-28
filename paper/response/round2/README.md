@@ -1,107 +1,88 @@
-# Round 2 Detailed Response Letter Draft
+# Round 2 Comment-Level Response Letter Draft
 
-This directory contains the expanded point-by-point response letter for the Applied Energy second-round revision. The current version expands the initial 23-page coverage draft into a 25-page detailed rebuttal draft.
+This directory contains the Applied Energy round-2 response package. The current version converts the earlier detailed rebuttal draft into a comment-level evidence-package draft.
 
 ## Files
 
 - `response_letter.tex`: main response letter source.
-- `response_letter.pdf`: compiled local PDF after the build step.
-- `response_matrix.csv`: reviewer-comment revision mapping matrix.
-- `response_input_manifest.json`: input, template, and build manifest.
-- `template/response_slu.sty`: copied style file from the user-specified template directory.
-- `template/RESPONSE_LETTER_CHECKLIST.md`: copied template checklist.
+- `response_letter.pdf`: compiled response PDF.
+- `response_matrix.csv`: 33-row comment-level evidence package matrix.
+- `response_input_manifest.json`: input, source, asset, build, and QA manifest.
+- `check_response_evidence.py`: local structural QA for the response letter.
+- `template/response_slu.sty`: copied local response-letter style file.
+- `template/RESPONSE_LETTER_CHECKLIST.md`: copied local response-letter checklist.
 
-## Expansion Summary
+## Current Draft Scope
 
-- Added a detailed opening letter that explains the manuscript and Supplementary Information revision scope.
-- Added response-level Table R1 for the major revision packages.
-- Added response-level Table R2 for the added or clarified validation and sensitivity analyses.
-- Expanded reviewer responses with explicit `Revisions made in the manuscript and Supplementary Information` paragraphs.
-- Added SI-backed numerical details for surrogate validation, descriptor coverage, optimizer projection, physical stress-test metrics, and cross-climate sensitivity.
-- Reworked `response_matrix.csv` with revision package, manuscript/SI locations, key numbers, claim boundary, and manual line-number status.
+- The response letter covers 33/33 reviewer comments.
+- Each comment includes the original reviewer comment, `Response.`, `Revisions made in the manuscript.`, and `Relevant revised manuscript and supporting evidence.` sections.
+- Relevant manuscript excerpts, SI excerpts, figure assets, compact table excerpts, equations, and local reference blocks are placed under the corresponding comment rather than collected in one central dossier.
+- Table R1 remains only an editor-facing overview.
+- Manual line numbers still need to be checked after the final line-numbered manuscript and SI PDFs are exported.
 
-## Template
+## Protected Scope
 
-Template path used:
+This response-package update did not modify:
 
-`D:\Code\Latex_Template4Writing\resopnse-slu`
+- `paper/manuscript/`
+- `paper/supplementary/`
+- manuscript or SI figure assets
+- experiments
+- `tools/`
+- `paper_repro/`
+- canonical result files
 
-The alternative spelling requested for checking, `D:\Code\Latex_Template4Writing\response-slu`, did not exist during drafting. The template repository was read only; only the necessary style/checklist files were copied into this response package.
-
-## Inputs
-
-Available input files:
-
-- `D:\桌面\Comments02.txt`
-- `D:\桌面\Paper02R101.md`
-- `D:\桌面\Paper02R102.md`
-- `paper\manuscript\manuscript_clean.tex`
-- `paper\manuscript\manuscript_highlighted.tex`
-- `paper\supplementary\supplementary_information.tex`
-- `research\reviewer-round-02\canonical-result-lock.md`
-- `research\reviewer-round-02\canonical-result-registry.json`
-- `research\reviewer-round-02\canonical-benchmark-reference.json`
-- `research\reviewer-round-02\manuscript-change-input.md`
-- `research\reviewer-round-02\figure-change-input.md`
-- `research\reviewer-round-02\round2-caption-drafts.md`
-- `research\reviewer-round-02\round2-table-plan.md`
-
-Missing exact-PDF inputs at draft time:
-
-- `manuscript_clean.pdf`
-- `manuscript_highlighted.pdf`
-- `supplementary_information.pdf`
-
-Those missing PDFs are recorded as manual-check items in `response_input_manifest.json`. The response draft relies on the current TeX sources and locked result files rather than guessing substitute PDF paths.
+Figures are included from existing manuscript and SI figure assets. No figure was regenerated for this response package.
 
 ## Build
 
-The template requires XeLaTeX or LuaLaTeX because it uses `fontspec`. Build from this directory:
+Build from this directory:
 
 ```powershell
 latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex
 ```
 
-Then extract text for QA:
-
-```powershell
-pdftotext response_letter.pdf response_letter.txt
-pdffonts response_letter.pdf
-pdfinfo response_letter.pdf
-```
-
 Latest local build result:
 
-- Command: `latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex`
 - Status: passed.
-- PDF pages: 25.
-- Previous coverage-draft pages: 23.
-- Type 3 fonts: none found.
-- Expected warnings: locale warning, copied-template package-name warning, and minor table hbox warnings.
+- PDF pages before this conversion: 25.
+- PDF pages after this conversion: 49.
+- Page size: A4.
+- PDF file: `response_letter.pdf`.
+- Expected warnings: locale warning, copied-template package-name warning, minor underfull hbox warnings, and embedded-figure PDF-version warnings.
 
-## Coverage
+## QA
 
-The response matrix covers all comments in `Comments02.txt`:
+Commands used:
 
-- Reviewer 1: 15 comments.
-- Reviewer 2: 8 comments.
-- Reviewer 3: 5 comments.
-- Reviewer 4: 5 comments.
-- Total: 33 comments.
+```powershell
+uv run python check_response_evidence.py response_letter.tex
+latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex
+C:\texlive\2024\bin\windows\pdfinfo.exe .\response_letter.pdf
+pdffonts .\response_letter.pdf
+pdftotext -layout -enc UTF-8 .\response_letter.pdf - | Out-File -LiteralPath .\response_letter.txt -Encoding utf8
+```
 
-Latest QA:
+Latest QA results:
 
-- 33/33 reviewer comment IDs found in extracted PDF text.
-- 33 `Response.` headings found.
-- 33 `Revisions made in the manuscript and Supplementary Information.` headings found.
-- Table R1 and Table R2 found in extracted PDF text.
-- SI S1--S6 all referenced.
-- Forbidden strong-claim scan passed.
-- Local-path and internal-branch/PR text scan passed.
+- `check_response_evidence.py`: passed.
+- Comment IDs in source: 33/33.
+- `Response.` headings in extracted PDF text: 33.
+- `Revisions made in the manuscript.` headings in extracted PDF text: 33.
+- `Relevant revised manuscript and supporting evidence.` headings in extracted PDF text: 33.
+- `revisionbox` blocks in source: 33.
+- Local reference blocks present for literature-oriented comments.
+- `pdfinfo`: passed with 49 A4 pages.
+- `pdffonts`: no Type 3 fonts found.
+- `pdftotext`: text extraction passed.
+- Forbidden lazy-phrase scan: passed.
+- Forbidden internal-text scan: passed.
+- Strong-claim scan: only hits reviewer-original quoted text in comment boxes, not author response text.
 
-## Manual Checks
+Known PDF-font note: included protected figure PDFs still carry some non-embedded TrueType fonts, inherited from the existing figure assets. This response task did not alter those figures.
 
-- Add final line numbers only after the final line-numbered clean and highlighted PDFs are exported, if the journal requires line references.
-- Confirm the exact PDF input paths and hashes when `manuscript_clean.pdf`, `manuscript_highlighted.pdf`, and `supplementary_information.pdf` are exported.
-- Visually inspect `response_letter.pdf` before submission.
-- Confirm that the response letter remains synchronized with the final manuscript/SI wording after any human edits.
+## Manual Checks Remaining
+
+- Add final manuscript/SI line numbers if Applied Energy requires line-specific references.
+- Human visual review of `response_letter.pdf` is still needed before submission.
+- Confirm final synchronization after any human edits to the manuscript, SI, or response letter.
