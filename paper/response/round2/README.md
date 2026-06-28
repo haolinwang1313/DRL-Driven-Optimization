@@ -1,15 +1,24 @@
-# Round 2 Response Letter Draft
+# Round 2 Detailed Response Letter Draft
 
-This directory contains the draft point-by-point response letter for the Applied Energy second-round revision.
+This directory contains the expanded point-by-point response letter for the Applied Energy second-round revision. The current version expands the initial 23-page coverage draft into a 25-page detailed rebuttal draft.
 
 ## Files
 
 - `response_letter.tex`: main response letter source.
 - `response_letter.pdf`: compiled local PDF after the build step.
-- `response_matrix.csv`: reviewer-comment coverage matrix.
+- `response_matrix.csv`: reviewer-comment revision mapping matrix.
 - `response_input_manifest.json`: input, template, and build manifest.
 - `template/response_slu.sty`: copied style file from the user-specified template directory.
 - `template/RESPONSE_LETTER_CHECKLIST.md`: copied template checklist.
+
+## Expansion Summary
+
+- Added a detailed opening letter that explains the manuscript and Supplementary Information revision scope.
+- Added response-level Table R1 for the major revision packages.
+- Added response-level Table R2 for the added or clarified validation and sensitivity analyses.
+- Expanded reviewer responses with explicit `Revisions made in the manuscript and Supplementary Information` paragraphs.
+- Added SI-backed numerical details for surrogate validation, descriptor coverage, optimizer projection, physical stress-test metrics, and cross-climate sensitivity.
+- Reworked `response_matrix.csv` with revision package, manuscript/SI locations, key numbers, claim boundary, and manual line-number status.
 
 ## Template
 
@@ -61,6 +70,15 @@ pdffonts response_letter.pdf
 pdfinfo response_letter.pdf
 ```
 
+Latest local build result:
+
+- Command: `latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex`
+- Status: passed.
+- PDF pages: 25.
+- Previous coverage-draft pages: 23.
+- Type 3 fonts: none found.
+- Expected warnings: locale warning, copied-template package-name warning, and minor table hbox warnings.
+
 ## Coverage
 
 The response matrix covers all comments in `Comments02.txt`:
@@ -70,6 +88,16 @@ The response matrix covers all comments in `Comments02.txt`:
 - Reviewer 3: 5 comments.
 - Reviewer 4: 5 comments.
 - Total: 33 comments.
+
+Latest QA:
+
+- 33/33 reviewer comment IDs found in extracted PDF text.
+- 33 `Response.` headings found.
+- 33 `Revisions made in the manuscript and Supplementary Information.` headings found.
+- Table R1 and Table R2 found in extracted PDF text.
+- SI S1--S6 all referenced.
+- Forbidden strong-claim scan passed.
+- Local-path and internal-branch/PR text scan passed.
 
 ## Manual Checks
 
