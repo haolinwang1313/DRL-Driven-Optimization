@@ -87,7 +87,7 @@ pdffonts response_letter.pdf
 Latest QA results:
 
 - `check_response_evidence.py`: passed.
-- Contents/link-color check: visual check required; Contents links should appear black, and DOI links should appear blue roman.
+- Contents/link-color check: passed by rendered visual inspection; Contents links appear black, and DOI links appear blue roman.
 - Puterman DOI verification: passed through DOI resolution and Crossref/Wiley metadata for `10.1002/9780470316887`.
 - R1-10 reference sync: manuscript excerpt displays `\cite{puterman1994mdp,sutton2018reinforcement}`, local references include Puterman DOI and Sutton/Barto ISBN.
 - R1-15 broader-audience framing: expanded.
@@ -113,5 +113,5 @@ Latest QA results:
 ## Manual Checks Remaining
 
 - Add final manuscript/SI line numbers if Applied Energy requires line-specific references.
-- Human visual review of `response_letter.pdf`, especially Contents pagination and Table R1.
+- Human review of `response_letter.pdf`, especially Table R1 and expanded response wording.
 - Author review of expanded wording before submission.

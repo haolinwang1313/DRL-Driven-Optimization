@@ -19,7 +19,7 @@
     },
     {
       "path": "paper/response/round2/README.md",
-      "sha256": "A50526E5B60AA95413EA7B67ACADB18350A902F13E2115C2C10A84BF6E065CE9"
+      "sha256": "36FE6784D90166183E83C5E7030FF246BDC03F0BD07609EA82D406DED6ED0E02"
     },
     {
       "path": "paper/response/round2/check_response_evidence.py",
@@ -168,7 +168,7 @@
       "r2_expansion": "R2-1 to R2-8 passed 180-word threshold",
       "r2_supporting_material": "R2-1 to R2-5 include figure, equation, or table support; R2-7 includes AnalyticEquations; R2-8 excludes internal implementation details",
       "r1_10_reference_sync": "Puterman and Sutton/Barto citation evidence present",
-      "contents_link_color": "black_manual_visual_check_required",
+      "contents_link_color": "black_visual_check_passed",
       "doi_style": "blue_roman_responsedoi"
     },
     "pdf_text_extraction": {
@@ -240,10 +240,14 @@
       "cli_help": "passed",
       "config_load": "passed",
       "git_diff_check": "passed with Windows LF-to-CRLF warnings only"
+    },
+    "visual_link_check": {
+      "status": "passed",
+      "contents_page": "rendered page shows black internal Contents links",
+      "doi_page": "rendered R1-10 local references page shows blue roman DOI links"
     }
   },
   "manual_checks_remaining": [
-    "Human visual review: Contents links should appear black; DOI links should appear blue roman.",
     "Add final manuscript/SI line numbers after final line-numbered manuscript and SI PDFs are generated if required by the journal.",
     "Author review of expanded wording before submission."
   ],
@@ -254,7 +258,7 @@
     "No experiments, tools, paper_repro files, configs, artifacts, or canonical result files were modified.",
     ".trellis/tasks remains local-only and untracked."
   ],
-  "updated_at_utc": "2026-06-28T16:01:47.752812+00:00",
+  "updated_at_utc": "2026-06-28T16:07:34.687098+00:00",
   "manuscript_outputs": [
     {
       "path": "paper/manuscript/manuscript_clean.pdf",
