@@ -1,0 +1,112 @@
+{
+  "manifest_version": "round2-response-draft-v1",
+  "created_for": "Applied Energy second-round point-by-point response draft",
+  "template": {
+    "requested_paths_checked": [
+      {
+        "path": "D:\\Code\\Latex_Template4Writing\\resopnse-slu",
+        "exists": true
+      },
+      {
+        "path": "D:\\Code\\Latex_Template4Writing\\response-slu",
+        "exists": false
+      }
+    ],
+    "template_path_used": "D:\\Code\\Latex_Template4Writing\\resopnse-slu",
+    "copied_files": [
+      {
+        "source_path": "D:\\Code\\Latex_Template4Writing\\resopnse-slu\\response_slu.sty",
+        "target_path": "paper\\response\\round2\\template\\response_slu.sty",
+        "sha256": "88492ABAEBBA0FF8CF163FC39E9208C4A5D6057A13E9CBEC7899F0717F6481BF"
+      },
+      {
+        "source_path": "D:\\Code\\Latex_Template4Writing\\resopnse-slu\\RESPONSE_LETTER_CHECKLIST.md",
+        "target_path": "paper\\response\\round2\\template\\RESPONSE_LETTER_CHECKLIST.md",
+        "sha256": "1C0E2EEEA3BE0EEA163A6BBBDF400677566B0A72016FE08C351F62172583F7C0"
+      }
+    ]
+  },
+  "review_inputs": [
+    {
+      "name": "Comments02.txt",
+      "path": "D:\\桌面\\Comments02.txt",
+      "status": "available",
+      "sha256": "01391DE0B6C43795D008797A4F826EFF6A4EBDA5C95BDCB1AA5AC5B813345E6E"
+    },
+    {
+      "name": "Paper02R101.md",
+      "path": "D:\\桌面\\Paper02R101.md",
+      "status": "available",
+      "sha256": "D87069C3E47A6773DBD1A3DFB31688F01E725D770002D09E298772FE878EA10E"
+    },
+    {
+      "name": "Paper02R102.md",
+      "path": "D:\\桌面\\Paper02R102.md",
+      "status": "available",
+      "sha256": "DEA18C3CCA11E79A19F8B275C64448C9C0B9A1639FA3E26C551ED22659984489"
+    },
+    {
+      "name": "manuscript_clean.pdf",
+      "path": null,
+      "status": "missing_manual_check",
+      "sha256": null,
+      "note": "No file with the requested name was found under the repository, desktop, or attachment roots during this draft. The TeX source below was used instead."
+    },
+    {
+      "name": "manuscript_highlighted.pdf",
+      "path": null,
+      "status": "missing_manual_check",
+      "sha256": null,
+      "note": "No file with the requested name was found under the repository, desktop, or attachment roots during this draft. The TeX source below was used instead."
+    },
+    {
+      "name": "supplementary_information.pdf",
+      "path": null,
+      "status": "missing_manual_check",
+      "sha256": null,
+      "note": "No file with the requested name was found under the repository, desktop, or attachment roots during this draft. The TeX source below was used instead."
+    }
+  ],
+  "manuscript_sources_used": [
+    {
+      "path": "paper\\manuscript\\manuscript_clean.tex",
+      "sha256": "D2A1B9662CFBC0256FD58BCBEC9ADCF16157000324E850FD1AD06334F33FEAFD"
+    },
+    {
+      "path": "paper\\manuscript\\manuscript_highlighted.tex",
+      "sha256": "747E63BFC0D950931829F7FEB6A04B46D4119EBA2D0166A29E284BFA28736082"
+    },
+    {
+      "path": "paper\\supplementary\\supplementary_information.tex",
+      "sha256": "7744E733B5553E1FEE0E7BA52BEF1AB87DF10FB6AA88730D7814ED56CDC23857"
+    }
+  ],
+  "locked_result_sources_used": [
+    "research\\reviewer-round-02\\canonical-result-lock.md",
+    "research\\reviewer-round-02\\canonical-result-registry.json",
+    "research\\reviewer-round-02\\canonical-benchmark-reference.json",
+    "research\\reviewer-round-02\\manuscript-change-input.md",
+    "research\\reviewer-round-02\\figure-change-input.md",
+    "research\\reviewer-round-02\\round2-caption-drafts.md",
+    "research\\reviewer-round-02\\round2-table-plan.md"
+  ],
+  "coverage": {
+    "reviewer_1_comments": 15,
+    "reviewer_2_comments": 8,
+    "reviewer_3_comments": 5,
+    "reviewer_4_comments": 5,
+    "total_comments": 33
+  },
+  "build": {
+    "working_directory": "paper\\response\\round2",
+    "command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex",
+    "generated_pdf": "paper\\response\\round2\\response_letter.pdf",
+    "generated_pdf_sha256": "4FE62F16709E9FB58D2CA6DF81BDCA60A6BF344B82232BF97F9CD3648A047A66",
+    "status": "passed"
+  },
+  "manual_checks_remaining": [
+    "Add final line numbers after the final line-numbered manuscript PDF is generated if required by the journal.",
+    "Confirm the final clean manuscript, highlighted manuscript, and Supplementary Information PDF paths when those exact PDFs are exported.",
+    "Visually inspect response_letter.pdf before submission."
+  ]
+}
