@@ -161,8 +161,6 @@ $\bar{h}$ & mean building height & $h_{\max}$ & maximum building height \\
 $W_{ew}$ & east-west canyon width & $W_{ns}$ & north-south canyon width \\
 \end{tabularx}
 
-\par\vspace{3pt}
-\noindent The morphology descriptor symbols FAR, SD, AF, AR$_{ew}$, AR$_{ns}$, SVF, BD, OSR, SC, PAR, $\theta$, and OSLI are defined in Table~\ref{tab:descriptors}.
 \par\vspace{6pt}
 \endgroup
 \end{revblock}
@@ -187,7 +185,7 @@ Simulation-based optimization has been widely used to connect energy performance
 
 Parametric design studies show that geometry generation can support energy- and daylight-oriented design exploration. Research on parametric daylighting and low-energy design demonstrates that early-stage geometry and envelope choices can be formalized as searchable design spaces \cite{ref9,ref10}. Evolutionary multi-objective optimization remains widely used because it provides explicit trade-off archives for conflicting objectives. NSGA-II and related methods have been applied to envelope design, photovoltaic-oriented inverse urban design, urban block optimization, and energy-efficient shading design \cite{ref11,ref12}. Additional studies extend this logic to urban heat-island effects, retrofitting, cross-building optimization, adaptive BIPV shading, and shape-envelope design \cite{ref16,ref17}. These works demonstrate the value of Pareto search for design exploration, while also showing that an archive must ultimately be interpreted in relation to feasible building or block forms \cite{ref23,ref24}. In morphology optimization, this issue becomes more pronounced because continuous descriptor outputs may not correspond one-to-one to generated feasible blocks \cite{ref13,ref22}. Shape-envelope optimization studies raise a related point: objective-space performance needs to be connected back to physically meaningful form decisions \cite{ref25}.
 
-Deep reinforcement learning provides another family of search methods, but its role in morphology design requires careful framing. General DRL reviews and foundational DQN and DDPG studies establish policy learning for sequential decision-making and continuous control \cite{ref26,ref31}. Continuous-control applications in robotics and games illustrate the breadth of actor-critic learning beyond energy design \cite{ref27,ref28}. Reinforcement learning has also been used in visual captioning and human-machine cooperative driving, showing that policy-learning formulations can be adapted to tasks with different state and action structures \cite{ref29,ref30}. In the present study, DDPG is adopted as a continuous-action policy-learning comparator because it provides a clear actor-critic mechanism for generating descriptor queries in a bounded surrogate environment \cite{ref32}.
+Deep reinforcement learning provides another family of search methods, but its role in morphology design requires careful framing. Sequential decision problems are commonly formalized as Markov Decision Processes in reinforcement learning \cite{puterman1994mdp,sutton2018reinforcement}. However, the morphology task in this study is not treated as a physical-time design-control process. DDPG is used as a serialized static black-box search method on a guarded surrogate response surface. General DRL reviews and foundational DQN and DDPG studies establish policy learning for sequential decision-making and continuous control \cite{ref26,ref31}. Continuous-control applications in robotics and games illustrate the breadth of actor-critic learning beyond energy design \cite{ref27,ref28}. Reinforcement learning has also been used in visual captioning and human-machine cooperative driving, showing that policy-learning formulations can be adapted to tasks with different state and action structures \cite{ref29,ref30}. In the present study, DDPG is adopted as a continuous-action policy-learning comparator because it provides a clear actor-critic mechanism for generating descriptor queries in a bounded surrogate environment \cite{ref32}.
 
 In the energy domain, DRL has been widely adopted for HVAC control, building operation, distribution-network control, and renewable-building operation \cite{ref33,ref34}. These applications are primarily operational control problems in which states evolve through time. Static urban morphology optimization differs from that setting because each query is an absolute candidate description evaluated by a surrogate response surface. Recent work on distribution-network control and active distribution networks further shows that energy-system optimization may include grid constraints beyond the block morphology objectives considered here \cite{ref35,ref36}. Experimental HVAC-control studies and automated DRL scheduling frameworks examine stronger or more adaptive actor-critic alternatives under operational objectives \cite{ref37,ref38}. Derivative-free and hybrid energy-system methods remain important neighbouring baselines because renewable-building operation and photovoltaic-hydrogen sizing can require continuous search without a learned policy \cite{ref39,ref40}. The present work therefore uses DDPG as a policy-learning comparator and treats broader continuous-optimizer coverage as an extension for future studies.
 
@@ -214,7 +212,7 @@ The remainder of the paper is organized as follows. \secref{sec:methodology}{2} 
 \begin{figure}[H]
 \centering
 \stdfigure{fig1.pdf}
-\caption{Workflow linking feasible morphology generation, analytic response assignment, surrogate-assisted optimization, feasible-block projection, and sensitivity analysis.}
+\caption{Workflow of the surrogate-assisted block-scale morphology optimization framework. Feasible block layouts are generated and converted into 12 morphology descriptors. The analytic response and surrogate-modelling stage assigns EUIt, EG, and H and trains the selected DNN surrogate. DDPG and NSGA-II are compared under the shared surrogate, then descriptor-space candidates are projected to feasible blocks for selected physical and climate-sensitivity checks.}
 \label{fig:workflow}
 \end{figure}
 
@@ -231,22 +229,22 @@ The descriptor set in Table~\ref{tab:descriptors} includes FAR, SD, AF, AR\_ew, 
 \maintablesetup
 \begin{threeparttable}
 \begin{revblock}
-\begin{tabularx}{\linewidth}{@{}p{0.16\linewidth}p{0.11\linewidth}p{0.10\linewidth}p{0.34\linewidth}p{0.19\linewidth}@{}}
+\begin{tabularx}{\linewidth}{@{}p{0.17\linewidth}p{0.13\linewidth}p{0.39\linewidth}X@{}}
 \toprule
-Descriptor & Symbol & Unit & Calculation & Note \\
+Descriptor & Unit & Calculation & Note \\
 \midrule
-FAR & FAR & -- & $A_\mathrm{gross}/A_\mathrm{block}$ & density \\
-SD & SD & m & $h_\mathrm{max}-\bar h$ & height variation \\
-AF & AF & floors & $A_\mathrm{gross}/A_\mathrm{foot}$ & linked to FAR, BD \\
-$AR_{ew}$ & $AR_{ew}$ & -- & $\bar h / W_{ew}$ & east-west canyon \\
-$AR_{ns}$ & $AR_{ns}$ & -- & $\bar h / W_{ns}$ & north-south canyon \\
-SVF & SVF & -- & analytic openness proxy & clipped range \\
-BD & BD & -- & $A_\mathrm{foot}/A_\mathrm{block}$ & linked to FAR, AF \\
-OSR & OSR & -- & $A_\mathrm{open}/A_\mathrm{gross}$ & geometry dependent \\
-SC & SC & -- & $A_\mathrm{env}/A_\mathrm{gross}$ & envelope exposure \\
-PAR & PAR & m$^{-1}$ & $P_\mathrm{sum}/A_\mathrm{foot}$ & compactness \\
-$\theta$ & $\theta$ & deg & sampled in $[-45,45]$ & orientation \\
-OSLI & OSLI & integer & $0$--$8$ & open-space cell \\
+FAR & -- & $A_\mathrm{gross}/A_\mathrm{block}$ & density \\
+SD & m & $h_\mathrm{max}-\bar h$ & height variation \\
+AF & floors & $A_\mathrm{gross}/A_\mathrm{foot}$ & linked to FAR, BD \\
+$AR_{ew}$ & -- & $\bar h/W_{ew}$ & east-west canyon \\
+$AR_{ns}$ & -- & $\bar h/W_{ns}$ & north-south canyon \\
+SVF & -- & analytic openness proxy & sky-view openness \\
+BD & -- & $A_\mathrm{foot}/A_\mathrm{block}$ & footprint density \\
+OSR & -- & $A_\mathrm{open}/A_\mathrm{gross}$ & open-space ratio \\
+SC & -- & $A_\mathrm{env}/A_\mathrm{gross}$ & envelope exposure \\
+PAR & m$^{-1}$ & $P_\mathrm{sum}/A_\mathrm{foot}$ & compactness \\
+$\theta$ & deg & sampled in $[-45,45]$ & orientation \\
+OSLI & integer & $0$--$8$ & open-space cell \\
 \bottomrule
 \end{tabularx}
 \end{revblock}
@@ -371,10 +369,12 @@ R = 1 - d_w .
 
 This reward is separate from the fixed-domain post-hoc utility used later for benchmark comparison. The fixed-domain utility is used for post-hoc comparison, while $R$ is the scalar signal used during serialized DDPG training. Figure~\ref{fig:ddpg-architecture} summarizes the actor-critic and target-network structure used for these surrogate-query updates.
 
+\rev{Figure~\ref{fig:ddpg-architecture} summarizes the actor-critic update used in this surrogate-query environment. The state \(s\) is the normalized three-target vector, the action \(a\) is the normalized 12-descriptor query, \(r\) is the scalar reward, \(s_{\mathrm{next}}\) is the next normalized target state returned by the guarded surrogate, and \(d\) is the episode-termination indicator. The online critic \(Q(s,a)\) estimates the action value, while the target actor and target critic provide the delayed target used in the temporal-difference update. The critic minimizes the mean-squared error between \(Q(s,a)\) and the TD target, while the actor is updated by maximizing the critic value of the actor-generated action.}
+
 \begin{figure}[H]
 \centering
 \stdfigure{fig3.pdf}
-\caption{DDPG actor-critic architecture and target-network update structure used in the surrogate-query environment.}
+\caption{DDPG actor-critic architecture and target-network update structure used in the surrogate-query environment. The diagram identifies the normalized target state, 12-descriptor action, guarded surrogate transition, scalar reward, replay buffer, online actor and critic, target actor and critic, TD target, critic loss, actor update, and soft target-network update.}
 \label{fig:ddpg-architecture}
 \end{figure}
 
@@ -413,7 +413,7 @@ RandomSearch & 20 runs & 24,000 & 2000 & supplementary archive \\
 
 Descriptor-space optimizer outputs are treated first as candidate descriptors. Each retained descriptor-space candidate is therefore mapped to the nearest generated feasible block in normalized descriptor space. This mapping quantifies projection distance, duplicate collapse, and changes in HV and IGD under the fixed normalized reference front. The projection step is a representation check that precedes morphology-level interpretation.
 
-The limited physics-based cross-model stress test uses 24 locked cases. Eighteen direct feasible cases compare analytic response-generator values with physics-based outputs without optimizer projection, while six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated feasible block and then to physics-based result. The direct and optimizer-linked subsets answer different questions and are not merged into a single parity plot. The baseline weather file used in the physical workflow serves as the reference condition for the cross-climate sensitivity analysis. The cross-climate sensitivity set then evaluates the same four block morphologies under three additional weather files representing Harbin, Beijing, and Guangzhou. The surrogate is not retrained, and the morphology set is not reselected after observing climate results.
+The limited physics-based cross-model stress test uses 24 locked cases. Eighteen direct feasible cases compare analytic response-generator values with physics-based outputs without optimizer projection, while six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated feasible block and then to physics-based result. The direct and optimizer-linked subsets answer different questions and are not merged into a single parity plot. \rev{The selected physics-based and climate-sensitive cases are implemented through a Grasshopper/Rhino-based workflow that links generated block geometry to Honeybee, EnergyPlus, and Radiance components. This workflow is used only for the locked case calculations in the physics-based cross-model stress test and cross-climate sensitivity analysis. The 2000-sample optimizer benchmark remains an analytic response-generation dataset, which provides the controlled response surface for comparing DDPG and NSGA-II under repeated surrogate queries.} The baseline weather file used in the physical workflow serves as the reference condition for the cross-climate sensitivity analysis. The cross-climate sensitivity set then evaluates the same four block morphologies under three additional weather files representing Harbin, Beijing, and Guangzhou. The surrogate is not retrained, and the morphology set is not reselected after observing climate results.
 
 \section{Results}
 \label{sec:results}
