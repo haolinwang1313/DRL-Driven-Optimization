@@ -38,6 +38,12 @@ BANNED_AUTHOR_PHRASES = [
     "evidence package",
     "comment-level evidence package",
     "Nomenclature-to-Table 1 cross-reference",
+    "This point matters because",
+    "The revised material now gives the reader",
+    "how the revision should be interpreted",
+    "This is why the response",
+    "supporting blocks",
+    "auditable before selected physical calculations are added",
 ]
 
 BANNED_INTERNAL = [
@@ -107,6 +113,25 @@ def plain_words(latex: str) -> list[str]:
     return re.findall(r"[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*", text)
 
 
+def has_figure_table_or_equation(block: str) -> bool:
+    markers = [
+        r"\compactfig",
+        r"\EvaluationModeTable",
+        r"\CompactDescriptorTable",
+        r"\PhysicalSummaryTable",
+        r"\RewardEquations",
+        r"\AnalyticEquations",
+        r"\begin{tabular",
+        r"\[",
+    ]
+    return any(marker in block for marker in markers)
+
+
+def bib_entry(text: str, key: str) -> str:
+    match = re.search(rf"@\w+\{{{re.escape(key)},(.*?)(?=\n@\w+\{{|\Z)", text, flags=re.DOTALL)
+    return match.group(1) if match else ""
+
+
 def table_r1_rows(text: str) -> int:
     match = re.search(
         r"\\caption\{Editor-facing overview of the main revision packages\.\}.*?\\midrule(.*?)\\bottomrule",
@@ -160,6 +185,8 @@ def main() -> int:
     if r"\RenewDocumentCommand{\checkresponse}{+m}" not in text:
         errors.append("checkresponse is not locally redefined to remove visible check marks")
 
+    print("manual visual check required: Contents links appear black; DOI links appear blue roman.")
+
     rows = table_r1_rows(text)
     if rows != 6:
         errors.append(f"Table R1 should have 6 revision package rows, found {rows}")
@@ -186,8 +213,28 @@ def main() -> int:
 
         words = len(plain_words(response_body(block)))
         required = 80 if cid in SIMPLE_RESPONSE_IDS else 180 if cid in CORE_RESPONSE_IDS else 140
+        if cid.startswith("R2-"):
+            required = max(required, 180)
         if words < required:
             errors.append(f"{cid}: response too short ({words} words, need {required})")
+
+    for cid in [f"R2-{i}" for i in range(1, 6)]:
+        block = blocks.get(cid, "")
+        if not has_figure_table_or_equation(block):
+            errors.append(f"{cid}: missing figure, equation, or table support")
+
+    if r"\AnalyticEquations" not in blocks.get("R2-7", ""):
+        errors.append("R2-7: missing \\AnalyticEquations")
+
+    r28_author = strip_commentboxes(blocks.get("R2-8", ""))
+    if re.search(r"\b(branch|commit|PR\s*#|pull request|server job|job_id|D:\\|/mnt/data|local path)\b", r28_author, flags=re.IGNORECASE):
+        errors.append("R2-8: internal branch/commit/PR/local/server wording remains")
+
+    r110 = blocks.get("R1-10", "")
+    if "puterman1994mdp" not in r110 and "Puterman" not in r110:
+        errors.append("R1-10: missing Puterman manuscript citation or local reference")
+    if "Sutton and Barto" not in r110:
+        errors.append("R1-10: missing Sutton and Barto local reference")
 
     r12 = blocks.get("R1-2", "")
     if "Nomenclature" not in r12 or "Formula symbols" not in r12:
@@ -209,6 +256,17 @@ def main() -> int:
         if re.search(r"Descriptor\s*&\s*Symbol|Symbol\s*&\s*Unit", manuscript):
             errors.append("manuscript Table 1 still contains a Symbol column")
 
+    references_path = path.parents[2] / "manuscript" / "references.bib"
+    if references_path.exists():
+        references = references_path.read_text(encoding="utf-8")
+        sutton = bib_entry(references, "sutton2018reinforcement")
+        puterman = bib_entry(references, "puterman1994mdp")
+        if re.search(r"\bdoi\s*=", sutton, flags=re.IGNORECASE):
+            errors.append("references.bib: Sutton and Barto entry must not contain a DOI")
+        puterman_dois = re.findall(r"\bdoi\s*=\s*\{([^}]+)\}", puterman, flags=re.IGNORECASE)
+        if puterman_dois and puterman_dois != ["10.1002/9780470316887"]:
+            errors.append(f"references.bib: Puterman DOI mismatch: {puterman_dois}")
+
     check_text("author tex", author_text, errors)
 
     txt_path = path.with_suffix(".txt")
@@ -227,6 +285,8 @@ def main() -> int:
     print("layout checks: title/contents/reviewer pagination markers passed")
     print("Table R1: 6 revision package rows")
     print("R1-2: Nomenclature supporting material present")
+    print("R1-10: MDP/RL citations and local references present")
+    print("R2: expanded responses and supporting material checks passed")
     return 0
 
 

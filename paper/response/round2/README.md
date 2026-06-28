@@ -14,8 +14,10 @@ This directory contains the Applied Energy round-2 response package. The current
 
 ## Current Revision Scope
 
-- This version performs a second human-review editorial pass on PR #5.
+- This version performs a human-review pass focused on Reviewer 2 expansion and reference/link formatting.
 - Contents now starts on a standalone page.
+- Contents internal hyperlinks remain black.
+- DOI/URL links in local references use blue roman styling through `\responsedoi{...}`.
 - Each reviewer section starts on a new page.
 - Table R1 is simplified to six editor-facing revision packages.
 - Manuscript Nomenclature cross-reference sentence was removed.
@@ -26,9 +28,11 @@ This directory contains the Applied Energy round-2 response package. The current
 - Response prose was expanded across all substantive comments.
 - `Revisions made in the manuscript.` sections were rewritten from location-only summaries to action-specific descriptions.
 - R1-1/R1-2/R1-3/R1-4/R1-7/R1-10/R1-11/R1-14/R1-15 were revised after human review.
+- R1-10 MDP/RL references were updated: Puterman DOI was verified and Sutton/Barto uses ISBN metadata without an invented DOI.
+- R1-15 broader-audience and AI-assisted urban-planning framing was expanded.
+- R2-1 to R2-8 were expanded with detailed, conciliatory responses and enriched supporting material.
 - R1-2 is synchronized with the manuscript front-matter Nomenclature update and four-column Table 1.
-- Local reference DOI links use the blue roman `\responsedoi{...}` hyperlink macro.
-- `manuscript_clean.pdf` and `manuscript_highlighted.pdf` were rebuilt because the front-matter Nomenclature changed.
+- `manuscript_clean.pdf`, `manuscript_highlighted.pdf`, and `response_letter.pdf` were rebuilt.
 
 ## Protected Scope
 
@@ -59,7 +63,7 @@ Latest local build result:
 
 - Response PDF before the first editorial revision: 49 pages.
 - Response PDF after the first editorial revision: 56 pages.
-- Response PDF after this second human-review pass: 59 pages.
+- Response PDF after the latest Reviewer 2/reference/link pass: 63 pages.
 - Manuscript clean PDF: 17 A4 pages.
 - Manuscript highlighted PDF: 17 A4 pages.
 - Expected warnings: Perl locale warning, copied-template package-name warning, xeCJK monofont warning, underfull hbox warnings, and embedded-figure PDF-version warnings.
@@ -83,6 +87,11 @@ pdffonts response_letter.pdf
 Latest QA results:
 
 - `check_response_evidence.py`: passed.
+- Contents/link-color check: visual check required; Contents links should appear black, and DOI links should appear blue roman.
+- Puterman DOI verification: passed through DOI resolution and Crossref/Wiley metadata for `10.1002/9780470316887`.
+- R1-10 reference sync: manuscript excerpt displays `\cite{puterman1994mdp,sutton2018reinforcement}`, local references include Puterman DOI and Sutton/Barto ISBN.
+- R1-15 broader-audience framing: expanded.
+- R2-1 to R2-8 expansion: passed word-count and supporting-material checks.
 - `uv run pytest -q`: passed, 63 tests.
 - `uv run python -m paper_repro.cli --help`: passed.
 - `uv run python -c "from paper_repro.config import Config; Config.from_yaml('configs/revision.yaml'); print('config ok')"`: passed.

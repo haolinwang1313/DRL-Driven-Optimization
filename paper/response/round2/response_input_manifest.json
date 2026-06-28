@@ -1,57 +1,60 @@
 {
-  "manifest_version": "round2-response-editorial-review-v5",
-  "created_for": "Applied Energy second-round response editorial revision after human review",
-  "status": "second_human_review_editorial_pass_verified",
+  "manifest_version": "round2-response-reviewer2-reference-link-v6",
+  "created_for": "Applied Energy second-round response letter Reviewer 2 expansion and reference/link formatting pass",
+  "status": "reviewer2_reference_link_pass_verified",
   "response_package_files": [
     {
       "path": "paper/response/round2/response_letter.tex",
-      "sha256": "CBC320CF546BC7DDAE5C536D359FB5BF2F746BFC5FF593ABF5AE2DABD87960DB"
+      "sha256": "1B1122E04652FB0CA5F475FF4E8CE32584E398AE9974823BD6D0D8CB7CF6322B"
     },
     {
       "path": "paper/response/round2/response_letter.pdf",
-      "sha256": "300B38DC9D2FC58773E829FEFBA3C97F434521F7E44B9EFA75DD477B17220B11",
-      "pages": 59,
-      "size_bytes": 1448133
+      "sha256": "1041E3902DD245389570DE11EFC6EB7CE96A3FE2CDC6D7C3F8DF7D85300A94C5",
+      "pages": 63,
+      "size_bytes": 1547979
     },
     {
       "path": "paper/response/round2/response_matrix.csv",
-      "sha256": "0D15AC11D89C4146F30D1D8A4154D82ACCD97865755D29E61E9B60B71EF9132A"
+      "sha256": "19BDFE6EC55FF3E3940D5476C49DF3C887382D01665926ABD8875058104690EA"
     },
     {
       "path": "paper/response/round2/README.md",
-      "sha256": "F34651E769E7BCB728132BBD0D5B2616FA34A3AB9E5D7EC22CCC8EA57C52FD6B"
+      "sha256": "A50526E5B60AA95413EA7B67ACADB18350A902F13E2115C2C10A84BF6E065CE9"
     },
     {
       "path": "paper/response/round2/check_response_evidence.py",
-      "sha256": "FCE353A8FC9A2B73EBFC27FF14987A786212C8519641DEE5F167DF9CAD1BB3A8"
+      "sha256": "668026103BB773EDB1F290225AFC47F4886E7C847A442F56801321F1091C7B8A"
     },
     {
       "path": "paper/response/round2/template/response_slu.sty",
-      "sha256": "6ACB03D7E0F7707FD19617A73061D928547416C3281BE9A96F43341B138E66A6"
+      "sha256": "28CCCE465735DD46E19F7564F7FB91465C2DD57EA67A569D223CC61FE44AC067"
     }
   ],
   "review_inputs": [
     {
       "name": "Comments02.txt",
       "sha256": "01391DE0B6C43795D008797A4F826EFF6A4EBDA5C95BDCB1AA5AC5B813345E6E",
-      "status": "used_for_original_reviewer_comments"
+      "status": "not_present_in_working_tree; original reviewer comments are embedded in response_letter.tex"
     }
   ],
   "manuscript_sources_used": [
     {
       "path": "paper/manuscript/manuscript_body.tex",
-      "sha256": "90F4475059AAC934DF8709D18C38CCA7DC92DDB80A8FAA3A212CD041490B8A47",
+      "sha256": "0D46B6F0AADBFE91A9C14998A1D5D779CED3093C5F65AFFCE01FACB26D8E94B9",
       "nomenclature_updated": true,
       "table1_symbol_column_removed": true,
-      "nomenclature_cross_reference_removed": true
+      "nomenclature_cross_reference_removed": true,
+      "r1_10_mdp_sentence_updated": true
     },
     {
       "path": "paper/manuscript/manuscript_clean.tex",
-      "sha256": "D2A1B9662CFBC0256FD58BCBEC9ADCF16157000324E850FD1AD06334F33FEAFD"
+      "sha256": "D2A1B9662CFBC0256FD58BCBEC9ADCF16157000324E850FD1AD06334F33FEAFD",
+      "modified_in_this_update": false
     },
     {
       "path": "paper/manuscript/manuscript_highlighted.tex",
-      "sha256": "747E63BFC0D950931829F7FEB6A04B46D4119EBA2D0166A29E284BFA28736082"
+      "sha256": "747E63BFC0D950931829F7FEB6A04B46D4119EBA2D0166A29E284BFA28736082",
+      "modified_in_this_update": false
     },
     {
       "path": "paper/supplementary/supplementary_information.tex",
@@ -65,8 +68,11 @@
     },
     {
       "path": "paper/manuscript/references.bib",
-      "sha256": "82B5B5902BF0F2CFF8E92AE23C064F59B0BC36A1F1EAE1A42AAAB87556B3C08E",
-      "mdp_references_added": true
+      "sha256": "04B8012B14F1ED2D8CC1A3232E525D4522EC56962FEF8A16A71585476BEDD2EE",
+      "mdp_references_added": true,
+      "puterman_doi": "10.1002/9780470316887",
+      "sutton_barto_isbn": "9780262039246",
+      "sutton_barto_doi_added": false
     }
   ],
   "figure_assets_used": [
@@ -136,12 +142,14 @@
     "manuscript_highlighted_command": "latexmk -g -xelatex -interaction=nonstopmode -halt-on-error manuscript_highlighted.tex",
     "manuscript_status": "passed",
     "pdfinfo": {
-      "response_pages": 59,
+      "response_pages": 63,
       "manuscript_clean_pages": 17,
       "manuscript_highlighted_pages": 17,
       "page_size": "A4",
       "pdf_version": "1.5"
-    }
+    },
+    "response_page_count_after_reviewer2_reference_link_pass": 63,
+    "manuscript_highlighted_lock_note": "Acrobat initially held manuscript_highlighted.pdf; source compiled to temporary PDF, Acrobat was closed normally, and the target PDF was rebuilt successfully."
   },
   "qa": {
     "structure_script": {
@@ -156,7 +164,12 @@
       "r1_2_nomenclature_supporting_material": "present",
       "r1_2_cross_reference_removed": true,
       "table1_symbol_column_removed": true,
-      "doi_links_use_responsedoi": true
+      "doi_links_use_responsedoi": true,
+      "r2_expansion": "R2-1 to R2-8 passed 180-word threshold",
+      "r2_supporting_material": "R2-1 to R2-5 include figure, equation, or table support; R2-7 includes AnalyticEquations; R2-8 excludes internal implementation details",
+      "r1_10_reference_sync": "Puterman and Sutton/Barto citation evidence present",
+      "contents_link_color": "black_manual_visual_check_required",
+      "doi_style": "blue_roman_responsedoi"
     },
     "pdf_text_extraction": {
       "response_letter_txt": "passed",
@@ -166,7 +179,8 @@
     "font_check": {
       "response_type3_fonts_found": false,
       "manuscript_clean_type3_fonts_found": false,
-      "note": "Non-embedded TrueType fonts remain inherited from protected figure PDFs."
+      "note": "Non-embedded TrueType fonts remain inherited from protected figure PDFs.",
+      "manuscript_highlighted_type3_fonts_found": false
     },
     "forbidden_text_checks": {
       "supporting_evidence_heading_scan": "passed",
@@ -174,7 +188,8 @@
       "scope_boundary_heading_scan": "passed",
       "descriptor_symbol_column_scan": "passed",
       "doi_url_macro_scan": "passed",
-      "strong_claim_scan": "only reviewer-original quoted text in comment boxes"
+      "strong_claim_scan": "only reviewer-original quoted text in comment boxes",
+      "mechanical_phrase_scan": "passed"
     },
     "csv_check": {
       "rows": 33,
@@ -182,7 +197,7 @@
       "revisions_made_style": "action_specific",
       "heading_term": "supporting_material for all rows",
       "evidence_wording_cleaned": "true for all rows",
-      "response_word_count_range": "119-289",
+      "response_word_count_range": "110-292",
       "manual_review_priority_high": [
         "R1-1",
         "R1-2",
@@ -192,41 +207,72 @@
         "R1-10",
         "R1-11",
         "R1-14",
-        "R1-15"
-      ]
+        "R1-15",
+        "R2-1",
+        "R2-2",
+        "R2-3",
+        "R2-4",
+        "R2-5",
+        "R2-6",
+        "R2-7",
+        "R2-8",
+        "R4-1",
+        "R4-2",
+        "R4-5"
+      ],
+      "r2_expanded": "true for R2-1 to R2-8",
+      "r2_supporting_material_enriched": "true for R2-1 to R2-8",
+      "r2_response_tone": "detailed_conciliatory for R2-1 to R2-8",
+      "contents_link_color": "black_manual_check",
+      "r1_10_reference_status": "updated",
+      "r1_15_broader_audience_status": "expanded",
+      "doi_style": "blue_roman"
+    },
+    "doi_verification": {
+      "puterman_doi": "10.1002/9780470316887",
+      "status": "verified",
+      "evidence": "doi.org resolves to Wiley; Crossref record matches Puterman Markov Decision Processes and Wiley metadata",
+      "sutton_barto": "ISBN 9780262039246 recorded; no DOI added"
+    },
+    "final_validation": {
+      "pytest": "63 passed, 2 warnings",
+      "compileall": "passed",
+      "cli_help": "passed",
+      "config_load": "passed",
+      "git_diff_check": "passed with Windows LF-to-CRLF warnings only"
     }
   },
   "manual_checks_remaining": [
-    "Add final line numbers after final line-numbered manuscript and SI PDFs are generated if required by the journal.",
-    "Human visual review of response_letter.pdf, especially Contents pagination and Table R1.",
+    "Human visual review: Contents links should appear black; DOI links should appear blue roman.",
+    "Add final manuscript/SI line numbers after final line-numbered manuscript and SI PDFs are generated if required by the journal.",
     "Author review of expanded wording before submission."
   ],
   "scope_guard": [
-    "Manuscript front-matter Nomenclature, Table 1, Fig. 1 caption, DDPG/MDP wording, Fig. 3 explanation, selected-case software wording, and two MDP/RL references were updated.",
+    "Response letter, local response template, response QA, README, manifest, response matrix, manuscript MDP/RL sentence, references metadata, and rebuilt PDFs were updated.",
     "No SI source files were modified.",
     "No figure assets were regenerated or modified.",
     "No experiments, tools, paper_repro files, configs, artifacts, or canonical result files were modified.",
     ".trellis/tasks remains local-only and untracked."
   ],
-  "updated_at_utc": "2026-06-28T14:47:37.200995+00:00",
+  "updated_at_utc": "2026-06-28T16:01:47.752812+00:00",
   "manuscript_outputs": [
     {
       "path": "paper/manuscript/manuscript_clean.pdf",
-      "sha256": "9F0E1473869C9E09B68776FA7F212C2C6076DDAF10C6F45BBA4E3DF51FBAAA8E",
+      "sha256": "2E5FD94BA266D269C025D0BBEF2C147535497034625DA2F21C325350C48B3A5B",
       "pages": 17,
-      "size_bytes": 862324
+      "size_bytes": 862330
     },
     {
       "path": "paper/manuscript/manuscript_highlighted.pdf",
-      "sha256": "2029DD25EF893D40DE2B72FCFDDB326E07C76FB03579041669D48FB8CA05DE63",
+      "sha256": "246F1E46BB2B85533C09A28571215E2CDD3F72A8CE930C43086FB00A9994BF11",
       "pages": 17,
-      "size_bytes": 862929
+      "size_bytes": 862916
     }
   ],
   "nomenclature_update": {
     "status": "front-matter Nomenclature retained, Table 1 Symbol column removed, and Nomenclature-to-Table 1 cross-reference removed",
     "source_path": "paper/manuscript/manuscript_body.tex",
-    "sha256": "90F4475059AAC934DF8709D18C38CCA7DC92DDB80A8FAA3A212CD041490B8A47",
-    "updated_at_utc": "2026-06-28T14:47:07.496346+00:00"
+    "sha256": "0D46B6F0AADBFE91A9C14998A1D5D779CED3093C5F65AFFCE01FACB26D8E94B9",
+    "updated_at_utc": "2026-06-28T16:01:47.752812+00:00"
   }
 }
