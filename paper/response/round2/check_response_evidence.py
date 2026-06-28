@@ -32,6 +32,12 @@ BANNED_AUTHOR_PHRASES = [
     "Please see Table",
     "The revision makes this point explicit",
     "Further details are provided in the Supplementary Information",
+    "how the evidence should be read",
+    "The evidence now",
+    "This evidence",
+    "evidence package",
+    "comment-level evidence package",
+    "Nomenclature-to-Table 1 cross-reference",
 ]
 
 BANNED_INTERNAL = [
@@ -164,8 +170,8 @@ def main() -> int:
             errors.append(f"{cid}: missing or repeated Response heading")
         if block.count(r"\responseheading{Revisions made in the manuscript.}") != 1:
             errors.append(f"{cid}: missing or repeated revisions heading")
-        if block.count(r"\responseheading{Relevant revised manuscript and supporting evidence.}") != 1:
-            errors.append(f"{cid}: missing or repeated evidence heading")
+        if block.count(r"\responseheading{Relevant revised manuscript and supporting material.}") != 1:
+            errors.append(f"{cid}: missing or repeated supporting-material heading")
         if r"\begin{revisionbox}" not in block:
             errors.append(f"{cid}: missing revisionbox")
         commentbox = re.search(
@@ -185,9 +191,23 @@ def main() -> int:
 
     r12 = blocks.get("R1-2", "")
     if "Nomenclature" not in r12 or "Formula symbols" not in r12:
-        errors.append("R1-2 evidence does not include Nomenclature and Formula symbols")
+        errors.append("R1-2 supporting material does not include Nomenclature and Formula symbols")
     if "Abbreviations block excerpt" in r12:
         errors.append("R1-2 still uses the old Abbreviations block excerpt label")
+    if "Nomenclature-to-Table 1 cross-reference" in r12:
+        errors.append("R1-2 still includes the removed Nomenclature-to-Table 1 cross-reference")
+    if re.search(r"Descriptor\s*&\s*Symbol|Symbol\s*&\s*Unit", r12):
+        errors.append("R1-2 Table 1 excerpt still contains a Symbol column")
+    if re.search(r"\\url\{https://doi\.org|\\url\{http", text):
+        errors.append("local references still use \\url for DOI/URL links")
+
+    manuscript_path = path.parents[2] / "manuscript" / "manuscript_body.tex"
+    if manuscript_path.exists():
+        manuscript = manuscript_path.read_text(encoding="utf-8")
+        if re.search(r"descriptor symbols.*defined in Table", manuscript, flags=re.IGNORECASE):
+            errors.append("manuscript Nomenclature still cross-references descriptor symbols to Table 1")
+        if re.search(r"Descriptor\s*&\s*Symbol|Symbol\s*&\s*Unit", manuscript):
+            errors.append("manuscript Table 1 still contains a Symbol column")
 
     check_text("author tex", author_text, errors)
 
@@ -200,13 +220,13 @@ def main() -> int:
             print(f"FAIL: {error}")
         return 1
 
-    print("response evidence QA passed")
+    print("response QA passed")
     print("comments: 33/33")
-    print("headings: Response/Revisions/Evidence present for every comment")
+    print("headings: Response/Revisions/Supporting material present for every comment")
     print("response expansion: word-count thresholds passed")
     print("layout checks: title/contents/reviewer pagination markers passed")
     print("Table R1: 6 revision package rows")
-    print("R1-2: Nomenclature evidence present")
+    print("R1-2: Nomenclature supporting material present")
     return 0
 
 

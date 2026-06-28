@@ -45,6 +45,16 @@
 \definecolor{responsedarkblue}{HTML}{1F4E79}
 \definecolor{commentbg}{HTML}{FFF2CC}
 \definecolor{revisionbg}{HTML}{F5F5EB}
+\definecolor{paperlinkblue}{RGB}{0,51,102}
+\urlstyle{rm}
+\def\UrlFont{\rmfamily}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=paperlinkblue,
+  citecolor=paperlinkblue,
+  urlcolor=paperlinkblue
+}
+\newcommand{\responsedoi}[1]{\href{#1}{\textcolor{paperlinkblue}{\rmfamily #1}}}
 
 \newlength{\responseindent}
 \setlength{\responseindent}{0.06944in}
@@ -263,7 +273,7 @@
 }
 
 \providecommand{\evidenceheading}{%
-  \responseheading{Relevant revised manuscript and supporting evidence.}%
+  \responseheading{Relevant revised manuscript and supporting material.}%
 }
 
 \providecommand{\reviewerpage}[1]{%

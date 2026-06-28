@@ -1,29 +1,33 @@
 {
-  "manifest_version": "round2-response-editorial-review-v4",
+  "manifest_version": "round2-response-editorial-review-v5",
   "created_for": "Applied Energy second-round response editorial revision after human review",
-  "status": "editorial_revision_complete_with_manual_review_pending",
+  "status": "second_human_review_editorial_pass_verified",
   "response_package_files": [
     {
       "path": "paper/response/round2/response_letter.tex",
-      "sha256": "D6D594D67E412DA3C9ED3226A7D569B4ACD5021B53F2A928C25A4915419D8667"
+      "sha256": "CBC320CF546BC7DDAE5C536D359FB5BF2F746BFC5FF593ABF5AE2DABD87960DB"
     },
     {
       "path": "paper/response/round2/response_letter.pdf",
-      "sha256": "BDA7DA363181EF22E3A41BF82DF52806BA086E518AA318D84A412400363D57FB",
-      "pages": 56,
-      "size_bytes": 1439854
+      "sha256": "300B38DC9D2FC58773E829FEFBA3C97F434521F7E44B9EFA75DD477B17220B11",
+      "pages": 59,
+      "size_bytes": 1448133
     },
     {
       "path": "paper/response/round2/response_matrix.csv",
-      "sha256": "354C1446DFE3F85F39B7680EE57AE1D0F276A775B1D72C60BB878257717A5741"
+      "sha256": "0D15AC11D89C4146F30D1D8A4154D82ACCD97865755D29E61E9B60B71EF9132A"
     },
     {
       "path": "paper/response/round2/README.md",
-      "sha256": "3E3174B812AD049A650C07FBBF9D70602321F90B8D6F9FC9FBD4E0EE42E1B0F6"
+      "sha256": "F34651E769E7BCB728132BBD0D5B2616FA34A3AB9E5D7EC22CCC8EA57C52FD6B"
     },
     {
       "path": "paper/response/round2/check_response_evidence.py",
-      "sha256": "FCAB740A9AEE662F025B39BA30A68519ED640624B4B08A20FC1BD0A0C074EF21"
+      "sha256": "FCE353A8FC9A2B73EBFC27FF14987A786212C8519641DEE5F167DF9CAD1BB3A8"
+    },
+    {
+      "path": "paper/response/round2/template/response_slu.sty",
+      "sha256": "6ACB03D7E0F7707FD19617A73061D928547416C3281BE9A96F43341B138E66A6"
     }
   ],
   "review_inputs": [
@@ -36,8 +40,10 @@
   "manuscript_sources_used": [
     {
       "path": "paper/manuscript/manuscript_body.tex",
-      "sha256": "9308C66F72AAEF003CB542EFBBC0D43E8CCDEBF261EDA107377D48B297FC78C9",
-      "nomenclature_updated": true
+      "sha256": "90F4475059AAC934DF8709D18C38CCA7DC92DDB80A8FAA3A212CD041490B8A47",
+      "nomenclature_updated": true,
+      "table1_symbol_column_removed": true,
+      "nomenclature_cross_reference_removed": true
     },
     {
       "path": "paper/manuscript/manuscript_clean.tex",
@@ -51,6 +57,16 @@
       "path": "paper/supplementary/supplementary_information.tex",
       "sha256": "7744E733B5553E1FEE0E7BA52BEF1AB87DF10FB6AA88730D7814ED56CDC23857",
       "modified_in_this_update": false
+    },
+    {
+      "path": "paper/manuscript/references.tex",
+      "sha256": "6F2036640B29B9FD5D5F684058536FC88A9FB82B2D556C1715F4AF95361D74A0",
+      "mdp_references_added": true
+    },
+    {
+      "path": "paper/manuscript/references.bib",
+      "sha256": "82B5B5902BF0F2CFF8E92AE23C064F59B0BC36A1F1EAE1A42AAAB87556B3C08E",
+      "mdp_references_added": true
     }
   ],
   "figure_assets_used": [
@@ -105,7 +121,7 @@
     "reviewer_3_comments": 5,
     "reviewer_4_comments": 5,
     "total_comments": 33,
-    "evidence_package_status": "33/33 complete",
+    "evidence_package_status": "33/33 complete with supporting-material heading",
     "response_matrix_rows": 33,
     "response_expansion_status": "passed word-count thresholds"
   },
@@ -114,13 +130,13 @@
     "response_command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex",
     "response_status": "passed",
     "response_page_count_before_editorial_revision": 49,
-    "response_page_count_after_editorial_revision": 56,
+    "response_page_count_after_editorial_revision": 59,
     "manuscript_working_directory": "paper/manuscript",
     "manuscript_clean_command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error manuscript_clean.tex",
     "manuscript_highlighted_command": "latexmk -g -xelatex -interaction=nonstopmode -halt-on-error manuscript_highlighted.tex",
     "manuscript_status": "passed",
     "pdfinfo": {
-      "response_pages": 56,
+      "response_pages": 59,
       "manuscript_clean_pages": 17,
       "manuscript_highlighted_pages": 17,
       "page_size": "A4",
@@ -134,10 +150,13 @@
       "comment_ids": "33/33",
       "response_headings": 33,
       "revision_headings": 33,
-      "evidence_headings": 33,
+      "supporting_material_headings": 33,
       "response_expansion": "passed",
       "table_r1_rows": 6,
-      "r1_2_nomenclature_evidence": "present"
+      "r1_2_nomenclature_supporting_material": "present",
+      "r1_2_cross_reference_removed": true,
+      "table1_symbol_column_removed": true,
+      "doi_links_use_responsedoi": true
     },
     "pdf_text_extraction": {
       "response_letter_txt": "passed",
@@ -146,18 +165,35 @@
     },
     "font_check": {
       "response_type3_fonts_found": false,
+      "manuscript_clean_type3_fonts_found": false,
       "note": "Non-embedded TrueType fonts remain inherited from protected figure PDFs."
     },
     "forbidden_text_checks": {
+      "supporting_evidence_heading_scan": "passed",
+      "evidence_heavy_phrase_scan": "passed",
       "scope_boundary_heading_scan": "passed",
-      "generic_location_phrase_scan": "passed",
+      "descriptor_symbol_column_scan": "passed",
+      "doi_url_macro_scan": "passed",
       "strong_claim_scan": "only reviewer-original quoted text in comment boxes"
     },
     "csv_check": {
       "rows": 33,
       "visible_scope_boundary_heading": "false for all rows",
       "revisions_made_style": "action_specific",
-      "response_word_count_range": "122-201"
+      "heading_term": "supporting_material for all rows",
+      "evidence_wording_cleaned": "true for all rows",
+      "response_word_count_range": "119-289",
+      "manual_review_priority_high": [
+        "R1-1",
+        "R1-2",
+        "R1-3",
+        "R1-4",
+        "R1-7",
+        "R1-10",
+        "R1-11",
+        "R1-14",
+        "R1-15"
+      ]
     }
   },
   "manual_checks_remaining": [
@@ -166,31 +202,31 @@
     "Author review of expanded wording before submission."
   ],
   "scope_guard": [
-    "Only manuscript front-matter Nomenclature and a wording-safe descriptor sentence were changed in manuscript_body.tex.",
+    "Manuscript front-matter Nomenclature, Table 1, Fig. 1 caption, DDPG/MDP wording, Fig. 3 explanation, selected-case software wording, and two MDP/RL references were updated.",
     "No SI source files were modified.",
     "No figure assets were regenerated or modified.",
-    "No experiments, tools, paper_repro files, or canonical result files were modified.",
+    "No experiments, tools, paper_repro files, configs, artifacts, or canonical result files were modified.",
     ".trellis/tasks remains local-only and untracked."
   ],
-  "updated_at_utc": "2026-06-28T12:52:10.487610+00:00",
+  "updated_at_utc": "2026-06-28T14:47:37.200995+00:00",
   "manuscript_outputs": [
     {
       "path": "paper/manuscript/manuscript_clean.pdf",
-      "sha256": "0AD3C1A0D0E79ED2995172C02F81E4B27E2538A9CCC5E39E8D56CECB4FF570B0",
+      "sha256": "9F0E1473869C9E09B68776FA7F212C2C6076DDAF10C6F45BBA4E3DF51FBAAA8E",
       "pages": 17,
-      "size_bytes": 860291
+      "size_bytes": 862324
     },
     {
       "path": "paper/manuscript/manuscript_highlighted.pdf",
-      "sha256": "7F46A336094D33CE99C034FA3116A752692DCE7BC939734925C9519C516C8019",
+      "sha256": "2029DD25EF893D40DE2B72FCFDDB326E07C76FB03579041669D48FB8CA05DE63",
       "pages": 17,
-      "size_bytes": 860969
+      "size_bytes": 862929
     }
   ],
   "nomenclature_update": {
-    "status": "front-matter Abbreviations replaced with Nomenclature containing Abbreviations and Formula symbols",
+    "status": "front-matter Nomenclature retained, Table 1 Symbol column removed, and Nomenclature-to-Table 1 cross-reference removed",
     "source_path": "paper/manuscript/manuscript_body.tex",
-    "sha256": "9308C66F72AAEF003CB542EFBBC0D43E8CCDEBF261EDA107377D48B297FC78C9",
-    "updated_at_utc": "2026-06-28T12:52:10.487610+00:00"
+    "sha256": "90F4475059AAC934DF8709D18C38CCA7DC92DDB80A8FAA3A212CD041490B8A47",
+    "updated_at_utc": "2026-06-28T14:47:07.496346+00:00"
   }
 }
