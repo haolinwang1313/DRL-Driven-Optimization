@@ -1,29 +1,29 @@
 {
-  "manifest_version": "round2-response-reviewer2-reference-link-v6",
-  "created_for": "Applied Energy second-round response letter Reviewer 2 expansion and reference/link formatting pass",
-  "status": "reviewer2_reference_link_pass_verified",
+  "manifest_version": "round2-response-final-targeted-human-review-v7",
+  "created_for": "Applied Energy second-round response letter final targeted human-review pass for R1-10, R2-8, R3-5, Reviewer 4, Closing Remark, and accepted Applied Energy reference updates",
+  "status": "final_targeted_human_review_pass_verified",
   "response_package_files": [
     {
       "path": "paper/response/round2/response_letter.tex",
-      "sha256": "1B1122E04652FB0CA5F475FF4E8CE32584E398AE9974823BD6D0D8CB7CF6322B"
+      "sha256": "90945EBD22A084226DD7BBD4C6AE824DD3C3DCEB93751291C7381B55B7F85233"
     },
     {
       "path": "paper/response/round2/response_letter.pdf",
-      "sha256": "1041E3902DD245389570DE11EFC6EB7CE96A3FE2CDC6D7C3F8DF7D85300A94C5",
-      "pages": 63,
-      "size_bytes": 1547979
+      "sha256": "5449C6C3FF8C003ADD11E13B0FFA5104D37177A35E0F4B30892DB2B7294C4685",
+      "pages": 68,
+      "size_bytes": 1594902
     },
     {
       "path": "paper/response/round2/response_matrix.csv",
-      "sha256": "19BDFE6EC55FF3E3940D5476C49DF3C887382D01665926ABD8875058104690EA"
+      "sha256": "96E898A592D6AECECE8DBF0683F7E915A9BE8C2D91BDBCED1BA6D16B8C2003AB"
     },
     {
       "path": "paper/response/round2/README.md",
-      "sha256": "36FE6784D90166183E83C5E7030FF246BDC03F0BD07609EA82D406DED6ED0E02"
+      "sha256": "C7C2D24E95BC7795A675E0E11CA3B7FF9887692133B9D2276FE84E63A8A3F8DA"
     },
     {
       "path": "paper/response/round2/check_response_evidence.py",
-      "sha256": "668026103BB773EDB1F290225AFC47F4886E7C847A442F56801321F1091C7B8A"
+      "sha256": "2EF5A1BA4E1B65B466D8965229B9479FC82E04DAEA89AD0B189B1C21E824E77B"
     },
     {
       "path": "paper/response/round2/template/response_slu.sty",
@@ -40,11 +40,13 @@
   "manuscript_sources_used": [
     {
       "path": "paper/manuscript/manuscript_body.tex",
-      "sha256": "0D46B6F0AADBFE91A9C14998A1D5D779CED3093C5F65AFFCE01FACB26D8E94B9",
+      "sha256": "A6380249551680F4AB1C41F9C679A00997B6E8311918713646C9180515259359",
       "nomenclature_updated": true,
       "table1_symbol_column_removed": true,
       "nomenclature_cross_reference_removed": true,
-      "r1_10_mdp_sentence_updated": true
+      "r1_10_mdp_sentence_updated": true,
+      "accepted_applied_energy_reference_cited": true,
+      "applied_energy_reference_key": "wang2026surrogateDistrictMorphology"
     },
     {
       "path": "paper/manuscript/manuscript_clean.tex",
@@ -63,16 +65,22 @@
     },
     {
       "path": "paper/manuscript/references.tex",
-      "sha256": "6F2036640B29B9FD5D5F684058536FC88A9FB82B2D556C1715F4AF95361D74A0",
-      "mdp_references_added": true
+      "sha256": "C2F757290570E2633D25A70D0C66E402797748B58952DD8DD73C16D6251EDFAD",
+      "mdp_references_added": true,
+      "accepted_applied_energy_reference_added": true,
+      "applied_energy_doi": "10.1016/j.apenergy.2026.128294"
     },
     {
       "path": "paper/manuscript/references.bib",
-      "sha256": "04B8012B14F1ED2D8CC1A3232E525D4522EC56962FEF8A16A71585476BEDD2EE",
+      "sha256": "0364C04A72CC0C1E92D748D977A38F79F38D594415BA1A01C22B44F8F6BAA18A",
       "mdp_references_added": true,
       "puterman_doi": "10.1002/9780470316887",
       "sutton_barto_isbn": "9780262039246",
-      "sutton_barto_doi_added": false
+      "sutton_barto_doi_added": false,
+      "accepted_applied_energy_reference_added": true,
+      "applied_energy_doi": "10.1016/j.apenergy.2026.128294",
+      "applied_energy_volume": "422",
+      "applied_energy_article_number": "128294"
     }
   ],
   "figure_assets_used": [
@@ -129,7 +137,7 @@
     "total_comments": 33,
     "evidence_package_status": "33/33 complete with supporting-material heading",
     "response_matrix_rows": 33,
-    "response_expansion_status": "passed word-count thresholds"
+    "response_expansion_status": "passed word-count thresholds including R3-5 and R4-1 to R4-5 >= 220 words"
   },
   "build": {
     "response_working_directory": "paper/response/round2",
@@ -142,14 +150,15 @@
     "manuscript_highlighted_command": "latexmk -g -xelatex -interaction=nonstopmode -halt-on-error manuscript_highlighted.tex",
     "manuscript_status": "passed",
     "pdfinfo": {
-      "response_pages": 63,
+      "response_pages": 68,
       "manuscript_clean_pages": 17,
       "manuscript_highlighted_pages": 17,
       "page_size": "A4",
       "pdf_version": "1.5"
     },
     "response_page_count_after_reviewer2_reference_link_pass": 63,
-    "manuscript_highlighted_lock_note": "Acrobat initially held manuscript_highlighted.pdf; source compiled to temporary PDF, Acrobat was closed normally, and the target PDF was rebuilt successfully."
+    "manuscript_highlighted_lock_note": "Acrobat initially held manuscript_highlighted.pdf; source compiled to temporary PDF, Acrobat was closed normally, and the target PDF was rebuilt successfully.",
+    "response_page_count_after_final_targeted_human_review_pass": 68
   },
   "qa": {
     "structure_script": {
@@ -167,9 +176,15 @@
       "doi_links_use_responsedoi": true,
       "r2_expansion": "R2-1 to R2-8 passed 180-word threshold",
       "r2_supporting_material": "R2-1 to R2-5 include figure, equation, or table support; R2-7 includes AnalyticEquations; R2-8 excludes internal implementation details",
-      "r1_10_reference_sync": "Puterman and Sutton/Barto citation evidence present",
+      "r1_10_reference_sync": "Puterman and Sutton/Barto manuscript references retained; response supporting material no longer displays raw citation commands",
       "contents_link_color": "black_visual_check_passed",
-      "doi_style": "blue_roman_responsedoi"
+      "doi_style": "blue_roman_responsedoi",
+      "r1_10_raw_cite_display_removed": true,
+      "r2_8_implementation_tracking_sentence_removed": true,
+      "r3_5_response_words": 285,
+      "r4_1_to_r4_5_min_words": 249,
+      "closing_remark_checks": "Closing Remark heading present, Contents entry present, old Closing heading absent, clearpage present before heading",
+      "accepted_applied_energy_reference_checks": "manuscript citation, references.tex, references.bib, and R4-5 local reference present"
     },
     "pdf_text_extraction": {
       "response_letter_txt": "passed",
@@ -189,7 +204,7 @@
       "descriptor_symbol_column_scan": "passed",
       "doi_url_macro_scan": "passed",
       "strong_claim_scan": "only reviewer-original quoted text in comment boxes",
-      "mechanical_phrase_scan": "passed"
+      "mechanical_phrase_scan": "passed after removing old template sentence from author response text"
     },
     "csv_check": {
       "rows": 33,
@@ -232,10 +247,16 @@
       "puterman_doi": "10.1002/9780470316887",
       "status": "verified",
       "evidence": "doi.org resolves to Wiley; Crossref record matches Puterman Markov Decision Processes and Wiley metadata",
-      "sutton_barto": "ISBN 9780262039246 recorded; no DOI added"
+      "sutton_barto": "ISBN 9780262039246 recorded; no DOI added",
+      "applied_energy_article": {
+        "doi": "10.1016/j.apenergy.2026.128294",
+        "status": "verified",
+        "evidence": "doi.org redirects to Elsevier PII S0306261926009487; Crossref record matches Applied Energy, volume 422, article number 128294, published 2026",
+        "title": "A surrogate-assisted framework for district-scale urban morphology optimization toward reduced building energy demand"
+      }
     },
     "final_validation": {
-      "pytest": "63 passed, 2 warnings",
+      "pytest": "63 passed, 2 warnings after deleting transient generated gallery PDF from a failed first attempt",
       "compileall": "passed",
       "cli_help": "passed",
       "config_load": "passed",
@@ -249,28 +270,28 @@
   },
   "manual_checks_remaining": [
     "Add final manuscript/SI line numbers after final line-numbered manuscript and SI PDFs are generated if required by the journal.",
-    "Author review of expanded wording before submission."
+    "Author review of expanded final targeted response wording before submission."
   ],
   "scope_guard": [
-    "Response letter, local response template, response QA, README, manifest, response matrix, manuscript MDP/RL sentence, references metadata, and rebuilt PDFs were updated.",
+    "Response letter, response QA, README, manifest, response matrix, manuscript literature citation, references metadata, and rebuilt PDFs were updated.",
     "No SI source files were modified.",
-    "No figure assets were regenerated or modified.",
+    "No figure assets were regenerated or modified as part of the committed diff; pytest-generated figure metadata/gallery side effects were restored.",
     "No experiments, tools, paper_repro files, configs, artifacts, or canonical result files were modified.",
     ".trellis/tasks remains local-only and untracked."
   ],
-  "updated_at_utc": "2026-06-28T16:07:34.687098+00:00",
+  "updated_at_utc": "2026-06-29T07:58:01.5057308Z",
   "manuscript_outputs": [
     {
       "path": "paper/manuscript/manuscript_clean.pdf",
-      "sha256": "2E5FD94BA266D269C025D0BBEF2C147535497034625DA2F21C325350C48B3A5B",
+      "sha256": "3B706A83DC4BD68923BB5AA0034A14F09996F5054A145A61E958C556F47664F6",
       "pages": 17,
-      "size_bytes": 862330
+      "size_bytes": 862779
     },
     {
       "path": "paper/manuscript/manuscript_highlighted.pdf",
-      "sha256": "246F1E46BB2B85533C09A28571215E2CDD3F72A8CE930C43086FB00A9994BF11",
+      "sha256": "D68AF39CA69AECC31E7E9CED04BA039F4AD5D1F553AE9CDD0968DE140758D9A9",
       "pages": 17,
-      "size_bytes": 862916
+      "size_bytes": 863366
     }
   ],
   "nomenclature_update": {

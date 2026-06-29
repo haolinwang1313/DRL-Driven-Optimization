@@ -1,6 +1,6 @@
 # Round 2 Response Letter Editorial Revision
 
-This directory contains the Applied Energy round-2 response package. The current version is the response editorial revision after human review of PR #5.
+This directory contains the Applied Energy round-2 response package. The current version is the final targeted human-review pass for PR #5.
 
 ## Files
 
@@ -14,7 +14,7 @@ This directory contains the Applied Energy round-2 response package. The current
 
 ## Current Revision Scope
 
-- This version performs a human-review pass focused on Reviewer 2 expansion and reference/link formatting.
+- This version performs a final targeted human-review pass focused on R1-10, R2-8, R3-5, Reviewer 4, Closing Remark, and reference updates.
 - Contents now starts on a standalone page.
 - Contents internal hyperlinks remain black.
 - DOI/URL links in local references use blue roman styling through `\responsedoi{...}`.
@@ -29,8 +29,15 @@ This directory contains the Applied Energy round-2 response package. The current
 - `Revisions made in the manuscript.` sections were rewritten from location-only summaries to action-specific descriptions.
 - R1-1/R1-2/R1-3/R1-4/R1-7/R1-10/R1-11/R1-14/R1-15 were revised after human review.
 - R1-10 MDP/RL references were updated: Puterman DOI was verified and Sutton/Barto uses ISBN metadata without an invented DOI.
+- R1-10 raw citation display was removed from the response supporting material while the manuscript MDP/RL citations remain.
 - R1-15 broader-audience and AI-assisted urban-planning framing was expanded.
 - R2-1 to R2-8 were expanded with detailed, conciliatory responses and enriched supporting material.
+- R2-8 implementation-tracking wording was removed from the author response.
+- R3-5 was expanded around analytic response generation, simulation wording, physical stress testing, and climate sensitivity terminology.
+- R4-1 to R4-5 were expanded around study necessity, climate-zone sensitivity, distributed-energy/EV scope, best-scenario criteria, and comparison with existing approaches.
+- Closing was renamed to `Closing Remark`, added to Contents, and moved to a new page.
+- The accepted Applied Energy article `10.1016/j.apenergy.2026.128294` was added to the manuscript references and R4-5 local references.
+- DOI resolution for `10.1016/j.apenergy.2026.128294` passed through DOI redirect and Crossref metadata; Crossref records `Applied Energy`, volume 422, article number 128294.
 - R1-2 is synchronized with the manuscript front-matter Nomenclature update and four-column Table 1.
 - `manuscript_clean.pdf`, `manuscript_highlighted.pdf`, and `response_letter.pdf` were rebuilt.
 
@@ -64,6 +71,7 @@ Latest local build result:
 - Response PDF before the first editorial revision: 49 pages.
 - Response PDF after the first editorial revision: 56 pages.
 - Response PDF after the latest Reviewer 2/reference/link pass: 63 pages.
+- Response PDF after the final targeted human-review pass: 68 pages.
 - Manuscript clean PDF: 17 A4 pages.
 - Manuscript highlighted PDF: 17 A4 pages.
 - Expected warnings: Perl locale warning, copied-template package-name warning, xeCJK monofont warning, underfull hbox warnings, and embedded-figure PDF-version warnings.
@@ -90,8 +98,14 @@ Latest QA results:
 - Contents/link-color check: passed by rendered visual inspection; Contents links appear black, and DOI links appear blue roman.
 - Puterman DOI verification: passed through DOI resolution and Crossref/Wiley metadata for `10.1002/9780470316887`.
 - R1-10 reference sync: manuscript excerpt displays `\cite{puterman1994mdp,sutton2018reinforcement}`, local references include Puterman DOI and Sutton/Barto ISBN.
+- R1-10 response supporting material no longer displays a raw `\cite` command.
 - R1-15 broader-audience framing: expanded.
 - R2-1 to R2-8 expansion: passed word-count and supporting-material checks.
+- R2-8 implementation-tracking sentence scan: passed.
+- R3-5 and R4-1 to R4-5 expansion: passed 220-word thresholds.
+- Closing Remark checks: heading present, Contents entry present, old `Closing` heading absent, and explicit `\clearpage` present before the heading.
+- Accepted Applied Energy reference check: manuscript citation, `references.tex`, `references.bib`, and R4-5 local reference all present.
+- DOI verification for `10.1016/j.apenergy.2026.128294`: resolved through DOI redirect to Elsevier and Crossref metadata.
 - `uv run pytest -q`: passed, 63 tests.
 - `uv run python -m paper_repro.cli --help`: passed.
 - `uv run python -c "from paper_repro.config import Config; Config.from_yaml('configs/revision.yaml'); print('config ok')"`: passed.

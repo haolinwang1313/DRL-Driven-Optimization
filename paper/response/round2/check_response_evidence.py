@@ -78,6 +78,11 @@ BANNED_STRONG = [
     "10^6-d",
 ]
 
+APPLIED_ENERGY_DOI = "10.1016/j.apenergy.2026.128294"
+APPLIED_ENERGY_KEY = "wang2026surrogateDistrictMorphology"
+APPLIED_ENERGY_TITLE = "A surrogate-assisted framework for district-scale urban morphology optimization toward reduced building energy demand"
+R2_8_REMOVED_SENTENCE = "The response PDF keeps implementation-tracking details outside the reviewer-facing reproducibility statement"
+
 
 def strip_commentboxes(text: str) -> str:
     return re.sub(
@@ -161,6 +166,7 @@ def check_text(label: str, text: str, errors: list[str], *, strong_claims: bool 
 
 def main() -> int:
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("response_letter.tex")
+    path = path.resolve()
     text = path.read_text(encoding="utf-8")
     author_text = strip_commentboxes(text)
     blocks = split_comment_blocks(text)
@@ -186,6 +192,21 @@ def main() -> int:
         errors.append("checkresponse is not locally redefined to remove visible check marks")
 
     print("manual visual check required: Contents links appear black; DOI links appear blue roman.")
+
+    if r"\texttt{\textbackslash cite" in text:
+        errors.append("response_letter.tex: raw citation command display remains")
+    if R2_8_REMOVED_SENTENCE.lower() in text.lower():
+        errors.append("R2-8: implementation-tracking sentence remains")
+    if r"\section*{Closing Remark}" not in text:
+        errors.append("Closing Remark heading is missing")
+    if r"\section*{Closing}" in text:
+        errors.append("old Closing section heading remains")
+    if r"\addcontentsline{toc}{section}{Closing Remark}" not in text:
+        errors.append("Closing Remark is missing from Contents")
+    if r"\addcontentsline{toc}{section}{Closing}" in text:
+        errors.append("old Closing contents entry remains")
+    if not re.search(r"\\clearpage\s*\\section\*\{Closing Remark\}", text):
+        errors.append("Closing Remark does not start after an explicit clearpage")
 
     rows = table_r1_rows(text)
     if rows != 6:
@@ -215,6 +236,8 @@ def main() -> int:
         required = 80 if cid in SIMPLE_RESPONSE_IDS else 180 if cid in CORE_RESPONSE_IDS else 140
         if cid.startswith("R2-"):
             required = max(required, 180)
+        if cid == "R3-5" or cid in {f"R4-{i}" for i in range(1, 6)}:
+            required = max(required, 220)
         if words < required:
             errors.append(f"{cid}: response too short ({words} words, need {required})")
 
@@ -231,10 +254,16 @@ def main() -> int:
         errors.append("R2-8: internal branch/commit/PR/local/server wording remains")
 
     r110 = blocks.get("R1-10", "")
+    if r"\texttt{\textbackslash cite" in r110:
+        errors.append("R1-10: raw citation command display remains in supporting material")
     if "puterman1994mdp" not in r110 and "Puterman" not in r110:
         errors.append("R1-10: missing Puterman manuscript citation or local reference")
     if "Sutton and Barto" not in r110:
         errors.append("R1-10: missing Sutton and Barto local reference")
+
+    r45 = blocks.get("R4-5", "")
+    if APPLIED_ENERGY_KEY not in r45 and APPLIED_ENERGY_TITLE not in r45:
+        errors.append("R4-5: missing accepted Applied Energy morphology reference")
 
     r12 = blocks.get("R1-2", "")
     if "Nomenclature" not in r12 or "Formula symbols" not in r12:
@@ -255,17 +284,28 @@ def main() -> int:
             errors.append("manuscript Nomenclature still cross-references descriptor symbols to Table 1")
         if re.search(r"Descriptor\s*&\s*Symbol|Symbol\s*&\s*Unit", manuscript):
             errors.append("manuscript Table 1 still contains a Symbol column")
+        if APPLIED_ENERGY_KEY not in manuscript:
+            errors.append("manuscript_body.tex: missing accepted Applied Energy morphology citation")
+
+    references_tex_path = path.parents[2] / "manuscript" / "references.tex"
+    if references_tex_path.exists():
+        references_tex = references_tex_path.read_text(encoding="utf-8")
+        if APPLIED_ENERGY_DOI not in references_tex:
+            errors.append(f"references.tex: missing DOI {APPLIED_ENERGY_DOI}")
 
     references_path = path.parents[2] / "manuscript" / "references.bib"
     if references_path.exists():
         references = references_path.read_text(encoding="utf-8")
         sutton = bib_entry(references, "sutton2018reinforcement")
         puterman = bib_entry(references, "puterman1994mdp")
+        applied = bib_entry(references, APPLIED_ENERGY_KEY)
         if re.search(r"\bdoi\s*=", sutton, flags=re.IGNORECASE):
             errors.append("references.bib: Sutton and Barto entry must not contain a DOI")
         puterman_dois = re.findall(r"\bdoi\s*=\s*\{([^}]+)\}", puterman, flags=re.IGNORECASE)
         if puterman_dois and puterman_dois != ["10.1002/9780470316887"]:
             errors.append(f"references.bib: Puterman DOI mismatch: {puterman_dois}")
+        if APPLIED_ENERGY_DOI not in applied:
+            errors.append(f"references.bib: missing DOI {APPLIED_ENERGY_DOI}")
 
     check_text("author tex", author_text, errors)
 
@@ -287,6 +327,7 @@ def main() -> int:
     print("R1-2: Nomenclature supporting material present")
     print("R1-10: MDP/RL citations and local references present")
     print("R2: expanded responses and supporting material checks passed")
+    print("final targeted pass: R1-10/R2-8/R3-5/R4/Closing/Applied Energy checks passed")
     return 0
 
 
