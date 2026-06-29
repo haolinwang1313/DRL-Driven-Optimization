@@ -1,7 +1,7 @@
 {
-  "manifest_version": "round2-response-final-targeted-human-review-v7",
-  "created_for": "Applied Energy second-round response letter final targeted human-review pass for R1-10, R2-8, R3-5, Reviewer 4, Closing Remark, and accepted Applied Energy reference updates",
-  "status": "final_targeted_human_review_pass_verified",
+  "manifest_version": "round2-response-final-acknowledgement-merge-prep-v8",
+  "created_for": "Applied Energy second-round response package final acknowledgement update before PR #5 merge",
+  "status": "final_acknowledgement_update_verified",
   "response_package_files": [
     {
       "path": "paper/response/round2/response_letter.tex",
@@ -19,7 +19,7 @@
     },
     {
       "path": "paper/response/round2/README.md",
-      "sha256": "C7C2D24E95BC7795A675E0E11CA3B7FF9887692133B9D2276FE84E63A8A3F8DA"
+      "sha256": "6D3C668E04B30C20CBBE3044BBE15D0F8C74D57176B746306B68A952F19BDB56"
     },
     {
       "path": "paper/response/round2/check_response_evidence.py",
@@ -40,13 +40,17 @@
   "manuscript_sources_used": [
     {
       "path": "paper/manuscript/manuscript_body.tex",
-      "sha256": "A6380249551680F4AB1C41F9C679A00997B6E8311918713646C9180515259359",
+      "sha256": "ED50012285B99015E625B12447FACF3587F61F6B612A82D4DEDBE386D091CA81",
       "nomenclature_updated": true,
       "table1_symbol_column_removed": true,
       "nomenclature_cross_reference_removed": true,
       "r1_10_mdp_sentence_updated": true,
       "accepted_applied_energy_reference_cited": true,
-      "applied_energy_reference_key": "wang2026surrogateDistrictMorphology"
+      "applied_energy_reference_key": "wang2026surrogateDistrictMorphology",
+      "acknowledgement_updated": true,
+      "acknowledgement_added": "Postgraduate Research & Practice Innovation Program of Jiangsu Province",
+      "existing_funding_statements_preserved": true,
+      "new_grant_number_added": false
     },
     {
       "path": "paper/manuscript/manuscript_clean.tex",
@@ -158,7 +162,8 @@
     },
     "response_page_count_after_reviewer2_reference_link_pass": 63,
     "manuscript_highlighted_lock_note": "Acrobat initially held manuscript_highlighted.pdf; source compiled to temporary PDF, Acrobat was closed normally, and the target PDF was rebuilt successfully.",
-    "response_page_count_after_final_targeted_human_review_pass": 68
+    "response_page_count_after_final_targeted_human_review_pass": 68,
+    "acknowledgement_update": "clean/highlighted manuscript PDFs rebuilt after final funding acknowledgement update"
   },
   "qa": {
     "structure_script": {
@@ -184,18 +189,21 @@
       "r3_5_response_words": 285,
       "r4_1_to_r4_5_min_words": 249,
       "closing_remark_checks": "Closing Remark heading present, Contents entry present, old Closing heading absent, clearpage present before heading",
-      "accepted_applied_energy_reference_checks": "manuscript citation, references.tex, references.bib, and R4-5 local reference present"
+      "accepted_applied_energy_reference_checks": "manuscript citation, references.tex, references.bib, and R4-5 local reference present",
+      "response_qa_after_acknowledgement_update": "passed"
     },
     "pdf_text_extraction": {
       "response_letter_txt": "passed",
       "manuscript_clean_txt": "passed",
-      "manuscript_highlighted_txt": "passed"
+      "manuscript_highlighted_txt": "passed",
+      "acknowledgement_text_check": "BK20240076, 52522704, and Postgraduate Research & Practice Innovation Program of Jiangsu Province present in clean and highlighted PDF text"
     },
     "font_check": {
       "response_type3_fonts_found": false,
       "manuscript_clean_type3_fonts_found": false,
       "note": "Non-embedded TrueType fonts remain inherited from protected figure PDFs.",
-      "manuscript_highlighted_type3_fonts_found": false
+      "manuscript_highlighted_type3_fonts_found": false,
+      "manuscript_type3_fonts_found_after_acknowledgement_update": false
     },
     "forbidden_text_checks": {
       "supporting_evidence_heading_scan": "passed",
@@ -256,11 +264,12 @@
       }
     },
     "final_validation": {
-      "pytest": "63 passed, 2 warnings after deleting transient generated gallery PDF from a failed first attempt",
+      "pytest": "63 passed, 2 warnings",
       "compileall": "passed",
       "cli_help": "passed",
       "config_load": "passed",
-      "git_diff_check": "passed with Windows LF-to-CRLF warnings only"
+      "git_diff_check": "passed with Windows LF-to-CRLF warnings only",
+      "acknowledgement_update": "manuscript clean/highlighted compile passed; PDF text check passed"
     },
     "visual_link_check": {
       "status": "passed",
@@ -277,21 +286,23 @@
     "No SI source files were modified.",
     "No figure assets were regenerated or modified as part of the committed diff; pytest-generated figure metadata/gallery side effects were restored.",
     "No experiments, tools, paper_repro files, configs, artifacts, or canonical result files were modified.",
-    ".trellis/tasks remains local-only and untracked."
+    ".trellis/tasks remains local-only and untracked.",
+    "Final acknowledgement update modified manuscript Acknowledgements, manuscript PDFs, README, and manifest only.",
+    "Response letter source and PDF were not modified in the final acknowledgement update."
   ],
-  "updated_at_utc": "2026-06-29T07:58:01.5057308Z",
+  "updated_at_utc": "2026-06-29T08:26:55.5343182Z",
   "manuscript_outputs": [
     {
       "path": "paper/manuscript/manuscript_clean.pdf",
-      "sha256": "3B706A83DC4BD68923BB5AA0034A14F09996F5054A145A61E958C556F47664F6",
+      "sha256": "74218891A97C3996C7F20A82B48D5D71104F470E96A69C6BC27919C3EA4D935D",
       "pages": 17,
-      "size_bytes": 862779
+      "size_bytes": 862882
     },
     {
       "path": "paper/manuscript/manuscript_highlighted.pdf",
-      "sha256": "D68AF39CA69AECC31E7E9CED04BA039F4AD5D1F553AE9CDD0968DE140758D9A9",
+      "sha256": "668BF6D44EBDCA1513ED2C9DFFF27FD4937D3E2883E5EF8C16A1DA771105468C",
       "pages": 17,
-      "size_bytes": 863366
+      "size_bytes": 863511
     }
   ],
   "nomenclature_update": {

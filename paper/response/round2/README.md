@@ -38,6 +38,7 @@ This directory contains the Applied Energy round-2 response package. The current
 - Closing was renamed to `Closing Remark`, added to Contents, and moved to a new page.
 - The accepted Applied Energy article `10.1016/j.apenergy.2026.128294` was added to the manuscript references and R4-5 local references.
 - DOI resolution for `10.1016/j.apenergy.2026.128294` passed through DOI redirect and Crossref metadata; Crossref records `Applied Energy`, volume 422, article number 128294.
+- The manuscript Acknowledgements now include the Postgraduate Research \& Practice Innovation Program of Jiangsu Province, with the existing two funding statements preserved.
 - R1-2 is synchronized with the manuscript front-matter Nomenclature update and four-column Table 1.
 - `manuscript_clean.pdf`, `manuscript_highlighted.pdf`, and `response_letter.pdf` were rebuilt.
 
@@ -106,6 +107,7 @@ Latest QA results:
 - Closing Remark checks: heading present, Contents entry present, old `Closing` heading absent, and explicit `\clearpage` present before the heading.
 - Accepted Applied Energy reference check: manuscript citation, `references.tex`, `references.bib`, and R4-5 local reference all present.
 - DOI verification for `10.1016/j.apenergy.2026.128294`: resolved through DOI redirect to Elsevier and Crossref metadata.
+- Acknowledgements PDF-text check: `BK20240076`, `52522704`, and `Postgraduate Research & Practice Innovation Program of Jiangsu Province` appear in both clean and highlighted manuscript PDFs.
 - `uv run pytest -q`: passed, 63 tests.
 - `uv run python -m paper_repro.cli --help`: passed.
 - `uv run python -c "from paper_repro.config import Config; Config.from_yaml('configs/revision.yaml'); print('config ok')"`: passed.
