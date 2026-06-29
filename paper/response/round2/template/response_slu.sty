@@ -1,0 +1,290 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{response_slu}[2026/05/23 SLU response-to-reviewers template]
+
+\RequirePackage{iftex}
+\ifXeTeX
+  \RequirePackage{fontspec}
+  \setmainfont{Times New Roman}
+  \RequirePackage{xeCJK}
+  \IfFontExistsTF{SimSun}{\setCJKmainfont{SimSun}}{%
+    \IfFontExistsTF{Microsoft YaHei}{\setCJKmainfont{Microsoft YaHei}}{}%
+  }
+\else
+  \PackageError{response_slu}{This template requires XeLaTeX or LuaLaTeX}{Compile with xelatex response_template.tex.}
+\fi
+
+\RequirePackage[
+  a4paper,
+  left=1.18125in,
+  right=1.18125in,
+  top=1.0in,
+  bottom=1.0in,
+  footskip=0.50in
+]{geometry}
+\RequirePackage{xparse}
+\RequirePackage{xcolor}
+\RequirePackage{setspace}
+\RequirePackage{ragged2e}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{titlesec}
+\RequirePackage{tocloft}
+\RequirePackage{caption}
+\RequirePackage{enumitem}
+\RequirePackage{tcolorbox}
+\RequirePackage{fancyhdr}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{bookmark}
+
+\tcbuselibrary{breakable,skins}
+
+\definecolor{responseblue}{HTML}{0000FF}
+\definecolor{responsedarkblue}{HTML}{1F4E79}
+\definecolor{commentbg}{HTML}{FFF2CC}
+\definecolor{revisionbg}{HTML}{F5F5EB}
+\definecolor{paperlinkblue}{RGB}{0,51,102}
+\urlstyle{rm}
+\def\UrlFont{\rmfamily}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=paperlinkblue
+}
+\newcommand{\responsedoi}[1]{\href{#1}{\textcolor{paperlinkblue}{\rmfamily #1}}}
+
+\newlength{\responseindent}
+\setlength{\responseindent}{0.06944in}
+
+\setlength{\parindent}{\responseindent}
+\setlength{\parskip}{0pt}
+\setstretch{1.5}
+\justifying
+\sloppy
+\emergencystretch=2em
+
+\fancypagestyle{responsebody}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\fontsize{10}{12}\selectfont\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+\pagestyle{responsebody}
+\AtBeginDocument{\pagenumbering{gobble}\pagestyle{responsebody}}
+
+\DeclareCaptionFont{responsecaption}{\fontsize{8}{10}\selectfont}
+\captionsetup{font=responsecaption,justification=centering}
+
+\newcommand{\responsetitletext}{Response to reviewers}
+\newcommand{\responseopening}{%
+  We would like to express our sincere thanks to the reviewers for these constructive comments and
+  valuable suggestions, which have considerably helped us improve this manuscript.\par
+  All the comments have been addressed carefully. The responses have also been embedded in the revised
+  paper and this letter, which are marked \textcolor{responseblue}{\textbf{in blue}} to make the contents more distinguishable.%
+}
+
+\NewDocumentCommand{\makeresponsetitle}{}{%
+  \thispagestyle{empty}%
+  \vspace*{0.12in}%
+  \begin{center}
+    {\setstretch{1}\fontsize{18}{22}\selectfont\bfseries \responsetitletext\par}
+  \end{center}
+  \vspace{0.32in}%
+  \begingroup
+    \fontsize{10}{12}\selectfont
+    \setlength{\parindent}{\responseindent}%
+    \justifying
+    \responseopening\par
+  \endgroup
+}
+
+\newcommand{\responsereviewersymbol}{%
+  \raisebox{-0.05ex}{\ensuremath{\blacktriangleright}}%
+}
+\newcommand{\responsecontentsquare}{\raisebox{0.1ex}{\rule{0.085in}{0.085in}}}
+
+\makeatletter
+\renewcommand*\l@section[2]{%
+  \ifnum \c@tocdepth >\z@
+    \par\addvspace{4.5pt}%
+    \noindent
+    {\fontsize{12}{15}\selectfont\bfseries
+      \responsereviewersymbol\hspace{0.45em}#1\nobreak
+      \leaders\hbox{\normalfont .}\hfill\nobreak #2\par}%
+  \fi
+}
+\renewcommand*\l@subsection[2]{%
+  \ifnum \c@tocdepth >\@ne
+    \par\noindent
+    \hspace*{0.31in}%
+    {\fontsize{10}{13}\selectfont
+      \responsecontentsquare\hspace{0.28in}#1\nobreak
+      \leaders\hbox{\normalfont .}\hfill\nobreak #2\par}%
+  \fi
+}
+
+\NewDocumentCommand{\responsecontents}{}{%
+  \par\vspace{0.58in}%
+  \thispagestyle{empty}%
+  \begingroup
+    \setcounter{tocdepth}{2}%
+    \begin{center}
+      {\setstretch{1}\fontsize{16}{18}\selectfont\bfseries\scshape Contents\par}
+    \end{center}
+    \vspace{0.24in}%
+    \@starttoc{toc}%
+  \endgroup
+  \clearpage
+  \pagenumbering{arabic}%
+  \setcounter{page}{1}%
+  \pagestyle{responsebody}%
+}
+\makeatother
+
+\newcommand{\responsestarline}{%
+  \par\noindent{\fontsize{12}{14}\selectfont\leaders\hbox{*}\hfill\kern0pt}\par
+}
+
+\NewDocumentCommand{\reviewer}{m}{%
+  \par\vspace{0.35\baselineskip}%
+  \phantomsection
+  \addcontentsline{toc}{section}{Reviewer #1.}%
+  \responsestarline
+  \noindent
+  {\fontsize{12}{15}\selectfont\bfseries
+    \responsereviewersymbol\hspace{0.55em}\uline{Reviewer #1.}\par}%
+  \vspace{0.85\baselineskip}%
+}
+
+\RenewDocumentCommand{\comment}{m}{%
+  \par\vspace{1.2\baselineskip}%
+  \phantomsection
+  \addcontentsline{toc}{subsection}{Comment #1.}%
+  \noindent
+  {\fontsize{10}{13}\selectfont\bfseries\color{responsedarkblue}%
+    \raisebox{0.15ex}{\rule{0.105in}{0.105in}}\hspace{0.22in}\uline{Comment #1.}\par}%
+  \vspace{0.35\baselineskip}%
+}
+
+\newtcolorbox{commentbox}{%
+  enhanced,
+  breakable,
+  sharp corners,
+  boxrule=0pt,
+  borderline north={0.4pt}{0pt}{black},
+  borderline south={0.4pt}{0pt}{black},
+  colback=commentbg,
+  colframe=black,
+  width=\linewidth,
+  left=5.65pt,
+  right=5.65pt,
+  top=5.65pt,
+  bottom=5.65pt,
+  boxsep=0pt,
+  before skip=0pt,
+  after skip=0.8\baselineskip,
+  fontupper=\fontsize{10}{12}\selectfont\itshape,
+  before upper={\setlength{\parindent}{\responseindent}\justifying\ignorespaces}
+}
+
+\NewDocumentCommand{\responsepara}{+m}{%
+  \par\begingroup
+    \color{black}\fontsize{10}{12}\selectfont\justifying
+    #1\par
+  \endgroup
+}
+
+\NewDocumentCommand{\revisedtext}{+m}{\textcolor{responseblue}{#1}}
+
+\newtcolorbox{revisionbox}{%
+  enhanced,
+  breakable,
+  sharp corners,
+  boxrule=0pt,
+  borderline north={0.4pt}{0pt}{black},
+  borderline south={0.4pt}{0pt}{black},
+  colback=revisionbg,
+  colframe=black,
+  width=\linewidth,
+  left=5.65pt,
+  right=5.65pt,
+  top=5.65pt,
+  bottom=5.65pt,
+  boxsep=0pt,
+  before skip=0.35\baselineskip,
+  after skip=0.95\baselineskip,
+  fontupper=\fontsize{10}{12}\selectfont\color{responseblue},
+  before upper={\setlength{\parindent}{\responseindent}\justifying}
+}
+
+\NewDocumentCommand{\revisionloc}{m}{%
+  \par\noindent{\color{black}\bfseries\itshape\uline{#1}}\par
+}
+
+\NewDocumentCommand{\revisionseparator}{}{%
+  \par\vspace{0.2\baselineskip}%
+  \noindent{\color{black!60}\rule{\linewidth}{0.4pt}}\par
+  \vspace{0.2\baselineskip}%
+}
+
+\NewDocumentCommand{\checkresponse}{+m}{%
+  \par\vspace{0.25\baselineskip}%
+  \begingroup
+    \color{black}\fontsize{10}{12}\selectfont\justifying
+    \noindent\ensuremath{\surd}\ #1\par
+  \endgroup
+}
+
+\NewDocumentCommand{\figcaptionstyle}{O{responseblue}+m}{%
+  \par\vspace{2pt}%
+  \begingroup
+    \setstretch{1.25}\centering\fontsize{8}{10}\selectfont\color{#1}#2\par
+  \endgroup
+}
+
+\NewDocumentCommand{\referenceitem}{+m}{%
+  \par\begingroup
+    \setstretch{1.25}\fontsize{8}{9.6}\selectfont
+    \setlength{\parindent}{0pt}%
+    \hangindent=0.208in
+    \hangafter=1
+    #1\par
+  \endgroup
+}
+
+\newenvironment{responsereferences}{%
+  \par\vspace{0.5\baselineskip}\begingroup
+  \setlength{\parskip}{0.15\baselineskip}%
+}{%
+  \par\endgroup
+}
+
+% ---------------------------------------------------------------------------
+% Response-SLU usage helpers
+% ---------------------------------------------------------------------------
+% These helpers are optional and backward-compatible. They do not change the
+% original visual style; they standardize response-letter structure.
+
+\providecommand{\responseheading}[1]{%
+  \vspace{0.6em}\noindent\textbf{#1}\par\vspace{0.2em}%
+}
+
+\providecommand{\evidenceheading}{%
+  \responseheading{Relevant revised manuscript and supporting material.}%
+}
+
+\providecommand{\reviewerpage}[1]{%
+  \clearpage
+  \reviewer{#1}%
+}
+
+\providecommand{\commentresponse}{%
+  \responseheading{Response.}%
+}
+
+\providecommand{\revisionsmade}{%
+  \responseheading{Revisions made in the manuscript.}%
+}

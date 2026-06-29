@@ -1,0 +1,314 @@
+{
+  "manifest_version": "round2-response-final-acknowledgement-merge-prep-v8",
+  "created_for": "Applied Energy second-round response package final acknowledgement update before PR #5 merge",
+  "status": "final_acknowledgement_update_verified",
+  "response_package_files": [
+    {
+      "path": "paper/response/round2/response_letter.tex",
+      "sha256": "90945EBD22A084226DD7BBD4C6AE824DD3C3DCEB93751291C7381B55B7F85233"
+    },
+    {
+      "path": "paper/response/round2/response_letter.pdf",
+      "sha256": "5449C6C3FF8C003ADD11E13B0FFA5104D37177A35E0F4B30892DB2B7294C4685",
+      "pages": 68,
+      "size_bytes": 1594902
+    },
+    {
+      "path": "paper/response/round2/response_matrix.csv",
+      "sha256": "96E898A592D6AECECE8DBF0683F7E915A9BE8C2D91BDBCED1BA6D16B8C2003AB"
+    },
+    {
+      "path": "paper/response/round2/README.md",
+      "sha256": "6D3C668E04B30C20CBBE3044BBE15D0F8C74D57176B746306B68A952F19BDB56"
+    },
+    {
+      "path": "paper/response/round2/check_response_evidence.py",
+      "sha256": "2EF5A1BA4E1B65B466D8965229B9479FC82E04DAEA89AD0B189B1C21E824E77B"
+    },
+    {
+      "path": "paper/response/round2/template/response_slu.sty",
+      "sha256": "28CCCE465735DD46E19F7564F7FB91465C2DD57EA67A569D223CC61FE44AC067"
+    }
+  ],
+  "review_inputs": [
+    {
+      "name": "Comments02.txt",
+      "sha256": "01391DE0B6C43795D008797A4F826EFF6A4EBDA5C95BDCB1AA5AC5B813345E6E",
+      "status": "not_present_in_working_tree; original reviewer comments are embedded in response_letter.tex"
+    }
+  ],
+  "manuscript_sources_used": [
+    {
+      "path": "paper/manuscript/manuscript_body.tex",
+      "sha256": "ED50012285B99015E625B12447FACF3587F61F6B612A82D4DEDBE386D091CA81",
+      "nomenclature_updated": true,
+      "table1_symbol_column_removed": true,
+      "nomenclature_cross_reference_removed": true,
+      "r1_10_mdp_sentence_updated": true,
+      "accepted_applied_energy_reference_cited": true,
+      "applied_energy_reference_key": "wang2026surrogateDistrictMorphology",
+      "acknowledgement_updated": true,
+      "acknowledgement_added": "Postgraduate Research & Practice Innovation Program of Jiangsu Province",
+      "existing_funding_statements_preserved": true,
+      "new_grant_number_added": false
+    },
+    {
+      "path": "paper/manuscript/manuscript_clean.tex",
+      "sha256": "D2A1B9662CFBC0256FD58BCBEC9ADCF16157000324E850FD1AD06334F33FEAFD",
+      "modified_in_this_update": false
+    },
+    {
+      "path": "paper/manuscript/manuscript_highlighted.tex",
+      "sha256": "747E63BFC0D950931829F7FEB6A04B46D4119EBA2D0166A29E284BFA28736082",
+      "modified_in_this_update": false
+    },
+    {
+      "path": "paper/supplementary/supplementary_information.tex",
+      "sha256": "7744E733B5553E1FEE0E7BA52BEF1AB87DF10FB6AA88730D7814ED56CDC23857",
+      "modified_in_this_update": false
+    },
+    {
+      "path": "paper/manuscript/references.tex",
+      "sha256": "C2F757290570E2633D25A70D0C66E402797748B58952DD8DD73C16D6251EDFAD",
+      "mdp_references_added": true,
+      "accepted_applied_energy_reference_added": true,
+      "applied_energy_doi": "10.1016/j.apenergy.2026.128294"
+    },
+    {
+      "path": "paper/manuscript/references.bib",
+      "sha256": "0364C04A72CC0C1E92D748D977A38F79F38D594415BA1A01C22B44F8F6BAA18A",
+      "mdp_references_added": true,
+      "puterman_doi": "10.1002/9780470316887",
+      "sutton_barto_isbn": "9780262039246",
+      "sutton_barto_doi_added": false,
+      "accepted_applied_energy_reference_added": true,
+      "applied_energy_doi": "10.1016/j.apenergy.2026.128294",
+      "applied_energy_volume": "422",
+      "applied_energy_article_number": "128294"
+    }
+  ],
+  "figure_assets_used": [
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig1.pdf",
+      "sha256": "BA37052F7CDBC98BF1353E064D9E5D4172C139DBB1BEC138A14E29B2FD9C9D69"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig2.pdf",
+      "sha256": "C97BDB378E046A3E8C618350B91B717A55B056F88930642C3C36A7F25D88B8E9"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/manual/fig3.pdf",
+      "sha256": "83B9F65099DEB1BBBC6F69414FDF416ECC28D12ABA19D024AAE398F2895EAB76"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/data_and_surrogate_validation.pdf",
+      "sha256": "74C35BF3DCAE8BE210F9E4D1C3819BFCA391A03F114379DDBCB1E9C45B266D87"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/surrogate_robustness.pdf",
+      "sha256": "72334767C298C60298A7DDDFE29BFC95BCBD9740681609BCE240D82519A8F8BC"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/ddpg_training_dynamics.pdf",
+      "sha256": "677B77BEDADEC89199158BD3EDC90C3ABD1BE6E3D232033229F22F9DFBF255FE"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/benchmark_fairness.pdf",
+      "sha256": "1F230F8B405D1038D252DFEF9DA1C483110932DDB9BA68F12D832138A1920B71"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/feasible_projection.pdf",
+      "sha256": "CCECEB1E867EAC509580ADAC247D9B144DB8793DC30E9EA47469807682BAC8BA"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/physical_cross_model_stress_test.pdf",
+      "sha256": "B4489BCE7ADD13F34A74A510DF11FDF88870D7CD87E4B948735EB42BA0B8092C"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/main/cross_climate_sensitivity.pdf",
+      "sha256": "AABBB359F8DEAECE0D0D5576CC0F05CEC46761A3CE6A2D37C1E9A5E447F65CF5"
+    },
+    {
+      "path": "paper/manuscript/figures/round2_candidate/appendix/A1_descriptor_distributions.pdf",
+      "sha256": "D0BA73A38D7E7F5E18ECC5CDF5AF57E1D982A3043C0BBC9889F2E9D4C72BA4DB"
+    }
+  ],
+  "coverage": {
+    "reviewer_1_comments": 15,
+    "reviewer_2_comments": 8,
+    "reviewer_3_comments": 5,
+    "reviewer_4_comments": 5,
+    "total_comments": 33,
+    "evidence_package_status": "33/33 complete with supporting-material heading",
+    "response_matrix_rows": 33,
+    "response_expansion_status": "passed word-count thresholds including R3-5 and R4-1 to R4-5 >= 220 words"
+  },
+  "build": {
+    "response_working_directory": "paper/response/round2",
+    "response_command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex",
+    "response_status": "passed",
+    "response_page_count_before_editorial_revision": 49,
+    "response_page_count_after_editorial_revision": 59,
+    "manuscript_working_directory": "paper/manuscript",
+    "manuscript_clean_command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error manuscript_clean.tex",
+    "manuscript_highlighted_command": "latexmk -g -xelatex -interaction=nonstopmode -halt-on-error manuscript_highlighted.tex",
+    "manuscript_status": "passed",
+    "pdfinfo": {
+      "response_pages": 68,
+      "manuscript_clean_pages": 17,
+      "manuscript_highlighted_pages": 17,
+      "page_size": "A4",
+      "pdf_version": "1.5"
+    },
+    "response_page_count_after_reviewer2_reference_link_pass": 63,
+    "manuscript_highlighted_lock_note": "Acrobat initially held manuscript_highlighted.pdf; source compiled to temporary PDF, Acrobat was closed normally, and the target PDF was rebuilt successfully.",
+    "response_page_count_after_final_targeted_human_review_pass": 68,
+    "acknowledgement_update": "clean/highlighted manuscript PDFs rebuilt after final funding acknowledgement update"
+  },
+  "qa": {
+    "structure_script": {
+      "command": "uv run python check_response_evidence.py response_letter.tex",
+      "status": "passed",
+      "comment_ids": "33/33",
+      "response_headings": 33,
+      "revision_headings": 33,
+      "supporting_material_headings": 33,
+      "response_expansion": "passed",
+      "table_r1_rows": 6,
+      "r1_2_nomenclature_supporting_material": "present",
+      "r1_2_cross_reference_removed": true,
+      "table1_symbol_column_removed": true,
+      "doi_links_use_responsedoi": true,
+      "r2_expansion": "R2-1 to R2-8 passed 180-word threshold",
+      "r2_supporting_material": "R2-1 to R2-5 include figure, equation, or table support; R2-7 includes AnalyticEquations; R2-8 excludes internal implementation details",
+      "r1_10_reference_sync": "Puterman and Sutton/Barto manuscript references retained; response supporting material no longer displays raw citation commands",
+      "contents_link_color": "black_visual_check_passed",
+      "doi_style": "blue_roman_responsedoi",
+      "r1_10_raw_cite_display_removed": true,
+      "r2_8_implementation_tracking_sentence_removed": true,
+      "r3_5_response_words": 285,
+      "r4_1_to_r4_5_min_words": 249,
+      "closing_remark_checks": "Closing Remark heading present, Contents entry present, old Closing heading absent, clearpage present before heading",
+      "accepted_applied_energy_reference_checks": "manuscript citation, references.tex, references.bib, and R4-5 local reference present",
+      "response_qa_after_acknowledgement_update": "passed"
+    },
+    "pdf_text_extraction": {
+      "response_letter_txt": "passed",
+      "manuscript_clean_txt": "passed",
+      "manuscript_highlighted_txt": "passed",
+      "acknowledgement_text_check": "BK20240076, 52522704, and Postgraduate Research & Practice Innovation Program of Jiangsu Province present in clean and highlighted PDF text"
+    },
+    "font_check": {
+      "response_type3_fonts_found": false,
+      "manuscript_clean_type3_fonts_found": false,
+      "note": "Non-embedded TrueType fonts remain inherited from protected figure PDFs.",
+      "manuscript_highlighted_type3_fonts_found": false,
+      "manuscript_type3_fonts_found_after_acknowledgement_update": false
+    },
+    "forbidden_text_checks": {
+      "supporting_evidence_heading_scan": "passed",
+      "evidence_heavy_phrase_scan": "passed",
+      "scope_boundary_heading_scan": "passed",
+      "descriptor_symbol_column_scan": "passed",
+      "doi_url_macro_scan": "passed",
+      "strong_claim_scan": "only reviewer-original quoted text in comment boxes",
+      "mechanical_phrase_scan": "passed after removing old template sentence from author response text"
+    },
+    "csv_check": {
+      "rows": 33,
+      "visible_scope_boundary_heading": "false for all rows",
+      "revisions_made_style": "action_specific",
+      "heading_term": "supporting_material for all rows",
+      "evidence_wording_cleaned": "true for all rows",
+      "response_word_count_range": "110-292",
+      "manual_review_priority_high": [
+        "R1-1",
+        "R1-2",
+        "R1-3",
+        "R1-4",
+        "R1-7",
+        "R1-10",
+        "R1-11",
+        "R1-14",
+        "R1-15",
+        "R2-1",
+        "R2-2",
+        "R2-3",
+        "R2-4",
+        "R2-5",
+        "R2-6",
+        "R2-7",
+        "R2-8",
+        "R4-1",
+        "R4-2",
+        "R4-5"
+      ],
+      "r2_expanded": "true for R2-1 to R2-8",
+      "r2_supporting_material_enriched": "true for R2-1 to R2-8",
+      "r2_response_tone": "detailed_conciliatory for R2-1 to R2-8",
+      "contents_link_color": "black_manual_check",
+      "r1_10_reference_status": "updated",
+      "r1_15_broader_audience_status": "expanded",
+      "doi_style": "blue_roman"
+    },
+    "doi_verification": {
+      "puterman_doi": "10.1002/9780470316887",
+      "status": "verified",
+      "evidence": "doi.org resolves to Wiley; Crossref record matches Puterman Markov Decision Processes and Wiley metadata",
+      "sutton_barto": "ISBN 9780262039246 recorded; no DOI added",
+      "applied_energy_article": {
+        "doi": "10.1016/j.apenergy.2026.128294",
+        "status": "verified",
+        "evidence": "doi.org redirects to Elsevier PII S0306261926009487; Crossref record matches Applied Energy, volume 422, article number 128294, published 2026",
+        "title": "A surrogate-assisted framework for district-scale urban morphology optimization toward reduced building energy demand"
+      }
+    },
+    "final_validation": {
+      "pytest": "63 passed, 2 warnings",
+      "compileall": "passed",
+      "cli_help": "passed",
+      "config_load": "passed",
+      "git_diff_check": "passed with Windows LF-to-CRLF warnings only",
+      "acknowledgement_update": "manuscript clean/highlighted compile passed; PDF text check passed"
+    },
+    "visual_link_check": {
+      "status": "passed",
+      "contents_page": "rendered page shows black internal Contents links",
+      "doi_page": "rendered R1-10 local references page shows blue roman DOI links"
+    }
+  },
+  "manual_checks_remaining": [
+    "Add final manuscript/SI line numbers after final line-numbered manuscript and SI PDFs are generated if required by the journal.",
+    "Author review of expanded final targeted response wording before submission."
+  ],
+  "scope_guard": [
+    "Response letter, response QA, README, manifest, response matrix, manuscript literature citation, references metadata, and rebuilt PDFs were updated.",
+    "No SI source files were modified.",
+    "No figure assets were regenerated or modified as part of the committed diff; pytest-generated figure metadata/gallery side effects were restored.",
+    "No experiments, tools, paper_repro files, configs, artifacts, or canonical result files were modified.",
+    ".trellis/tasks remains local-only and untracked.",
+    "Final acknowledgement update modified manuscript Acknowledgements, manuscript PDFs, README, and manifest only.",
+    "Response letter source and PDF were not modified in the final acknowledgement update."
+  ],
+  "updated_at_utc": "2026-06-29T08:26:55.5343182Z",
+  "manuscript_outputs": [
+    {
+      "path": "paper/manuscript/manuscript_clean.pdf",
+      "sha256": "74218891A97C3996C7F20A82B48D5D71104F470E96A69C6BC27919C3EA4D935D",
+      "pages": 17,
+      "size_bytes": 862882
+    },
+    {
+      "path": "paper/manuscript/manuscript_highlighted.pdf",
+      "sha256": "668BF6D44EBDCA1513ED2C9DFFF27FD4937D3E2883E5EF8C16A1DA771105468C",
+      "pages": 17,
+      "size_bytes": 863511
+    }
+  ],
+  "nomenclature_update": {
+    "status": "front-matter Nomenclature retained, Table 1 Symbol column removed, and Nomenclature-to-Table 1 cross-reference removed",
+    "source_path": "paper/manuscript/manuscript_body.tex",
+    "sha256": "0D46B6F0AADBFE91A9C14998A1D5D779CED3093C5F65AFFCE01FACB26D8E94B9",
+    "updated_at_utc": "2026-06-28T16:01:47.752812+00:00"
+  }
+}
