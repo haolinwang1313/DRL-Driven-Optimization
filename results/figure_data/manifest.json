@@ -1,0 +1,228 @@
+{
+  "package": "APEN public figure-data package",
+  "source_build_commit": "b6dee545d094929de30b8381fdd770e8852c95ed",
+  "canonical_reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
+  "simulation_mode_boundary": "Analytic response-generation tables are separate from selected physical stress-test summaries.",
+  "files": [
+    {
+      "file_name": "descriptor_coverage.csv",
+      "release_path": "results/figure_data/descriptor_coverage.csv",
+      "sha256": "da11c8ab3d3bea03f90a448f30ec276d2c2ef7acf2d44cdf8486d63122c5e29a",
+      "rows": 2033,
+      "description": "Coverage, PCA, OSLI frequency, and nearest-neighbor summaries for the 2000-row canonical descriptor dataset.",
+      "representation_family": "sample_coverage",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Supports descriptor-space coverage and PCA breadth only; not an optimizer ranking."
+    },
+    {
+      "file_name": "descriptor_dependencies.csv",
+      "release_path": "results/figure_data/descriptor_dependencies.csv",
+      "sha256": "646ddfa9ccf443de1c21d17fca9ed8b0727d02af11ede278c67c591175db0219",
+      "rows": 9,
+      "description": "Descriptor dependency diagnostics and algebraic residual summaries.",
+      "representation_family": "sample_coverage",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Records descriptor algebra and PCA threshold facts only."
+    },
+    {
+      "file_name": "surrogate_parity_mean_predictions.csv",
+      "release_path": "results/figure_data/surrogate_parity_mean_predictions.csv",
+      "sha256": "98c497e2001bd49b025c6f8667ee8316abbbf1ac45d8de4d3e175c04c315d513",
+      "rows": 2000,
+      "description": "Repeated-kfold out-of-fold sample-level mean predictions for parity plots.",
+      "representation_family": "repeated_cv",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Cross-validated surrogate predictions remain analytic-target surrogates, not EnergyPlus truth."
+    },
+    {
+      "file_name": "surrogate_validation_regimes.csv",
+      "release_path": "results/figure_data/surrogate_validation_regimes.csv",
+      "sha256": "0d5c89d210b730e3000cc175f6955572514eb2ac3d240819ac34249fe41f0602",
+      "rows": 12,
+      "description": "Validation-family summary used for robustness heatmaps.",
+      "representation_family": "surrogate_validation",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "These rows assess surrogate accuracy against the analytic response generator only."
+    },
+    {
+      "file_name": "ddpg_training_curves_summary.csv",
+      "release_path": "results/figure_data/ddpg_training_curves_summary.csv",
+      "sha256": "e89548fb7b3a30202a469fad4e2e233a51219c45909d834be25d1d3f0b353a01",
+      "rows": 1800,
+      "description": "Seed-aggregated DDPG training curves across scenarios and targets.",
+      "representation_family": "training_dynamics",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "One episode equals 40 sequential surrogate queries; this is serialized black-box search, not physical time evolution."
+    },
+    {
+      "file_name": "ddpg_seed_diagnostics.csv",
+      "release_path": "results/figure_data/ddpg_seed_diagnostics.csv",
+      "sha256": "c0bdc228c329bd15997abc9290931ca9deeed042c3f0e2b7c187288b34024303",
+      "rows": 60,
+      "description": "Per-seed DDPG plateau, regression, and episode-return diagnostics.",
+      "representation_family": "training_dynamics",
+      "valid_for_main_text": false,
+      "valid_for_appendix": true,
+      "claim_boundary": "Seed-level DDPG diagnostics are appendix-only and do not imply physical validation."
+    },
+    {
+      "file_name": "benchmark_utility.csv",
+      "release_path": "results/figure_data/benchmark_utility.csv",
+      "sha256": "bdd7a506941e8e2988128417d6f164f402d5abf728389cd46174aad47464efa0",
+      "rows": 600,
+      "description": "Per-seed best utility summaries for fixed-domain and legacy post-hoc utility.",
+      "representation_family": "post_hoc_utility",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Post-hoc fixed-domain utility is a bounded analytic comparison, not the DDPG training reward."
+    },
+    {
+      "file_name": "benchmark_equal_size_20.csv",
+      "release_path": "results/figure_data/benchmark_equal_size_20.csv",
+      "sha256": "258579a02f31057194150834cb55cab299125580301ddbee5926bfae44daa9f8",
+      "rows": 26000,
+      "description": "All valid equal-size-20 benchmark repetitions with the canonical benchmark reference.",
+      "representation_family": "descriptor_equal_size_archive",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Only truthful requested-size-20 rows are retained; oversized DDPG and FeasiblePoolRandom requests are excluded."
+    },
+    {
+      "file_name": "benchmark_output_contract_counts.csv",
+      "release_path": "results/figure_data/benchmark_output_contract_counts.csv",
+      "sha256": "b9a20022c6686c46e12490dfe5023d9a69912ad7bc97d73a68285b752308a95e",
+      "rows": 13,
+      "description": "Optimizer output contract counts and retained-object metadata.",
+      "representation_family": "output_contract",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "These counts describe retained output structure and comparability limits, not direct optimizer superiority."
+    },
+    {
+      "file_name": "benchmark_hv_ceiling.csv",
+      "release_path": "results/figure_data/benchmark_hv_ceiling.csv",
+      "sha256": "3dc1fd4344572f7c64e1cf92de96ca2816ccc2e90d327c99d68c5213e21b2c11",
+      "rows": 13,
+      "description": "Canonical HV ceiling diagnostics parsed from the locked round-2 interpretation.",
+      "representation_family": "hv_ceiling",
+      "valid_for_main_text": false,
+      "valid_for_appendix": true,
+      "claim_boundary": "HV saturation indicates reference-volume coverage and must be interpreted with duplicate and tuple-count diagnostics."
+    },
+    {
+      "file_name": "feasible_projection_summary.csv",
+      "release_path": "results/figure_data/feasible_projection_summary.csv",
+      "sha256": "3f024f664f785ee05453f54955d02f9c5763cfabaf1e8297c74fe5f91a2d42a2",
+      "rows": 10,
+      "description": "Method-level projection collapse and canonical before/after HV/IGD summaries.",
+      "representation_family": "projected_feasible_morphology_archive",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Projection diagnostics measure descriptor-to-feasible representation sensitivity only; they are not physical validation."
+    },
+    {
+      "file_name": "feasible_projection_metrics.csv",
+      "release_path": "results/figure_data/feasible_projection_metrics.csv",
+      "sha256": "e0be655cb6007297ae3267f459d637e6cfc4a0e0c7845ae20154e579f9acd278",
+      "rows": 2180,
+      "description": "Candidate-level projection rows used for distance distributions.",
+      "representation_family": "projected_feasible_morphology_archive",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Candidate-level projection distances are descriptor-space diagnostics only."
+    },
+    {
+      "file_name": "physical_direct_cases.csv",
+      "release_path": "results/figure_data/physical_direct_cases.csv",
+      "sha256": "370b2f86baf96ed088cb033741e1c85895fc4b0c377af44dcef170094d847b44",
+      "rows": 18,
+      "description": "Direct feasible physical-evaluation cases only; optimizer-linked cases are excluded.",
+      "representation_family": "physical_evaluated_subset",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "These 18 rows support only the limited physics-based cross-model stress test."
+    },
+    {
+      "file_name": "physical_stress_metrics.csv",
+      "release_path": "results/figure_data/physical_stress_metrics.csv",
+      "sha256": "5d346e2f14fa9af23ab8eabc51bbc175fbf79e4eab01c06c93dab9a49cdbbfe0",
+      "rows": 4,
+      "description": "Summary metrics for the limited physics-based cross-model stress test.",
+      "representation_family": "physical_evaluated_subset",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Metric agreement remains weak and ranking transfer unsupported."
+    },
+    {
+      "file_name": "optimizer_linked_physical_gaps.csv",
+      "release_path": "results/figure_data/optimizer_linked_physical_gaps.csv",
+      "sha256": "6b4c8f500e937d911f86f74f3279b7ddc00963ed770a01e870c8df20c9d55c86",
+      "rows": 6,
+      "description": "Gap decomposition for the six optimizer-linked physical cases.",
+      "representation_family": "physical_evaluated_subset",
+      "valid_for_main_text": false,
+      "valid_for_appendix": true,
+      "claim_boundary": "Optimizer-linked cases are appendix-only and must not be mixed into direct-case parity plots."
+    },
+    {
+      "file_name": "climate_case_results.csv",
+      "release_path": "results/figure_data/climate_case_results.csv",
+      "sha256": "bc11403762827014ce002c4c83370e89ba8305024908744d351f8800a06967a3",
+      "rows": 12,
+      "description": "Per-case cross-climate physical sensitivity rows for Beijing, Guangzhou, and Harbin.",
+      "representation_family": "limited_four_block_cross_climate_physical_sensitivity_analysis",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "These rows cover exactly four direct feasible blocks across three additional climates and do not prove surrogate generalization."
+    },
+    {
+      "file_name": "climate_summary.csv",
+      "release_path": "results/figure_data/climate_summary.csv",
+      "sha256": "c4f020564aa1b162866e6524f0ed4ac0112e16bb9d27d8de52b5d90ff10910ac",
+      "rows": 3,
+      "description": "Station-level mean climate sensitivity summary.",
+      "representation_family": "limited_four_block_cross_climate_physical_sensitivity_analysis",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Mean climate deltas summarize only four direct-feasible cases."
+    },
+    {
+      "file_name": "climate_rank_stability.csv",
+      "release_path": "results/figure_data/climate_rank_stability.csv",
+      "sha256": "19c672154ade324ea8c62545b5a134a9547617018e6ee70a2faa5e5bb7c8e647",
+      "rows": 9,
+      "description": "Target-wise climate rank stability for the four direct-feasible cases.",
+      "representation_family": "limited_four_block_cross_climate_physical_sensitivity_analysis",
+      "valid_for_main_text": true,
+      "valid_for_appendix": true,
+      "claim_boundary": "Rank stability remains target-dependent and is not a climate-generalization proof."
+    },
+    {
+      "file_name": "scale_study.csv",
+      "release_path": "results/figure_data/scale_study.csv",
+      "sha256": "9a3f6d93639fce2f4b35097d9e71c69d8c36f344f8c51aff42846048995b793a",
+      "rows": 16,
+      "description": "Dataset-scale surrogate-selection comparison across 500/1000/1500/2000 rows.",
+      "representation_family": "scale_study",
+      "valid_for_main_text": false,
+      "valid_for_appendix": true,
+      "claim_boundary": "Scale-study rows trace surrogate-selection evidence only and are not physical validation."
+    },
+    {
+      "file_name": "morphology_signatures.csv",
+      "release_path": "results/figure_data/morphology_signatures.csv",
+      "sha256": "2ec00f394055ab2773b795dd61436b4245b35196255bb63f85ec5646554180f1",
+      "rows": 60,
+      "description": "Median and interquartile morphology descriptor signatures for representative groups.",
+      "representation_family": "morphology_descriptor_signatures",
+      "valid_for_main_text": false,
+      "valid_for_appendix": true,
+      "claim_boundary": "Median morphology signatures are descriptive summaries of retained outputs, not stable design rules."
+    }
+  ]
+}

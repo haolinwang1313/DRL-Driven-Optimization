@@ -1,0 +1,10 @@
+station,rank_metric,spearman,kendall
+Beijing,EUIt,1.0,1.0
+Guangzhou,EUIt,1.0,1.0
+Harbin,EUIt,0.1999999999999999,0.0
+Beijing,EG,1.0,1.0
+Guangzhou,EG,1.0,1.0
+Harbin,EG,1.0,1.0
+Beijing,H,0.1999999999999999,0.0
+Guangzhou,H,0.3999999999999999,0.3333333333333334
+Harbin,H,0.1999999999999999,0.0

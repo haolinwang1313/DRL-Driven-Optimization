@@ -1,0 +1,16 @@
+{
+  "source_run_id": "20260405_highest_precision_2000_compare",
+  "dataset_scale": 2000,
+  "selection_mode": "highest_accuracy_override",
+  "simulation_mode": "fallback_analytic",
+  "rows": 2000,
+  "active_dataset_path": "data/generated/canonical_2000/simulated_samples.csv",
+  "active_blocks_path": "data/generated/canonical_2000/simulated_blocks.jsonl",
+  "active_metadata_path": "data/generated/canonical_2000/simulated_samples.meta.json",
+  "sha256": {
+    "simulated_samples.csv": "b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc",
+    "simulated_blocks.jsonl": "c109067839cd4ac79ce3799d4a38b09710e00faa2b90871329298da570852252",
+    "simulated_samples.meta.json": "29a8b96dd8f04133b7e6efe2f3530f99d9638261298dfce58f2103b3fe436f69"
+  },
+  "note": "This is an analytic response-generation dataset used for the surrogate benchmark, not a direct annual EnergyPlus/Radiance dataset."
+}

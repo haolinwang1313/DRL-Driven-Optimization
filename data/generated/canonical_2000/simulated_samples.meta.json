@@ -1,0 +1,103 @@
+{
+  "dataset_scale": 2000,
+  "baseline_scale": 500,
+  "regime_type": "expanded",
+  "nested_prefix_protocol": true,
+  "weather_station": "Dongtai, Jiangsu",
+  "weather_epw": null,
+  "simulation_mode": "fallback_analytic",
+  "feature_columns": [
+    "FAR",
+    "SD",
+    "AF",
+    "AR_ew",
+    "AR_ns",
+    "SVF",
+    "BD",
+    "OSR",
+    "SC",
+    "PAR",
+    "theta",
+    "OSLI"
+  ],
+  "target_columns": [
+    "EUIt",
+    "EG",
+    "H"
+  ],
+  "seed": 20260310,
+  "source_scale": 2000,
+  "csv_path": "data/generated/canonical_2000/simulated_samples.csv",
+  "blocks_path": "data/generated/canonical_2000/simulated_blocks.jsonl",
+  "assumptions": [
+    "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
+    "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
+    "Expanded regimes are deterministic prefixes of the maximum generated simulation pool."
+  ],
+  "feature_ranges": {
+    "FAR": {
+      "min": 0.6770833333333334,
+      "max": 3.3333333333333335
+    },
+    "SD": {
+      "min": 8.625,
+      "max": 69.375
+    },
+    "AF": {
+      "min": 2.6,
+      "max": 22.58823529411765
+    },
+    "AR_ew": {
+      "min": 0.19658296674061937,
+      "max": 2.252757955391737
+    },
+    "AR_ns": {
+      "min": 0.6653698315265142,
+      "max": 7.204122706894503
+    },
+    "SVF": {
+      "min": 0.4151063179509038,
+      "max": 0.7436255922366087
+    },
+    "BD": {
+      "min": 0.14756944444444445,
+      "max": 0.2690972222222222
+    },
+    "OSR": {
+      "min": 0.2557291666666667,
+      "max": 1.0923076923076922
+    },
+    "SC": {
+      "min": 0.5031928750321852,
+      "max": 1.1444767290534232
+    },
+    "PAR": {
+      "min": 0.10048275862068966,
+      "max": 0.15778314829119353
+    },
+    "theta": {
+      "min": -44.91535662273134,
+      "max": 44.98650070138696
+    },
+    "OSLI": {
+      "min": 0.0,
+      "max": 8.0
+    }
+  },
+  "target_ranges": {
+    "EUIt": {
+      "min": 66.0,
+      "max": 78.28421589527046
+    },
+    "EG": {
+      "min": 1.7612768169896587,
+      "max": 2.85
+    },
+    "H": {
+      "min": 6.006569520434968,
+      "max": 7.85
+    }
+  },
+  "source_run_id": "20260405_highest_precision_2000_compare",
+  "public_release_note": "The committed public files are located under data/generated/canonical_2000; original local artifact paths are not required for public inspection."
+}

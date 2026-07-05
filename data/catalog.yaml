@@ -1,13 +1,834 @@
+catalog_version: apen-public-data-v1
+release_scope: Public APEN reproducibility data and processed result tables.
+data_boundary: The canonical 2000-row dataset uses fallback_analytic response generation;
+  selected physical stress-test outputs are released separately as processed summaries.
 datasets:
-  - id: data-001
-    name: TODO
-    path: TODO
-    role: TODO
-    source: TODO
-    license: TODO
-    redistributable: TODO
-    size: TODO
-    sha256: TODO
-    description: TODO
-    generation_script: TODO
-    notes: TODO
+- id: data_generated_canonical_2000_selected_dataset_public_json
+  name: selected_dataset.public.json
+  path: data/generated/canonical_2000/selected_dataset.public.json
+  status: included
+  role: canonical_public_dataset
+  source: source_run_id:20260405_highest_precision_2000_compare
+  simulation_mode: fallback_analytic
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 1
+  size_bytes: 920
+  sha256: 038e6d3f48418bcaa95b23a9d9e646e519d5cd9345091e6473f06f3a49ae2df4
+  description: Sanitized dataset-selection metadata with public release paths and
+    file hashes.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: data_generated_canonical_2000_simulated_blocks_jsonl
+  name: simulated_blocks.jsonl
+  path: data/generated/canonical_2000/simulated_blocks.jsonl
+  status: included
+  role: canonical_public_dataset
+  source: source_run_id:20260405_highest_precision_2000_compare
+  simulation_mode: fallback_analytic
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 2000
+  size_bytes: 1263863
+  sha256: c109067839cd4ac79ce3799d4a38b09710e00faa2b90871329298da570852252
+  description: Generated block metadata for the canonical 2000-row morphology set.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: data_generated_canonical_2000_simulated_samples_csv
+  name: simulated_samples.csv
+  path: data/generated/canonical_2000/simulated_samples.csv
+  status: included
+  role: canonical_public_dataset
+  source: source_run_id:20260405_highest_precision_2000_compare
+  simulation_mode: fallback_analytic
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2000
+  size_bytes: 576786
+  sha256: b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc
+  description: Canonical 2000-row morphology descriptor table with analytic response
+    targets.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: data_generated_canonical_2000_simulated_samples_meta_json
+  name: simulated_samples.meta.json
+  path: data/generated/canonical_2000/simulated_samples.meta.json
+  status: included
+  role: canonical_public_dataset
+  source: source_run_id:20260405_highest_precision_2000_compare
+  simulation_mode: fallback_analytic
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 1
+  size_bytes: 2496
+  sha256: 29a8b96dd8f04133b7e6efe2f3530f99d9638261298dfce58f2103b3fe436f69
+  description: Metadata for the canonical analytic response dataset.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: data_generated_canonical_2000_sha256sums_txt
+  name: SHA256SUMS.txt
+  path: data/generated/canonical_2000/SHA256SUMS.txt
+  status: included
+  role: canonical_public_dataset
+  source: source_run_id:20260405_highest_precision_2000_compare
+  simulation_mode: fallback_analytic
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 4
+  size_bytes: 366
+  sha256: cc0ba79ac531fb8a650622fd1c60c5a15404eaa59e19e5557c364c90d497ad73
+  description: SHA-256 summary for canonical public dataset files.
+  generation_script: No rerun; generated during public package assembly.
+  notes: Companion hash file for the canonical analytic-response dataset.
+- id: results_climate_sensitivity_climate_case_results_csv
+  name: climate_case_results.csv
+  path: results/climate_sensitivity/climate_case_results.csv
+  status: included
+  role: climate_sensitivity_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_climate_sensitivity_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 12
+  size_bytes: 1882
+  sha256: bc11403762827014ce002c4c83370e89ba8305024908744d351f8800a06967a3
+  description: Four-block by three-climate case-level sensitivity table.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_climate_sensitivity_climate_rank_stability_csv
+  name: climate_rank_stability.csv
+  path: results/climate_sensitivity/climate_rank_stability.csv
+  status: included
+  role: climate_sensitivity_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_climate_sensitivity_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 9
+  size_bytes: 289
+  sha256: 19c672154ade324ea8c62545b5a134a9547617018e6ee70a2faa5e5bb7c8e647
+  description: Target-wise rank-stability metrics for the four-block climate sensitivity
+    set.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_climate_sensitivity_climate_summary_csv
+  name: climate_summary.csv
+  path: results/climate_sensitivity/climate_summary.csv
+  status: included
+  role: climate_sensitivity_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_climate_sensitivity_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 3
+  size_bytes: 281
+  sha256: c4f020564aa1b162866e6524f0ed4ac0112e16bb9d27d8de52b5d90ff10910ac
+  description: Station-level mean climate sensitivity deltas.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_benchmark_equal_size_20_csv
+  name: benchmark_equal_size_20.csv
+  path: results/figure_data/benchmark_equal_size_20.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 26000
+  size_bytes: 6073257
+  sha256: 258579a02f31057194150834cb55cab299125580301ddbee5926bfae44daa9f8
+  description: 'Final APEN figure-data table: benchmark_equal_size_20.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_benchmark_hv_ceiling_csv
+  name: benchmark_hv_ceiling.csv
+  path: results/figure_data/benchmark_hv_ceiling.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 13
+  size_bytes: 2964
+  sha256: 3dc1fd4344572f7c64e1cf92de96ca2816ccc2e90d327c99d68c5213e21b2c11
+  description: 'Final APEN figure-data table: benchmark_hv_ceiling.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_benchmark_output_contract_counts_csv
+  name: benchmark_output_contract_counts.csv
+  path: results/figure_data/benchmark_output_contract_counts.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 13
+  size_bytes: 1434
+  sha256: b9a20022c6686c46e12490dfe5023d9a69912ad7bc97d73a68285b752308a95e
+  description: 'Final APEN figure-data table: benchmark_output_contract_counts.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_benchmark_utility_csv
+  name: benchmark_utility.csv
+  path: results/figure_data/benchmark_utility.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 600
+  size_bytes: 82150
+  sha256: bdd7a506941e8e2988128417d6f164f402d5abf728389cd46174aad47464efa0
+  description: 'Final APEN figure-data table: benchmark_utility.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_climate_case_results_csv
+  name: climate_case_results.csv
+  path: results/figure_data/climate_case_results.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 12
+  size_bytes: 1882
+  sha256: bc11403762827014ce002c4c83370e89ba8305024908744d351f8800a06967a3
+  description: 'Final APEN figure-data table: climate_case_results.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_climate_rank_stability_csv
+  name: climate_rank_stability.csv
+  path: results/figure_data/climate_rank_stability.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 9
+  size_bytes: 289
+  sha256: 19c672154ade324ea8c62545b5a134a9547617018e6ee70a2faa5e5bb7c8e647
+  description: 'Final APEN figure-data table: climate_rank_stability.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_climate_summary_csv
+  name: climate_summary.csv
+  path: results/figure_data/climate_summary.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 3
+  size_bytes: 281
+  sha256: c4f020564aa1b162866e6524f0ed4ac0112e16bb9d27d8de52b5d90ff10910ac
+  description: 'Final APEN figure-data table: climate_summary.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_ddpg_seed_diagnostics_csv
+  name: ddpg_seed_diagnostics.csv
+  path: results/figure_data/ddpg_seed_diagnostics.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 60
+  size_bytes: 9763
+  sha256: c0bdc228c329bd15997abc9290931ca9deeed042c3f0e2b7c187288b34024303
+  description: 'Final APEN figure-data table: ddpg_seed_diagnostics.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_ddpg_training_curves_summary_csv
+  name: ddpg_training_curves_summary.csv
+  path: results/figure_data/ddpg_training_curves_summary.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 1800
+  size_bytes: 319617
+  sha256: e89548fb7b3a30202a469fad4e2e233a51219c45909d834be25d1d3f0b353a01
+  description: 'Final APEN figure-data table: ddpg_training_curves_summary.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_descriptor_coverage_csv
+  name: descriptor_coverage.csv
+  path: results/figure_data/descriptor_coverage.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2033
+  size_bytes: 146652
+  sha256: da11c8ab3d3bea03f90a448f30ec276d2c2ef7acf2d44cdf8486d63122c5e29a
+  description: 'Final APEN figure-data table: descriptor_coverage.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_descriptor_dependencies_csv
+  name: descriptor_dependencies.csv
+  path: results/figure_data/descriptor_dependencies.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 9
+  size_bytes: 643
+  sha256: 646ddfa9ccf443de1c21d17fca9ed8b0727d02af11ede278c67c591175db0219
+  description: 'Final APEN figure-data table: descriptor_dependencies.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_feasible_projection_metrics_csv
+  name: feasible_projection_metrics.csv
+  path: results/figure_data/feasible_projection_metrics.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2180
+  size_bytes: 370779
+  sha256: e0be655cb6007297ae3267f459d637e6cfc4a0e0c7845ae20154e579f9acd278
+  description: 'Final APEN figure-data table: feasible_projection_metrics.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_feasible_projection_summary_csv
+  name: feasible_projection_summary.csv
+  path: results/figure_data/feasible_projection_summary.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 10
+  size_bytes: 4365
+  sha256: 3f024f664f785ee05453f54955d02f9c5763cfabaf1e8297c74fe5f91a2d42a2
+  description: 'Final APEN figure-data table: feasible_projection_summary.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_manifest_json
+  name: manifest.json
+  path: results/figure_data/manifest.json
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 1
+  size_bytes: 12316
+  sha256: c9cc7da87cab61eeecf4ff61dc0c465243d82064b29b3d39546dd313ee6fd730
+  description: Public manifest for the released figure-data tables.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_morphology_signatures_csv
+  name: morphology_signatures.csv
+  path: results/figure_data/morphology_signatures.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 60
+  size_bytes: 5983
+  sha256: 2ec00f394055ab2773b795dd61436b4245b35196255bb63f85ec5646554180f1
+  description: 'Final APEN figure-data table: morphology_signatures.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_optimizer_linked_physical_gaps_csv
+  name: optimizer_linked_physical_gaps.csv
+  path: results/figure_data/optimizer_linked_physical_gaps.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 6
+  size_bytes: 2706
+  sha256: 6b4c8f500e937d911f86f74f3279b7ddc00963ed770a01e870c8df20c9d55c86
+  description: 'Final APEN figure-data table: optimizer_linked_physical_gaps.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_physical_direct_cases_csv
+  name: physical_direct_cases.csv
+  path: results/figure_data/physical_direct_cases.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 18
+  size_bytes: 2447
+  sha256: 370b2f86baf96ed088cb033741e1c85895fc4b0c377af44dcef170094d847b44
+  description: 'Final APEN figure-data table: physical_direct_cases.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_physical_stress_metrics_csv
+  name: physical_stress_metrics.csv
+  path: results/figure_data/physical_stress_metrics.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 4
+  size_bytes: 1172
+  sha256: 5d346e2f14fa9af23ab8eabc51bbc175fbf79e4eab01c06c93dab9a49cdbbfe0
+  description: 'Final APEN figure-data table: physical_stress_metrics.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_scale_study_csv
+  name: scale_study.csv
+  path: results/figure_data/scale_study.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 16
+  size_bytes: 6851
+  sha256: d2feadc7672abfd99827be3930c8d19c9c2cbc087c3760c5b4cc8ec267997b5e
+  description: 'Final APEN figure-data table: scale_study.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_figure_data_surrogate_parity_mean_predictions_csv
+  name: surrogate_parity_mean_predictions.csv
+  path: results/figure_data/surrogate_parity_mean_predictions.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2000
+  size_bytes: 399516
+  sha256: 98c497e2001bd49b025c6f8667ee8316abbbf1ac45d8de4d3e175c04c315d513
+  description: 'Final APEN figure-data table: surrogate_parity_mean_predictions.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: results_figure_data_surrogate_validation_regimes_csv
+  name: surrogate_validation_regimes.csv
+  path: results/figure_data/surrogate_validation_regimes.csv
+  status: included
+  role: figure_data_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: figure_data
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 12
+  size_bytes: 4201
+  sha256: 0d5c89d210b730e3000cc175f6955572514eb2ac3d240819ac34249fe41f0602
+  description: 'Final APEN figure-data table: surrogate_validation_regimes.csv.'
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: results_optimization_benchmark_context_public_json
+  name: benchmark_context.public.json
+  path: results/optimization/benchmark_context.public.json
+  status: included
+  role: optimizer_result_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: optimizer_results
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 1
+  size_bytes: 995
+  sha256: 1b37724ab63fa5834dc27cb13c3254bfa0f52b6163444cc1c8cbe279ed8c9daf
+  description: Sanitized optimizer benchmark context without model checkpoint paths.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_optimization_ddpg_results_csv
+  name: ddpg_results.csv
+  path: results/optimization/ddpg_results.csv
+  status: included
+  role: optimizer_result_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: optimizer_results
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 60
+  size_bytes: 19240
+  sha256: 93ceef4839e69b313c176acfecb417d4cd9a6115cdf2c82e3e12305bab3930c6
+  description: Retained DDPG optimizer results for the three scalarization scenarios.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_optimization_nsga2_results_csv
+  name: nsga2_results.csv
+  path: results/optimization/nsga2_results.csv
+  status: included
+  role: optimizer_result_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: optimizer_results
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2000
+  size_bytes: 611884
+  sha256: b83015b321f3392781a50755e3889fb82f960853c4b201ee7b68591a54de0143
+  description: Retained NSGA-II optimizer result archive.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_optimization_optimization_results_csv
+  name: optimization_results.csv
+  path: results/optimization/optimization_results.csv
+  status: included
+  role: optimizer_result_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: optimizer_results
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2060
+  size_bytes: 624969
+  sha256: c4bedfbc03ffb2dac4af1fb24cea615cf7a1b0121ea736189f81177742ffa8ea
+  description: Combined DDPG and NSGA-II retained optimizer result table.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_physical_stress_optimizer_linked_physical_gaps_csv
+  name: optimizer_linked_physical_gaps.csv
+  path: results/physical_stress/optimizer_linked_physical_gaps.csv
+  status: included
+  role: physical_stress_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_physical_stress_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 6
+  size_bytes: 2706
+  sha256: 6b4c8f500e937d911f86f74f3279b7ddc00963ed770a01e870c8df20c9d55c86
+  description: Gap decomposition for six optimizer-linked physical stress-test cases.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_physical_stress_physical_direct_cases_csv
+  name: physical_direct_cases.csv
+  path: results/physical_stress/physical_direct_cases.csv
+  status: included
+  role: physical_stress_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_physical_stress_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 18
+  size_bytes: 2447
+  sha256: 370b2f86baf96ed088cb033741e1c85895fc4b0c377af44dcef170094d847b44
+  description: Final figure-data table for 18 direct feasible physical stress-test
+    cases.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_physical_stress_physical_stress_cases_csv
+  name: physical_stress_cases.csv
+  path: results/physical_stress/physical_stress_cases.csv
+  status: included
+  role: physical_stress_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_physical_stress_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 24
+  size_bytes: 5615
+  sha256: aa409786a827ca6df703a2f33e570ebb2af1c1a6a7d1f91ae2f8185e7550b663
+  description: Sanitized 24-case physical stress-test table combining direct and optimizer-linked
+    cases.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_physical_stress_physical_stress_metrics_csv
+  name: physical_stress_metrics.csv
+  path: results/physical_stress/physical_stress_metrics.csv
+  status: included
+  role: physical_stress_summary
+  source: derived public table from APEN local source artifacts
+  result_type: processed_physical_stress_result
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 4
+  size_bytes: 1172
+  sha256: 5d346e2f14fa9af23ab8eabc51bbc175fbf79e4eab01c06c93dab9a49cdbbfe0
+  description: Physical stress-test MAE, nMAE, correlation, and rank-preservation
+    summary.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_projection_feasible_projection_metrics_csv
+  name: feasible_projection_metrics.csv
+  path: results/projection/feasible_projection_metrics.csv
+  status: included
+  role: projection_result_table
+  source: derived public table from APEN local source artifacts
+  result_type: projection_summary
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2180
+  size_bytes: 370779
+  sha256: e0be655cb6007297ae3267f459d637e6cfc4a0e0c7845ae20154e579f9acd278
+  description: Candidate-level feasible-projection distances and matched sample identifiers.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_projection_feasible_projection_summary_csv
+  name: feasible_projection_summary.csv
+  path: results/projection/feasible_projection_summary.csv
+  status: included
+  role: projection_result_table
+  source: derived public table from APEN local source artifacts
+  result_type: projection_summary
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 10
+  size_bytes: 4365
+  sha256: 3f024f664f785ee05453f54955d02f9c5763cfabaf1e8297c74fe5f91a2d42a2
+  description: Method-level projection-distance, duplicate-collapse, HV, and IGD summaries.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Processed public result table; raw execution logs and checkpoints are not
+    included.
+- id: results_surrogate_cv_predictions_csv
+  name: cv_predictions.csv
+  path: results/surrogate/cv_predictions.csv
+  status: included
+  role: surrogate_assessment_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: surrogate_assessment
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2000
+  size_bytes: 126099
+  sha256: 60697fa277776ae02c6a5a367c8bd428b4a244d021e0ca2aa5edda114317b4a9
+  description: Cross-validated surrogate predictions for the canonical 2000-row analytic
+    response dataset.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: results_surrogate_scale_study_csv
+  name: scale_study.csv
+  path: results/surrogate/scale_study.csv
+  status: included
+  role: surrogate_assessment_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: surrogate_assessment
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 16
+  size_bytes: 6851
+  sha256: d2feadc7672abfd99827be3930c8d19c9c2cbc087c3760c5b4cc8ec267997b5e
+  description: Dataset-scale surrogate-selection summary across 500, 1000, 1500, and
+    2000 rows.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: results_surrogate_surrogate_parity_mean_predictions_csv
+  name: surrogate_parity_mean_predictions.csv
+  path: results/surrogate/surrogate_parity_mean_predictions.csv
+  status: included
+  role: surrogate_assessment_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: surrogate_assessment
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 2000
+  size_bytes: 399516
+  sha256: 98c497e2001bd49b025c6f8667ee8316abbbf1ac45d8de4d3e175c04c315d513
+  description: Sample-level mean out-of-fold surrogate predictions used for parity
+    summaries.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: results_surrogate_surrogate_summary_public_json
+  name: surrogate_summary.public.json
+  path: results/surrogate/surrogate_summary.public.json
+  status: included
+  role: surrogate_assessment_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: surrogate_assessment
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  records: 1
+  size_bytes: 4946
+  sha256: 9a0ac1e05b27933c1fcd0533ddebd36f0bd10a3d5827569cf172082b95be945e
+  description: Sanitized surrogate validation summary without model checkpoint paths.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: results_surrogate_surrogate_validation_regimes_csv
+  name: surrogate_validation_regimes.csv
+  path: results/surrogate/surrogate_validation_regimes.csv
+  status: included
+  role: surrogate_assessment_table
+  source: derived public table from APEN local source artifacts
+  simulation_mode: fallback_analytic
+  result_type: surrogate_assessment
+  license: MIT repository release
+  redistributable: true
+  required_for_current_results: true
+  rows: 12
+  size_bytes: 4201
+  sha256: 0d5c89d210b730e3000cc175f6955572514eb2ac3d240819ac34249fe41f0602
+  description: Surrogate validation summary by validation family and target.
+  generation_script: No rerun; copied or sanitized from existing local result artifacts
+    during public package assembly.
+  notes: Analytic response-generation data are not direct annual EnergyPlus/Radiance
+    simulation outputs.
+- id: external_benchmark_dataset
+  name: External benchmark spreadsheet
+  path: data/external/benchmark/dataset.xlsx
+  status: not_included
+  role: external_benchmark_reference
+  source: not included in this public package
+  result_type: external_reference_data
+  license: unknown
+  redistributable: false
+  required_for_current_results: false
+  rows: null
+  records: null
+  size_bytes: null
+  sha256: null
+  description: External spreadsheet reference is not required for the current analytic-response
+    benchmark release.
+  generation_script: not_applicable
+  notes: Source and redistribution rights are not verified; current APEN release uses
+    the public analytic-response dataset and released processed result tables.

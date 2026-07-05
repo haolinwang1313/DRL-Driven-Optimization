@@ -1,0 +1,10 @@
+dependency_name,metric,value,expression
+FAR_minus_BD_times_AF,max_abs_residual,1.3322676295501878e-15,FAR - BD × AF
+OSR_minus_(1_minus_BD)_over_FAR,max_abs_residual,2.220446049250313e-16,OSR - (1 - BD) / FAR
+OSLI_integer_consistency,all_integer,1.0,OSLI_integer_consistency
+exact_duplicate_count,rows,0.0,exact_duplicate_count
+nearest_neighbor_distance,median,0.1991756882074244,nearest_neighbor_distance
+nearest_neighbor_distance,q95,0.3134675834732334,nearest_neighbor_distance
+coverage_radius,median_farthest_neighbor,1.7662051804073868,coverage_radius
+pca,components_for_95_variance,6.0,pca
+pca,participation_ratio,5.0211786835304855,pca

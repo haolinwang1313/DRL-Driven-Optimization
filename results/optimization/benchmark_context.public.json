@@ -1,0 +1,37 @@
+{
+  "surrogate_model_path": "not_included",
+  "selected_surrogate_metadata": "results/surrogate/surrogate_summary.public.json",
+  "selected_dataset_scale": 2000,
+  "selected_candidate": "tuned_standard",
+  "ddpg_evaluation_budget": 24000,
+  "nsga2_evaluation_budget": 24000,
+  "surrogate_guardrail": {
+    "feature_radius_percentile": 60,
+    "feature_penalty_scale": [
+      10.0,
+      0.85,
+      0.6
+    ],
+    "extrapolation_penalty_scale": 2.0,
+    "clip_outputs": false
+  },
+  "utility_weights": {
+    "Balanced_Performance": [
+      0.3333333333,
+      0.3333333333,
+      0.3333333333
+    ],
+    "Energy_Saving_Focus": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "Energy_Generation_Focus": [
+      0.2,
+      0.6,
+      0.2
+    ]
+  },
+  "source_run_id": "20260405_highest_precision_2000_compare",
+  "model_checkpoint_note": "Model checkpoint is not included in this Git package; released tables are sufficient for lightweight result inspection."
+}
