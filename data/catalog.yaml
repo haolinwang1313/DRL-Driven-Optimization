@@ -1,0 +1,13 @@
+datasets:
+  - id: data-001
+    name: TODO
+    path: TODO
+    role: TODO
+    source: TODO
+    license: TODO
+    redistributable: TODO
+    size: TODO
+    sha256: TODO
+    description: TODO
+    generation_script: TODO
+    notes: TODO

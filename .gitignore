@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local secrets and machine config
+.env
+.env.*
+!.env.example
+*.local.*
+secrets/
+credentials/
+
+# Generated caches
+results/cache/
+artifacts/cache/
+tmp/
+.tmp/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

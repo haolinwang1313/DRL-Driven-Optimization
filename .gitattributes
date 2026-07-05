@@ -1,0 +1,13 @@
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.pkl binary
+*.pt binary
+*.pth binary
+*.onnx binary
+*.h5 binary
+*.npy binary
+*.npz binary
