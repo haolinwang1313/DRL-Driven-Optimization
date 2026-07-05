@@ -1,0 +1,156 @@
+{
+  "candidate": {
+    "name": "tuned_standard",
+    "tuning": "optuna",
+    "feature_scaler": "standard",
+    "target_scaler": "standard",
+    "loss": "mae",
+    "hidden_layers": null,
+    "dropout": null,
+    "learning_rate": null
+  },
+  "dataset_rows": 2000,
+  "dataset_scale": 2000,
+  "best_hyperparameters": {
+    "dropout": 0.14275649423801995,
+    "learning_rate": 0.0013417585681108446,
+    "hidden_layers": [
+      128
+    ],
+    "batch_size": 32
+  },
+  "selection_objective": 0.023318470836707773,
+  "fold_metrics": [
+    {
+      "fold": 1,
+      "EUIt_R2": 0.9836578369140625,
+      "EUIt_MAE": 0.2174830287694931,
+      "EUIt_NMAE": 0.01770426624081282,
+      "EG_R2": 0.9696111083030701,
+      "EG_MAE": 0.027771634981036186,
+      "EG_NMAE": 0.025508444583908885,
+      "H_R2": 0.9920539855957031,
+      "H_MAE": 0.023619845509529114,
+      "H_NMAE": 0.012812984146330463
+    },
+    {
+      "fold": 2,
+      "EUIt_R2": 0.9845004677772522,
+      "EUIt_MAE": 0.20357723534107208,
+      "EUIt_NMAE": 0.016572261272243774,
+      "EG_R2": 0.9734398126602173,
+      "EG_MAE": 0.0257102157920599,
+      "EG_NMAE": 0.023615016372638117,
+      "H_R2": 0.9922316670417786,
+      "H_MAE": 0.02483481727540493,
+      "H_NMAE": 0.013472066102142811
+    },
+    {
+      "fold": 3,
+      "EUIt_R2": 0.9822490811347961,
+      "EUIt_MAE": 0.20694564282894135,
+      "EUIt_NMAE": 0.016846467417478174,
+      "EG_R2": 0.9740723371505737,
+      "EG_MAE": 0.024589648470282555,
+      "EG_NMAE": 0.022585767304313005,
+      "H_R2": 0.9905521869659424,
+      "H_MAE": 0.025839295238256454,
+      "H_NMAE": 0.014016962139170763
+    },
+    {
+      "fold": 4,
+      "EUIt_R2": 0.9827179908752441,
+      "EUIt_MAE": 0.2051953822374344,
+      "EUIt_NMAE": 0.016703986968874138,
+      "EG_R2": 0.9720219969749451,
+      "EG_MAE": 0.026841754093766212,
+      "EG_NMAE": 0.024654342364188685,
+      "H_R2": 0.990389883518219,
+      "H_MAE": 0.02707020565867424,
+      "H_NMAE": 0.01468469028735036
+    },
+    {
+      "fold": 5,
+      "EUIt_R2": 0.9831335544586182,
+      "EUIt_MAE": 0.21260330080986023,
+      "EUIt_NMAE": 0.017307030633653585,
+      "EG_R2": 0.9711757898330688,
+      "EG_MAE": 0.026913747191429138,
+      "EG_NMAE": 0.024720468537293462,
+      "H_R2": 0.992344856262207,
+      "H_MAE": 0.023099398240447044,
+      "H_NMAE": 0.012530658734631252
+    }
+  ],
+  "cv_metrics": {
+    "quantiles": {
+      "low": 0.1,
+      "high": 0.9
+    },
+    "per_target": [
+      {
+        "target": "EUIt",
+        "mae": 0.20916091918945312,
+        "rmse": 0.27854571670037265,
+        "r2": 0.9832737907397805,
+        "nmae": 0.017026799915782518,
+        "q_low": 67.83394317626953,
+        "q_high": 73.31957702636718,
+        "low_tail_mae": 0.28269989013671876,
+        "high_tail_mae": 0.19406780242919922,
+        "tail_mae": 0.238383846282959,
+        "tail_nmae": 0.019405700020557512
+      },
+      {
+        "target": "EG",
+        "mae": 0.02636539936065674,
+        "rmse": 0.03322170255307559,
+        "r2": 0.9721033682927761,
+        "nmae": 0.02421680980712418,
+        "q_low": 2.131954789161682,
+        "q_high": 2.654771375656128,
+        "low_tail_mae": 0.027189726829528808,
+        "high_tail_mae": 0.030431714057922363,
+        "tail_mae": 0.028810720443725586,
+        "tail_nmae": 0.026462854889771244
+      },
+      {
+        "target": "H",
+        "mae": 0.024892711877822875,
+        "rmse": 0.03177052453548857,
+        "r2": 0.9915069212167685,
+        "nmae": 0.013503471717459649,
+        "q_low": 6.514384746551514,
+        "q_high": 7.428639602661133,
+        "low_tail_mae": 0.02598052263259888,
+        "high_tail_mae": 0.029192502498626708,
+        "tail_mae": 0.027586512565612793,
+        "tail_nmae": 0.014964769368699163
+      }
+    ],
+    "aggregate": {
+      "mean_target_mae": 0.08680634347597758,
+      "mean_target_nmae": 0.01824902714678878,
+      "mean_tail_mae": 0.09826035976409912,
+      "mean_tail_nmae": 0.020277774759675973,
+      "mean_r2": 0.9822946934164417,
+      "worst_target_nmae": 0.02421680980712418
+    }
+  },
+  "optuna": {
+    "best_value": 0.023712322805859855,
+    "best_trial_number": 36,
+    "best_trial_attributes": {
+      "mean_target_nmae": 0.018530401520460406,
+      "mean_tail_nmae": 0.020727685141597802,
+      "mean_r2": 0.9816523495488642
+    }
+  },
+  "training_data_source": "simulated_only",
+  "benchmark_leakage_checked": true,
+  "imported_publication_artifacts_used_for_training": false,
+  "source_run_id": "20260405_highest_precision_2000_compare",
+  "cv_predictions_path": "results/surrogate/cv_predictions.csv",
+  "model_checkpoint": "not_included",
+  "model_checkpoint_note": "The trained checkpoint is omitted from the Git package; use the released summaries and tables for lightweight reproducibility checks."
+}

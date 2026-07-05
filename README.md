@@ -2,65 +2,108 @@
 
 [![Python](https://img.shields.io/badge/Python-%3E%3D3.10-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Journal](https://img.shields.io/badge/Journal-Applied%20Energy-2f855a.svg)](https://www.sciencedirect.com/journal/applied-energy)
 
-This repository contains a public Python package for surrogate-conditioned urban morphology analysis, including morphology generation, synthetic response construction, surrogate helpers, optimisation utilities, metrics, and figure helpers.
+This branch is the public APEN reproducibility package for a surrogate-conditioned benchmark study in block-scale urban energy design. It contains the public Python package, a canonical 2000-row analytic-response dataset, processed optimizer/result tables, figure-data files, and validation notes for lightweight inspection.
 
 ## Overview
 
-The current archive includes:
+The archive supports:
 
-- `paper_repro/`: public source modules for morphology generation, synthetic response construction, surrogate helpers, optimisation utilities, metrics, and figure helpers.
-- `tests/`: smoke and regression tests for the public source modules.
-- `data/`: public data inventory placeholders for release-time metadata.
-- `docs/`: usage and reproducibility notes.
+- Loading the canonical 2000-row morphology descriptor dataset and analytic targets.
+- Inspecting DDPG and NSGA-II retained optimizer result tables.
+- Reading surrogate validation, feasible-projection, physical-stress, and climate-sensitivity summaries.
+- Re-running public unit tests and release checks from committed files.
+
+The canonical dataset uses `fallback_analytic` response generation. It is not a direct annual EnergyPlus/Radiance dataset. Selected physical stress-test and climate-sensitivity outputs are released separately as processed summary tables.
 
 ## Repository Structure
 
 ```text
 .
-|-- data/                        # Public data inventory, dictionaries, samples, or redistributable data
-|   |-- catalog.yaml
-|   |-- data_dictionary.md
+|-- data/
+|   |-- catalog.yaml                         # Public file inventory with SHA-256 hashes
+|   |-- data_dictionary.md                   # Field definitions and units
+|   |-- generated/canonical_2000/            # Canonical analytic-response dataset
 |   `-- README.md
-|-- docs/                        # Usage and reproducibility notes
-|   |-- reproducibility.md
-|   |-- usage.md
-|-- paper_repro/                  # Public Python package
-|   |-- config.py
-|   |-- metrics.py
-|   |-- morphology.py
-|   |-- optimizers.py
-|   |-- simulation.py
-|   `-- surrogate.py
-|-- tests/                       # Public tests or smoke checks
-|   |-- conftest.py
-|   |-- test_ddpg_reward_contract.py
-|   |-- test_metrics.py
-|   |-- test_morphology.py
-|   |-- test_simulation_scale_study.py
-|   `-- test_surrogate_selection.py
-|-- pyproject.toml                # Python package metadata
-|-- uv.lock                       # Locked dependency snapshot
-|-- LICENSE                         # MIT License
-`-- README.md                      # Project documentation
+|-- docs/
+|   |-- reproducibility.md                   # Public release scope and checks
+|   `-- usage.md                            # Loading examples
+|-- paper_repro/                            # Public Python package
+|-- results/
+|   |-- climate_sensitivity/                 # Four-block cross-climate summaries
+|   |-- figure_data/                         # Final public figure-data tables
+|   |-- optimization/                        # DDPG and NSGA-II result tables
+|   |-- physical_stress/                     # 24-case physical stress-test summaries
+|   |-- projection/                          # Feasible-projection summaries
+|   `-- surrogate/                           # Surrogate assessment summaries
+|-- scripts/
+|   `-- validate_public_release.py           # Public package validator
+|-- tests/
+|-- pyproject.toml
+|-- uv.lock
+|-- LICENSE
+`-- README.md
 ```
 
-## Dependencies & Installation
+## Installation
 
-Create a Python environment and install the public package. Install the project from `pyproject.toml`.
+Use Python 3.10 or newer.
 
 ```bash
 python -m venv .venv
 python -m pip install -e ".[test]"
 ```
 
+With `uv`:
+
+```bash
+uv sync
+```
+
+## Quick Verification
+
+```bash
+python -m pytest -q
+python scripts/validate_public_release.py
+python -m compileall paper_repro scripts tests
+```
+
+With `uv`:
+
+```bash
+uv run pytest -q
+uv run python scripts/validate_public_release.py
+uv run python -m compileall paper_repro scripts tests
+```
+
+## Data Package
+
+Key public files:
+
+- `data/generated/canonical_2000/simulated_samples.csv`: 2000 rows.
+- `data/generated/canonical_2000/simulated_blocks.jsonl`: 2000 generated block records.
+- `results/optimization/ddpg_results.csv`: 60 retained DDPG rows.
+- `results/optimization/nsga2_results.csv`: 2000 retained NSGA-II rows.
+- `results/physical_stress/physical_stress_cases.csv`: 24 processed stress-test cases.
+- `results/climate_sensitivity/climate_case_results.csv`: 12 four-block climate rows.
+- `results/figure_data/manifest.json`: manifest for final public figure-data tables.
+
+See `data/catalog.yaml` for hashes, row counts, and release roles.
+
+## Data Boundary
+
+The 2000-row dataset is generated by analytic response construction over procedurally generated block morphologies. It supports the shared surrogate benchmark and lightweight reproducibility checks. It should not be described as direct annual EnergyPlus/Radiance output.
+
+The external spreadsheet expected by older benchmark code, `data/external/benchmark/dataset.xlsx`, is not included and is not required for the current analytic-response benchmark package. The trained model checkpoint `surrogate.pt` is also not committed; the package releases validation tables and processed summaries instead.
+
 ## Usage
 
-Run all commands from the repository root. See `docs/usage.md` for public commands that match the files included in this release.
+See `docs/usage.md` for examples that load the public dataset and result tables.
 
-## Data Availability
+## Reproducibility Notes
 
-See `data/README.md` and `data/catalog.yaml` for the public data inventory.
+See `docs/reproducibility.md` for supported checks, row-count expectations, and files that are intentionally outside this Git package.
 
 ## License
 

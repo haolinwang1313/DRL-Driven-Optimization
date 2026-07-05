@@ -1,0 +1,14 @@
+method,scenario,seeds,queries_per_seed,retained_rows_per_seed,retained_object,total_retained_rows,unique_objective_tuples,unique_feasible_projections,naturally_pareto_archive_producing,archive_hv_igd_role
+CMA-ES,Balanced_Performance,20,24000,100,top-reward queried archive,2000,1,16,False,diagnostic
+CMA-ES,Energy_Generation_Focus,20,24000,100,top-reward queried archive,2000,1,17,False,diagnostic
+CMA-ES,Energy_Saving_Focus,20,24000,100,top-reward queried archive,2000,1,19,False,diagnostic
+DDPG,Balanced_Performance,20,24000,1,best scalarized candidate,20,20,17,False,diagnostic
+DDPG,Energy_Generation_Focus,20,24000,1,best scalarized candidate,20,20,18,False,diagnostic
+DDPG,Energy_Saving_Focus,20,24000,1,best scalarized candidate,20,20,18,False,diagnostic
+FeasiblePoolRandom,Balanced_Performance,20,24000,1,feasible-pool best,20,1,1,False,diagnostic
+FeasiblePoolRandom,Energy_Generation_Focus,20,24000,1,feasible-pool best,20,1,1,False,diagnostic
+FeasiblePoolRandom,Energy_Saving_Focus,20,24000,1,feasible-pool best,20,1,1,False,diagnostic
+NSGA-II,NSGA-II,20,24000,100,final population,2000,1743,51,True,primary
+RandomSearch,Balanced_Performance,20,24000,100,top-reward queried archive,2000,2000,743,False,diagnostic
+RandomSearch,Energy_Generation_Focus,20,24000,100,top-reward queried archive,2000,2000,750,False,diagnostic
+RandomSearch,Energy_Saving_Focus,20,24000,100,top-reward queried archive,2000,2000,689,False,diagnostic

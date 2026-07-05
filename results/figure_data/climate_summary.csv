@@ -1,0 +1,4 @@
+station,mean_delta_EUIt,mean_delta_EG,mean_delta_H,energyplus_success_count,radiance_success_count
+Beijing,13.467250000000003,0.1348348679999999,-0.0562500000000003,4,4
+Guangzhou,-2.971749999999993,-0.057495501,-0.0249999999999999,4,4
+Harbin,55.6805,-0.0440046269999999,-0.675,4,4
