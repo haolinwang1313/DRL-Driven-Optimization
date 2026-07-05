@@ -440,14 +440,14 @@ The parity panels in Fig.~\ref{fig:data-surrogate} show that the selected DNN cl
 
 \subsection{DDPG training behaviour}
 
-Figure~\ref{fig:ddpg-training} describes how the DDPG agents interact with the guarded surrogate during training. Across the three preference scenarios, rewards increase rapidly during early training and then enter a high-reward region with visible seed-to-seed variability. Because each episode contains a fixed sequence of 40 surrogate queries, the trajectories represent policy-training behaviour on a static response surface. They should therefore be read as search trajectories over descriptor queries, not as the physical evolution of one block design.
+Figure~\ref{fig:ddpg-training} describes how the DDPG agents interact with the guarded surrogate during training. Across the three preference scenarios, episode returns increase rapidly during early training and then enter a high-return region with visible seed-to-seed variability. Because each episode contains a fixed sequence of 40 surrogate queries, the trajectories represent policy-training behaviour on a static response surface. They should therefore be read as search trajectories over descriptor queries, not as the physical evolution of one block design.
 
 The later portions of the curves remain informative. The agents can repeatedly reach favourable surrogate regions, yet the best-to-final gap indicates that late-stage regression remains present. This behaviour is consistent with the retained-output strategy used in Table~\ref{tab:optimizer-contract}, where one best scalarized candidate is retained from each seed. The training figure therefore supports the use of DDPG as a preference-conditioned search comparator, while the final method comparison must still be evaluated through retained outputs and feasible-block projection.
 
 \begin{figure}[H]
 \centering
 \stdfigure{ddpg_training_dynamics.pdf}
-\caption{DDPG training trajectories across the three preference scenarios.}
+\caption{DDPG training trajectories across the three preference scenarios. Each episode contains 40 surrogate-query steps, and the plotted return is the sum of the step rewards in that episode.}
 \label{fig:ddpg-training}
 \end{figure}
 

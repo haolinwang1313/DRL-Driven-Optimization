@@ -64,14 +64,14 @@
 - Claim boundary: Descriptive coverage diagnostics only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S2 (S2 A2_residual_diagnostics)
-- Source files: surrogate_parity_mean_predictions.csv
-- Claim boundary: Residual diagnostics describe analytic-target surrogate error only.
-- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
-
-### Supplementary Fig. S3 (S3 A3_scale_study)
+### Supplementary Fig. S2 (S2 A3_scale_study)
 - Source files: scale_study.csv
 - Claim boundary: Scale-study rows support the surrogate-selection rationale only.
+- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
+
+### Supplementary Fig. S3 (S3 A2_residual_diagnostics)
+- Source files: surrogate_parity_mean_predictions.csv
+- Claim boundary: Residual diagnostics describe analytic-target surrogate error only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
 ### Supplementary Fig. S4 (S4 B1_seed_diagnostics)
@@ -79,25 +79,25 @@
 - Claim boundary: Seed diagnostics remain Supplementary Information training evidence only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S5 (S5 B2_morphology_signatures)
-- Source files: morphology_signatures.csv
-- Claim boundary: Descriptor signatures are descriptive summaries, not stable design rules.
-- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
-
-### Supplementary Fig. S6 (S6 B3_hv_ceiling_diagnostics)
+### Supplementary Fig. S5 (S5 B3_hv_ceiling_diagnostics)
 - Source files: benchmark_hv_ceiling.csv
 - Claim boundary: HV ceiling and tuple-collapse panels remain supplementary diagnostics only.
 - Revision note: Moved ceiling and duplicate-collapse diagnostics into a readable two-panel Supplementary Information layout with short labels.
 
-### Supplementary Fig. S7 (S7 B4_optimizer_linked_gap_decomposition)
-- Source files: optimizer_linked_physical_gaps.csv
-- Claim boundary: These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.
-- Revision note: Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.
+### Supplementary Fig. S6 (S6 B2_morphology_signatures)
+- Source files: morphology_signatures.csv
+- Claim boundary: Descriptor signatures are descriptive summaries, not stable design rules.
+- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S8 (S8 B5_nonlinear_response_profiles)
+### Supplementary Fig. S7 (S7 B5_nonlinear_response_profiles)
 - Source files: scale_study.csv
 - Claim boundary: Selected surrogate response profiles illustrate local trends only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
+
+### Supplementary Fig. S8 (S8 B4_optimizer_linked_gap_decomposition)
+- Source files: optimizer_linked_physical_gaps.csv
+- Claim boundary: These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.
+- Revision note: Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.
 
 ### Supplementary Fig. S9 (S9 B6_climate_case_detail)
 - Source files: climate_case_results.csv

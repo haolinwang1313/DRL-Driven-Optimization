@@ -36,7 +36,7 @@
 - Unresolved visual concerns: None
 
 ### Main Fig. 6 (M3 ddpg_training_dynamics)
-- Source files: `ddpg_training_curves_summary.csv` (563e9c7b4738aab80c6e24ac9671eb8955e031cae015f776c96a037cd6242c03), `ddpg_seed_diagnostics.csv` (ceace85452fba6a4f6b3169870626bd0830ef359db49c24750af607744af202f)
+- Source files: `ddpg_training_curves_summary.csv` (36a74af74f7465ab3b48084815e31b36403507d14c93014468752fa8b4cd61ba), `ddpg_seed_diagnostics.csv` (bf356c2b98596fc41923a72ad91bbebfa7066b35d3f42e3b6fc17369ea7c21b6)
 - Claim boundary: Training dynamics describe serialized surrogate-query search only.
 - Revision note: Carried forward from the canonical round-2 candidate set without a layout change in this task.
 - Unresolved visual concerns: None
@@ -74,46 +74,46 @@
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 - Unresolved visual concerns: None
 
-### Supplementary Fig. S2 (S2 A2_residual_diagnostics)
-- Source files: `surrogate_parity_mean_predictions.csv` (5837b986d33d904cf641a57584e85718cbc64d64bffdb762665adf8886fe8c07)
-- Claim boundary: Residual diagnostics describe analytic-target surrogate error only.
-- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
-- Unresolved visual concerns: None
-
-### Supplementary Fig. S3 (S3 A3_scale_study)
+### Supplementary Fig. S2 (S2 A3_scale_study)
 - Source files: `scale_study.csv` (87120cdcbdb9cdd09560f4778f0351398933affa460de2884913fdb6554e9bf7)
 - Claim boundary: Scale-study rows support the surrogate-selection rationale only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 - Unresolved visual concerns: None
 
+### Supplementary Fig. S3 (S3 A2_residual_diagnostics)
+- Source files: `surrogate_parity_mean_predictions.csv` (5837b986d33d904cf641a57584e85718cbc64d64bffdb762665adf8886fe8c07)
+- Claim boundary: Residual diagnostics describe analytic-target surrogate error only.
+- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
+- Unresolved visual concerns: None
+
 ### Supplementary Fig. S4 (S4 B1_seed_diagnostics)
-- Source files: `ddpg_seed_diagnostics.csv` (ceace85452fba6a4f6b3169870626bd0830ef359db49c24750af607744af202f)
+- Source files: `ddpg_seed_diagnostics.csv` (bf356c2b98596fc41923a72ad91bbebfa7066b35d3f42e3b6fc17369ea7c21b6)
 - Claim boundary: Seed diagnostics remain Supplementary Information training evidence only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 - Unresolved visual concerns: None
 
-### Supplementary Fig. S5 (S5 B2_morphology_signatures)
-- Source files: `morphology_signatures.csv` (aa6df073123507e16a287b9407fb657b2875118f2be839926c4e4b4009287acd)
-- Claim boundary: Descriptor signatures are descriptive summaries, not stable design rules.
-- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
-- Unresolved visual concerns: None
-
-### Supplementary Fig. S6 (S6 B3_hv_ceiling_diagnostics)
+### Supplementary Fig. S5 (S5 B3_hv_ceiling_diagnostics)
 - Source files: `benchmark_hv_ceiling.csv` (fa862502f1966a89702ac730992db9f642cf304b3a6949d879a9207b370c4f4a)
 - Claim boundary: HV ceiling and tuple-collapse panels remain supplementary diagnostics only.
 - Revision note: Moved ceiling and duplicate-collapse diagnostics into a readable two-panel Supplementary Information layout with short labels.
 - Unresolved visual concerns: None
 
-### Supplementary Fig. S7 (S7 B4_optimizer_linked_gap_decomposition)
-- Source files: `optimizer_linked_physical_gaps.csv` (79d6291c83058eab43693346035444a30e2b97f3bac28ed993a11affe53e3383)
-- Claim boundary: These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.
-- Revision note: Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.
+### Supplementary Fig. S6 (S6 B2_morphology_signatures)
+- Source files: `morphology_signatures.csv` (aa6df073123507e16a287b9407fb657b2875118f2be839926c4e4b4009287acd)
+- Claim boundary: Descriptor signatures are descriptive summaries, not stable design rules.
+- Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 - Unresolved visual concerns: None
 
-### Supplementary Fig. S8 (S8 B5_nonlinear_response_profiles)
+### Supplementary Fig. S7 (S7 B5_nonlinear_response_profiles)
 - Source files: `scale_study.csv` (87120cdcbdb9cdd09560f4778f0351398933affa460de2884913fdb6554e9bf7)
 - Claim boundary: Selected surrogate response profiles illustrate local trends only.
 - Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
+- Unresolved visual concerns: None
+
+### Supplementary Fig. S8 (S8 B4_optimizer_linked_gap_decomposition)
+- Source files: `optimizer_linked_physical_gaps.csv` (79d6291c83058eab43693346035444a30e2b97f3bac28ed993a11affe53e3383)
+- Claim boundary: These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.
+- Revision note: Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.
 - Unresolved visual concerns: None
 
 ### Supplementary Fig. S9 (S9 B6_climate_case_detail)

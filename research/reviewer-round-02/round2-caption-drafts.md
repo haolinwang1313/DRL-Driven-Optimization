@@ -23,7 +23,7 @@ This candidate figure summarizes nMAE heatmap across repeated CV, leave-one-OSLI
 Revision note: Carried forward from the canonical round-2 candidate set without a layout change in this task.
 
 ### Main Fig. 6 (M3 ddpg_training_dynamics)
-This candidate figure summarizes Episode cumulative reward across 20 seeds.; Episode-end EUIt across 20 seeds.; Episode-end EG across 20 seeds.; Episode-end H across 20 seeds.. It uses ddpg_training_curves_summary.csv, ddpg_seed_diagnostics.csv and should be interpreted within the following boundary: Training dynamics describe serialized surrogate-query search only..
+This candidate figure summarizes Cumulative episode reward across 20 seeds.; Episode-end EUIt across 20 seeds.; Episode-end EG across 20 seeds.; Episode-end H across 20 seeds.. It uses ddpg_training_curves_summary.csv, ddpg_seed_diagnostics.csv and should be interpreted within the following boundary: Training dynamics describe serialized surrogate-query search only..
 Revision note: Carried forward from the canonical round-2 candidate set without a layout change in this task.
 
 ### Main Fig. 7 (M4 benchmark_fairness)
@@ -48,33 +48,33 @@ Revision note: Kept the same climate data while switching to the muted climate p
 This candidate figure summarizes Descriptor interquartile summaries for the 12 morphology descriptors.; OSLI frequency distribution.; Normalized nearest-neighbor distance distribution.. It uses descriptor_coverage.csv and should be interpreted within the following boundary: Descriptive coverage diagnostics only..
 Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S2 (S2 A2_residual_diagnostics)
+### Supplementary Fig. S2 (S2 A3_scale_study)
+This candidate figure summarizes Mean target nMAE across dataset scales.; Mean tail nMAE across dataset scales.; Mean R2 across dataset scales.; Selection objective across dataset scales.. It uses scale_study.csv and should be interpreted within the following boundary: Scale-study rows support the surrogate-selection rationale only..
+Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
+
+### Supplementary Fig. S3 (S3 A2_residual_diagnostics)
 This candidate figure summarizes EUIt residual distribution.; EG residual distribution.; H residual distribution.. It uses surrogate_parity_mean_predictions.csv and should be interpreted within the following boundary: Residual diagnostics describe analytic-target surrogate error only..
 Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S3 (S3 A3_scale_study)
-This candidate figure summarizes Mean target nMAE across dataset scales.; Mean tail nMAE across dataset scales.; Mean R² across dataset scales.; Selection objective across dataset scales.. It uses scale_study.csv and should be interpreted within the following boundary: Scale-study rows support the surrogate-selection rationale only..
-Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
-
 ### Supplementary Fig. S4 (S4 B1_seed_diagnostics)
-This candidate figure summarizes Best reward by scenario.; Final reward by scenario.; Plateau episode by scenario.; Best-to-final regression ratio by scenario.. It uses ddpg_seed_diagnostics.csv and should be interpreted within the following boundary: Seed diagnostics remain Supplementary Information training evidence only..
+This candidate figure summarizes Best episode return by scenario.; Final episode return by scenario.; Plateau episode by scenario.; Best-to-final regression ratio by scenario.. It uses ddpg_seed_diagnostics.csv and should be interpreted within the following boundary: Seed diagnostics remain Supplementary Information training evidence only..
 Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S5 (S5 B2_morphology_signatures)
-This candidate figure summarizes Median morphology descriptor signatures for representative retained-output groups.. It uses morphology_signatures.csv and should be interpreted within the following boundary: Descriptor signatures are descriptive summaries, not stable design rules..
-Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
-
-### Supplementary Fig. S6 (S6 B3_hv_ceiling_diagnostics)
+### Supplementary Fig. S5 (S5 B3_hv_ceiling_diagnostics)
 This candidate figure summarizes HV fraction of the theoretical ceiling alongside clipped-utopia fraction.; Unique clipped objective tuples and unique non-dominated tuples on a log-scaled count axis.. It uses benchmark_hv_ceiling.csv and should be interpreted within the following boundary: HV ceiling and tuple-collapse panels remain supplementary diagnostics only..
 Revision note: Moved ceiling and duplicate-collapse diagnostics into a readable two-panel Supplementary Information layout with short labels.
 
-### Supplementary Fig. S7 (S7 B4_optimizer_linked_gap_decomposition)
-This candidate figure summarizes EUIt projection and cross-model gap decomposition for optimizer-linked cases.; EG projection and cross-model gap decomposition for optimizer-linked cases.; H projection and cross-model gap decomposition for optimizer-linked cases.. It uses optimizer_linked_physical_gaps.csv and should be interpreted within the following boundary: These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark..
-Revision note: Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.
+### Supplementary Fig. S6 (S6 B2_morphology_signatures)
+This candidate figure summarizes Median morphology descriptor signatures for representative retained-output groups.. It uses morphology_signatures.csv and should be interpreted within the following boundary: Descriptor signatures are descriptive summaries, not stable design rules..
+Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
 
-### Supplementary Fig. S8 (S8 B5_nonlinear_response_profiles)
+### Supplementary Fig. S7 (S7 B5_nonlinear_response_profiles)
 This candidate figure summarizes OSR to EUIt surrogate response profile.; FAR to EG surrogate response profile.; SVF to H surrogate response profile.; Theta to H surrogate response profile.. It uses scale_study.csv and should be interpreted within the following boundary: Selected surrogate response profiles illustrate local trends only..
 Revision note: Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split.
+
+### Supplementary Fig. S8 (S8 B4_optimizer_linked_gap_decomposition)
+This candidate figure summarizes EUIt projection and cross-model gap decomposition for optimizer-linked cases.; EG projection and cross-model gap decomposition for optimizer-linked cases.; H projection and cross-model gap decomposition for optimizer-linked cases.. It uses optimizer_linked_physical_gaps.csv and should be interpreted within the following boundary: These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark..
+Revision note: Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.
 
 ### Supplementary Fig. S9 (S9 B6_climate_case_detail)
 This candidate figure summarizes Per-block ΔEUIt heatmap across Beijing, Guangzhou, and Harbin.; Per-block ΔEG heatmap across Beijing, Guangzhou, and Harbin.; Per-block ΔH heatmap across Beijing, Guangzhou, and Harbin.. It uses climate_case_results.csv and should be interpreted within the following boundary: Case-level climate details remain limited to four blocks and three additional climates..

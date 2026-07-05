@@ -57,19 +57,19 @@ OSLI & integer & $0$--$8$ & open-space cell \\
 \newcommand{\EvaluationModeTable}{%
 \begin{center}
 \footnotesize
-\begin{tabular}{llll}
+\begin{tabular}{lllll}
 \toprule
-Mode & Source & Output & Boundary \\
+Mode & Source & Output & Use & Limit \\
 \midrule
-Analytic response generation & generated descriptors & EUIt, EG, H & analytic surface \\
-Surrogate prediction & 12 descriptors & DNN outputs & selected checkpoint \\
-Feasible projection & descriptor candidate & nearest block & nearest neighbour \\
-Physical stress test & locked blocks & physical outputs & 24 cases \\
-Climate sensitivity & four blocks & weather deltas & no retraining \\
+Analytic response generation & generated descriptors & EUIt, EG, H & target assignment & analytic surface \\
+Surrogate prediction & 12 descriptors & DNN outputs & optimizer calls & selected checkpoint \\
+Feasible projection & descriptor candidate & nearest block & morphology mapping & nearest neighbour \\
+Physical stress test & locked blocks & physical outputs & cross-model check & 24 cases \\
+Climate sensitivity & four blocks & weather deltas & climate response & no retraining \\
 \bottomrule
 \end{tabular}
 \end{center}
-\tablecaptionstyle{\textbf{Revised Table 2 excerpt.} Evaluation modes are separated by source, output, and interpretation boundary.}
+\tablecaptionstyle{\textbf{Revised Table 2 excerpt.} Evaluation modes are separated by source, output, use, and methodological limit.}
 }
 \newcommand{\SurrogateMetricsTable}{%
 \begin{center}
@@ -90,15 +90,15 @@ Feature-tail holdout & 0.0230 & 0.0287 & 0.0198 & 0.986 & 0.983 & 0.992 \\
 \newcommand{\BenchmarkTable}{%
 \begin{center}
 \footnotesize
-\begin{tabular}{llrrl}
+\begin{tabular}{lllrrl}
 \toprule
-Method & Scenario & HV & IGD & Note \\
+Method & Scenario & Retained set & HV & IGD & Note \\
 \midrule
-DDPG & Balanced & 0.661912 & 0.465522 & scalarized output \\
-DDPG & Saving & 1.002757 & 0.276529 & scalarized output \\
-DDPG & Generation & 1.170428 & 0.097551 & scalarized output \\
-NSGA-II & equal-size 20 & 1.330995 & 0.004710 & common retained size \\
-NSGA-II & full archive & 1.330999 & 0.004947 & 2000 rows \\
+DDPG & Balanced & 20 rows & 0.661912 & 0.465522 & scalarized output \\
+DDPG & Saving & 20 rows & 1.002757 & 0.276529 & scalarized output \\
+DDPG & Generation & 20 rows & 1.170428 & 0.097551 & scalarized output \\
+NSGA-II & all & 20 rows & 1.330995 & 0.004710 & equal-size subset \\
+NSGA-II & all & 2000 rows & 1.330999 & 0.004947 & full retained archive \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -375,14 +375,14 @@ This module provides a controlled morphology-to-performance response surface for
 \revisionloc{Main manuscript, Section 2.6 software-workflow paragraph.}
 The selected physics-based and climate-sensitive cases are implemented through a Grasshopper/Rhino-based workflow that links generated block geometry to Honeybee, EnergyPlus, and Radiance components. This workflow is used only for the locked case calculations in the physics-based cross-model stress test and cross-climate sensitivity analysis. The 2000-sample optimizer benchmark remains an analytic response-generation dataset, which provides the controlled response surface for comparing DDPG and NSGA-II under repeated surrogate queries.
 \revisionseparator
-\revisionloc{Supplementary Material, Section S5.3 paragraph.}
+\revisionloc{Supplementary Information, Section S5.3 paragraph.}
 The 18 direct feasible cases completed both EnergyPlus and Radiance-component runs. EUIt agreement is weak, EG is represented by a GHI-based rooftop-PV proxy, and H is represented by January 20 windowsill direct-sun hours. The nMAE and rank-correlation values therefore define a stress-test boundary for the tested direct cases.
 \end{revisionbox}
 \responseheading{Local references.}
 \begin{responsereferences}
 \referenceitem{Javanroodi, K., Perera, A. T. D., et al. (2023). Designing climate resilient energy systems in complex urban areas considering urban morphology: A technical review. \textit{Advances in Applied Energy}, 12. \responsedoi{https://doi.org/10.1016/j.adapen.2023.100155}}
 \referenceitem{Du, L., Wang, H., et al. (2025). Impact of block form on building energy consumption, urban microclimate and solar potential: A case study of Wuhan, China. \textit{Energy and Buildings}, 328. \responsedoi{https://doi.org/10.1016/j.enbuild.2024.115224}}
-\referenceitem{Wang, H., Wu, Z., Gu, W., et al. (2026). Towards climate-resilient cities: Assessing and planning urban energy demand under extreme climate events. \textit{Energy and Buildings}, 337, 117436. \responsedoi{https://doi.org/10.1016/j.enbuild.2026.117436}}
+\referenceitem{Wang, H., Wu, Z., Gu, W., et al. (2026). Towards climate-resilient cities: Assessing and planning urban energy demand under extreme climate events. \textit{Energy and Buildings}, 360, 117436. \responsedoi{https://doi.org/10.1016/j.enbuild.2026.117436}}
 \end{responsereferences}
 
 \comment{R1-5}
@@ -411,7 +411,7 @@ The descriptor set in Table 1 includes FAR, SD, AF, AR\_ew, AR\_ns, SVF, BD, OSR
 \revisionloc{Main manuscript, Table 1 excerpt.}
 \CompactDescriptorTable
 \revisionseparator
-\revisionloc{Supplementary Material, Table S2 excerpt.}
+\revisionloc{Supplementary Information, Table S2 excerpt.}
 \begin{center}
 \footnotesize
 \begin{tabular}{lll}
@@ -427,7 +427,7 @@ PCA components for 95\% variance & 6 & descriptor space is structured \\
 \end{tabular}
 \end{center}
 \revisionseparator
-\revisionloc{Supplementary Material, Fig.~S1.}
+\revisionloc{Supplementary Information, Fig.~S1.}
 \compactfig{0.86}{A1_descriptor_distributions.pdf}
 \figcaptionstyle{\textbf{Fig.~S1 excerpt.} Descriptor distributions and nearest-neighbour distances in the generated morphology pool.}
 \end{revisionbox}
@@ -489,7 +489,7 @@ In this study, the analytic response generator is the target-assignment module t
 \compactfig{0.86}{physical_cross_model_stress_test.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~9.} Cross-model stress test for 18 direct generated feasible blocks.}
 \revisionseparator
-\revisionloc{Supplementary Material, Table S4 excerpt.}
+\revisionloc{Supplementary Information, Table S4 excerpt.}
 \PhysicalSummaryTable
 \end{revisionbox}
 
@@ -523,7 +523,7 @@ The selected surrogate is assessed through repeated five-fold cross-validation, 
 \compactfig{0.86}{surrogate_robustness.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~5.} Surrogate assessment across random, grouped, and boundary-oriented validation regimes.}
 \revisionseparator
-\revisionloc{Supplementary Material, Section S2.2 paragraph.}
+\revisionloc{Supplementary Information, Section S2.2 paragraph.}
 Repeated five-fold cross-validation gives mean nMAE values of 0.0176 for EUIt, 0.0265 for EG, and 0.0145 for H. The corresponding Spearman correlations are 0.991, 0.984, and 0.995. These values support low error within the analytic response-generation regime.
 \end{revisionbox}
 
@@ -668,7 +668,7 @@ We thank the reviewer for this comment. We agree that the DDPG episode definitio
 
 We revised Sections 2.4 and 3.2, Figs. 2 and 6, and Supplementary Section S3.1 to define one episode as 40 surrogate-query steps and align the training-curve captions with that definition.
 
-The revised explanation makes the reward at each step depend on the surrogate-predicted normalized target vector and preference weighting. The episode axis therefore describes training progress in descriptor-query space, not a physical calendar or dynamic urban system.
+The revised explanation makes the reward at each step depend on the surrogate-predicted normalized target vector and preference weighting. Because each episode contains 40 surrogate-query steps, the plotted training quantity is cumulative episode return rather than a single-step reward. The episode axis therefore describes training progress in descriptor-query space, not a physical calendar or dynamic urban system.
 
 This explanation is included because the word episode is familiar from sequential control, but here it only denotes the fixed number of surrogate interactions used for training.
 }
@@ -682,16 +682,16 @@ We made three corresponding revisions. First, we rewrote the episode definition 
 The 40-step horizon therefore functions as a fixed sequence of policy-training queries on a static surrogate response surface.
 \revisionseparator
 \revisionloc{Main manuscript, Section 3.2 paragraphs.}
-Figure 6 describes how the DDPG agents interact with the guarded surrogate during training. Across the three preference scenarios, rewards increase rapidly during early training and then enter a high-reward region with visible seed-to-seed variability. Because each episode contains a fixed sequence of 40 surrogate queries, the trajectories represent policy-training behaviour on a static response surface. They should therefore be read as search trajectories over descriptor queries, not as the physical evolution of one block design.
+Figure 6 describes how the DDPG agents interact with the guarded surrogate during training. Across the three preference scenarios, episode returns increase rapidly during early training and then enter a high-return region with visible seed-to-seed variability. Because each episode contains a fixed sequence of 40 surrogate queries, the trajectories represent policy-training behaviour on a static response surface. They should therefore be read as search trajectories over descriptor queries, not as the physical evolution of one block design.
 
 The later portions of the curves remain informative. The agents can repeatedly reach favourable surrogate regions, yet the best-to-final gap indicates that late-stage regression remains present. This behaviour is consistent with the retained-output strategy used in Table 4, where one best scalarized candidate is retained from each seed.
 \revisionseparator
 \revisionloc{Main manuscript, Fig.~6.}
 \compactfig{0.86}{ddpg_training_dynamics.pdf}
-\figcaptionstyle{\textbf{Revised Fig.~6.} DDPG training trajectories across the three preference scenarios.}
+\figcaptionstyle{\textbf{Revised Fig.~6.} DDPG training trajectories across the three preference scenarios. Each episode contains 40 surrogate-query steps, and the plotted return is the sum of the step rewards in that episode.}
 \revisionseparator
-\revisionloc{Supplementary Material, Section S3.1 paragraph.}
-Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best reward, final reward, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries on a static surrogate response surface.
+\revisionloc{Supplementary Information, Section S3.1 paragraph.}
+Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best episode return, final episode return, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries on a static surrogate response surface.
 \end{revisionbox}
 
 \comment{R1-14}
@@ -724,10 +724,10 @@ The climate analysis in Fig. 10 evaluates four selected blocks under three addit
 \compactfig{0.86}{cross_climate_sensitivity.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~10.} Cross-climate sensitivity of four selected blocks relative to baseline weather.}
 \revisionseparator
-\revisionloc{Supplementary Material, Table S5 excerpt.}
+\revisionloc{Supplementary Information, Table S5 excerpt.}
 \ClimateTable
 \revisionseparator
-\revisionloc{Supplementary Material, Section S6.3 paragraph.}
+\revisionloc{Supplementary Information, Section S6.3 paragraph.}
 The rank-stability results indicate target-specific climate sensitivity. EG has stable ordering across the three additional climates, with Spearman $\rho$ equal to 1.0 in each case. H shows lower ordering stability, with Spearman $\rho$ values of 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. EUIt ordering remains stable for Beijing and Guangzhou but changes under Harbin, where Spearman $\rho$ is 0.2. These results support a limited climate-sensitivity interpretation for the selected four-block set.
 \end{revisionbox}
 
@@ -820,10 +820,10 @@ The response directions follow the design objectives: lower EUIt is preferred, w
 \revisionloc{Main manuscript, Table 2 excerpt.}
 \EvaluationModeTable
 \revisionseparator
-\revisionloc{Supplementary Material, Section S1.4 opening paragraph.}
+\revisionloc{Supplementary Information, Section S1.4 opening paragraph.}
 The analytic response generator is the target-assignment module that maps a generated morphology descriptor vector, denoted $\mathbf{x}$, to three target responses, denoted $\mathbf{y}^{ana}=[\mathrm{EUIt},\mathrm{EG},H]^\mathsf{T}$. The mapping uses explicit formulas that combine density, openness, aspect-ratio, sky-view, orientation, and open-space-position terms to represent demand, rooftop-generation, and sunlight-access responses.
 \revisionseparator
-\revisionloc{Supplementary Material, analytic equations and clipping ranges.}
+\revisionloc{Supplementary Information, analytic equations and clipping ranges.}
 \AnalyticEquations
 \end{revisionbox}
 
@@ -864,7 +864,7 @@ The physics-based cross-model stress test completed all locked cases and provide
 \compactfig{0.82}{physical_cross_model_stress_test.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~9.} Cross-model stress test for 18 direct generated feasible blocks.}
 \revisionseparator
-\revisionloc{Supplementary Material, Section S5.4 paragraphs.}
+\revisionloc{Supplementary Information, Section S5.4 paragraphs.}
 The locked physical workflow did not produce annual roof-plane irradiance outputs for the direct stress-test cases. The unavailable roof-irradiance pathway is therefore kept separate from the completed EUIt, EG proxy, and H calculations.
 
 EG is summarized with the GHI-based rooftop-PV proxy in the stress-test table. This proxy preserves a generation-related comparison across the locked cases, but it should be interpreted as a simplified rooftop-PV indicator rather than a full annual roof-irradiance result.
@@ -897,10 +897,10 @@ The physics-based cross-model stress test completed all locked cases and provide
 \compactfig{0.86}{physical_cross_model_stress_test.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~9.} Cross-model stress test for 18 direct generated feasible blocks.}
 \revisionseparator
-\revisionloc{Main manuscript and Supplementary Material, physical summary excerpt.}
+\revisionloc{Main manuscript and Supplementary Information, physical summary excerpt.}
 \PhysicalSummaryTable
 \revisionseparator
-\revisionloc{Supplementary Material, Section S5.2 paragraph.}
+\revisionloc{Supplementary Information, Section S5.2 paragraph.}
 The physics-based stress-test set contains 24 locked cases. The 18 direct feasible cases are used to compare analytic response-generator values with physics-based outputs without optimizer projection. The six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated block and then to physics-based result. These two subsets should not be merged into a single parity plot because they answer different questions.
 \end{revisionbox}
 
@@ -934,10 +934,10 @@ The morphology generator first constructs feasible block layouts and only then c
 \compactfig{0.86}{data_and_surrogate_validation.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~4.} Descriptor coverage and cross-validated surrogate predictions.}
 \revisionseparator
-\revisionloc{Supplementary Material, Section S1.2 paragraph.}
+\revisionloc{Supplementary Information, Section S1.2 paragraph.}
 For each generated block, the open-space index is sampled from 0 to 8, theta is sampled uniformly from -45 deg to 45 deg, and each populated cell receives a randomly sampled prototype and a floor count sampled within that prototype range. Descriptor values are calculated only after this geometry-generation step. This order keeps the generated feasible block as the primary object and treats the 12 surrogate inputs as derived morphology descriptors.
 \revisionseparator
-\revisionloc{Supplementary Material, Table S2 and Fig.~S1 excerpts.}
+\revisionloc{Supplementary Information, Table S2 and Fig.~S1 excerpts.}
 \begin{center}
 \footnotesize
 \begin{tabular}{lll}
@@ -990,8 +990,8 @@ The DDPG environment serializes repeated queries to a static guarded surrogate. 
 \revisionloc{Main manuscript, Section 3.2 DDPG training paragraph.}
 Because each episode contains a fixed sequence of 40 surrogate queries, the trajectories represent policy-training behaviour on a static response surface. They should therefore be read as search trajectories over descriptor queries, not as the physical evolution of one block design.
 \revisionseparator
-\revisionloc{Supplementary Material, Section S3.1 paragraph.}
-Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best reward, final reward, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries on a static surrogate response surface.
+\revisionloc{Supplementary Information, Section S3.1 paragraph.}
+Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best episode return, final episode return, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries on a static surrogate response surface.
 \end{revisionbox}
 
 \comment{R2-6}
@@ -1062,7 +1062,7 @@ We made four corresponding revisions. First, we revised Section 2.2 to identify 
 \revisionloc{Main manuscript, Section 2.2 paragraph.}
 The response directions follow the design objectives: lower EUIt is preferred, while higher EG and H are preferred. The active 2000-sample pool is the largest nested sample regime used for the selected DNN surrogate. The full equations, station-bias convention, stochastic terms, and clipping ranges are given in Supplementary Section S1. Table 2 distinguishes analytic response assignment, surrogate prediction, feasible projection, and the post-optimization sensitivity analyses.
 \revisionseparator
-\revisionloc{Supplementary Material, Section S1.4 equations.}
+\revisionloc{Supplementary Information, Section S1.4 equations.}
 \AnalyticEquations
 \end{revisionbox}
 
@@ -1168,13 +1168,13 @@ We revised Section 2.4 and Fig. 3 to define the reward directly from normalized 
 
 The revised equations normalize targets to $z_i$, use the ideal vector $[0,1,1]^\mathsf{T}$, compute $d_w$ with the preference vector, and set $R=1-d_w$ with no large offset. This aligns the manuscript with the static surrogate-query implementation and makes the reward scale interpretable across all three preference settings.
 
-The response also explains why the correction matters: a bounded distance-based reward is interpretable across preference settings, while the removed offset could obscure the actual optimization signal.
+The response also explains why the correction matters: a bounded distance-based reward is interpretable across preference settings, while the removed offset could obscure the actual optimization signal. The verified training curves use the same reward contract as the revised equation. Because each episode contains 40 surrogate-query steps, the plotted training quantity is the cumulative episode return rather than a single-step reward.
 
 The same notation is now used in the method text, equation block, and Fig. 3 explanation.
 }
 \responseheading{Revisions made in the manuscript.}
 \responsepara{%
-We made three corresponding revisions. First, we corrected the reward equations in Section 2.4. Second, we revised Fig. 3 so that the reward path follows normalization, ideal-vector comparison, weighted distance, and $R=1-d_w$. Third, we removed the confusing large-offset notation from the response and manuscript text.
+We made four corresponding revisions. First, we corrected the reward equations in Section 2.4. Second, we revised Fig. 3 so that the reward path follows normalization, ideal-vector comparison, weighted distance, and $R=1-d_w$. Third, we verified the Fig. 6 and Supplementary Fig. S4 training logs against the same reward contract. Fourth, we removed the confusing large-offset notation from the response and manuscript text.
 }
 \responseheading{Relevant revised manuscript and supporting material.}
 \begin{revisionbox}
@@ -1214,7 +1214,7 @@ We made two corresponding revisions. First, we standardized target and morpholog
 \compactfig{0.80}{physical_cross_model_stress_test.pdf}
 \figcaptionstyle{\textbf{Revised figures.} Target units are attached to axes and table headings where applicable.}
 \revisionseparator
-\revisionloc{Supplementary Material, Table S5 note.}
+\revisionloc{Supplementary Information, Table S5 note.}
 $\Delta$EUIt is in kWh m$^{-2}$ y$^{-1}$, $\Delta$EG is in $10^6$ kWh y$^{-1}$, and $\Delta$H is in h. Positive values denote increases relative to the baseline weather file.
 \end{revisionbox}
 
@@ -1257,7 +1257,7 @@ The physical workflow is used as a selected cross-model stress test rather than 
 \revisionloc{Main manuscript, Discussion boundary paragraph.}
 These two sensitivity analyses do not convert the descriptor-space comparison into a physical ranking result. They instead define where the analytic response surface, generated feasible blocks, and selected physical workflows agree only partially, which is the boundary needed for early-stage design-support interpretation.
 \revisionseparator
-\revisionloc{Supplementary Material, Section S5.4 paragraph.}
+\revisionloc{Supplementary Information, Section S5.4 paragraph.}
 EG is summarized with the GHI-based rooftop-PV proxy in the stress-test table. This proxy preserves a generation-related comparison across the locked cases, but it should be interpreted as a simplified rooftop-PV indicator rather than a full annual roof-irradiance result.
 \end{revisionbox}
 
@@ -1337,13 +1337,13 @@ Relative to the Dongtai baseline, Harbin increases mean EUIt by 55.681 kWh m\(^{
 \compactfig{0.86}{cross_climate_sensitivity.pdf}
 \figcaptionstyle{\textbf{Revised Fig.~10.} Cross-climate sensitivity of four selected blocks relative to baseline weather.}
 \revisionseparator
-\revisionloc{Supplementary Material, Section S6.1 paragraph.}
+\revisionloc{Supplementary Information, Section S6.1 paragraph.}
 The baseline weather file corresponds to the station used for the case-study physical workflow. The cross-climate sensitivity analysis evaluates the same four generated feasible blocks under Harbin, Beijing, and Guangzhou weather. The climate buckets are severe cold for Harbin, cold for Beijing, and hot-summer warm-winter for Guangzhou. The TMY period is 2009--2023 for these weather files.
 \revisionseparator
-\revisionloc{Supplementary Material, Table S5 excerpt.}
+\revisionloc{Supplementary Information, Table S5 excerpt.}
 \ClimateTable
 \revisionseparator
-\revisionloc{Supplementary Material, Section S6.3 paragraph.}
+\revisionloc{Supplementary Information, Section S6.3 paragraph.}
 EG has stable ordering across the three additional climates, with Spearman $\rho$ equal to 1.0 in each case. H shows lower ordering stability, with Spearman $\rho$ values of 0.2 for Beijing, 0.4 for Guangzhou, and 0.2 for Harbin. EUIt ordering remains stable for Beijing and Guangzhou but changes under Harbin, where Spearman $\rho$ is 0.2.
 \end{revisionbox}
 

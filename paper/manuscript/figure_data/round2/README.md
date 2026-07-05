@@ -1,14 +1,14 @@
 # Round 2 Figure Data Package
 
-- Generated at: `2026-06-25T10:44:14+00:00`
-- Build commit: `f47ea38a68975fdf1c311614abf6035017903f9b`
+- Generated at: `2026-07-05T04:02:36+00:00`
+- Build commit: `b6dee545d094929de30b8381fdd770e8852c95ed`
 - Canonical reference hash: `a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc`
 
 ## Files
 ### descriptor_coverage.csv
 - Description: Coverage, PCA, OSLI frequency, and nearest-neighbor summaries for the 2000-row canonical descriptor dataset.
 - Representation family: `sample_coverage`
-- SHA-256: `cefa7377e3fb108e17439db483bf0d3e25758c7fcd2a1aaa5079b49caf4af098`
+- SHA-256: `c9c77a2738ec0cb359d6a6801b67689b8d2c4e46c632d7e21cfbe4fefbfe8897`
 - Source files: `artifacts/reviewer_round_02/20260625_round2_closure/data/sampling_coverage_summary.csv` (b9ad291c515b8399cb5c108fd5ff0f8a5a9d7a2457c4b633fc4d25ddfd1535f4), `artifacts/reviewer_round_02/20260625_round2_closure/data/simulated_samples.csv` (b8bc287ad3d9c8db9f7e090630fd3fe1f2276e0d3f8072f3fa13adcee8cba5cc)
 - Generation command: `uv run python tools/build_round2_revision_figures.py --data-root paper/manuscript/figure_data/round2 --output-dir paper/manuscript/figures/round2_candidate --build-gallery`
 - Valid for main text: `True`
@@ -48,18 +48,18 @@
 ### ddpg_training_curves_summary.csv
 - Description: Seed-aggregated DDPG training curves across scenarios and targets.
 - Representation family: `training_dynamics`
-- SHA-256: `563e9c7b4738aab80c6e24ac9671eb8955e031cae015f776c96a037cd6242c03`
-- Source files: `artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_logs_all_hp2000_full.json` (bda389cfb933f4f28fb20663087687c93fc9abd9a52b7bff0589cf9d99293476)
+- SHA-256: `36a74af74f7465ab3b48084815e31b36403507d14c93014468752fa8b4cd61ba`
+- Source files: `artifacts/publication/optimization/ddpg_logs_all_guardrail_full.json` (5569b5389f0c1d0520bf9ee5c1c132e9810c9a14e14aab8f7644fec720139fd8)
 - Generation command: `uv run python tools/build_round2_revision_figures.py --data-root paper/manuscript/figure_data/round2 --output-dir paper/manuscript/figures/round2_candidate --build-gallery`
 - Valid for main text: `True`
 - Valid for appendix: `True`
 - Claim boundary: One episode equals 40 sequential surrogate queries; this is serialized black-box search, not physical time evolution.
 
 ### ddpg_seed_diagnostics.csv
-- Description: Per-seed DDPG plateau, regression, and reward diagnostics.
+- Description: Per-seed DDPG plateau, regression, and episode-return diagnostics.
 - Representation family: `training_dynamics`
-- SHA-256: `ceace85452fba6a4f6b3169870626bd0830ef359db49c24750af607744af202f`
-- Source files: `artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_logs_all_hp2000_full.json` (bda389cfb933f4f28fb20663087687c93fc9abd9a52b7bff0589cf9d99293476)
+- SHA-256: `bf356c2b98596fc41923a72ad91bbebfa7066b35d3f42e3b6fc17369ea7c21b6`
+- Source files: `artifacts/publication/optimization/ddpg_logs_all_guardrail_full.json` (5569b5389f0c1d0520bf9ee5c1c132e9810c9a14e14aab8f7644fec720139fd8)
 - Generation command: `uv run python tools/build_round2_revision_figures.py --data-root paper/manuscript/figure_data/round2 --output-dir paper/manuscript/figures/round2_candidate --build-gallery`
 - Valid for main text: `False`
 - Valid for appendix: `True`

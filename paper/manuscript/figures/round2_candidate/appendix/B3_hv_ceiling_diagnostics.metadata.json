@@ -1,7 +1,7 @@
 {
-  "figure_id": "S6",
+  "figure_id": "S5",
   "semantic_name": "B3_hv_ceiling_diagnostics",
-  "planned_location": "Supplementary Fig. S6",
+  "planned_location": "Supplementary Fig. S5",
   "source_files": [
     {
       "path": "benchmark_hv_ceiling.csv",
@@ -13,8 +13,8 @@
   "filters": {},
   "reference_protocol": "benchmark-reference-v2",
   "reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
-  "script_commit": "8cc1945e652658999fdbfe2554685d0477156b90",
-  "timestamp": "2026-06-25T15:11:10+00:00",
+  "script_commit": "b6dee545d094929de30b8381fdd770e8852c95ed",
+  "timestamp": "2026-07-05T04:01:33+00:00",
   "figure_style_version": "round2-arial-v1",
   "font_policy": "strict_arial",
   "units": [
@@ -63,10 +63,10 @@
     ]
   },
   "visual_qa": {
-    "figure_id": "S6",
+    "figure_id": "S5",
     "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B3_hv_ceiling_diagnostics.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/B3_hv_ceiling_diagnostics.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:10 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.779 x 193.455 pts\nPage rot:        0\nFile size:       42738 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Sun Jul  5 12:01:33 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       494.779 x 193.455 pts\nPage rot:        0\nFile size:       42738 bytes\nOptimized:       no\nPDF version:     1.4\n",
     "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     19  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     26  0\n",
     "width_px": 1237,
     "height_px": 484,
@@ -106,17 +106,17 @@
         "detail": "Automatically generated candidates must not silently fall back to Times, NewTX, or TeX Gyre Termes."
       },
       {
-        "name": "S6 uses a log scale for tuple counts",
+        "name": "S5 uses a log scale for tuple counts",
         "passed": true,
         "detail": "The tuple-count panel should use a log-scaled x-axis."
       },
       {
-        "name": "S6 keeps only short labels",
+        "name": "S5 keeps only short labels",
         "passed": true,
         "detail": "Supplementary labels should stay compact and horizontal."
       },
       {
-        "name": "S6 avoids long scenario strings in rendered text",
+        "name": "S5 avoids long scenario strings in rendered text",
         "passed": true,
         "detail": "The figure should not rely on long categorical axis labels."
       }

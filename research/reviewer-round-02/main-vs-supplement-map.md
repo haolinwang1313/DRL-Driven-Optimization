@@ -14,13 +14,13 @@
 
 ## Supplementary Information figures
 - Fig. S1: A1 descriptor distributions.
-- Fig. S2: A2 residual diagnostics.
-- Fig. S3: A3 scale study.
+- Fig. S2: A3 scale study.
+- Fig. S3: A2 residual diagnostics.
 - Fig. S4: B1 seed diagnostics.
-- Fig. S5: B2 morphology signatures.
-- Fig. S6: B3 HV ceiling and output-contract diagnostics.
-- Fig. S7: B4 optimizer-linked gap decomposition.
-- Fig. S8: B5 nonlinear response profiles.
+- Fig. S5: B3 HV ceiling and output-contract diagnostics.
+- Fig. S6: B2 morphology signatures.
+- Fig. S7: B5 nonlinear response profiles.
+- Fig. S8: B4 optimizer-linked gap decomposition.
 - Fig. S9: B6 climate case detail.
 
 ## Candidate figure coverage

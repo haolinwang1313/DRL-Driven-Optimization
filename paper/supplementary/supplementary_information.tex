@@ -159,12 +159,11 @@ Figure~\ref{fig:s1-descriptor-distributions} summarizes the descriptor coverage 
 
 The nested scale study compares 500, 1000, 1500, and 2000 sample regimes. Each regime evaluates candidate DNN presets, and the selected 2000-sample tuned-standard model gives mean target nMAE = 0.0182, mean tail nMAE = 0.0203, mean $R^2$ = 0.9823, worst target nMAE = 0.0242, and selection objective = 0.0233. This setting is used as the shared surrogate environment for the optimizer comparison.
 
-\setcounter{figure}{2}
 \begin{figure}[H]
 \centering
 \sifigure{A3_scale_study.pdf}
 \caption{Dataset-scale surrogate-selection comparison across the 500, 1000, 1500, and 2000-row regimes.}
-\label{fig:s3-scale-study}
+\label{fig:s2-scale-study}
 \end{figure}
 
 The scale study shows gradual improvement as the sample pool increases from 500 to 2000 cases. The 2000-sample regime provides the lowest selection objective among the tested regimes and is therefore used for the shared surrogate environment in the main comparison. This selection should be interpreted within the analytic response-generation regime, since the target values are assigned by the morphology-to-performance response surface.
@@ -175,12 +174,11 @@ Repeated five-fold cross-validation gives mean nMAE values of 0.0176 for EUIt, 0
 
 \subsection*{S2.3 Residual and target-tail assessment}
 
-\setcounter{figure}{1}
 \begin{figure}[H]
 \centering
 \sifigure{A2_residual_\diagword.pdf}
 \caption{Residual assessment for EUIt, EG, and H under repeated cross-validated surrogate predictions.}
-\label{fig:s2-residual-assessment}
+\label{fig:s3-residual-assessment}
 \end{figure}
 
 The residual distributions are centered near zero for all three targets, indicating that the selected surrogate does not show a systematic offset under repeated cross-validation. The EG residuals are wider relative to their target range than the EUIt and H residuals, which is consistent with the slightly higher nMAE reported for EG in the validation summaries.
@@ -197,17 +195,16 @@ The outer-shell holdout gives nMAE values of 0.0278 for EUIt, 0.0335 for EG, and
 
 \subsection*{S3.1 DDPG seed-level behaviour}
 
-Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best reward, final reward, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries on a static surrogate response surface.
+Each DDPG scenario uses 20 seeds, 600 episodes, and 40 surrogate interactions per episode. The seed-level summaries record best episode return, final episode return, plateau episode, and best-to-final regression. These quantities describe policy-training behaviour under serialized surrogate queries on a static surrogate response surface.
 
-\setcounter{figure}{3}
 \begin{figure}[H]
 \centering
 \sifigure{B1_seed_\diagword.pdf}
-\caption{Seed-level DDPG training assessment across the three preference scenarios.}
+\caption{Seed-level DDPG episode-return assessment across the three preference scenarios.}
 \label{fig:s4-seed-assessment}
 \end{figure}
 
-Figure~\ref{fig:s4-seed-assessment} complements the training trajectories in the main manuscript by summarizing seed-level outcomes. The best reward and final reward panels distinguish the best point found during training from the final episode state. The plateau and best-to-final gap panels show that the DDPG runs can reach high-reward regions while still retaining late-stage variability across seeds.
+Figure~\ref{fig:s4-seed-assessment} complements the training trajectories in the main manuscript by summarizing seed-level outcomes. The best episode return and final episode return panels distinguish the best point found during training from the final episode state. The plateau and best-to-final gap panels show that the DDPG runs can reach high-return regions while still retaining late-stage variability across seeds.
 
 \subsection*{S3.2 Retained optimizer outputs}
 
@@ -242,15 +239,14 @@ The equal-size-20 comparison is the common retained-size setting available for t
 
 The theoretical maximum HV under the fixed normalized reference front is 1.331. NSGA-II reaches a fraction of 1.0 without clipped-utopia rows, while CMA-ES reaches the same ceiling because nearly all retained rows collapse to clipped-utopia output tuples. This distinction is why ceiling proximity must be read together with unique tuple counts.
 
-\setcounter{figure}{5}
 \begin{figure}[H]
 \centering
 \sifigure{B3_hv_ceiling_\diagword.pdf}
 \caption{HV ceiling and clipped-output assessment for secondary optimizer archives.}
-\label{fig:s6-hv-ceiling}
+\label{fig:s5-hv-ceiling}
 \end{figure}
 
-Figure~\ref{fig:s6-hv-ceiling} explains why near-ceiling HV values must be interpreted with objective-tuple diversity. CMA-ES can reach the theoretical HV ceiling because many retained rows collapse to clipped-utopia tuples, whereas NSGA-II approaches the same reference volume with many more distinct clipped objective tuples. The figure therefore separates reference-volume coverage from archive diversity.
+Figure~\ref{fig:s5-hv-ceiling} explains why near-ceiling HV values must be interpreted with objective-tuple diversity. CMA-ES can reach the theoretical HV ceiling because many retained rows collapse to clipped-utopia tuples, whereas NSGA-II approaches the same reference volume with many more distinct clipped objective tuples. The figure therefore separates reference-volume coverage from archive diversity.
 
 \subsection*{S3.5 CMA-ES and RandomSearch comparisons}
 
@@ -262,24 +258,22 @@ CMA-ES and RandomSearch are retained as secondary comparators. CMA-ES reaches th
 
 Median descriptor signatures summarize where retained outputs lie in descriptor space. NSGA-II retained outputs have median FAR = 1.71, median SVF = 0.654, and median OSLI = 6.21, while DDPG Balanced outputs have median FAR = 1.62 and median SVF = 0.702. These signatures describe retained-output tendencies and are not stable design rules.
 
-\setcounter{figure}{4}
 \begin{figure}[H]
 \centering
 \sifigure{B2_morphology_signatures.pdf}
 \caption{Median morphology descriptor signatures for representative retained-output groups.}
-\label{fig:s5-morphology-signatures}
+\label{fig:s6-morphology-signatures}
 \end{figure}
 
 The morphology signatures summarize retained-output tendencies rather than prescriptive design rules. They are useful for comparing where optimizers tend to place candidates in descriptor space, but they should be read together with the feasible-projection analysis because continuous descriptor outputs may map to repeated generated blocks.
 
 \subsection*{S4.2 Surrogate response profiles}
 
-\setcounter{figure}{7}
 \begin{figure}[H]
 \centering
 \sifigure{B5_nonlinear_response_profiles.pdf}
 \caption{Selected surrogate response profiles for OSR, FAR, SVF, and theta.}
-\label{fig:s8-response-profiles}
+\label{fig:s7-response-profiles}
 \end{figure}
 
 The response profiles isolate one descriptor at a time around representative reference values. They provide a qualitative view of the local shape of the selected surrogate response surface and help interpret why certain descriptors are emphasized by the optimizer outputs. Since the profiles are surrogate-based, they are used for interpretation only and are not a replacement for physics-based calculation.
@@ -296,15 +290,14 @@ Complete projection metrics are kept in the supplementary material because they 
 
 The physics-based stress-test set contains 24 locked cases. The 18 direct feasible cases are used to compare analytic response-generator values with physics-based outputs without optimizer projection. The six optimizer-linked cases decompose the path from descriptor-space candidate to nearest generated block and then to physics-based result. These two subsets should not be merged into a single parity plot because they answer different questions.
 
-\setcounter{figure}{6}
 \begin{figure}[H]
 \centering
 \sifigure{B4_optimizer_linked_gap_decomposition.pdf}
 \caption{Optimizer-linked six-case projection and cross-model gap decomposition.}
-\label{fig:s7-optimizer-linked-gaps}
+\label{fig:s8-optimizer-linked-gaps}
 \end{figure}
 
-Figure~\ref{fig:s7-optimizer-linked-gaps} separates the projection gap from the cross-model gap for the six optimizer-linked cases. This separation is important because an optimizer candidate is first mapped to a generated feasible block before the physics-based calculation is evaluated. The plotted gaps should therefore be interpreted as a bridge analysis between descriptor-space search and case-level physical outputs.
+Figure~\ref{fig:s8-optimizer-linked-gaps} separates the projection gap from the cross-model gap for the six optimizer-linked cases. This separation is important because an optimizer candidate is first mapped to a generated feasible block before the physics-based calculation is evaluated. The plotted gaps should therefore be interpreted as a bridge analysis between descriptor-space search and case-level physical outputs.
 
 \subsection*{S5.3 Per-case physical results}
 
@@ -370,7 +363,6 @@ Harbin & 55.681 & -0.044 & -0.675 & strong demand increase under the severe-cold
 
 Table~\ref{tab:s-climate-summary} reports mean target changes by weather file, while Fig.~\ref{fig:s9-climate-detail} shows the corresponding case-level variation across the four selected blocks. The results indicate that EUIt is strongly climate-sensitive, especially under the severe-cold weather file, whereas EG changes are smaller and preserve the ordering of the selected blocks.
 
-\setcounter{figure}{8}
 \begin{figure}[H]
 \centering
 \sifigure{B6_climate_case_detail.pdf}

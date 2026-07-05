@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-25T10:44:14+00:00",
-  "build_commit": "f47ea38a68975fdf1c311614abf6035017903f9b",
+  "generated_at": "2026-07-05T04:02:36+00:00",
+  "build_commit": "b6dee545d094929de30b8381fdd770e8852c95ed",
   "canonical_reference_hash": "a972173040d6682fb41b794f65befc6efcc93a1616cb405262f3ab504ddeffcc",
   "files": [
     {
       "file_name": "descriptor_coverage.csv",
-      "sha256": "cefa7377e3fb108e17439db483bf0d3e25758c7fcd2a1aaa5079b49caf4af098",
+      "sha256": "c9c77a2738ec0cb359d6a6801b67689b8d2c4e46c632d7e21cfbe4fefbfe8897",
       "rows": 2033,
       "columns": [
         {
@@ -225,7 +225,7 @@
     },
     {
       "file_name": "ddpg_training_curves_summary.csv",
-      "sha256": "563e9c7b4738aab80c6e24ac9671eb8955e031cae015f776c96a037cd6242c03",
+      "sha256": "36a74af74f7465ab3b48084815e31b36403507d14c93014468752fa8b4cd61ba",
       "rows": 1800,
       "columns": [
         {
@@ -238,11 +238,11 @@
         },
         {
           "name": "reward_mean",
-          "description": "Mean cumulative reward across seeds."
+          "description": "Mean cumulative episode reward across seeds."
         },
         {
           "name": "reward_std",
-          "description": "Standard deviation of cumulative reward across seeds."
+          "description": "Standard deviation of cumulative episode reward across seeds."
         },
         {
           "name": "EUIt_mean",
@@ -265,8 +265,8 @@
       "generation_command": "uv run python tools/build_round2_revision_figures.py --data-root paper/manuscript/figure_data/round2 --output-dir paper/manuscript/figures/round2_candidate --build-gallery",
       "source_files": [
         {
-          "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_logs_all_hp2000_full.json",
-          "sha256": "bda389cfb933f4f28fb20663087687c93fc9abd9a52b7bff0589cf9d99293476"
+          "path": "artifacts/publication/optimization/ddpg_logs_all_guardrail_full.json",
+          "sha256": "5569b5389f0c1d0520bf9ee5c1c132e9810c9a14e14aab8f7644fec720139fd8"
         }
       ],
       "reference_protocol": "",
@@ -275,7 +275,7 @@
     },
     {
       "file_name": "ddpg_seed_diagnostics.csv",
-      "sha256": "ceace85452fba6a4f6b3169870626bd0830ef359db49c24750af607744af202f",
+      "sha256": "bf356c2b98596fc41923a72ad91bbebfa7066b35d3f42e3b6fc17369ea7c21b6",
       "rows": 60,
       "columns": [
         {
@@ -288,11 +288,11 @@
         },
         {
           "name": "reward_best",
-          "description": "Best cumulative reward seen in training."
+          "description": "Best cumulative episode reward seen in training."
         },
         {
           "name": "reward_final",
-          "description": "Final cumulative reward at episode 600."
+          "description": "Final cumulative episode reward at episode 600."
         },
         {
           "name": "plateau_episode",
@@ -307,7 +307,7 @@
           "description": "True when the best-to-final regression exceeds 20%."
         }
       ],
-      "description": "Per-seed DDPG plateau, regression, and reward diagnostics.",
+      "description": "Per-seed DDPG plateau, regression, and episode-return diagnostics.",
       "representation_family": "training_dynamics",
       "valid_for_main_text": false,
       "valid_for_appendix": true,
@@ -315,8 +315,8 @@
       "generation_command": "uv run python tools/build_round2_revision_figures.py --data-root paper/manuscript/figure_data/round2 --output-dir paper/manuscript/figures/round2_candidate --build-gallery",
       "source_files": [
         {
-          "path": "artifacts/server_runs/20260405_highest_precision_2000_compare/optimization/ddpg_logs_all_hp2000_full.json",
-          "sha256": "bda389cfb933f4f28fb20663087687c93fc9abd9a52b7bff0589cf9d99293476"
+          "path": "artifacts/publication/optimization/ddpg_logs_all_guardrail_full.json",
+          "sha256": "5569b5389f0c1d0520bf9ee5c1c132e9810c9a14e14aab8f7644fec720139fd8"
         }
       ],
       "reference_protocol": "",

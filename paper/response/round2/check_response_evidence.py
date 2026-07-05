@@ -74,8 +74,8 @@ BANNED_STRONG = [
     "direct EnergyPlus/Radiance simulation for all 2000",
     "ranking transfer is confirmed",
     "EG_roof_irradiance was computed",
-    "10^6 - d",
-    "10^6-d",
+    "10^" + "6 - d",
+    "10^" + "6-d",
 ]
 
 APPLIED_ENERGY_DOI = "10.1016/j.apenergy.2026.128294"

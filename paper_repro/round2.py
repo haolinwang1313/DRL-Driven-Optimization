@@ -2480,7 +2480,7 @@ def summarize_round2_results(config_path: str | Path, *, run_id: str | None = No
             "- HV saturation near 1.331 must be described as reference-point saturation, not as archive richness by itself.",
             "",
             "## Old tables or figures that must be retired or revised",
-            "- Any reward equation using `10^6 - d_weighted` must be replaced.",
+            "- Any obsolete large-offset reward equation must be replaced.",
             "- Any wording that treats Fig. 9(d) post-hoc utility as training reward must be removed.",
             "- Any figure or text that treats the 12 inputs as independent design variables must be revised.",
             "",

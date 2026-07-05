@@ -106,12 +106,12 @@ FORBIDDEN_TEXT = [
     "physical closure",
     "external confirmation",
     "generalization proof",
-    "10^6 - d",
+    "10^" + "6 - d",
     "loactions",
     "Acotr",
     "netword",
     "Strat",
-    "R = 10^6",
+    "R = " + "10^6",
 ]
 SECRET_LIKE_TOKENS = ("password", "token", "secret", "host", "user", "pid", "identity", "ssh", "remote")
 BENCHMARK_REFERENCE_PROTOCOL = "benchmark-reference-v2"
@@ -288,14 +288,14 @@ def _default_revision_note(figure_id: str, category: str) -> str:
             "Fig2": "Final user-supplied manual Fig. 2 workflow PDF; TeX round2/round3 candidates are no longer preferred.",
             "Fig3": "Final user-supplied manual Fig. 3 DDPG architecture PDF; TeX round2/round3 candidates are no longer preferred.",
         }[figure_id]
-    if figure_id in {"M4", "M5", "M6", "M7", "S6", "S7"}:
+    if figure_id in {"M4", "M5", "M6", "M7", "S5", "S8"}:
         return {
             "M4": "Simplified the main benchmark figure to fixed-domain utility plus matched-size HV/IGD for DDPG and NSGA-II only.",
             "M5": "Reduced the projection figure to representation compression plus projection-distance diagnostics for the main-text comparison.",
             "M6": "Kept the same 18 direct cases while tightening axis wording, typography, marker size, and statistics placement.",
             "M7": "Kept the same climate data while switching to the muted climate palette and a zero-centered low-saturation heatmap.",
-            "S6": "Moved ceiling and duplicate-collapse diagnostics into a readable two-panel Supplementary Information layout with short labels.",
-            "S7": "Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.",
+            "S5": "Moved ceiling and duplicate-collapse diagnostics into a readable two-panel Supplementary Information layout with short labels.",
+            "S8": "Rebuilt the optimizer-linked bridge diagnostics as horizontal gap bars with an out-of-panel legend and short case labels.",
         }[figure_id]
     if category == "appendix":
         return "Carried forward from the canonical round-2 candidate set and relabeled for the Supplementary Information split."
@@ -398,23 +398,40 @@ def _resolve_source_roots(repo_root: Path) -> dict[str, Path]:
     round2_root = repo_root / Path(*root_parts)
     reference = _read_json(repo_root / "research" / "reviewer-round-02" / "canonical-benchmark-reference.json")
     compare_root = repo_root / Path(reference["source_files"]["ddpg_results"]["path"]).parent.parent
+    training_root = repo_root / "artifacts" / "publication"
+    if not (training_root / "optimization" / "ddpg_logs_all_guardrail_full.json").exists():
+        training_root = compare_root
     selection_root = repo_root / Path(config["round2"]["surrogate_selection_root"])
     return {
         "round2_root": round2_root,
         "compare_root": compare_root,
+        "training_root": training_root,
         "selection_root": selection_root,
     }
 
 
-def _load_ddpg_logs_all(compare_root: Path) -> dict[str, dict[str, list[dict[str, float]]]]:
+def _ddpg_logs_all_path(compare_root: Path) -> Path:
     optimization_dir = compare_root / "optimization"
-    direct = optimization_dir / "ddpg_logs_all.json"
-    if direct.exists():
-        return _read_json(direct)
+    for preferred_name in (
+        "ddpg_logs_all_guardrail_full.json",
+        "ddpg_logs_all_remote_match.json",
+        "ddpg_logs_all_hp2000_full.json",
+    ):
+        preferred = optimization_dir / preferred_name
+        if preferred.exists():
+            return preferred
     full_candidates = sorted(optimization_dir.glob("ddpg_logs_all*_full.json"))
     if full_candidates:
-        return _read_json(full_candidates[0])
+        return full_candidates[0]
+    direct = optimization_dir / "ddpg_logs_all.json"
+    if direct.exists():
+        return direct
     raise FileNotFoundError(f"missing DDPG seeded logs under {optimization_dir}")
+
+
+def _load_ddpg_logs_all(compare_root: Path) -> tuple[dict[str, dict[str, list[dict[str, float]]]], Path]:
+    path = _ddpg_logs_all_path(compare_root)
+    return _read_json(path), path
 
 
 def _pca_cumulative(dataset: pd.DataFrame) -> pd.DataFrame:
@@ -508,7 +525,7 @@ def _build_surrogate_validation_regimes(repo_root: Path) -> tuple[pd.DataFrame, 
 
 
 def _build_ddpg_training_curves(compare_root: Path) -> tuple[pd.DataFrame, list[Path]]:
-    logs = _load_ddpg_logs_all(compare_root)
+    logs, log_path = _load_ddpg_logs_all(compare_root)
     rows: list[pd.DataFrame] = []
     for scenario, seed_logs in logs.items():
         for seed, entries in seed_logs.items():
@@ -534,14 +551,14 @@ def _build_ddpg_training_curves(compare_root: Path) -> tuple[pd.DataFrame, list[
         )
         .fillna(0.0)
     )
-    return summary, [next((compare_root / "optimization").glob("ddpg_logs_all*_full.json"))]
+    return summary, [log_path]
 
 
 def _build_ddpg_seed_diagnostics(compare_root: Path) -> tuple[pd.DataFrame, list[Path]]:
-    logs = _load_ddpg_logs_all(compare_root)
+    logs, log_path = _load_ddpg_logs_all(compare_root)
     seeded, _ = compute_seeded_convergence_diagnostics(logs)
     seeded["late_regression"] = seeded["best_final_gap_ratio"] > 0.2
-    return seeded, [next((compare_root / "optimization").glob("ddpg_logs_all*_full.json"))]
+    return seeded, [log_path]
 
 
 def _build_benchmark_utility(round2_root: Path) -> tuple[pd.DataFrame, list[Path]]:
@@ -879,8 +896,8 @@ PACKAGE_SPECS: tuple[PackageSpec, ...] = (
         {
             "scenario": "DDPG scalarization scenario.",
             "episode": "Episode index from 1 to 600.",
-            "reward_mean": "Mean cumulative reward across seeds.",
-            "reward_std": "Standard deviation of cumulative reward across seeds.",
+            "reward_mean": "Mean cumulative episode reward across seeds.",
+            "reward_std": "Standard deviation of cumulative episode reward across seeds.",
             "EUIt_mean": "Mean surrogate EUIt response at episode end.",
             "EG_mean": "Mean surrogate EG response at episode end.",
             "H_mean": "Mean surrogate H response at episode end.",
@@ -893,12 +910,12 @@ PACKAGE_SPECS: tuple[PackageSpec, ...] = (
         False,
         True,
         "Seed-level DDPG diagnostics are appendix-only and do not imply physical validation.",
-        "Per-seed DDPG plateau, regression, and reward diagnostics.",
+        "Per-seed DDPG plateau, regression, and episode-return diagnostics.",
         {
             "scenario": "DDPG scalarization scenario.",
             "seed": "Seed index within the scenario.",
-            "reward_best": "Best cumulative reward seen in training.",
-            "reward_final": "Final cumulative reward at episode 600.",
+            "reward_best": "Best cumulative episode reward seen in training.",
+            "reward_final": "Final cumulative episode reward at episode 600.",
             "plateau_episode": "First episode reaching 95% of the best rolling reward.",
             "best_final_gap_ratio": "Relative regression from best to final reward.",
             "late_regression": "True when the best-to-final regression exceeds 20%.",
@@ -1147,8 +1164,8 @@ def _package_builders(repo_root: Path, roots: dict[str, Path], config: Config) -
         "descriptor_dependencies": _build_descriptor_dependencies(roots["round2_root"]),
         "surrogate_parity": _build_surrogate_parity(roots["round2_root"]),
         "surrogate_validation_regimes": _build_surrogate_validation_regimes(repo_root),
-        "ddpg_training_curves": _build_ddpg_training_curves(roots["compare_root"]),
-        "ddpg_seed_diagnostics": _build_ddpg_seed_diagnostics(roots["compare_root"]),
+        "ddpg_training_curves": _build_ddpg_training_curves(roots["training_root"]),
+        "ddpg_seed_diagnostics": _build_ddpg_seed_diagnostics(roots["training_root"]),
         "benchmark_utility": _build_benchmark_utility(roots["round2_root"]),
         "benchmark_equal_size_20": _build_benchmark_equal_size_20(repo_root),
         "benchmark_output_contract": _build_output_contract(repo_root),
@@ -1171,15 +1188,6 @@ def build_round2_figure_data_package(data_root: str | Path, *, repo_root: str | 
     data_root_path = (root / Path(data_root)).resolve()
     data_root_path.mkdir(parents=True, exist_ok=True)
     manifest_path = data_root_path / "manifest.json"
-    if manifest_path.exists():
-        existing_manifest = _read_json(manifest_path)
-        existing_entries = existing_manifest.get("files", [])
-        existing_files = [data_root_path / entry["file_name"] for entry in existing_entries]
-        if existing_files and all(path.exists() for path in existing_files) and all(
-            _sha256_path(path) == entry.get("sha256", "")
-            for path, entry in zip(existing_files, existing_entries, strict=True)
-        ):
-            return existing_manifest
     config = Config.from_yaml(root / "configs" / "reviewer_round2_experiments.yaml")
     registry = _load_registry(root)
     _validate_registry_sources(root, registry)
@@ -1381,7 +1389,7 @@ def _build_main_m3(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tuple[
     frame = frames["ddpg_training_curves_summary.csv"].copy()
     fig, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 11.0 * CM_TO_IN), sharex=True)
     panels = [
-        ("reward_mean", "reward_std", "Cumulative reward", "a"),
+        ("reward_mean", "reward_std", "Episode return", "a"),
         ("EUIt_mean", "EUIt_std", TARGET_LABELS["EUIt"], "b"),
         ("EG_mean", "EG_std", TARGET_LABELS["EG"], "c"),
         ("H_mean", "H_std", TARGET_LABELS["H"], "d"),
@@ -1703,8 +1711,8 @@ def _build_appendix_b1(frames: dict[str, pd.DataFrame], _: dict[str, Any]) -> tu
     seed = frames["ddpg_seed_diagnostics.csv"].copy()
     fig, axes = plt.subplots(2, 2, figsize=(DOUBLE_COL_IN, 10.8 * CM_TO_IN))
     panels = [
-        ("reward_best", "Best reward", "a"),
-        ("reward_final", "Final reward", "b"),
+        ("reward_best", "Best episode return", "a"),
+        ("reward_final", "Final episode return", "b"),
         ("plateau_episode", "Plateau episode", "c"),
         ("best_final_gap_ratio", "Best-to-final gap ratio", "d"),
     ]
@@ -1884,7 +1892,7 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
             "Main Fig. 6 candidate",
             ("ddpg_training_curves_summary.csv", "ddpg_seed_diagnostics.csv"),
             (
-                "Episode cumulative reward across 20 seeds.",
+                "Cumulative episode reward across 20 seeds.",
                 "Episode-end EUIt across 20 seeds.",
                 "Episode-end EG across 20 seeds.",
                 "Episode-end H across 20 seeds.",
@@ -2001,8 +2009,8 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
             "Appendix Fig. B1 candidate",
             ("ddpg_seed_diagnostics.csv",),
             (
-                "Best reward by scenario.",
-                "Final reward by scenario.",
+                "Best episode return by scenario.",
+                "Final episode return by scenario.",
                 "Plateau episode by scenario.",
                 "Best-to-final regression ratio by scenario.",
             ),
@@ -2259,6 +2267,9 @@ def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[s
         if isinstance(png_path, Path) and png_path.exists():
             outputs["png"] = str(png_path)
         source_files = [path for path in spec["source_files"] if path.exists()]
+        existing_metadata = {}
+        if spec["metadata"].exists():
+            existing_metadata = json.loads(spec["metadata"].read_text(encoding="utf-8"))
         metadata = {
             "figure_id": spec["figure_id"],
             "semantic_name": spec["semantic_name"],
@@ -2270,7 +2281,7 @@ def _manual_candidate_figures(repo_root: Path, output_root: Path) -> list[dict[s
             "figure_style_version": spec.get("style_version", FIGURE_STYLE_VERSION),
             "font_policy": spec["font_policy"],
             "candidate_status": spec["candidate_status"],
-            "timestamp": _utc_now(),
+            "timestamp": existing_metadata.get("timestamp", _utc_now()),
             "panel_descriptions": list(spec["panel_descriptions"]),
             "claim_boundary": spec["claim_boundary"],
             "caption": spec.get("caption", ""),
@@ -3158,27 +3169,27 @@ def _figure_specific_visual_checks(metadata: dict[str, Any], text: str) -> list[
                 _bool_check("M7 heatmap remains centered at zero", float(extra.get("heatmap_center", 1.0)) == 0.0, "The heatmap diverging palette should be centered at zero."),
             ]
         )
-    elif figure_id == "S6":
+    elif figure_id == "S5":
         checks.extend(
             [
-                _bool_check("S6 uses a log scale for tuple counts", extra.get("panel_b_scale") == "log", "The tuple-count panel should use a log-scaled x-axis."),
+                _bool_check("S5 uses a log scale for tuple counts", extra.get("panel_b_scale") == "log", "The tuple-count panel should use a log-scaled x-axis."),
                 _bool_check(
-                    "S6 keeps only short labels",
+                    "S5 keeps only short labels",
                     all(len(label) <= 7 for label in extra.get("short_labels", [])),
                     "Supplementary labels should stay compact and horizontal.",
                 ),
                 _bool_check(
-                    "S6 avoids long scenario strings in rendered text",
+                    "S5 avoids long scenario strings in rendered text",
                     not any(token in text for token in ("Balanced_Performance", "Energy_Saving_Focus", "Energy_Generation_Focus")),
                     "The figure should not rely on long categorical axis labels.",
                 ),
             ]
         )
-    elif figure_id == "S7":
+    elif figure_id == "S8":
         checks.extend(
             [
-                _bool_check("S7 keeps the legend outside the plotting axes", bool(extra.get("legend_outside_axes")), "The legend should sit above the full figure."),
-                _bool_check("S7 keeps six short case labels", len(extra.get("case_labels", [])) == 6, "The bridge-diagnostic figure should contain six labeled cases."),
+                _bool_check("S8 keeps the legend outside the plotting axes", bool(extra.get("legend_outside_axes")), "The legend should sit above the full figure."),
+                _bool_check("S8 keeps six short case labels", len(extra.get("case_labels", [])) == 6, "The bridge-diagnostic figure should contain six labeled cases."),
             ]
         )
     return checks
@@ -3439,13 +3450,13 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "",
         "## Supplementary Information figures",
         "- Fig. S1: A1 descriptor distributions.",
-        "- Fig. S2: A2 residual diagnostics.",
-        "- Fig. S3: A3 scale study.",
+        "- Fig. S2: A3 scale study.",
+        "- Fig. S3: A2 residual diagnostics.",
         "- Fig. S4: B1 seed diagnostics.",
-        "- Fig. S5: B2 morphology signatures.",
-        "- Fig. S6: B3 HV ceiling and output-contract diagnostics.",
-        "- Fig. S7: B4 optimizer-linked gap decomposition.",
-        "- Fig. S8: B5 nonlinear response profiles.",
+        "- Fig. S5: B3 HV ceiling and output-contract diagnostics.",
+        "- Fig. S6: B2 morphology signatures.",
+        "- Fig. S7: B5 nonlinear response profiles.",
+        "- Fig. S8: B4 optimizer-linked gap decomposition.",
         "- Fig. S9: B6 climate case detail.",
         "",
         "## Candidate figure coverage",
@@ -3482,18 +3493,18 @@ def _write_plan_docs(repo_root: Path, figures: list[dict[str, Any]]) -> dict[str
         "- HV ceiling",
         "- checkpoint sensitivity",
         "- CMA-ES and RandomSearch diagnostics",
-        "- Fig. S4 and S6",
+        "- Fig. S4 and S5",
         "",
         "S4. Morphology interpretation",
         "- descriptor signatures",
         "- nonlinear profiles",
-        "- Fig. S5 and S8",
+        "- Fig. S6 and S7",
         "",
         "S5. Feasible projection and physics-based stress-test details",
         "- complete projection metrics",
         "- optimizer-linked six-case decomposition",
         "- per-case physical results",
-        "- Fig. S7",
+        "- Fig. S8",
         "",
         "S6. Cross-climate case details",
         "- weather metadata",
@@ -3571,7 +3582,7 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
             "Main Fig. 6",
             ("ddpg_training_curves_summary.csv", "ddpg_seed_diagnostics.csv"),
             (
-                "Episode cumulative reward across 20 seeds.",
+                "Cumulative episode reward across 20 seeds.",
                 "Episode-end EUIt across 20 seeds.",
                 "Episode-end EG across 20 seeds.",
                 "Episode-end H across 20 seeds.",
@@ -3651,9 +3662,24 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
         ),
         FigureSpec(
             "S2",
-            "A2_residual_diagnostics",
+            "A3_scale_study",
             "appendix",
             "Supplementary Fig. S2",
+            ("scale_study.csv",),
+            (
+                "Mean target nMAE across dataset scales.",
+                "Mean tail nMAE across dataset scales.",
+                "Mean R2 across dataset scales.",
+                "Selection objective across dataset scales.",
+            ),
+            "Scale-study rows support the surrogate-selection rationale only.",
+            _build_appendix_a3,
+        ),
+        FigureSpec(
+            "S3",
+            "A2_residual_diagnostics",
+            "appendix",
+            "Supplementary Fig. S3",
             ("surrogate_parity_mean_predictions.csv",),
             (
                 "EUIt residual distribution.",
@@ -3664,29 +3690,14 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
             _build_appendix_a2,
         ),
         FigureSpec(
-            "S3",
-            "A3_scale_study",
-            "appendix",
-            "Supplementary Fig. S3",
-            ("scale_study.csv",),
-            (
-                "Mean target nMAE across dataset scales.",
-                "Mean tail nMAE across dataset scales.",
-                "Mean R² across dataset scales.",
-                "Selection objective across dataset scales.",
-            ),
-            "Scale-study rows support the surrogate-selection rationale only.",
-            _build_appendix_a3,
-        ),
-        FigureSpec(
             "S4",
             "B1_seed_diagnostics",
             "appendix",
             "Supplementary Fig. S4",
             ("ddpg_seed_diagnostics.csv",),
             (
-                "Best reward by scenario.",
-                "Final reward by scenario.",
+                "Best episode return by scenario.",
+                "Final episode return by scenario.",
                 "Plateau episode by scenario.",
                 "Best-to-final regression ratio by scenario.",
             ),
@@ -3695,19 +3706,9 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
         ),
         FigureSpec(
             "S5",
-            "B2_morphology_signatures",
-            "appendix",
-            "Supplementary Fig. S5",
-            ("morphology_signatures.csv",),
-            ("Median morphology descriptor signatures for representative retained-output groups.",),
-            "Descriptor signatures are descriptive summaries, not stable design rules.",
-            _build_appendix_b2,
-        ),
-        FigureSpec(
-            "S6",
             "B3_hv_ceiling_diagnostics",
             "appendix",
-            "Supplementary Fig. S6",
+            "Supplementary Fig. S5",
             ("benchmark_hv_ceiling.csv",),
             (
                 "HV fraction of the theoretical ceiling alongside clipped-utopia fraction.",
@@ -3717,24 +3718,20 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
             _build_appendix_b3,
         ),
         FigureSpec(
-            "S7",
-            "B4_optimizer_linked_gap_decomposition",
+            "S6",
+            "B2_morphology_signatures",
             "appendix",
-            "Supplementary Fig. S7",
-            ("optimizer_linked_physical_gaps.csv",),
-            (
-                "EUIt projection and cross-model gap decomposition for optimizer-linked cases.",
-                "EG projection and cross-model gap decomposition for optimizer-linked cases.",
-                "H projection and cross-model gap decomposition for optimizer-linked cases.",
-            ),
-            "These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.",
-            _build_appendix_b4,
+            "Supplementary Fig. S6",
+            ("morphology_signatures.csv",),
+            ("Median morphology descriptor signatures for representative retained-output groups.",),
+            "Descriptor signatures are descriptive summaries, not stable design rules.",
+            _build_appendix_b2,
         ),
         FigureSpec(
-            "S8",
+            "S7",
             "B5_nonlinear_response_profiles",
             "appendix",
-            "Supplementary Fig. S8",
+            "Supplementary Fig. S7",
             ("scale_study.csv",),
             (
                 "OSR to EUIt surrogate response profile.",
@@ -3744,6 +3741,20 @@ def _figure_specs(repo_root: Path, roots: dict[str, Path]) -> tuple[FigureSpec, 
             ),
             "Selected surrogate response profiles illustrate local trends only.",
             lambda frames, manifest: _build_nonlinear_response_figure(repo_root, roots),
+        ),
+        FigureSpec(
+            "S8",
+            "B4_optimizer_linked_gap_decomposition",
+            "appendix",
+            "Supplementary Fig. S8",
+            ("optimizer_linked_physical_gaps.csv",),
+            (
+                "EUIt projection and cross-model gap decomposition for optimizer-linked cases.",
+                "EG projection and cross-model gap decomposition for optimizer-linked cases.",
+                "H projection and cross-model gap decomposition for optimizer-linked cases.",
+            ),
+            "These optimizer-linked cases are representative bridge diagnostics rather than a global optimizer benchmark.",
+            _build_appendix_b4,
         ),
         FigureSpec(
             "S9",

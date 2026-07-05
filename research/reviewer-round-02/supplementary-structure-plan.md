@@ -22,18 +22,18 @@ S3. DDPG training and benchmark diagnostics
 - HV ceiling
 - checkpoint sensitivity
 - CMA-ES and RandomSearch diagnostics
-- Fig. S4 and S6
+- Fig. S4 and S5
 
 S4. Morphology interpretation
 - descriptor signatures
 - nonlinear profiles
-- Fig. S5 and S8
+- Fig. S6 and S7
 
 S5. Feasible projection and physics-based stress-test details
 - complete projection metrics
 - optimizer-linked six-case decomposition
 - per-case physical results
-- Fig. S7
+- Fig. S8
 
 S6. Cross-climate case details
 - weather metadata

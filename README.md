@@ -6,9 +6,10 @@ This repository is a major-revision workspace for an `Applied Energy` manuscript
 
 - Revision config: `configs/revision.yaml`
 - Python package: `paper_repro/`
-- Manuscript: `paper/manuscript/manuscript.tex`
-- Response letter: `paper/response/round-01/letter.tex`
-- Revision tracker: `paper/response/round-01/tracker/revision-tracker.json`
+- Manuscript clean source: `paper/manuscript/manuscript_clean.tex`
+- Manuscript highlighted source: `paper/manuscript/manuscript_highlighted.tex`
+- Supplementary Information: `paper/supplementary/supplementary_information.tex`
+- Response letter: `paper/response/round2/response_letter.tex`
 - Artifact root: `artifacts/publication`
 
 ## Repository Layout
@@ -21,7 +22,8 @@ This repository is a major-revision workspace for an `Applied Energy` manuscript
 - `experiments/`: historical experiment logbook and run definitions.
 - `research/`: research notes and findings.
 - `paper/manuscript/`: TeX manuscript, appendix, references, class file, and tracked figure PDFs.
-- `paper/response/round-01/`: formal first-round journal response package and migrated tracker/review state.
+- `paper/response/round2/`: current round-2 response package.
+- `paper/response/round-01/`: legacy first-round journal response package and migrated tracker/review state.
 - `paper/snapshots/`: working-draft PDF snapshots.
 - `paper/submission/`: frozen files only after confirmed journal submission.
 - `artifacts/`: generated experiment outputs; ignored by Git.
@@ -79,14 +81,22 @@ Manuscript:
 
 ```bash
 cd paper/manuscript
-latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build manuscript.tex
+latexmk -xelatex -interaction=nonstopmode -halt-on-error manuscript_clean.tex
+latexmk -g -xelatex -interaction=nonstopmode -halt-on-error manuscript_highlighted.tex
+```
+
+Supplementary Information:
+
+```bash
+cd paper/supplementary
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build supplementary_information.tex
 ```
 
 Response:
 
 ```bash
-cd paper/response/round-01
-latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build letter.tex
+cd paper/response/round2
+latexmk -xelatex -interaction=nonstopmode -halt-on-error response_letter.tex
 ```
 
 Generated build products go under ignored `build/` directories. The tracked PDFs under `paper/snapshots/` are synchronized working snapshots, not proof of journal submission.

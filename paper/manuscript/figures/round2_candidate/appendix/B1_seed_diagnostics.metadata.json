@@ -5,7 +5,7 @@
   "source_files": [
     {
       "path": "ddpg_seed_diagnostics.csv",
-      "sha256": "ceace85452fba6a4f6b3169870626bd0830ef359db49c24750af607744af202f",
+      "sha256": "bf356c2b98596fc41923a72ad91bbebfa7066b35d3f42e3b6fc17369ea7c21b6",
       "reference_protocol": "",
       "reference_hash": ""
     }
@@ -13,8 +13,8 @@
   "filters": {},
   "reference_protocol": "",
   "reference_hash": "",
-  "script_commit": "8cc1945e652658999fdbfe2554685d0477156b90",
-  "timestamp": "2026-06-25T15:11:09+00:00",
+  "script_commit": "b6dee545d094929de30b8381fdd770e8852c95ed",
+  "timestamp": "2026-07-05T04:01:33+00:00",
   "figure_style_version": "round2-arial-v1",
   "font_policy": "strict_arial",
   "units": [
@@ -23,8 +23,8 @@
     "H (h)"
   ],
   "panel_descriptions": [
-    "Best reward by scenario.",
-    "Final reward by scenario.",
+    "Best episode return by scenario.",
+    "Final episode return by scenario.",
     "Plateau episode by scenario.",
     "Best-to-final regression ratio by scenario."
   ],
@@ -34,9 +34,9 @@
     "figure_id": "S4",
     "pdf_path": "paper/manuscript/figures/round2_candidate/appendix/B1_seed_diagnostics.pdf",
     "render_png": "paper/manuscript/build/round2_candidate_render/B1_seed_diagnostics.png",
-    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Thu Jun 25 23:11:08 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       493.873 x 304.024 pts\nPage rot:        0\nFile size:       39391 bytes\nOptimized:       no\nPDF version:     1.4\n",
+    "pdfinfo": "Creator:         Matplotlib v3.10.8, https://matplotlib.org\nProducer:        Matplotlib pdf backend v3.10.8\nCreationDate:    Sun Jul  5 12:01:32 2026 �й���׼ʱ��\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           1\nEncrypted:       no\nPage size:       495.826 x 304.024 pts\nPage rot:        0\nFile size:       37536 bytes\nOptimized:       no\nPDF version:     1.4\n",
     "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nCFEKEO+ArialMT                       CID TrueType      Identity-H       yes yes yes     15  0\nCFEKEO+Arial-BoldMT                  CID TrueType      Identity-H       yes yes yes     22  0\n",
-    "width_px": 1235,
+    "width_px": 1240,
     "height_px": 761,
     "type3_fonts": false,
     "arial_font_hits": [

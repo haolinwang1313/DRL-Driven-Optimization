@@ -312,10 +312,10 @@ def test_final_manual_candidates_replace_tex_round2_round3_candidates(built_roun
         assert not (OUTPUT_ROOT / "manual" / obsolete).exists()
 
 
-def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
+def test_s5_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
     metadata = _metadata("appendix/B3_hv_ceiling_diagnostics.metadata.json")
     text = _pdf_text(OUTPUT_ROOT / "appendix" / "B3_hv_ceiling_diagnostics.pdf")
-    assert metadata["figure_id"] == "S6"
+    assert metadata["figure_id"] == "S5"
     assert metadata["extra"]["panel_b_scale"] == "log"
     assert all(len(label) <= 7 for label in metadata["extra"]["short_labels"])
     assert "Balanced_Performance" not in text
@@ -323,11 +323,19 @@ def test_s6_uses_short_labels_and_log_scale(built_round2_assets: dict) -> None:
     assert "Energy_Generation_Focus" not in text
 
 
-def test_s7_legend_stays_outside_axes(built_round2_assets: dict) -> None:
+def test_s8_legend_stays_outside_axes(built_round2_assets: dict) -> None:
     metadata = _metadata("appendix/B4_optimizer_linked_gap_decomposition.metadata.json")
-    assert metadata["figure_id"] == "S7"
+    assert metadata["figure_id"] == "S8"
     assert metadata["extra"]["legend_outside_axes"] is True
     assert len(metadata["extra"]["case_labels"]) == 6
+
+
+def test_visual_qa_summary_uses_current_si_numbering(built_round2_assets: dict) -> None:
+    summary_text = (OUTPUT_ROOT / "visual_qa_summary.json").read_text(encoding="utf-8")
+    assert "S5 uses a log scale for tuple counts" in summary_text
+    assert "S8 keeps the legend outside the plotting axes" in summary_text
+    assert "S6 uses a log scale for tuple counts" not in summary_text
+    assert "S7 keeps the legend outside the plotting axes" not in summary_text
 
 
 def test_gallery_separates_main_and_supplementary_sections(built_round2_assets: dict) -> None:
