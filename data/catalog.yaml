@@ -14,8 +14,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   records: 1
-  size_bytes: 920
-  sha256: 038e6d3f48418bcaa95b23a9d9e646e519d5cd9345091e6473f06f3a49ae2df4
+  size_bytes: 904
+  sha256: 874658d9efb60579efe47a500d79b88b3a5a68a3b2862e7a30ae5544b098d07a
   description: Sanitized dataset-selection metadata with public release paths and
     file hashes.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
@@ -70,8 +70,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   records: 1
-  size_bytes: 2496
-  sha256: 29a8b96dd8f04133b7e6efe2f3530f99d9638261298dfce58f2103b3fe436f69
+  size_bytes: 2393
+  sha256: 6f82d6f840d1492d73329fb68d11ebdb8d0b8d8068df842566e28b67b49eacd1
   description: Metadata for the canonical analytic response dataset.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
     during public package assembly.
@@ -89,7 +89,7 @@ datasets:
   required_for_current_results: true
   records: 4
   size_bytes: 366
-  sha256: cc0ba79ac531fb8a650622fd1c60c5a15404eaa59e19e5557c364c90d497ad73
+  sha256: 16678e66eef14ac364f5bb11993b3d687ad15f2f27ceebc90d31b26daf81fad5
   description: SHA-256 summary for canonical public dataset files.
   generation_script: No rerun; generated during public package assembly.
   notes: Companion hash file for the canonical analytic-response dataset.
@@ -393,8 +393,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   records: 1
-  size_bytes: 12316
-  sha256: c9cc7da87cab61eeecf4ff61dc0c465243d82064b29b3d39546dd313ee6fd730
+  size_bytes: 12088
+  sha256: aa9310185563efd248e245aab3bb2183f41e5c53b7c8a64e152d1fc8253b78dc
   description: Public manifest for the released figure-data tables.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
     during public package assembly.
@@ -540,8 +540,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   records: 1
-  size_bytes: 995
-  sha256: 1b37724ab63fa5834dc27cb13c3254bfa0f52b6163444cc1c8cbe279ed8c9daf
+  size_bytes: 958
+  sha256: 07853d46e3df076c0b3c479068607a4cad21b0d53d2ae04e47f468770a639189
   description: Sanitized optimizer benchmark context without model checkpoint paths.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
     during public package assembly.
@@ -652,8 +652,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   rows: 24
-  size_bytes: 5615
-  sha256: aa409786a827ca6df703a2f33e570ebb2af1c1a6a7d1f91ae2f8185e7550b663
+  size_bytes: 5590
+  sha256: fcd1c8a299a5bd625a8888bd6ab1762872dbe44505aa90a28b416b68b2ddf50e
   description: Sanitized 24-case physical stress-test table combining direct and optimizer-linked
     cases.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
@@ -787,8 +787,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   records: 1
-  size_bytes: 4946
-  sha256: 9a0ac1e05b27933c1fcd0533ddebd36f0bd10a3d5827569cf172082b95be945e
+  size_bytes: 4790
+  sha256: a3d3b49ed3d59fd82f46c92473eae5f974fddbf54017b1c43fb28f2225b0c29c
   description: Sanitized surrogate validation summary without model checkpoint paths.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
     during public package assembly.
