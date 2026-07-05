@@ -15,7 +15,7 @@ datasets:
   required_for_current_results: true
   records: 1
   size_bytes: 920
-  sha256: 593d0768ea84ccb55c7fe28b2b94fbbfc54f14de31682a660765848379acb966
+  sha256: 038e6d3f48418bcaa95b23a9d9e646e519d5cd9345091e6473f06f3a49ae2df4
   description: Sanitized dataset-selection metadata with public release paths and
     file hashes.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
@@ -70,8 +70,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   records: 1
-  size_bytes: 2250
-  sha256: 53af4e0b049b8fc5a4fb026bac09168d73a60f35900266021a407a3d5a001811
+  size_bytes: 2496
+  sha256: 29a8b96dd8f04133b7e6efe2f3530f99d9638261298dfce58f2103b3fe436f69
   description: Metadata for the canonical analytic response dataset.
   generation_script: No rerun; copied or sanitized from existing local result artifacts
     during public package assembly.
@@ -89,7 +89,7 @@ datasets:
   required_for_current_results: true
   records: 4
   size_bytes: 366
-  sha256: 5b367f4be97e7e815e126ca1c4bc441be83dbfdf8a05843a1750657569721f02
+  sha256: cc0ba79ac531fb8a650622fd1c60c5a15404eaa59e19e5557c364c90d497ad73
   description: SHA-256 summary for canonical public dataset files.
   generation_script: No rerun; generated during public package assembly.
   notes: Companion hash file for the canonical analytic-response dataset.
@@ -483,8 +483,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   rows: 16
-  size_bytes: 14335
-  sha256: 9a3f6d93639fce2f4b35097d9e71c69d8c36f344f8c51aff42846048995b793a
+  size_bytes: 6851
+  sha256: d2feadc7672abfd99827be3930c8d19c9c2cbc087c3760c5b4cc8ec267997b5e
   description: 'Final APEN figure-data table: scale_study.csv.'
   generation_script: No rerun; copied or sanitized from existing local result artifacts
     during public package assembly.
@@ -747,8 +747,8 @@ datasets:
   redistributable: true
   required_for_current_results: true
   rows: 16
-  size_bytes: 14335
-  sha256: 9a3f6d93639fce2f4b35097d9e71c69d8c36f344f8c51aff42846048995b793a
+  size_bytes: 6851
+  sha256: d2feadc7672abfd99827be3930c8d19c9c2cbc087c3760c5b4cc8ec267997b5e
   description: Dataset-scale surrogate-selection summary across 500, 1000, 1500, and
     2000 rows.
   generation_script: No rerun; copied or sanitized from existing local result artifacts

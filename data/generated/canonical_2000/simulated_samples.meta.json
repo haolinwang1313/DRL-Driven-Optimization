@@ -27,8 +27,8 @@
   ],
   "seed": 20260310,
   "source_scale": 2000,
-  "csv_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_samples.csv",
-  "blocks_path": "artifacts/server_runs/20260405_surrogate_rebenchmark/data/regimes/scale_2000/simulated_blocks.jsonl",
+  "csv_path": "data/generated/canonical_2000/simulated_samples.csv",
+  "blocks_path": "data/generated/canonical_2000/simulated_blocks.jsonl",
   "assumptions": [
     "AR_ew and AR_ns are the explicit two-direction reconstruction of the paper's AR term.",
     "The fallback simulator is used when a fully coupled LBT/EnergyPlus/Radiance workflow is unavailable.",
@@ -97,5 +97,7 @@
       "min": 6.006569520434968,
       "max": 7.85
     }
-  }
+  },
+  "source_run_id": "20260405_highest_precision_2000_compare",
+  "public_release_note": "The committed public files are located under data/generated/canonical_2000; original local artifact paths are not required for public inspection."
 }

@@ -150,7 +150,7 @@ def validate_required_files(errors: list[str]) -> None:
         errors.append("legacy spreadsheet is tracked")
     if git_ls_files("surrogate.pt"):
         errors.append("model checkpoint is tracked")
-    if git_ls_files("artifacts/server_runs"):
+    if git_ls_files(marker("artifacts", "/", "server_runs")):
         errors.append("source artifact run tree is tracked")
 
 
